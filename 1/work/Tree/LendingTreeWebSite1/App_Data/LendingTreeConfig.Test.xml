@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LendingTreeConfig>
+  <SourceOfRequest>
+    <LendingTreeAffiliatePartnerCode>19655</LendingTreeAffiliatePartnerCode>
+    <LendingTreeAffiliateUserName>DirectAgentsUser</LendingTreeAffiliateUserName>
+    <LendingTreeAffiliatePassword>capeWrAjujujajA5uspa</LendingTreeAffiliatePassword>
+    <LendingTreeAffiliateEsourceID>5860430</LendingTreeAffiliateEsourceID>
+  </SourceOfRequest>
+  <PostUrl>http://qaaffiliates.lendingtree.com/v1/qfpost.aspx</PostUrl>
+</LendingTreeConfig>

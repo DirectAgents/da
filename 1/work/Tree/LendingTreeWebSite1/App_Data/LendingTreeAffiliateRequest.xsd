@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="LendingTreeAffiliateRequest">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Request" type="RequestType" minOccurs="0"/>
+				<xs:element name="Response" type="ResponseType" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="ResponseType">
+		<xs:sequence>
+			<xs:element name="ReturnURL" type="xs:string" minOccurs="0"/>
+			<xs:element name="Errors" type="ErrorsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ErrorsType">
+		<xs:sequence>
+			<xs:element name="Error" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RequestType">
+		<xs:sequence>
+			<xs:element name="SourceOfRequest" type="SourceOfRequestType"/>
+			<xs:element name="HomeLoanProduct" type="HomeLoanProductType"/>
+			<xs:element name="Applicant" type="ApplicantType" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="type" type="xs:string" use="optional"/>
+		<xs:attribute name="created" type="xs:string" use="required"/>
+		<xs:attribute name="updated" type="xs:string" use="required"/>
+		<xs:attribute name="VisitorSessionID" type="xs:string" use="optional"/>
+		<xs:attribute name="AppID" type="xs:string" use="required"/>
+		<xs:attribute name="ElectronicDisclosureConsent" type="xs:string" use="optional"/>
+		<!--  Session GUID -->
+		<!-- Need a new GUID -->
+	</xs:complexType>
+	<xs:complexType name="SourceOfRequestType">
+		<xs:sequence>
+			<xs:element name="LendingTreeAffiliatePartnerCode" type="xs:string"/>
+			<xs:element name="LendingTreeAffiliateUserName" type="xs:string"/>
+			<xs:element name="LendingTreeAffiliatePassword" type="xs:string"/>
+			<xs:element name="LendingTreeAffiliateEsourceID" type="xs:string"/>
+			<xs:element name="LendingTreeAffiliateBrand" type="xs:string" minOccurs="0"/>
+			<xs:element name="LendingTreeAffiliateFormVersion" type="xs:string" minOccurs="0"/>
+			<xs:element name="VisitorIPAddress" type="xs:string"/>
+			<xs:element name="VisitorURL" type="xs:string"/>
+			<xs:element name="TreeSessionID" type="xs:string" minOccurs="0"/>
+			<xs:element name="TreeComputerID" type="xs:string" minOccurs="0"/>
+			<xs:element name="V1stCookie" type="xs:string" minOccurs="0"/>
+			<xs:element name="LTLOptin" type="YesNoType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApplicantType">
+		<xs:sequence>
+			<xs:element name="FirstName" type="NameType"/>
+			<xs:element name="MiddleName" type="NameType" minOccurs="0"/>
+			<xs:element name="LastName" type="NameType"/>
+			<xs:element name="NameSuffix" type="NameSuffixType" minOccurs="0"/>
+			<xs:element name="Street" type="NameType"/>
+			<xs:element name="City" type="NameType" minOccurs="0"/>
+			<xs:element name="County" type="NameType" minOccurs="0"/>
+			<xs:element name="State" type="StateType" minOccurs="0"/>
+			<xs:element name="Zip">
+				<xs:simpleType>
+					<xs:restriction base="ZipCodeType"/>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DateOfBirth" type="xs:string"/>
+			<xs:element name="HomePhone" type="PhoneType"/>
+			<xs:element name="MobilePhone" type="PhoneType" minOccurs="0"/>
+			<xs:element name="WorkPhone" type="PhoneType" minOccurs="0"/>
+			<xs:element name="WorkPhoneExt" type="WorkPhoneExtensionType" minOccurs="0"/>
+			<xs:element name="EmailAddress" type="EmailType"/>
+			<xs:element name="Password" type="xs:string" minOccurs="0"/>
+			<xs:element name="SSN" type="SSNType" minOccurs="0"/>
+			<xs:element name="IsVeteran" type="YesNoType" default="N"/>
+			<xs:element name="MaritalStatus" type="MaritalStatusType" minOccurs="0"/>
+			<xs:element name="IsUSCitizen" type="CitizenshipStatusType" minOccurs="0"/>
+			<xs:element name="RelationshipToApplicant" type="RelationshipToApplicantType" minOccurs="0"/>
+			<xs:element name="ContactPreference" type="ContactPreferenceType" minOccurs="0"/>
+			<xs:element name="Employment" type="EmploymentType" minOccurs="0"/>
+			<xs:element name="CreditHistory" type="CreditHistoryType"/>
+		</xs:sequence>
+		<xs:attribute name="Primary" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Y"/>
+					<xs:enumeration value="N"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="PrimaryContact" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Y"/>
+					<xs:enumeration value="N"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<!--
+	<xs:complexType name="HomeLoanType">
+		<xs:sequence>
+			<xs:element name="RequestedLoanAmount" type="AmountType"/>
+			<xs:element name="SubjectProperty" type="SubjectPropertyType"/>
+			<xs:element name="HomeLoanProduct" type="HomeLoanProductType"/>
+		</xs:sequence>
+		<xs:attribute name="Product" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="MORTGAGE"/>
+					<xs:enumeration value="HOMEEQUITY"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="ProductType" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="PURCHASE"/>
+					<xs:enumeration value="REFINANCE"/>
+					<xs:enumeration value="HOMEEQUITY"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	-->
+	<xs:complexType name="HomeLoanProductType">
+		<xs:choice>
+			<xs:element name="Purchase" type="PurchaseType"/>
+			<xs:element name="Refinance" type="RefinanceType"/>
+			<xs:element name="HomeEquity" type="HomeEquityType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RefinanceSubjectPropertyType">
+		<xs:sequence>
+			<xs:element name="PropertyType" type="PropertyType" default="SINGLEFAMDET"/>
+			<xs:element name="PropertyUse" type="PropertyUseType" default="OWNEROCCUPIED"/>
+			<xs:element name="PropertyAddress" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyState" type="StateType" minOccurs="0"/>
+			<xs:element name="PropertyCounty" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyCity" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyZip" type="ZipCodeType"/>
+			<xs:element name="Units" type="UnitsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PurchaseSubjectPropertyType">
+		<xs:sequence>
+			<xs:element name="PropertyType" type="PropertyType" default="SINGLEFAMDET"/>
+			<xs:element name="PropertyUse" type="PropertyUseType" default="OWNEROCCUPIED"/>
+			<xs:element name="PropertyAddress" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyState" type="StateType"/>
+			<xs:element name="PropertyCounty" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyCity" type="xs:string"/>
+			<xs:element name="PropertyZip" type="ZipCodeType" minOccurs="0"/>
+			<xs:element name="Units" type="UnitsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HomeEquitySubjectPropertyType">
+		<xs:sequence>
+			<xs:element name="PropertyType" type="PropertyType" default="SINGLEFAMDET"/>
+			<xs:element name="PropertyUse" type="PropertyUseType" default="OWNEROCCUPIED"/>
+			<xs:element name="PropertyAddress" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyState" type="StateType" minOccurs="0"/>
+			<xs:element name="PropertyCounty" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyCity" type="xs:string" minOccurs="0"/>
+			<xs:element name="PropertyZip" type="ZipCodeType"/>
+			<xs:element name="Units" type="UnitsType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="PurchaseType">
+		<xs:sequence>
+			<xs:element name="RequestedLoanAmount" type="AmountType" minOccurs="0"/>
+			<xs:element name="PropertyPurchasePrice" type="AmountType"/>
+			<xs:element name="FirstTimeHomeBuyer" type="YesNoType" minOccurs="0"/>
+			<xs:element name="FoundAHome" type="YesNoType"/>
+			<xs:element name="SignedSalesContract" type="YesNoType" minOccurs="0"/>
+			<xs:element name="NeedRealtor" type="YesNoType" default="Y"/>
+			<xs:element name="DownPayment" type="AmountType"/>
+			<xs:element name="RequestedProducts" type="RequestedProductsType" minOccurs="0"/>
+			<xs:element name="SubjectProperty" type="PurchaseSubjectPropertyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RequestedProductsType">
+		<xs:sequence>
+			<xs:element name="Product" type="ProductType" default="30YRF" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RefinanceType">
+		<xs:sequence>
+			<xs:element name="RequestedLoanAmount" type="AmountType" minOccurs="0"/>
+			<xs:element name="PropertyEstimatedValue" type="AmountType"/>
+			<xs:element name="MonthlyPayment" type="AmountType"/>
+			<xs:element name="EstimatedMortgageBalance" type="AmountType"/>
+			<xs:element name="FirstMortgageInterestRate" type="AmountType" minOccurs="0"/>
+			<xs:element name="HaveMultipleMortages" type="YesNoType" default="N"/>
+			<xs:element name="SecondMortgageBalance" type="AmountType" minOccurs="0"/>
+			<xs:element name="SecondMortgageMonthlyPayment" type="AmountType" minOccurs="0"/>
+			<xs:element name="SecondMortgageInterestRate" type="AmountType" minOccurs="0"/>
+			<xs:element name="RequestedProducts" type="RequestedProductsType" minOccurs="0"/>
+			<xs:element name="RefinancePurpose" type="RefinancePurposeType" minOccurs="0"/>
+			<xs:element name="CashOut" type="AmountType" default="0"/>
+			<xs:element name="SubjectProperty" type="RefinanceSubjectPropertyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RefinancePurposeType">
+		<xs:sequence>
+			<xs:element name="Purpose" type="RefinancePurposesType" default="REFIPRIMARY" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HomeEquityType">
+		<xs:sequence>
+			<xs:element name="FirstHome" type="YesNoType" minOccurs="0"/>
+			<xs:element name="PropertyEstimatedValue" type="AmountType"/>
+			<xs:element name="MonthlyPayment" type="AmountType" minOccurs="0"/>
+			<xs:element name="CashOut" type="AmountType"/>
+			<xs:element name="RequestedProducts" type="RequestedProductsType" minOccurs="0"/>
+			<xs:element name="HomeEquityPurpose" type="HomeEquityPurposeType" minOccurs="0"/>
+			<xs:element name="SubjectProperty" type="HomeEquitySubjectPropertyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="HomeEquityPurposeType">
+		<xs:sequence>
+			<xs:element name="Purpose" type="HomeEquityPurposesType" default="DEBTCONSOLIDATION" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EmploymentType">
+		<xs:sequence>
+			<xs:element name="EmployerName" type="xs:string" minOccurs="0"/>
+			<xs:element name="EmployeeTitle" type="xs:string" minOccurs="0"/>
+			<xs:element name="EmploymentYears" type="xs:string" minOccurs="0"/>
+			<xs:element name="EmploymentStatus" type="EmploymentStausType" minOccurs="0"/>
+			<xs:element name="EmploymentIncome" type="AmountType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="EmploymentIndicator" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<!-- -->
+	<xs:simpleType name="CitizenshipStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NONPERMANENTRESIDENTALIEN"/>
+			<xs:enumeration value="NONRESIDENTALIEN"/>
+			<xs:enumeration value="PERMANENTRESIDENTALIEN"/>
+			<xs:enumeration value="USCITIZEN"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EmploymentStausType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FULLTIME"/>
+			<xs:enumeration value="HOMEMAKER"/>
+			<xs:enumeration value="PARTTIME"/>
+			<xs:enumeration value="RETIRED"/>
+			<xs:enumeration value="SELFEMPLOYED"/>
+			<xs:enumeration value="STUDENT"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NameSuffixType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="I"/>
+			<xs:enumeration value="II"/>
+			<xs:enumeration value="III"/>
+			<xs:enumeration value="IV"/>
+			<xs:enumeration value="JR"/>
+			<xs:enumeration value="SR"/>
+			<xs:enumeration value="V"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HomeEquityPurposesType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="PAYOFFHELOAN"/>
+			<xs:enumeration value="PAYOFFHELOC"/>
+			<xs:enumeration value="HOMEIMP"/>
+			<xs:enumeration value="DEBTCONSOLIDATION"/>
+			<xs:enumeration value="AUTOPURCHASE"/>
+			<xs:enumeration value="BOATPURCHASE"/>
+			<xs:enumeration value="RVPURCHASE"/>
+			<xs:enumeration value="MOTORCYCLEPURCHASE"/>
+			<xs:enumeration value="OTHER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RefinancePurposesType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="REFIPRIMARY"/>
+			<xs:enumeration value="PAYOFFSECOND"/>
+			<xs:enumeration value="PAYOFFHELOC"/>
+			<xs:enumeration value="CASHOUT"/>
+			<xs:enumeration value="PAYOFFSPOUSE"/>
+			<xs:enumeration value="HOMEIMP"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ProductType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="5YRFHELOAN"/>
+			<xs:enumeration value="5YRVHELOAN"/>
+			<xs:enumeration value="5YRFHELOC"/>
+			<xs:enumeration value="5YRVHELOC"/>
+			<xs:enumeration value="7YRFHELOAN"/>
+			<xs:enumeration value="7YRVHELOAN"/>
+			<xs:enumeration value="7YRFHELOC"/>
+			<xs:enumeration value="7YRVHELOC"/>
+			<xs:enumeration value="10YRFHELOAN"/>
+			<xs:enumeration value="10YRVHELOAN"/>
+			<xs:enumeration value="10YRFHELOC"/>
+			<xs:enumeration value="10YRVHELOC"/>
+			<xs:enumeration value="15YRFHELOAN"/>
+			<xs:enumeration value="15YRVHELOAN"/>
+			<xs:enumeration value="15YRFHELOC"/>
+			<xs:enumeration value="15YRVHELOC"/>
+			<xs:enumeration value="20YRFHELOAN"/>
+			<xs:enumeration value="20YRVHELOAN"/>
+			<xs:enumeration value="20YRFHELOC"/>
+			<xs:enumeration value="20YRVHELOC"/>
+			<xs:enumeration value="25YRFHELOAN"/>
+			<xs:enumeration value="25YRVHELOAN"/>
+			<xs:enumeration value="25YRFHELOC"/>
+			<xs:enumeration value="25YRVHELOC"/>
+			<xs:enumeration value="30YRFHELOAN"/>
+			<xs:enumeration value="30YRVHELOAN"/>
+			<xs:enumeration value="30YRFHELOC"/>
+			<xs:enumeration value="30YRVHELOC"/>
+			<xs:enumeration value="OTHERINNOVATIVEHEPRODUCTS"/>
+			<xs:enumeration value="MORTGAGEOTHER"/>
+			<xs:enumeration value="10YRF"/>
+			<xs:enumeration value="15YRF"/>
+			<xs:enumeration value="20YRF"/>
+			<xs:enumeration value="25YRF"/>
+			<xs:enumeration value="30YRF"/>
+			<xs:enumeration value="40YRF"/>
+			<xs:enumeration value="5YRB"/>
+			<xs:enumeration value="7YRB"/>
+			<xs:enumeration value="10YRB"/>
+			<xs:enumeration value="6MONTHARM"/>
+			<xs:enumeration value="1YRARM"/>
+			<xs:enumeration value="2YRARM"/>
+			<xs:enumeration value="3YRARM"/>
+			<xs:enumeration value="5YRARM"/>
+			<xs:enumeration value="7YRARM"/>
+			<xs:enumeration value="10YRARM"/>
+			<xs:enumeration value="5YRARM-INTONLY"/>
+			<xs:enumeration value="10YRARM-INTONLY"/>
+			<xs:enumeration value="15YRARM-INTONLY"/>
+			<xs:enumeration value="20YRARM-INTONLY"/>
+			<xs:enumeration value="25YRARM-INTONLY"/>
+			<xs:enumeration value="30YRARM-INTONLY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PropertyUseType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="OWNEROCCUPIED"/>
+			<xs:enumeration value="SECONDHOME"/>
+			<xs:enumeration value="INVESTMENTPROPERTY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PropertyType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SINGLEFAMDET"/>
+			<xs:enumeration value="SINGLEFAMATT"/>
+			<xs:enumeration value="LOWRISECONDO"/>
+			<xs:enumeration value="HIGHRISECONDO"/>
+			<xs:enumeration value="2TO4UNITFAM"/>
+			<xs:enumeration value="COOP"/>
+			<xs:enumeration value="MODULAR"/>
+			<xs:enumeration value="MOBILEPERMANENT"/>
+			<xs:enumeration value="MOBILEMOVEABLE"/>
+			<xs:enumeration value="MANUFACTURED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitsType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1UNIT"/>
+			<xs:enumeration value="2UNITS"/>
+			<xs:enumeration value="3UNITS"/>
+			<xs:enumeration value="4UNITS"/>
+			<xs:enumeration value="5ORMOREUNITS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AmountType">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:totalDigits value="8"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NameType">
+		<xs:restriction base="xs:normalizedString">
+			<xs:maxLength value="128"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ZipCodeType">
+		<xs:restriction base="xs:string">
+			<xs:length value="5"/>
+			<xs:pattern value="\d{5}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StateType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AK"/>
+			<xs:enumeration value="AL"/>
+			<xs:enumeration value="AR"/>
+			<xs:enumeration value="AZ"/>
+			<xs:enumeration value="CA"/>
+			<xs:enumeration value="CO"/>
+			<xs:enumeration value="CT"/>
+			<xs:enumeration value="DE"/>
+			<xs:enumeration value="DC"/>
+			<xs:enumeration value="FL"/>
+			<xs:enumeration value="GA"/>
+			<xs:enumeration value="HI"/>
+			<xs:enumeration value="ID"/>
+			<xs:enumeration value="IL"/>
+			<xs:enumeration value="IN"/>
+			<xs:enumeration value="IA"/>
+			<xs:enumeration value="KS"/>
+			<xs:enumeration value="KY"/>
+			<xs:enumeration value="LA"/>
+			<xs:enumeration value="ME"/>
+			<xs:enumeration value="MD"/>
+			<xs:enumeration value="MA"/>
+			<xs:enumeration value="MI"/>
+			<xs:enumeration value="MN"/>
+			<xs:enumeration value="MS"/>
+			<xs:enumeration value="MO"/>
+			<xs:enumeration value="MT"/>
+			<xs:enumeration value="NE"/>
+			<xs:enumeration value="NV"/>
+			<xs:enumeration value="NH"/>
+			<xs:enumeration value="NJ"/>
+			<xs:enumeration value="NM"/>
+			<xs:enumeration value="NY"/>
+			<xs:enumeration value="NC"/>
+			<xs:enumeration value="ND"/>
+			<xs:enumeration value="OH"/>
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="OR"/>
+			<xs:enumeration value="PA"/>
+			<xs:enumeration value="RI"/>
+			<xs:enumeration value="SC"/>
+			<xs:enumeration value="SD"/>
+			<xs:enumeration value="TN"/>
+			<xs:enumeration value="TX"/>
+			<xs:enumeration value="UT"/>
+			<xs:enumeration value="VT"/>
+			<xs:enumeration value="VA"/>
+			<xs:enumeration value="WA"/>
+			<xs:enumeration value="WV"/>
+			<xs:enumeration value="WI"/>
+			<xs:enumeration value="WY"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PhoneType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="10"/>
+			<xs:pattern value="[0-9]{10}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EmailType">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="64"/>
+			<xs:pattern value="[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9]{2,4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="WorkPhoneExtensionType">
+		<xs:restriction base="xs:int">
+			<xs:totalDigits value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SSNType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{3}-[0-9]{2}-[0-9]{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="YesNoType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="N"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MaritalStatusType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MARRIED"/>
+			<xs:enumeration value="UNMARRIED"/>
+			<xs:enumeration value="SEPARATED"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RelationshipToApplicantType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SPOUSE"/>
+			<xs:enumeration value="PARENT"/>
+			<xs:enumeration value="SELF"/>
+			<xs:enumeration value="OTHER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="ContactPreferenceType">
+		<xs:attribute name="PreferredContactPlace" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Home"/>
+					<xs:enumeration value="Work"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="PreferredContactMethod" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Any"/>
+					<xs:enumeration value="Email"/>
+					<xs:enumeration value="Fax"/>
+					<xs:enumeration value="Phone"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="PreferredContactTime" use="optional">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Anytime"/>
+					<xs:enumeration value="Morning"/>
+					<xs:enumeration value="Afternoon"/>
+					<xs:enumeration value="Evening"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	<!--<xs:element name="Address" type="AddressType"/> -->
+	<xs:complexType name="Address">
+		<xs:sequence>
+			<xs:element name="Address1" type="xs:string"/>
+			<xs:element name="Address2" type="xs:string" minOccurs="0"/>
+			<xs:element name="City" type="xs:string"/>
+			<xs:element name="County" type="xs:string"/>
+			<xs:element name="State" type="xs:string"/>
+			<xs:element name="Zip" type="ZipCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CreditHistoryType">
+		<xs:sequence>
+			<xs:element name="CreditSelfRating">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="EXCELLENT"/>
+						<xs:enumeration value="LITTLEORNOCREDITHISTORY"/>
+						<xs:enumeration value="MAJORCREDITPROBLEMS"/>
+						<xs:enumeration value="SOMECREDITPROBLEMS"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DeclaredBankruptcy" type="YesNoType" minOccurs="0"/>
+			<xs:element name="DeclaredForeclosure" type="YesNoType" minOccurs="0"/>
+			<xs:element name="BankruptcyDischarged">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="NOT_YET_DISCHARGED"/>
+						<xs:enumeration value="01-12_MONTHS"/>
+						<xs:enumeration value="25-36_MONTHS"/>
+						<xs:enumeration value="37-48_MONTHS"/>
+						<xs:enumeration value="49-60_MONTHS"/>
+						<xs:enumeration value="61-72_MONTHS"/>
+						<xs:enumeration value="OVER_72_MONTHS"/>
+						<xs:enumeration value="OVER_84_MONTHS"/>
+						<xs:enumeration value="NEVER"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ForeclosureDischarged">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="CURRENTLY_IN_FORECLOSURE"/>
+						<xs:enumeration value="01-12_MONTHS"/>
+						<xs:enumeration value="25-36_MONTHS"/>
+						<xs:enumeration value="37-48_MONTHS"/>
+						<xs:enumeration value="49-60_MONTHS"/>
+						<xs:enumeration value="61-72_MONTHS"/>
+						<xs:enumeration value="OVER_72_MONTHS"/>
+						<xs:enumeration value="OVER_84_MONTHS"/>
+						<xs:enumeration value="NEVER"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
