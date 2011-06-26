@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="LendingTreeWeb" Class="DatabaseLoggerDatabase" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\sqlexpress;Initial Catalog=LendingTreeWeb;Integrated Security=True" SettingsObjectName="LendingTreeLib.Properties.Settings" SettingsPropertyName="LendingTreeWebConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.EventData" Member="EventDatas">
+    <Type Name="EventData">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Data" Type="System.Xml.Linq.XElement" DbType="Xml NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="EventData_WebLogEntry" Member="WebLogEntries" ThisKey="Id" OtherKey="EventDataId" Type="WebLogEntry" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EventType" Member="EventTypes">
+    <Type Name="EventType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="EventType_WebLogEntry" Member="WebLogEntries" ThisKey="Id" OtherKey="EventTypeId" Type="WebLogEntry" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WebLogEntry" Member="WebLogEntries">
+    <Type Name="WebLogEntry">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Timestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EventTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="EventDataId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="EventData_WebLogEntry" Member="EventData" ThisKey="EventDataId" OtherKey="Id" Type="EventData" IsForeignKey="true" />
+      <Association Name="EventType_WebLogEntry" Member="EventType" ThisKey="EventTypeId" OtherKey="Id" Type="EventType" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
