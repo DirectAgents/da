@@ -1,4 +1,3 @@
-
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -28,4 +27,6 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 .vs10x
-connections.config
+connectionsconfig
+
+
