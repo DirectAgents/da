@@ -1,0 +1,15 @@
+Created [zips] table.
+Created [EventType] table.
+Created [EventData] table.
+Created [LendingTreeAffiliateSchemaCollection] schema collection.
+Created [WebLogEntry] table.
+Created [Posted] view.
+Created [Errors] view.
+Created [WebLogEntryItem] view.
+Created [ApplicationLog] view.
+Created [Leads] view.
+Created [GetLeads] table valued function.
+Created [FK_WebLogEntry_EventData] foreign key constraint.
+Created [FK_WebLogEntry_EventData] check constraint.
+Created [FK_WebLogEntry_EventType] foreign key constraint.
+Created [FK_WebLogEntry_EventType] check constraint.
