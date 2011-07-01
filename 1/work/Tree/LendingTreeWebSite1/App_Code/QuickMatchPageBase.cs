@@ -4,6 +4,20 @@ using LendingTreeLib.Schemas;
 
 public class QuickMatchPageBase : PageBase
 {
+    protected override void OnPreInit(EventArgs e)
+    {
+        if (Session[SessionKeys.Theme] == null)
+        {
+            Page.Theme = Resources.ThemeConfig.DefaultThemeName;
+        }
+        else
+        {
+            Page.Theme = SessionValue<string>(SessionKeys.Theme);
+        }
+
+        base.OnPreInit(e);
+    }
+
     protected override void OnLoad(EventArgs e)
     {
         string cdNumber = Request.QueryString[Resources.QueryStringKey.QueryStringParamForCdNumber];
@@ -52,6 +66,7 @@ public class QuickMatchPageBase : PageBase
         }
         return url;
     }
+
     protected string FullUrlFor(EPages page)
     {
         return ResolveUrl(UrlFor(page));
@@ -61,10 +76,12 @@ public class QuickMatchPageBase : PageBase
     {
         Session[GetSessionKeyForPage(page)] = 1;
     }
+
     protected bool PageEnabled(EPages page)
     {
         return Session[GetSessionKeyForPage(page)] != null;
     }
+
     string GetSessionKeyForPage(EPages page)
     {
         return SessionKeys.EnablePagePrefix + Enum.GetName(typeof(EPages), page);
@@ -77,6 +94,7 @@ public class QuickMatchPageBase : PageBase
             return Model.LoanType == Enum.GetName(typeof(ELoanType), ELoanType.REFINANCE);// todo: model.IsRefi
         }
     }
+
     protected bool IsPurchase
     {
         get
@@ -84,6 +102,7 @@ public class QuickMatchPageBase : PageBase
             return Model.LoanType == Enum.GetName(typeof(ELoanType), ELoanType.PURCHASE);// todo:...
         }
     }
+
     protected string PropertyStateName
     {
         get
@@ -97,5 +116,17 @@ public class QuickMatchPageBase : PageBase
     protected void EnablePixelFire()
     {
         Session[SessionKeys.QuickMatchPrefix + SessionKeys.PixelFireEnabled] = true;
+    }
+
+    public string ThemeName
+    {
+        get
+        {
+            return SessionValue<string>(SessionKeys.Theme) ?? Page.Theme;
+        }
+        set
+        {
+            Session[SessionKeys.Theme] = value;
+        }
     }
 }
