@@ -117,31 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppID" xml:space="preserve">
-    <value>AppID</value>
+  <data name="DefaultThemeName" xml:space="preserve">
+    <value>V1</value>
   </data>
-  <data name="EnablePagePrefix" xml:space="preserve">
-    <value>EnablePage.</value>
-  </data>
-  <data name="ESourceId" xml:space="preserve">
-    <value>ESourceId</value>
-  </data>
-  <data name="PixelFireDone" xml:space="preserve">
-    <value>PixelFireDone</value>
-  </data>
-  <data name="PixelFireEnabled" xml:space="preserve">
-    <value>PixelFireEnabled</value>
-  </data>
-  <data name="PropertyStateName" xml:space="preserve">
-    <value>PropertyStateName</value>
-  </data>
-  <data name="QuickMatchPrefix" xml:space="preserve">
-    <value>LendingTree.QuickMatch.</value>
-  </data>
-  <data name="ReferringCdNumber" xml:space="preserve">
-    <value>ReferringCdNumber</value>
-  </data>
-  <data name="Theme" xml:space="preserve">
-    <value>Theme</value>
+  <data name="ESourceIdFileName" xml:space="preserve">
+    <value>ESourceId.txt</value>
   </data>
 </root>

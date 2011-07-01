@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+[Themeable(true)]
 public partial class Controls_Page3_SocialSecurityNumber : LendingTreeLib.UserControlBase
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -14,6 +11,18 @@ public partial class Controls_Page3_SocialSecurityNumber : LendingTreeLib.UserCo
         get
         {
             return TextBox1.Text;
+        }
+    }
+    public bool Required
+    {
+        get
+        {
+            return RequiredFieldValidator1.Enabled;
+        }
+        set
+        {
+            RequiredFieldValidator1.Enabled = value;
+            Optional1.Visible = !value;
         }
     }
 }

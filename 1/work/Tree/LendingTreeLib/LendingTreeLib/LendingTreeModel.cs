@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using LendingTreeLib.Schemas;
 using Microsoft.Practices.Unity;
-using System.Linq;
 
 namespace LendingTreeLib
 {
@@ -471,19 +470,35 @@ namespace LendingTreeLib
             }
         }
 
+        public string ESourceId
+        {
+            get
+            {
+                return Data.Request.SourceOfRequest.LendingTreeAffiliateEsourceID;
+            }
+            set
+            {
+                Data.Request.SourceOfRequest.LendingTreeAffiliateEsourceID = value;
+                OnDataChanged("ESourceId");
+            }
+        }
+
         #endregion
 
         #region Private Helpers
 
-        string FixPhoneNum(string value)
+        string FixPhoneNum(string phoneNumber)
         {
-            //var a = new[] { "-", " ", "(", ")" };
-            //a.Aggregate((i, c) => { return i.Replace(c, string.Empty); });
-            return value
+            string result = phoneNumber
                 .Replace("-", String.Empty)
                 .Replace(" ", String.Empty)
                 .Replace("(", String.Empty)
                 .Replace(")", String.Empty);
+            if (result.Length == 11 && result.StartsWith("1"))
+            {
+                result = result.Substring(1);
+            }
+            return result;
         }
 
         PurchaseType GetPurchase()
@@ -568,8 +583,8 @@ namespace LendingTreeLib
             }
         }
 
-        public string VisitorIPAddress 
-        { 
+        public string VisitorIPAddress
+        {
             set
             {
                 _data.Request.SourceOfRequest.VisitorIPAddress = value;

@@ -79,6 +79,15 @@ namespace LendingTreeLib {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ESourceId.
+        /// </summary>
+        public static string ESourceId {
+            get {
+                return ResourceManager.GetString("ESourceId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PixelFireDone.
         /// </summary>
         public static string PixelFireDone {
@@ -120,6 +129,15 @@ namespace LendingTreeLib {
         public static string ReferringCdNumber {
             get {
                 return ResourceManager.GetString("ReferringCdNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Theme.
+        /// </summary>
+        public static string Theme {
+            get {
+                return ResourceManager.GetString("Theme", resourceCulture);
             }
         }
     }

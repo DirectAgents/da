@@ -1,16 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.UI;
 using LendingTreeLib.Common;
 using LendingTreeLib.Schemas;
 using Microsoft.Practices.Unity;
-using System.ComponentModel;
-using System.Linq;
-using System.Web.Configuration;
 
 namespace LendingTreeLib
 {
-    public abstract class PageBase : Page/*<T> : Page where T : class, IFoo*/
+    public abstract class PageBase : Page
     {
         [Dependency]
         public LendingTreeModel _Model { set; get; }
@@ -47,7 +48,6 @@ namespace LendingTreeLib
         public TT SessionValue<TT>(string sessionKey)
         {
             object sessionValue = Session[sessionKey];
-
             if (sessionValue == null)
             {
                 return default(TT);
@@ -86,12 +86,39 @@ namespace LendingTreeLib
         /// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {
+            ProcessQueryStringParameterAttributes();
+
             string sessionKey = SessionKeys.QuickMatchPrefix + _Model.DataPropertyName;
             if (Session[sessionKey] != null)
             {
                 _Model.Data = (LendingTreeAffiliateRequest)Session[sessionKey];
             }
             base.OnLoad(e);
+        }
+
+        private void ProcessQueryStringParameterAttributes()
+        {
+            foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
+            {
+                var queryStringParameterAttribute = 
+                    (QueryStringParameterAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(QueryStringParameterAttribute));
+                
+                if (queryStringParameterAttribute != null)
+                {
+                    string valueToSet = Request.QueryString[queryStringParameterAttribute.ParameterName ?? propertyInfo.Name];
+                    if (valueToSet != null)
+                    {
+                        propertyInfo.SetValue(this, valueToSet, null);
+                    }
+                    else
+                    {
+                        if (queryStringParameterAttribute.DefaultValue != null)
+                        {
+                            propertyInfo.SetValue(this, queryStringParameterAttribute.DefaultValue, null);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -141,6 +168,11 @@ namespace LendingTreeLib
                 throw new InvalidOperationException("No Unity container found");
             }
             container.BuildUp(this.GetType(), this, this.GetType().FullName);
+        }
+
+        public T Resolve<T>()
+        {
+            return (T)(Global.Container.Resolve(typeof(T)));
         }
     }
 }

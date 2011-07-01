@@ -5,15 +5,15 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div>
-        <uc:loantype id="LoanType1" runat="server" />
+        <uc:LoanType ID="LoanType1" runat="server" />
     </div>
     <div>
-        <uc:propertystate id="PropertyState1" runat="server" />
+        <uc:PropertyState ID="PropertyState1" runat="server" />
     </div>
     <div>
-        <uc:creditrating id="CreditRating1" runat="server" />
+        <uc:CreditRating ID="CreditRating1" runat="server" />
     </div>
     <div>
-        <uc:getquotenow id="GetQuoteNow1" runat="server" onbuttonclick="GetQuoteNow1_ButtonClick" />
+        <uc:GetQuoteNow ID="GetQuoteNow1" runat="server" OnButtonClick="GetQuoteNow1_ButtonClick" />
     </div>
 </asp:Content>

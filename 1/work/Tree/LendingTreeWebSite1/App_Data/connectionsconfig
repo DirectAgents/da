@@ -1,0 +1,4 @@
+﻿<connectionStrings> 
+  <add name="LendingTreeWebConnectionString" connectionString="Data Source=.\sqlexpress;Initial Catalog=LendingTreeWeb2;Integrated Security=True" providerName="System.Data.SqlClient"/>
+  <add name="LendingTreeWebConnectionString2" connectionString="Data Source=.\sqlexpress;Initial Catalog=LendingTreeWeb; User Id=sa; Password=sp0ngbOb;" providerName="System.Data.SqlClient"/>
+</connectionStrings>

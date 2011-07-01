@@ -22,15 +22,6 @@
     <div class="website-wrapper">
         <div id="topheader" class="png">
             <span id="tagline" class="inline">Get instant mortgage offers </span>
-            <%--            <div id="promoHeader" class="header inline hide">
-            </div>
-            <div id="promoSubHeader" class="subheader">
-            </div>
-            <div id="promoDisclosure" class="disclosure">
-                <a href="javascript:;"></a>
-            </div>
-            <div id="telephone">
-            </div>--%>
         </div>
         <div id="step1" class="board-content-data">
             <div class="left-rail inline">

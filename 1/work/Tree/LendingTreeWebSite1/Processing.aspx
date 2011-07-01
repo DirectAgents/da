@@ -13,17 +13,7 @@
     </script>
 </head>
 <body onload="LoadThankYou()">
-    <%--    <div id="_pageSmartTip" class="smartTipWindow" onclick="this.style.display='none';">
-    </div>--%>
     <div class="website-wrapper">
-        <%--        <div id="topheader" class="png">
-            <div id="promoHeader" class="header inline hide">
-            </div>
-            <div id="promoSubHeader" class="subheader">
-            </div>
-            <div id="telephone">
-            </div>
-        </div>--%>
         <div id="step3" class="board-content-data">
             <div id="page2RailHeader" class="stroke">
                 <div style="text-align: center;">
