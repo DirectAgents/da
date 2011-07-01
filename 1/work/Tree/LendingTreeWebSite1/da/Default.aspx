@@ -4,11 +4,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-<%--    <asp:RadioButtonList ID="SearchType" runat="server" AutoPostBack="True" RepeatDirection="Horizontal"
-        OnSelectedIndexChanged="SearchType_SelectedIndexChanged">
-        <asp:ListItem Selected="True"></asp:ListItem>
-        <asp:ListItem>From/To</asp:ListItem>
-    </asp:RadioButtonList>--%>
     <table>
         <tr>
             <td>
@@ -38,16 +33,30 @@
                 </asp:Calendar>
             </td>
             <td>
-                <asp:Button ID="LinkButton1" runat="server" onclick="LinkButton1_Click" Text="Get CSV" />
+                <asp:Button ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" Text="Get CSV" />
             </td>
         </tr>
     </table>
     <div>
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="True" DataSourceID="SqlDataSource1"
-            AllowPaging="true" PageSize="100" BackColor="White" BorderColor="#999999" BorderStyle="Solid"
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1"
+            AllowPaging="True" PageSize="100" BackColor="White" BorderColor="#999999" BorderStyle="Solid"
             BorderWidth="1px" CellPadding="3" Font-Size="Small" ForeColor="Black" GridLines="Vertical"
-            AllowSorting="true">
+            AllowSorting="True">
             <AlternatingRowStyle BackColor="#CCCCCC" />
+            <Columns>
+                <asp:BoundField DataField="AppID" HeaderText="AppID" SortExpression="AppID" />
+                <asp:BoundField DataField="Type" HeaderText="Type" SortExpression="Type" />
+                <asp:BoundField DataField="CDNumber" HeaderText="CDNumber" SortExpression="CDNumber" />
+                <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
+                <asp:BoundField DataField="IP" HeaderText="IP" SortExpression="IP" />
+                <asp:BoundField DataField="Timestamp" HeaderText="Timestamp" SortExpression="Timestamp" />
+                <asp:TemplateField HeaderText="Error" SortExpression="Error">
+                    <ItemTemplate>
+                        <asp:HyperLink ID="FixHyperLink" runat="server" NavigateUrl='<%# Bind("AppID", "~/da/Fix.aspx?appid={0}") %>'>Fix</asp:HyperLink>
+                        <asp:Label ID="Label1" runat="server" Text='<%# Bind("Error") %>'></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
             <PagerSettings Mode="Numeric" Position="TopAndBottom" />
         </asp:GridView>
     </div>

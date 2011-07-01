@@ -6,6 +6,8 @@ public partial class da_Default : QuickMatchPageBase
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        GridView1.DataBound += new EventHandler(GridView1_DataBound);
+
         if (IsAdmin)
         {
             if (!Page.IsPostBack)
@@ -19,18 +21,19 @@ public partial class da_Default : QuickMatchPageBase
             Response.Redirect("~/");
         }
     }
-    protected void TimestampClicked(object sender, CommandEventArgs e)
+
+    void GridView1_DataBound(object sender, EventArgs e)
     {
-        switch (e.CommandName)
+        HideFixUrlsForEmptyErrors();
+    }
+
+    private void HideFixUrlsForEmptyErrors()
+    {
+        foreach (GridViewRow row in GridView1.Rows)
         {
-            case "Request":
-                Response.Write("<h2>REQUEST " + e.CommandArgument + "</h2>");
-                break;
-            case "Response":
-                Response.Write("<h2>RESPONSE " + e.CommandArgument + "</h2>");
-                break;
-            default:
-                break;
+            var l = (Label)row.FindControl("Label1");
+            var h = (HyperLink)row.FindControl("FixHyperLink");
+            h.Visible = !string.IsNullOrWhiteSpace(l.Text);
         }
     }
 
