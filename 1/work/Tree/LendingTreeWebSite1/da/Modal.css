@@ -1,0 +1,16 @@
+﻿#dialog
+{
+	border: 2px solid black;
+	width: 500px;
+	background-color: White;
+}
+#dialogContents
+{
+	padding: 10px;
+}
+.modalBackground
+{
+	background-color: #dddddd;
+	filter: alpha(opacity=80);
+	opacity: 0.8;
+}
