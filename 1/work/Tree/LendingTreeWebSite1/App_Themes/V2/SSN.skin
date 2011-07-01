@@ -1,0 +1,2 @@
+﻿<%@ Register Src="~/Controls/Page3/SocialSecurityNumber.ascx" TagName="SocialSecurityNumber" TagPrefix="uc" %>
+<uc:SocialSecurityNumber runat="server" Required="true" />
