@@ -24,11 +24,15 @@ namespace LendingTreeLib
         /// <param name="source"></param>
         static public void FormatTextAsXml(this System.Web.UI.Control source)
         {
-            var t = source.GetType();
-            var pi = t.GetProperty("Text", typeof(String));
-            var text = pi.GetValue(source, null) as string;
-            var xml = XElement.Parse(text).ToString();
-            pi.SetValue(source, xml, null);
+            if (source != null)
+            {
+
+                var t = source.GetType();
+                var pi = t.GetProperty("Text", typeof(String));
+                var text = pi.GetValue(source, null) as string;
+                var xml = XElement.Parse(text).ToString();
+                pi.SetValue(source, xml, null);
+            }     
         }
     }
 }
