@@ -4,6 +4,11 @@ using LendingTreeLib.Schemas;
 
 public class QuickMatchPageBase : PageBase
 {
+    /// <summary>
+    /// Set theme of page to value specified in session
+    /// or default if session key not found.
+    /// </summary>
+    /// <param name="e"></param>
     protected override void OnPreInit(EventArgs e)
     {
         if (Session[SessionKeys.Theme] == null)
@@ -18,14 +23,27 @@ public class QuickMatchPageBase : PageBase
         base.OnPreInit(e);
     }
 
+
+    public string ThemeName
+    {
+        get
+        {
+            return SessionValue<string>(SessionKeys.Theme) ?? Page.Theme;
+        }
+    }
+
+    /// <summary>
+    /// Extracts cd number from query string.
+    /// </summary>
+    /// <param name="e"></param>
     protected override void OnLoad(EventArgs e)
     {
-        string cdNumber = Request.QueryString[Resources.QueryStringKey.QueryStringParamForCdNumber];
+        // Extract cd number from query string.
+        string cdNumber = Request.QueryString[Resources.QueryStringKey.QueryStringParamForCdNumber];  
         if (cdNumber != null)
         {
             this.ReferringCdNumber = cdNumber;
         }
-
         base.OnLoad(e);
     }
 
@@ -116,17 +134,5 @@ public class QuickMatchPageBase : PageBase
     protected void EnablePixelFire()
     {
         Session[SessionKeys.QuickMatchPrefix + SessionKeys.PixelFireEnabled] = true;
-    }
-
-    public string ThemeName
-    {
-        get
-        {
-            return SessionValue<string>(SessionKeys.Theme) ?? Page.Theme;
-        }
-        set
-        {
-            Session[SessionKeys.Theme] = value;
-        }
     }
 }
