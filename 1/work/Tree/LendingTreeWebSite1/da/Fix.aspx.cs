@@ -8,60 +8,96 @@ using LendingTreeLib;
 
 public partial class da_Fix : PageBase
 {
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        Details1.DataBound += new EventHandler(Details1_DataBound);
+        RepostButton.Click += new EventHandler(RepostButton_Click);
+
+        ValidateResponseText();
+    }
+
+    void RepostButton_Click(object sender, EventArgs e)
+    {
+        DoRepost();
+    }
+
+    /// <summary>
+    /// Re-post data and save response in <see cref="ResponseText"/>.
+    /// </summary>
+    private void DoRepost()
+    {
+        var config = base.Resolve<LendingTreeConfig>();
+
+        var request = (HttpWebRequest)WebRequest.Create(new Uri(config.PostUrl));
+        request.ContentType = "text/xml";
+        request.Method = "POST";
+
+        using (var writer = new StreamWriter(request.GetRequestStream()))
+        {
+            var xDoc = XDocument.Parse(SubmitTextBox.Text);
+            writer.Write(xDoc.Root.ToString());
+        }
+
+        string result = string.Empty;
+        using (var response = request.GetResponse() as HttpWebResponse)
+        {
+            var reader = new StreamReader(response.GetResponseStream());
+            result = XElement.Parse(reader.ReadToEnd()).ToString();
+        }
+
+        ResponseText = result;
+    }
+
+    void Details1_DataBound(object sender, EventArgs e)
+    {
+        FixXmlFormatting();
+    }
+
     [QueryStringParameter]
-    public string appid { set { AppId.Text = value; } }
+    public string appid { get; set; }
 
-    LinkButton Repost { get { return Details1.FindControl("Repost") as LinkButton; } }
-    TextBox ResponseBox { get { return Details1.FindControl("ResponseText") as TextBox; } }
-    TextBox SubmitBox { get { return Details1.FindControl("PostText") as TextBox; } }
+    /// <summary>
+    /// Encapsulate DetailsView inner controls.
+    /// </summary>
+    LinkButton RepostButton { get { return Details1.FindControl("Repost") as LinkButton; } }
+    TextBox ResponseTextBox { get { return Details1.FindControl("ResponseText") as TextBox; } }
+    TextBox SubmitTextBox { get { return Details1.FindControl("PostText") as TextBox; } }
 
+    /// <summary>
+    /// Encapsulate response text resulting from re-post.
+    /// </summary>
     string ResponseText
     {
         set
         {
-            ResponseBox.Text = value;
-            FormatResponseBox();
+            ResponseTextBox.Text = value;
+            ValidateResponseText();
         }
     }
 
-    private void FormatResponseBox()
+    /// <summary>
+    /// Determine if response represents success/failure and give visual feedback.
+    /// </summary>
+    private void ValidateResponseText()
     {
-        ResponseBox.BackColor = IsValidResponse(ResponseBox.Text) ? Color.LightGreen : Color.LightPink;
+        bool valid = ResponseTextBox.Text.Contains("<ReturnURL>");
+
+        if (valid)
+        {
+            ResponseTextBox.BackColor = Color.LightGreen;
+        }
+        else
+        {
+            ResponseTextBox.BackColor = Color.LightPink;
+        }
     }
 
-    private bool IsValidResponse(string s)
-    {
-        return s.Contains("<ReturnURL>");
-    }
-
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        Details1.DataBound += (s1, e1) => { FixXmlFormatting(); };
-        Repost.Click += (s2, e2) => { DoRepost(); };
-        FormatResponseBox();
-    }
-
+    /// <summary>
+    /// Format XML with indentation to make it more readable.
+    /// </summary>
     private void FixXmlFormatting()
     {
-        ResponseBox.FormatTextAsXml();
-        SubmitBox.FormatTextAsXml();
-    }
-
-    private void DoRepost()
-    {
-        var config = Resolve<LendingTreeConfig>();  
-        var request = (HttpWebRequest)WebRequest.Create(new Uri(config.PostUrl));
-        request.ContentType = "text/xml";
-        request.Method = "POST";
-        using (var writer = new StreamWriter(request.GetRequestStream()))
-        {
-            var xDoc = XDocument.Parse(SubmitBox.Text);
-            writer.Write(xDoc.Root.ToString());
-        }
-        using (var response = request.GetResponse() as HttpWebResponse)
-        {
-            var reader = new StreamReader(response.GetResponseStream());
-            ResponseText = XElement.Parse(reader.ReadToEnd()).ToString();
-        }
+        ResponseTextBox.FormatTextAsXml();
+        SubmitTextBox.FormatTextAsXml();
     }
 }
