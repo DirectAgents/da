@@ -4,7 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <div>
+<%--    <div>
         <asp:Panel ID="dialog" runat="server">
             <div id="dialogContents">
                 FOO
@@ -15,7 +15,7 @@
         <asp:LinkButton ID="btnShow" Text="Modal" runat="server" />
         <act:ModalPopupExtender ID="ModalPopupExtender1" TargetControlID="btnShow" PopupControlID="dialog"
             OkControlID="btnOK" DropShadow="true" BackgroundCssClass="modalBackground" runat="server" />
-    </div>
+    </div>--%>
     <asp:DetailsView ID="Details1" runat="server" DefaultMode="Edit" DataSourceID="SqlDataSource1"
         AutoGenerateRows="False">
         <Fields>
