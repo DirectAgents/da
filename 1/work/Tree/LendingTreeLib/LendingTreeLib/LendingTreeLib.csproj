@@ -111,6 +111,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="CodeGen\GenerateEnum.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GenerateEnum.cs</LastGenOutput>
@@ -120,6 +121,7 @@
       <LastGenOutput>DatabaseLogger.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Logging.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
