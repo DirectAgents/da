@@ -52,7 +52,7 @@
                 <asp:BoundField DataField="Timestamp" HeaderText="Timestamp" SortExpression="Timestamp" />
                 <asp:TemplateField HeaderText="Error" SortExpression="Error">
                     <ItemTemplate>
-                        <asp:HyperLink ID="FixHyperLink" runat="server" NavigateUrl='<%# Bind("AppID", "~/da/Fix.aspx?appid={0}") %>'>Fix</asp:HyperLink>
+                        <asp:HyperLink Target="_blank" ID="FixHyperLink" runat="server" NavigateUrl='<%# Bind("AppID", "~/da/Fix.aspx?appid={0}") %>'>Fix</asp:HyperLink>
                         <asp:Label ID="Label1" runat="server" Text='<%# Bind("Error") %>'></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
