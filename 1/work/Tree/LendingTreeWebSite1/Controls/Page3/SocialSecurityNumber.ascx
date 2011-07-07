@@ -1,6 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="SocialSecurityNumber.ascx.cs"
     Inherits="Controls_Page3_SocialSecurityNumber" %>
 <%@ Register Src="../Shared/Optional.ascx" TagName="Optional" TagPrefix="uc1" %>
+<%@ Register Src="~/Controls/Page3/SSNReadMore.ascx" TagName="SSNReadMore" TagPrefix="uc2" %>
 <div class="tipTeaser">
     <h4 class="green" runat="server">
         NOT REQUIRED, but providing this final detail could help you save!</h4>
@@ -12,9 +13,13 @@
     </div>
     <%-- Text Box --%>
     <div class="answer">
-        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
         <span class="smallLabel lock inline">
-            <img src="./images/small-lock.png" /></span>
+            <asp:TextBox ID="TextBox1" runat="server" CssClass="ssnBox"></asp:TextBox>
+            <div class="smallLabel_img">
+                <img src="./images/small-lock.png" alt="" />
+            </div>
+            <uc2:SSNReadMore ID="SSNReadMore1" runat="server" Visible="false" />
+        </span>
         <div class="ok">
             <uc1:Optional ID="Optional1" runat="server" />
         </div>

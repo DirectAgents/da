@@ -471,6 +471,17 @@ div.smartTipWindow
 {
 	font-size: 10px;
 }
+.smallLabel_img
+{
+    float: left;
+    width: 15px;
+}
+.smallLabel_blurb
+{
+    float: left;
+    width: 280px;
+    height: 0px
+}
 .inline
 {
 	display: inline-block;
@@ -714,6 +725,11 @@ div.smartTipWindow
 }
 
 
+
+.ssnBox
+{
+	float: left;
+}
 
 
 .purchase

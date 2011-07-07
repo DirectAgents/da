@@ -1,2 +1,4 @@
 ﻿<%@ Register Src="~/Controls/Page3/SocialSecurityNumber.ascx" TagName="SocialSecurityNumber" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/Page3/SSNReadMore.ascx" TagName="SSNReadMore" TagPrefix="uc2" %>
 <uc:SocialSecurityNumber runat="server" Required="true" />
+<uc2:SSNReadMore runat="server" Visible="true" />

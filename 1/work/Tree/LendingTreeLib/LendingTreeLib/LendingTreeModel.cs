@@ -304,7 +304,18 @@ namespace LendingTreeLib
         {
             get
             {
-                return GetPurchase().DownPayment;
+                decimal ppp = GetPurchase().PropertyPurchasePrice;
+                switch (Convert.ToInt32(GetPurchase().DownPayment))
+                {
+                    case 1:
+                        return ppp * (decimal)0.19;
+                    case 2:
+                        return ppp * (decimal)0.20;
+                    case 3:
+                        return ppp * (decimal)0.21;
+                    default:
+                        return GetPurchase().DownPayment;
+                }
             }
             set
             {
