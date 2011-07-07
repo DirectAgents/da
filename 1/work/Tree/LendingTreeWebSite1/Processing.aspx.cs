@@ -18,6 +18,8 @@ public partial class Processing : QuickMatchPageBase
 
         EnablePage(EPages.ThankYou);
 
+        this.TargetUrlHiddenInput.Value = this.FullUrlFor(EPages.ThankYou);
+
         // NOTE: a Javascript redirect is used to redirect
     }
 }

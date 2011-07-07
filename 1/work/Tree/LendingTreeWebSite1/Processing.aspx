@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="Styles/style.css" type="text/css" />
     <script type="text/javascript">
         function LoadThankYou() {
-            window.location = "<%=FullUrlFor(EPages.ThankYou)%>";
+            window.location = document.getElementById("TargetUrlHiddenInput").value;
         }
     </script>
 </head>
 <body onload="LoadThankYou()">
+    <form id="form1" runat="server">
+    <input runat="server" ID="TargetUrlHiddenInput" type="hidden" />
     <div class="website-wrapper">
         <div id="step3" class="board-content-data">
             <div id="page2RailHeader" class="stroke">
@@ -21,10 +23,8 @@
                         Please wait while LendingTree processes your request.</h2>
                     <img src="images/loading.gif" />
                 </div>
-                <form id="form1" runat="server">
                 <div>
                 </div>
-                </form>
             </div>
             <div id="footer-wrapper">
                 <div id="footer" class="board">
@@ -62,5 +62,6 @@
             </div>
         </div>
     </div>
+    </form>
 </body>
 </html>

@@ -4,6 +4,9 @@ using System.Net;
 using System.Xml.Linq;
 using LendingTreeLib;
 
+/// <summary>
+/// TODO: this code behind contains logic that might be better in a "Data Tier"..?
+/// </summary>
 public partial class ThankYou : QuickMatchPageBase
 {
     protected void Page_Load(object sender, EventArgs e)
@@ -13,6 +16,8 @@ public partial class ThankYou : QuickMatchPageBase
             Response.Redirect(UrlFor(EPages.Page1));
         }
 
+        // NOTE: this logic can probably be removed since the ESourceId comes
+        // from the theme configuration
         string esid = SessionValue<string>("ESourceId");
         if (esid != null)
         {
@@ -20,6 +25,7 @@ public partial class ThankYou : QuickMatchPageBase
         }
 
         var urlForPost = _Model.LendingTreeConfig.PostUrl;
+        
         var address = new Uri(urlForPost);
 
         var request = (HttpWebRequest)WebRequest.Create(address);
@@ -50,6 +56,7 @@ public partial class ThankYou : QuickMatchPageBase
 
             var eventTypeForLogEntry = EEventType.ApplicationCompleted;
 
+            // The model decides if the pixel fires
             if (_Model.ResponseValidForPixelFire)
             {
                 EnablePixelFire();

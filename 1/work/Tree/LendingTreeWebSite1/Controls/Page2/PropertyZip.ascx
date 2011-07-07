@@ -20,7 +20,10 @@
         function zipCheck(component, text) {
             CheckValue(component, text);
             if (document.getElementById('<%=ZipValidatorClientID%>').isvalid) {
-                $.post("Handler.ashx", "zip=" + component.value, function (resp) { $("#statename").text(resp); }, "html");
+                $.post("Handler.ashx", "zip=" + component.value,
+                    function (resp) {
+                        $("#statename").text(resp); 
+                    }, "html");
             }
         }
     </script>
