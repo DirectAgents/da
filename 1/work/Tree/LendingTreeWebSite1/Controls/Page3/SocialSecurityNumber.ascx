@@ -13,8 +13,28 @@
     </div>
     <%-- Text Box --%>
     <div class="answer">
-        <span class="smallLabel lock inline">
-            <asp:TextBox ID="TextBox1" runat="server" CssClass="ssnBox"></asp:TextBox>
+        <span class="smallLabel lock inline"><span>
+            <asp:TextBox ID="TextBox1" runat="server" CssClass="ssnBox3Digits" MaxLength="3" />
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" CssClass="ssnBoxRequiredFieldValidatorText"
+                Text="*" ControlToValidate="TextBox1" runat="server" ValidationExpression="^\d{3}$"
+                Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" CssClass="ssnBoxRequiredFieldValidatorText"
+                Text="*" ControlToValidate="TextBox1" runat="server" Enabled="false" Display="Dynamic" />
+        </span><span>
+            <asp:TextBox ID="TextBox2" runat="server" CssClass="ssnBox2Digits" MaxLength="2" />
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator2" CssClass="ssnBoxRequiredFieldValidatorText"
+                Text="*" ControlToValidate="TextBox2" runat="server" ValidationExpression="^\d{2}$"
+                Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" CssClass="ssnBoxRequiredFieldValidatorText"
+                Text="*" ControlToValidate="TextBox2" runat="server" Enabled="false" Display="Dynamic" />
+        </span><span>
+            <asp:TextBox ID="TextBox3" runat="server" CssClass="ssnBox4Digits" MaxLength="4" />
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator3" CssClass="ssnBoxRequiredFieldValidatorText"
+                Text="*" ControlToValidate="TextBox3" runat="server" ValidationExpression="^\d{4}$"
+                Display="Dynamic" />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" CssClass="ssnBoxRequiredFieldValidatorText"
+                Text="*" ControlToValidate="TextBox3" runat="server" Enabled="false" Display="Dynamic" />
+        </span>
             <div class="smallLabel_img">
                 <img src="./images/small-lock.png" alt="" />
             </div>
@@ -23,12 +43,5 @@
         <div class="ok">
             <uc1:Optional ID="Optional1" runat="server" />
         </div>
-        <%-- Validation --%>
-        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ErrorMessage="<%$ Resources:String, String56 %>"
-            ControlToValidate="TextBox1" runat="server" ValidationExpression="^\d{3}-\d{2}-\d{4}$">
-        </asp:RegularExpressionValidator>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ErrorMessage="SSN Required"
-            ControlToValidate="TextBox1" runat="server" Enabled="false">
-        </asp:RequiredFieldValidator>
     </div>
 </div>

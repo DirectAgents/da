@@ -723,14 +723,32 @@ div.smartTipWindow
 {
 	display: none;
 }
-
-
-
 .ssnBox
 {
 	float: left;
 }
-
+.ssnBoxRequiredFieldValidatorText
+{
+    float: left;
+    color: #f40305;
+}
+.ssnBox4Digits
+{
+	float: left;
+	width: 53px;
+	margin-left: 3px;	
+}
+.ssnBox3Digits
+{
+	float: left;
+	width: 36px;
+}
+.ssnBox2Digits
+{
+	float: left;
+	width: 24px;
+	margin-left: 3px;
+}
 
 .purchase
 {
