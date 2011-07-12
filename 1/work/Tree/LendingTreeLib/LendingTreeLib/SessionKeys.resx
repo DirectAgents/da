@@ -144,4 +144,7 @@
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="DirectTrackCampaignId" xml:space="preserve">
+    <value>DirectTrackCampaignId</value>
+  </data>
 </root>

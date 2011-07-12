@@ -70,6 +70,15 @@ namespace LendingTreeLib {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DirectTrackCampaignId.
+        /// </summary>
+        public static string DirectTrackCampaignId {
+            get {
+                return ResourceManager.GetString("DirectTrackCampaignId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EnablePage..
         /// </summary>
         public static string EnablePagePrefix {

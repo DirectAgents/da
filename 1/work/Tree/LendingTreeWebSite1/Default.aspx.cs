@@ -36,9 +36,20 @@ public partial class _Default : QuickMatchPageBase
 
         // Load theme specific ESourceId from a text file with the value to
         // use on the first line.
-        if (File.Exists(this.ESourceIdFilePath))
+        if (File.Exists(ESourceIdFilePath))
         {
             Model.ESourceId = File.ReadAllLines(ESourceIdFilePath)[0];
+        }
+
+        // Load theme specific campaign id to use in pixel from a text file with the value to
+        // use on the first line.
+        if (File.Exists(DirectTrackCampaignIdFilePath))
+        {
+            Session[SessionKeys.DirectTrackCampaignId] = File.ReadAllLines(DirectTrackCampaignIdFilePath)[0];
+        }
+        else
+        {
+            Session[SessionKeys.DirectTrackCampaignId] = "1708";
         }
 
         Response.Redirect(Resources.Url.Page1);
@@ -50,6 +61,15 @@ public partial class _Default : QuickMatchPageBase
         {
             return Server.MapPath(
                 String.Format("~/App_Themes/{0}/{1}", ThemeName, Resources.ThemeConfig.ESourceIdFileName));
+        }
+    }
+
+    string DirectTrackCampaignIdFilePath 
+    {
+        get
+        {
+            return Server.MapPath(
+                String.Format("~/App_Themes/{0}/{1}", ThemeName, Resources.ThemeConfig.DirectTrackCampaignIdFileName));
         }
     }
 }

@@ -120,6 +120,9 @@
   <data name="DefaultThemeName" xml:space="preserve">
     <value>V1</value>
   </data>
+  <data name="DirectTrackCampaignIdFileName" xml:space="preserve">
+    <value>DirectTrackCampaignId.txt</value>
+  </data>
   <data name="ESourceIdFileName" xml:space="preserve">
     <value>ESourceId.txt</value>
   </data>

@@ -11,6 +11,14 @@ public partial class Controls_Shared_DirectTrackPixel : LendingTreeLib.UserContr
         }
     }
 
+    public string Pid
+    {
+        get
+        {
+            return (string)Session[SessionKeys.DirectTrackCampaignId];
+        }
+    }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         Visible = PageBase.SessionValue<bool>(SessionKeys.QuickMatchPrefix + SessionKeys.PixelFireEnabled);
