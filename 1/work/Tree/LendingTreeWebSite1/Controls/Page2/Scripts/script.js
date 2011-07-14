@@ -39,6 +39,7 @@ $(document).ready(function () {
         }
         FixAvailableMortgageBalances();
         FixAvailableCashOutOptions();
+        UpdateLTVMon()
     });
     $(g.Amt_MortBal_DDL).change(function () {
         log.debug('Amt_MortBal_DDL changed');
@@ -55,8 +56,36 @@ $(document).ready(function () {
             log.debug('Amt_MortBal=' + g.Amt_MortBal);
         }
         FixAvailableCashOutOptions();
+        UpdateLTVMon()
+    });
+    $(g.Amt_CashOut_DDL).change(function () {
+        try {
+            g.Amt_CashOut = parseInt($(this).val());
+            log.debug('Amt_CashOut=' + g.Amt_CashOut);
+            g.Amt_CashOut_Selected = true;
+        }
+        catch (e) {
+            log.debug('exception caught');
+            g.Amt_CashOut_Selected = false;
+            log.debug('Amt_CashOut_Selected=' + g.Amt_CashOut_Selected);
+            g.Val = 0;
+            log.debug('Amt_CashOut=' + g.Amt_CashOut);
+        }
+        UpdateLTVMon()
     });
 });
+
+function UpdateLTVMon() {
+    try {
+        var ltv = (parseFloat(g.Amt_MortBal) + parseFloat(g.Amt_CashOut)) / parseFloat(g.Val);
+        $("#ltvmon_val").text(toFixed(ltv,2) + "%");
+    }
+    catch (e) {
+        $("#ltvmon_val").text('n/a');
+    }
+}
+function toFixed(value, precision) { var precision = precision || 0, neg = value < 0, power = Math.pow(10, precision), value = Math.round(value * power), integral = String((neg ? Math.ceil : Math.floor)(value / power)), fraction = String((neg ? -value : value) % power), padding = new Array(Math.max(precision - fraction.length, 0) + 1).join('0'); return precision ? integral + '.' + padding + fraction : integral; }
+
 
 //-----------------------------------------------
 // LTV calculators
