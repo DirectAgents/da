@@ -17,6 +17,14 @@ public partial class Page2 : QuickMatchPageBase
             Response.Redirect(Resources.Url.Page1);
         }
         AdjustControlVisibility();
+
+        decimal ltv = (decimal)0.80;
+        if (Request["ltv"] != null)
+        {
+            ltv = Convert.ToDecimal((string)Request["ltv"]);
+        }
+        ClientScript.RegisterStartupScript(
+            this.GetType(), "setltv", string.Format("g.MaxLTV = {0};", ltv), true);
     }
 
     protected string GenerateJSON()

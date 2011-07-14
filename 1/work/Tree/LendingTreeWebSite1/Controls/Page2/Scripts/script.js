@@ -3,7 +3,7 @@
 //-----------------------------------------------
 var g = {};
 
-g.MaxLTV = 0.97;
+g.MaxLTV = 0.80;
 g.Val_DDL = '#ApproximatePropertyValue1_DropDownList1';
 g.Val_Selected = false;
 g.Val = 0;
@@ -24,6 +24,7 @@ g.Amt_CashOut_DDL = '#AmountDesiredAtClosing1_DropDownList1';
 $(document).ready(function () {
     $(g.Val_DDL).change(function () {
         log.debug('Val_DDL changed');
+        log.debug("Max LTV is " + g.MaxLTV);
         try {
             g.Val = parseInt($(this).val());
             log.debug('Val=' + g.Val);
