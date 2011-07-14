@@ -1,5 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Web.UI;
+using System.Xml.Linq;
+using System.Xml.Xsl;
+using System.IO;
+using System.Xml;
+using System.Text;
+using System.Xml.XPath;
 
 public partial class Page2 : QuickMatchPageBase
 {
@@ -10,6 +17,27 @@ public partial class Page2 : QuickMatchPageBase
             Response.Redirect(Resources.Url.Page1);
         }
         AdjustControlVisibility();
+    }
+
+    protected string GenerateJSON()
+    {
+        return
+            GenerateJSONForOptions("ApproximatePropertyValue") + "\n" +
+            GenerateJSONForOptions("MortgageBalance") + "\n" +
+            GenerateJSONForOptions("AmountDesiredAtClosing");
+    }
+
+    private string GenerateJSONForOptions(string optionName)
+    {
+        var sb = new StringBuilder();
+        foreach (var option in
+            XDocument.Load(MapPath("~/App_Data/Data.xml"))
+                .XPathSelectElements("./data/options[@question='" + optionName + "']/option")
+                .Skip(1))
+        {
+            sb.AppendFormat("{0}:'{1}',", option.Attribute("value").Value, option.Value);
+        }
+        return optionName + "Options = {\n" + sb.ToString().TrimEnd(',') + "};";
     }
 
     void AdjustControlVisibility()

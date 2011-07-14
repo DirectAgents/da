@@ -35,6 +35,9 @@
             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" CssClass="ssnBoxRequiredFieldValidatorText"
                 Text="*" ControlToValidate="TextBox3" runat="server" Enabled="false" Display="Dynamic" />
         </span>
+            <div>
+                <b>Providing this final detail will help you save!</b>
+            </div>
             <div class="smallLabel_img">
                 <img src="./images/small-lock.png" alt="" />
             </div>

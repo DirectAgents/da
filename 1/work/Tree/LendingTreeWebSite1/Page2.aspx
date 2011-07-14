@@ -35,9 +35,19 @@
 <![endif]-->
     <!-- JS -->
     <script src="Scripts/screen.js" type="text/javascript"></script>
+    <script src="Controls/Page2/Scripts/script.js" type="text/javascript"></script>
+
+    <script src="Scripts/blackbird/blackbird.js" type="text/javascript"></script>
+    <link href="Scripts/blackbird/blackbird.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
     <form id="form1" runat="server">
+    <script type="text/javascript">
+            $(document).ready(function() {
+                <%=GenerateJSON()%>
+            });
+    </script>
     <div id="_pageSmartTip" class="smartTipWindow" onclick="this.style.display='none';">
     </div>
     <div class="website-wrapper">
