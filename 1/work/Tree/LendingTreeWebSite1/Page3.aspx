@@ -80,7 +80,7 @@
                             <uc6:HomePhone ID="HomePhone1" runat="server" />
                             <uc7:WorkPhone ID="WorkPhone1" runat="server" />
                             <uc8:DateOfBirth ID="DateOfBirth1" runat="server" />
-                            <uc10:SocialSecurityNumber ID="SocialSecurityNumber1" runat="server" />
+                            <uc10:SocialSecurityNumber ID="SocialSecurityNumber1" runat="server" Msg="NOT REQUIRED, but providing this final detail could help you save!" />
                             <asp:Button ID="ShowMyResults1" runat="server" Text="" class="btnPage3" OnClick="ShowMyResults1_ButtonClick" />
                         </div>
                         <div id="submit-0" class="submitboard">

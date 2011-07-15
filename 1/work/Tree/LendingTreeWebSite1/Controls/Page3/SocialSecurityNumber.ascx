@@ -3,8 +3,7 @@
 <%@ Register Src="../Shared/Optional.ascx" TagName="Optional" TagPrefix="uc1" %>
 <%@ Register Src="~/Controls/Page3/SSNReadMore.ascx" TagName="SSNReadMore" TagPrefix="uc2" %>
 <div class="tipTeaser">
-    <h4 class="green" runat="server">
-        NOT REQUIRED, but providing this final detail could help you save!</h4>
+    <h4 class="green" runat="server"><%=Msg%></h4>
 </div>
 <div class="enter-item inline">
     <div class="question">
@@ -35,9 +34,6 @@
             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" CssClass="ssnBoxRequiredFieldValidatorText"
                 Text="*" ControlToValidate="TextBox3" runat="server" Enabled="false" Display="Dynamic" />
         </span>
-            <div>
-                <b>Providing this final detail will help you save!</b>
-            </div>
             <div class="smallLabel_img">
                 <img src="./images/small-lock.png" alt="" />
             </div>

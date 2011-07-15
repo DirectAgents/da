@@ -37,15 +37,15 @@
     <script src="Scripts/screen.js" type="text/javascript"></script>
     <script src="Controls/Page2/Scripts/script.js" type="text/javascript"></script>
 
-    <script src="Scripts/blackbird/blackbird.js" type="text/javascript"></script>
-    <link href="Scripts/blackbird/blackbird.css" rel="stylesheet" type="text/css" />
+<%--    <script src="Scripts/blackbird/blackbird.js" type="text/javascript"></script>
+    <link href="Scripts/blackbird/blackbird.css" rel="stylesheet" type="text/css" />--%>
 
 </head>
 <body>
     <form id="form1" runat="server">
-    <div id="ltvmon" style="position: fixed; left: 10px; top: 10px; width: 200px; height: 1.5em; background: red; color: White">
+<%--    <div id="ltvmon" style="position: fixed; left: 10px; top: 10px; width: 200px; height: 1.5em; background: red; color: White">
         LTV: <span id="ltvmon_val">-</span>
-    </div>
+    </div>--%>
     <script type="text/javascript">
             $(document).ready(function() {
                 <%=GenerateJSON()%>

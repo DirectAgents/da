@@ -17,6 +17,11 @@ public partial class Controls_Page3_SocialSecurityNumber : LendingTreeLib.UserCo
                 return string.Empty;
         }
     }
+    public string Msg
+    {
+        get;
+        set;
+    }
     public bool Required
     {
         get

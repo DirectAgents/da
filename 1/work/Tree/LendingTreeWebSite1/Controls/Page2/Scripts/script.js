@@ -3,7 +3,7 @@
 //-----------------------------------------------
 var g = {};
 
-g.MaxLTV = 0.90;
+g.MaxLTV = 0.85;
 g.Val_DDL = '#ApproximatePropertyValue1_DropDownList1';
 g.Val_Selected = false;
 g.Val = 0;
@@ -23,66 +23,74 @@ g.Amt_CashOut_DDL = '#AmountDesiredAtClosing1_DropDownList1';
 //-----------------------------------------------
 $(document).ready(function () {
     $(g.Val_DDL).change(function () {
-        log.debug('Val_DDL changed');
-        log.debug("Max LTV is " + g.MaxLTV);
+        //log.debug('Val_DDL changed');
+        //log.debug("Max LTV is " + g.MaxLTV);
         try {
             g.Val = parseInt($(this).val());
-            log.debug('Val=' + g.Val);
+            //log.debug('Val=' + g.Val);
             g.Val_Selected = true;
         }
         catch (e) {
-            log.debug('exception caught');
+            //log.debug('exception caught');
             g.Val_Selected = false;
-            log.debug('Val_Selected=' + g.Val_Selected);
+            //log.debug('Val_Selected=' + g.Val_Selected);
             g.Val = 0;
-            log.debug('Val=' + g.Val);
+            //log.debug('Val=' + g.Val);
         }
         FixAvailableMortgageBalances();
         FixAvailableCashOutOptions();
-        UpdateLTVMon()
+
+        // pick the highest cash out
+        $(g.Amt_CashOut_DDL + ' option:last').attr('selected', 'selected');
+
+        //UpdateLTVMon()
     });
     $(g.Amt_MortBal_DDL).change(function () {
-        log.debug('Amt_MortBal_DDL changed');
+        //log.debug('Amt_MortBal_DDL changed');
         try {
             g.Amt_MortBal = parseInt($(this).val());
-            log.debug('Amt_MortBal=' + g.Amt_MortBal);
+            //log.debug('Amt_MortBal=' + g.Amt_MortBal);
             g.Amt_MortBal_Selected = true;
         }
         catch (e) {
-            log.debug('exception caught');
+            //log.debug('exception caught');
             g.Amt_MortBal_Selected = false;
             g.Amt_MortBal_Selected = 0;
         }
         FixAvailableCashOutOptions();
-        UpdateLTVMon()
+
+        // pick the highest cash out
+        $(g.Amt_CashOut_DDL + ' option:last').attr('selected', 'selected');
+
+        //UpdateLTVMon()
     });
     $(g.Amt_CashOut_DDL).change(function () {
         try {
             g.Amt_CashOut = parseInt($(this).val());
-            log.debug('Amt_CashOut=' + g.Amt_CashOut);
+            //log.debug('Amt_CashOut=' + g.Amt_CashOut);
             g.Amt_CashOut_Selected = true;
         }
         catch (e) {
-            log.debug('exception caught');
+            //log.debug('exception caught');
             g.Amt_CashOut_Selected = false;
             g.Amt_CashOut = 0;
         }
-        UpdateLTVMon()
+        //UpdateLTVMon()
     });
 });
 
 //-----------------------------------------------
 // LTV monitor (debug)
 //-----------------------------------------------
-function UpdateLTVMon() {
-    try {
-        var ltv = (parseFloat(g.Amt_MortBal) + parseFloat(g.Amt_CashOut)) / parseFloat(g.Val);
-        $("#ltvmon_val").text(toFixed(ltv, 2) + "%");
-    }
-    catch (e) {
-        $("#ltvmon_val").text('n/a');
-    }
-}
+//function UpdateLTVMon() {
+//    try {
+//        var ltv = (parseFloat(g.Amt_MortBal) + parseFloat(g.Amt_CashOut)) / parseFloat(g.Val);
+//        $("#ltvmon_val").text(toFixed(ltv, 2) + "%");
+//    }
+//    catch (e) {
+//        $("#ltvmon_val").text('n/a');
+//    }
+//}
 
 function toFixed(value, precision) {
     var precision = precision || 0,
@@ -130,7 +138,6 @@ function FixAvailableCashOutOptions() {
         ResetAvailableCashOutOptions();
         LimitChoices(g.Amt_CashOut_DDL, MaxLTV_CashOut);
         g.Amt_CashOut_Limited = true;
-
     }
 }
 function ResetAvailableCashOutOptions() {
@@ -145,7 +152,7 @@ function ResetAvailableCashOutOptions() {
 // drop down list helpers
 //-----------------------------------------------
 function LimitChoices(ddl, f) {
-    log.debug('limiting choices for ' + ddl);
+    //log.debug('limiting choices for ' + ddl);
     var max = 0;
     $(ddl).each(function () {
         $('option', this).each(function (i) {
@@ -165,15 +172,15 @@ function LimitChoices(ddl, f) {
         });
     });
     if (max > 0) {
-        log.debug('removing choices with index > ' + max);
+        //log.debug('removing choices with index > ' + max);
         $(ddl + ' option:gt(' + max + ')').remove();
     }
     else {
-        log.debug('NOT removing choices');
+        //log.debug('NOT removing choices');
     }
 }
 function ResetChoices(ddl, options) {
-    log.debug('resetting choices for ' + ddl);
+    //log.debug('resetting choices for ' + ddl);
     $(ddl).find('option').remove();
     $.each(options, function (val, text) {
         $(ddl).append(
