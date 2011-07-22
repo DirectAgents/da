@@ -317,7 +317,7 @@ namespace LendingTreeLib
             {
                 decimal ppp = GetPurchase().PropertyPurchasePrice;
                 decimal dp;
-                switch (Convert.ToInt32(GetPurchase().DownPayment))
+                switch (Convert.ToInt32(value))
                 {
                     case 1:
                          dp = ppp * (decimal)0.19;
