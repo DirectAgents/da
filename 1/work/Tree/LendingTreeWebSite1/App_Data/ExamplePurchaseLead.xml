@@ -1,0 +1,44 @@
+<LendingTreeAffiliateRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Request type="Purchase" created="2011-07-22 15:36:08" updated="2011-07-22 15:36:08" VisitorSessionID="0" AppID="812daa1c-2bf4-4125-8ee4-4331c67a99ae" ElectronicDisclosureConsent="Y">
+    <SourceOfRequest>
+      <LendingTreeAffiliatePartnerCode>19655</LendingTreeAffiliatePartnerCode>
+      <LendingTreeAffiliateUserName>DirectAgentsUser</LendingTreeAffiliateUserName>
+      <LendingTreeAffiliatePassword>capeWrAjujujajA5uspa</LendingTreeAffiliatePassword>
+      <LendingTreeAffiliateEsourceID>5860430</LendingTreeAffiliateEsourceID>
+      <VisitorIPAddress>::1</VisitorIPAddress>
+      <VisitorURL>https://mortgage-rate-offers.com</VisitorURL>
+      <LTLOptin>Y</LTLOptin>
+    </SourceOfRequest>
+    <HomeLoanProduct>
+      <Purchase>
+        <PropertyPurchasePrice>150000</PropertyPurchasePrice>
+        <FoundAHome>Y</FoundAHome>
+        <NeedRealtor>Y</NeedRealtor>
+        <DownPayment>3</DownPayment>
+        <SubjectProperty>
+          <PropertyType>LOWRISECONDO</PropertyType>
+          <PropertyUse>INVESTMENTPROPERTY</PropertyUse>
+          <PropertyState>AK</PropertyState>
+          <PropertyCity>footowsn</PropertyCity>
+        </SubjectProperty>
+      </Purchase>
+    </HomeLoanProduct>
+    <Applicant Primary="Y" PrimaryContact="Y">
+      <FirstName>kj</FirstName>
+      <LastName>kj</LastName>
+      <Street>lkj</Street>
+      <State>DC</State>
+      <Zip>08742</Zip>
+      <DateOfBirth>10/10/1956</DateOfBirth>
+      <HomePhone>8334434434</HomePhone>
+      <WorkPhone>8846654454</WorkPhone>
+      <EmailAddress>kj@dk.com</EmailAddress>
+      <Password>1234</Password>
+      <IsVeteran>N</IsVeteran>
+      <CreditHistory>
+        <CreditSelfRating>SOMECREDITPROBLEMS</CreditSelfRating>
+        <BankruptcyDischarged>NEVER</BankruptcyDischarged>
+        <ForeclosureDischarged>NEVER</ForeclosureDischarged>
+      </CreditHistory>
+    </Applicant>
+  </Request>

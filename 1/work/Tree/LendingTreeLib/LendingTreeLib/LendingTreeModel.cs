@@ -131,15 +131,31 @@ namespace LendingTreeLib
             }
         }
 
+        /// <summary>
+        /// For refi
+        /// //Applicant/State
+        /// 
+        /// For purchase
+        /// //Purchase/SubjectProperty/PropertyState
+        /// </summary>
         public string PropertyState
         {
             get
             {
-                return GetEnumName<StateType>(Data.Request.TheApplicant.State);
+                StateType stateType = this.IsRefi ? Data.Request.TheApplicant.State 
+                                        : (GetHomeLoanProductItem() as PurchaseType).SubjectProperty.PropertyState;
+                return GetEnumName<StateType>(stateType);
             }
             set
             {
-                Data.Request.TheApplicant.State = ParseEnum<StateType>(value);
+                if (Data.Request.LoanType == ELoanType.REFINANCE)
+                {
+                    Data.Request.TheApplicant.State = ParseEnum<StateType>(value);
+                }
+                else
+                {
+                    (GetHomeLoanProductItem() as PurchaseType).SubjectProperty.PropertyState = ParseEnum<StateType>(value);
+                }
                 OnDataChanged("PropertyState");
             }
         }
@@ -497,6 +513,14 @@ namespace LendingTreeLib
         #endregion
 
         #region Private Helpers
+
+        bool IsRefi
+        {
+            get
+            {
+                return Data.Request.LoanType == ELoanType.REFINANCE;
+            }
+        }
 
         string FixPhoneNum(string phoneNumber)
         {
