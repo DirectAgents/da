@@ -132,30 +132,20 @@ namespace LendingTreeLib
         }
 
         /// <summary>
-        /// For refi
-        /// //Applicant/State
-        /// 
-        /// For purchase
-        /// //Purchase/SubjectProperty/PropertyState
+        /// refi --> //Applicant/State
+        /// purchase --> //Applicant/State AND //Purchase/SubjectProperty/PropertyState
         /// </summary>
         public string PropertyState
         {
             get
             {
-                StateType stateType = this.IsRefi ? Data.Request.TheApplicant.State 
-                                        : (GetHomeLoanProductItem() as PurchaseType).SubjectProperty.PropertyState;
+                StateType stateType = this.IsRefi ? Data.Request.TheApplicant.State : (GetHomeLoanProductItem() as PurchaseType).SubjectProperty.PropertyState;
                 return GetEnumName<StateType>(stateType);
             }
             set
             {
-                if (Data.Request.LoanType == ELoanType.REFINANCE)
-                {
-                    Data.Request.TheApplicant.State = ParseEnum<StateType>(value);
-                }
-                else
-                {
-                    (GetHomeLoanProductItem() as PurchaseType).SubjectProperty.PropertyState = ParseEnum<StateType>(value);
-                }
+                Data.Request.TheApplicant.State = ParseEnum<StateType>(value);
+                if (Data.Request.LoanType == ELoanType.PURCHASE) (GetHomeLoanProductItem() as PurchaseType).SubjectProperty.PropertyState = ParseEnum<StateType>(value);
                 OnDataChanged("PropertyState");
             }
         }
@@ -321,22 +311,27 @@ namespace LendingTreeLib
             get
             {
                 decimal ppp = GetPurchase().PropertyPurchasePrice;
-                switch (Convert.ToInt32(GetPurchase().DownPayment))
-                {
-                    case 1:
-                        return ppp * (decimal)0.19;
-                    case 2:
-                        return ppp * (decimal)0.20;
-                    case 3:
-                        return ppp * (decimal)0.21;
-                    default:
-                        return GetPurchase().DownPayment;
-                }
+                return ppp;
             }
             set
             {
-
-                GetPurchase().DownPayment = value;
+                decimal ppp = GetPurchase().PropertyPurchasePrice;
+                decimal dp;
+                switch (Convert.ToInt32(GetPurchase().DownPayment))
+                {
+                    case 1:
+                         dp = ppp * (decimal)0.19;
+                         break;
+                    case 2:
+                         dp = ppp * (decimal)0.20;
+                         break;
+                    case 3:
+                         dp = ppp * (decimal)0.21;
+                         break;
+                    default:
+                        throw new Exception("invalid down payment value");
+                }
+                GetPurchase().DownPayment = dp;
                 OnDataChanged("DownPayment");
             }
         }
@@ -640,6 +635,11 @@ namespace LendingTreeLib
             {
                 return !StatesExcludedFromDisclosure.Contains(this.PropertyState);
             }
+        }
+
+        public void ConvertDownPaymentOrdinalToActualValue()
+        {
+            
         }
     }
 }
