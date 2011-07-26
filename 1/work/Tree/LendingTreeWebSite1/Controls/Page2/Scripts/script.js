@@ -79,19 +79,6 @@ $(document).ready(function () {
     });
 });
 
-//-----------------------------------------------
-// LTV monitor (debug)
-//-----------------------------------------------
-//function UpdateLTVMon() {
-//    try {
-//        var ltv = (parseFloat(g.Amt_MortBal) + parseFloat(g.Amt_CashOut)) / parseFloat(g.Val);
-//        $("#ltvmon_val").text(toFixed(ltv, 2) + "%");
-//    }
-//    catch (e) {
-//        $("#ltvmon_val").text('n/a');
-//    }
-//}
-
 function toFixed(value, precision) {
     var precision = precision || 0,
     neg = value < 0, power = Math.pow(10, precision),
@@ -156,28 +143,17 @@ function LimitChoices(ddl, f) {
     var max = 0;
     $(ddl).each(function () {
         $('option', this).each(function (i) {
-            if (i == 0) return true;
-            var amt = 0;
-            try {
-                amt = parseInt($(this).val());
-            } catch (e) {
+            if (i == 0) {
                 return true;
             }
-            if (f(amt)) {
-                max = i;
-            }
-            else {
+            var amt = parseInt($(this).val());
+            max = i;
+            if (!f(amt)) {
                 return false;
             }
         });
     });
-    if (max > 0) {
-        //log.debug('removing choices with index > ' + max);
-        $(ddl + ' option:gt(' + max + ')').remove();
-    }
-    else {
-        //log.debug('NOT removing choices');
-    }
+    $(ddl + ' option:gt(' + max + ')').remove();
 }
 function ResetChoices(ddl, options) {
     //log.debug('resetting choices for ' + ddl);
@@ -188,3 +164,16 @@ function ResetChoices(ddl, options) {
         );
     });
 }
+
+//-----------------------------------------------
+// LTV monitor (debug)
+//-----------------------------------------------
+//function UpdateLTVMon() {
+//    try {
+//        var ltv = (parseFloat(g.Amt_MortBal) + parseFloat(g.Amt_CashOut)) / parseFloat(g.Val);
+//        $("#ltvmon_val").text(toFixed(ltv, 2) + "%");
+//    }
+//    catch (e) {
+//        $("#ltvmon_val").text('n/a');
+//    }
+//}
