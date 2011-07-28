@@ -2,20 +2,18 @@
     Inherits="Controls_Page2_MortgageBalance" %>
 <%@ Register Src="../Shared/OkToEstimate.ascx" TagName="OkToEstimate" TagPrefix="uc1" %>
 <div class="dropdown-item">
-    <%-- Label --%>
-    <div class="question">
+    <%-- Label --%><div class="question">
         <asp:Label ID="Label1" runat="server" Text="<%$ Resources:String, String17 %>" />
     </div>
-    <%-- Choice List --%>
-    <div class="answer">
+    <%-- Choice List --%><div class="answer">
         <asp:DropDownList ID="DropDownList1" runat="server" DataSourceID="XmlDataSource1"
             DataTextField="text" DataValueField="value">
         </asp:DropDownList>
         <div class="ok">
             <uc1:OkToEstimate ID="OkToEstimate1" runat="server" />
         </div>
-        <%-- Validation --%>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="DropDownList1">
+        <%-- Validation --%><asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
+            ControlToValidate="DropDownList1" InitialValue="0">
             <div id="validation">
                 <asp:Literal ID="Literal1" runat="server" Text="<%$ Resources:String, String14 %>" />
             </div>

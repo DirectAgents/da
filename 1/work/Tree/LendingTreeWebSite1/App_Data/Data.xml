@@ -77,7 +77,7 @@
     <option value="INVESTMENTPROPERTY">Investment Property</option>
   </options>
   <options question="ApproximatePropertyValue">
-    <option selected="selected" value="">Select home value</option>
+    <option selected="selected" value="0">Select home value</option>
     <option value="100000">$90,001 - $100,000</option>
     <option value="110000">$100,001 - $110,000</option>
     <option value="120000">$110,001 - $120,000</option>
@@ -114,7 +114,7 @@
     <option value="1000001">Over $1,000,000</option>
   </options>
   <options question="MortgageBalance">
-    <option selected="" value="">Select mortgage balance</option>
+    <option selected="" value="0">Select mortgage balance</option>
     <option value="9000">Less than $10,000</option>
     <option value="10000">$10,001 - $20,000</option>
     <option value="20001">$20,001 - $30,000</option>
@@ -158,8 +158,10 @@
     <option value="900001">$900,001 - $950,000</option>
     <option value="950001">$950,001 - $1,000,000</option>
   </options>
-  <options question="AmountDesiredAtClosing">
+  <options question="CashOut">
     <option selected="selected" value="0">$0 No Cash</option>
+    <option value="5000">$1,000 - $5,000</option>
+    <option value="10000">$5,001 - $10,000</option>
     <option value="15000">$10,001 - $15,000</option>
     <option value="20000">$15,001 - $20,000</option>
     <option value="25000">$20,001 - $25,000</option>

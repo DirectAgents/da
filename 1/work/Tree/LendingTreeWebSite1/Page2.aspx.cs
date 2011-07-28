@@ -30,20 +30,27 @@ public partial class Page2 : QuickMatchPageBase
         return
             GenerateJSONForOptions("ApproximatePropertyValue") + "\n" +
             GenerateJSONForOptions("MortgageBalance") + "\n" +
-            GenerateJSONForOptions("AmountDesiredAtClosing");
+            GenerateJSONForOptions("CashOut");
     }
 
     private string GenerateJSONForOptions(string optionName)
     {
         var sb = new StringBuilder();
+        int count = 0;
         foreach (var option in
             XDocument.Load(MapPath("~/App_Data/Data.xml"))
                 .XPathSelectElements("./data/options[@question='" + optionName + "']/option")
-                .Skip(1))
+                //.Skip(1)
+                )
         {
             sb.AppendFormat("{0}:'{1}',", option.Attribute("value").Value, option.Value);
+            count++;
         }
-        return optionName + "Options = {\n" + sb.ToString().TrimEnd(',') + "};";
+        var resultFormat = "{0}; {1};";
+        var result = string.Format(resultFormat,
+            optionName + "Options = {\n" + sb.ToString().TrimEnd(',') + "}",
+            optionName + "Length = " + count);
+        return result;
     }
 
     void AdjustControlVisibility()
@@ -52,7 +59,7 @@ public partial class Page2 : QuickMatchPageBase
             SetVisible(false, new Control[] {
                 ApproximatePropertyValue1,
                 MortgageBalance1,
-                AmountDesiredAtClosing1,
+                CashOut1,
                 PropertyZip1,
                 MonthlyMortgagePayment1
             });
@@ -87,7 +94,7 @@ public partial class Page2 : QuickMatchPageBase
             Model.PropertyZip = PropertyZip1.Value;
             Model.PropertyApproximateValue = Decimal.Parse(ApproximatePropertyValue1.Value);
             Model.EstimatedMortgageBalance = Decimal.Parse(MortgageBalance1.Value);
-            Model.CashOut = Decimal.Parse(AmountDesiredAtClosing1.Value);
+            Model.CashOut = Decimal.Parse(CashOut1.Value);
             Model.MonthlyPayment = Decimal.Parse(MonthlyMortgagePayment1.Value);
         }
         if (IsPurchase)

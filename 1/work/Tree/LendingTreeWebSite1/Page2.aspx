@@ -9,7 +9,7 @@
 <%@ Register Src="Controls/Page2/Continue.ascx" TagName="Continue" TagPrefix="uc4" %>
 <%@ Register Src="Controls/Page2/MortgageBalance.ascx" TagName="MortgageBalance"
     TagPrefix="uc5" %>
-<%@ Register Src="Controls/Page2/AmountDesiredAtClosing.ascx" TagName="AmountDesiredAtClosing"
+<%@ Register Src="Controls/Page2/CashOut.ascx" TagName="CashOut"
     TagPrefix="uc6" %>
 <%@ Register Src="Controls/Page2/MonthlyMortgagePayment.ascx" TagName="MonthlyMortgagePayment"
     TagPrefix="uc7" %>
@@ -100,7 +100,7 @@
                         <uc2:PropertyZip ID="PropertyZip1" runat="server" />
                         <uc3:ApproximatePropertyValue ID="ApproximatePropertyValue1" runat="server" />
                         <uc5:MortgageBalance ID="MortgageBalance1" runat="server" />
-                        <uc6:AmountDesiredAtClosing ID="AmountDesiredAtClosing1" runat="server" />
+                        <uc6:CashOut ID="CashOut1" runat="server" />
                         <uc7:MonthlyMortgagePayment ID="MonthlyMortgagePayment1" runat="server" />
                         <uc8:HadBakruptcy ID="HadBakruptcy1" runat="server" />
                         <uc9:HadForeclosures ID="HadForeclosures1" runat="server" />
