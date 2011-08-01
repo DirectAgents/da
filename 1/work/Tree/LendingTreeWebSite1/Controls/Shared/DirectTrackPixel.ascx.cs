@@ -1,6 +1,8 @@
 ﻿using System;
 using LendingTreeLib;
+using System.Web.UI;
 
+[Themeable(true)]
 public partial class Controls_Shared_DirectTrackPixel : LendingTreeLib.UserControlBase
 {
     public string OptionalInformation
@@ -16,6 +18,18 @@ public partial class Controls_Shared_DirectTrackPixel : LendingTreeLib.UserContr
         get
         {
             return (string)Session[SessionKeys.DirectTrackCampaignId];
+        }
+    }
+
+    public bool ExtraPixel
+    {
+        get
+        {
+            return ExtraPixelPanel.Visible;
+        }
+        set
+        {
+            ExtraPixelPanel.Visible = value;
         }
     }
 

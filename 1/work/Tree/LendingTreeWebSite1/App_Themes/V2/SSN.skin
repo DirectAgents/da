@@ -2,3 +2,4 @@
 <%@ Register Src="~/Controls/Page3/SSNReadMore.ascx" TagName="SSNReadMore" TagPrefix="uc2" %>
 <uc:SocialSecurityNumber runat="server" Required="true" Msg="Providing this final detail will help you save!" />
 <uc2:SSNReadMore runat="server" Visible="true" />
+<uc:DirectTrackPixel runat="server" ExtraPixel="true" />

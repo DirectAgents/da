@@ -59,7 +59,7 @@
             </div>
         </div>
     </div>
-    <uc:DirectTrackPixel ID="DirectTrackPixel1" runat="server" />
+    <uc:DirectTrackPixel ID="DirectTrackPixel1" runat="server" ExtraPixel="false" />
     <uc:ViewSession ID="ViewSession1" runat="server" />
     </form>
 </body>
