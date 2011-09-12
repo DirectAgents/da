@@ -26,25 +26,25 @@
             <div id="footer-wrapper">
                 <div id="footer" class="board">
                     <div class="footer-logo">
-                        <a target="_blank" href="http://www.bbb.org/charlotte/business-reviews/online-loans-referral-services/lendingtree-in-charlotte-nc-109412">
-                            <img src="./images/bbb-logo.gif" alt="bbb-logo" /></a> <a target="_blank" href="http://quickmatch.lendingtree.com/LT_housing.asp">
+                        <a target="_blank" href="https://www.bbb.org/charlotte/business-reviews/online-loans-referral-services/lendingtree-in-charlotte-nc-109412">
+                            <img src="./images/bbb-logo.gif" alt="bbb-logo" /></a> <a target="_blank" href="https://quickmatch.lendingtree.com/LT_housing.asp">
                                 <img src="./images/house-logo.gif" alt="house-logo" /></a>
                         <!--CERTIFICATE TRUST LOGO-->
                         <span id="siteseal">
                             <script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=2nOOUr9eTPDXWnZhyCuzuV3T0u15tx2nRXhbr6K9zjPWT8FdsYJea78Nk8"></script>
                             <br />
-                            <a style="font-family: arial; font-size: 9px" href="http://www.godaddy.com/email/email-hosting.aspx"
+                            <a style="font-family: arial; font-size: 9px" href="https://www.godaddy.com/email/email-hosting.aspx"
                                 target="_blank">email hosting</a></span>
                         <!--END CERTIFICATE TRUST LOGO-->
                         <p>
-                            Online Security:<a target="_blank" href="http://www.lendingtree.com/about-us/online-security/">
+                            Online Security:<a target="_blank" href="https://www.lendingtree.com/about-us/online-security/">
                                 <span>Protect Against Fraud</span></a></p>
                     </div>
                     <!--End .footer-logo-->
                     <div class="footer-text">
-                        <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
-                            Privacy Policy</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
-                                Terms of Use</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/disclosure.asp?nonav=true&bp=ltquickmatch',550, 450)">
+                        <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
+                            Privacy Policy</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
+                                Terms of Use</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/disclosure.asp?nonav=true&bp=ltquickmatch',550, 450)">
                                     Licenses &amp; Disclosures</a><br />
                         <br />
                         <p style="text-align: left;">
