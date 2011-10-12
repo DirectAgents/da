@@ -40,6 +40,7 @@ public class BeforeXmlPostCustomLogic
         get
         {
             return this.XDoc.Root
+                        .Element("Request")
                         .Element("Applicant")
                         .Element("CreditHistory")
                         .Element("CreditSelfRating");
