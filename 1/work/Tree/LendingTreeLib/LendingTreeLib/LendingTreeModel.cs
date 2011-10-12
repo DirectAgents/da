@@ -23,6 +23,7 @@ namespace LendingTreeLib
         {
             get
             {
+                // This won't be null if logic in Page_Load pull it from Session
                 if (_data == null)
                 {
                     _data = new LendingTreeAffiliateRequest();
@@ -33,6 +34,7 @@ namespace LendingTreeLib
             }
             set
             {
+                // You can't set the data property once it is set once
                 if (_data != null)
                 {
                     throw new Exception("model already exists");
