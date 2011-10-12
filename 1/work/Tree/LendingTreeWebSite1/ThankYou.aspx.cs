@@ -37,10 +37,12 @@ public partial class ThankYou : QuickMatchPageBase
             var xmlForPost = Model.GetXMLForPost();
             var xDoc = XDocument.Parse(xmlForPost);
 
-            xDoc.Root.SetAttributeValue("affid", this.ReferringCdNumber);
+            var customLogic = new BeforeXmlPostCustomLogic(xDoc);
+            customLogic.ReferringCdNumber = this.ReferringCdNumber;
+            customLogic.Check();
 
             Logger.Log(
-                xDoc.Root,
+                customLogic.XDoc.Root,
                 EEventType.ApplicationSubmitting);
 
             writer.Write(xmlForPost);
