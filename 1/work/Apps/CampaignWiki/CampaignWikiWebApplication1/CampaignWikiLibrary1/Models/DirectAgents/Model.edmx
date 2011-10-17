@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DirectAgentsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="DirectAgentsModelStoreContainer">
+          <EntitySet Name="DirectTrackCampaignGroups" EntityType="DirectAgentsModel.Store.DirectTrackCampaignGroups" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DirectTrackCampaigns" EntityType="DirectAgentsModel.Store.DirectTrackCampaigns" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="DirectAgentsModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserSelectedDirectTrackCampaign" EntityType="DirectAgentsModel.Store.UserSelectedDirectTrackCampaign" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_UserDirectTrackCampaign_DirectTrackCampaign" Association="DirectAgentsModel.Store.FK_UserDirectTrackCampaign_DirectTrackCampaign">
+            <End Role="DirectTrackCampaigns" EntitySet="DirectTrackCampaigns" />
+            <End Role="UserSelectedDirectTrackCampaign" EntitySet="UserSelectedDirectTrackCampaign" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserDirectTrackCampaign_User" Association="DirectAgentsModel.Store.FK_UserDirectTrackCampaign_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserSelectedDirectTrackCampaign" EntitySet="UserSelectedDirectTrackCampaign" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DirectTrackCampaignGroups">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DirectTrackResource_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DirectTrackCampaigns">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CampaignNumber" Type="int" Nullable="false" />
+          <Property Name="CampaignName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Campaign_Id" Type="int" />
+          <Property Name="DirectTrackResource_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="UserSelectedDirectTrackCampaign">
+          <Key>
+            <PropertyRef Name="SelectingUsers_Id" />
+            <PropertyRef Name="SelectedCampaigns_Id" />
+          </Key>
+          <Property Name="SelectingUsers_Id" Type="int" Nullable="false" />
+          <Property Name="SelectedCampaigns_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_UserDirectTrackCampaign_DirectTrackCampaign">
+          <End Role="DirectTrackCampaigns" Type="DirectAgentsModel.Store.DirectTrackCampaigns" Multiplicity="1" />
+          <End Role="UserSelectedDirectTrackCampaign" Type="DirectAgentsModel.Store.UserSelectedDirectTrackCampaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DirectTrackCampaigns">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSelectedDirectTrackCampaign">
+              <PropertyRef Name="SelectedCampaigns_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserDirectTrackCampaign_User">
+          <End Role="Users" Type="DirectAgentsModel.Store.Users" Multiplicity="1" />
+          <End Role="UserSelectedDirectTrackCampaign" Type="DirectAgentsModel.Store.UserSelectedDirectTrackCampaign" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSelectedDirectTrackCampaign">
+              <PropertyRef Name="SelectingUsers_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DirectAgentsModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="DirectAgentsModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DirectTrackCampaigns" EntityType="DirectAgentsModel.DirectTrackCampaign" />
+          <EntitySet Name="Users" EntityType="DirectAgentsModel.User" />
+          <AssociationSet Name="UserSelectedDirectTrackCampaign" Association="DirectAgentsModel.UserSelectedDirectTrackCampaign">
+            <End Role="DirectTrackCampaigns" EntitySet="DirectTrackCampaigns" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="DirectTrackCampaignGroups" EntityType="DirectAgentsModel.DirectTrackCampaignGroup" />
+        </EntityContainer>
+        <EntityType Name="DirectTrackCampaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CampaignNumber" Type="Int32" Nullable="false" />
+          <Property Name="CampaignName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Campaign_Id" Type="Int32" />
+          <Property Name="DirectTrackResource_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="DirectAgentsModel.UserSelectedDirectTrackCampaign" FromRole="DirectTrackCampaigns" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="DirectTrackCampaigns" Relationship="DirectAgentsModel.UserSelectedDirectTrackCampaign" FromRole="Users" ToRole="DirectTrackCampaigns" />
+        </EntityType>
+        <Association Name="UserSelectedDirectTrackCampaign">
+          <End Role="DirectTrackCampaigns" Type="DirectAgentsModel.DirectTrackCampaign" Multiplicity="*" />
+          <End Role="Users" Type="DirectAgentsModel.User" Multiplicity="*" />
+        </Association>
+        <EntityType Name="DirectTrackCampaignGroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="DirectTrackResource_Id" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DirectAgentsModelStoreContainer" CdmEntityContainer="DirectAgentsModelContainer">
+          <EntitySetMapping Name="DirectTrackCampaigns"><EntityTypeMapping TypeName="DirectAgentsModel.DirectTrackCampaign"><MappingFragment StoreEntitySet="DirectTrackCampaigns">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="CampaignNumber" ColumnName="CampaignNumber" />
+            <ScalarProperty Name="CampaignName" ColumnName="CampaignName" />
+            <ScalarProperty Name="Campaign_Id" ColumnName="Campaign_Id" />
+            <ScalarProperty Name="DirectTrackResource_Id" ColumnName="DirectTrackResource_Id" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Users"><EntityTypeMapping TypeName="DirectAgentsModel.User"><MappingFragment StoreEntitySet="Users">
+            <ScalarProperty Name="Id" ColumnName="Id" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="UserSelectedDirectTrackCampaign" TypeName="DirectAgentsModel.UserSelectedDirectTrackCampaign" StoreEntitySet="UserSelectedDirectTrackCampaign">
+            <EndProperty Name="DirectTrackCampaigns">
+              <ScalarProperty Name="Id" ColumnName="SelectedCampaigns_Id" />
+            </EndProperty>
+            <EndProperty Name="Users">
+              <ScalarProperty Name="Id" ColumnName="SelectingUsers_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="DirectTrackCampaignGroups">
+            <EntityTypeMapping TypeName="DirectAgentsModel.DirectTrackCampaignGroup">
+              <MappingFragment StoreEntitySet="DirectTrackCampaignGroups">
+                <ScalarProperty Name="DirectTrackResource_Id" ColumnName="DirectTrackResource_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model">
+        <EntityTypeShape EntityType="DirectAgentsModel.DirectTrackCampaign" Width="2.125" PointX="0.75" PointY="0.875" Height="2.1725878906250005" IsExpanded="true" />
+        <EntityTypeShape EntityType="DirectAgentsModel.User" Width="2.25" PointX="4.25" PointY="1.25" Height="1.5956835937499996" IsExpanded="true" />
+        <AssociationConnector Association="DirectAgentsModel.UserSelectedDirectTrackCampaign" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.875" PointY="2.047841796875" />
+          <ConnectorPoint PointX="4.25" PointY="2.047841796875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="DirectAgentsModel.DirectTrackCampaignGroup" Width="2.875" PointX="2.125" PointY="3.75" Height="1.4033821614583335" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

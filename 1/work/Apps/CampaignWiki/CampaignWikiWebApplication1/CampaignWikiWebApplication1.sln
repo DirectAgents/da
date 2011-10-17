@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampaignWikiWebApplication1", "CampaignWikiWebApplication1\CampaignWikiWebApplication1.csproj", "{F8FD9FFC-889C-4ADF-945E-6AAFD14CDF0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampaignWikiLibrary1", "CampaignWikiLibrary1\CampaignWikiLibrary1.csproj", "{4E43AD74-9D01-473F-BD35-3169D1B7F53B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8FD9FFC-889C-4ADF-945E-6AAFD14CDF0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8FD9FFC-889C-4ADF-945E-6AAFD14CDF0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8FD9FFC-889C-4ADF-945E-6AAFD14CDF0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8FD9FFC-889C-4ADF-945E-6AAFD14CDF0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E43AD74-9D01-473F-BD35-3169D1B7F53B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E43AD74-9D01-473F-BD35-3169D1B7F53B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E43AD74-9D01-473F-BD35-3169D1B7F53B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E43AD74-9D01-473F-BD35-3169D1B7F53B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

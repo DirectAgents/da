@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitterPanel", "SplitterPanel\SplitterPanel.csproj", "{D9FF0A7E-3ECA-4E79-A2BF-31F50F4DC84C}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Splitter WebControl Test", "Splitter WebControl Test", "{2355B031-67F7-4EE0-A0FC-1F63E26857FD}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = "SAK"
+		SccAuxPath = "SAK"
+		SccLocalPath = "SAK"
+		SccProvider = "SAK"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		ProjectReferences = "{D9FF0A7E-3ECA-4E79-A2BF-31F50F4DC84C}|SCS.SplitterPanel.dll;"
+		Debug.AspNetCompiler.VirtualPath = "/Splitter WebControl Test"
+		Debug.AspNetCompiler.PhysicalPath = "Splitter WebControl Test\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Splitter WebControl Test\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/Splitter WebControl Test"
+		Release.AspNetCompiler.PhysicalPath = "Splitter WebControl Test\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Splitter WebControl Test\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "2242"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs09
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SplitterPanel\\SplitterPanel.csproj
+		SccProjectName1 = SplitterPanel
+		SccLocalPath1 = SplitterPanel
+		SccWebProject2 = true
+		SccProjectUniqueName2 = Splitter\u0020WebControl\u0020Test
+		SccProjectName2 = Splitter\u0020WebControl\u0020Test
+		SccLocalPath2 = Splitter\u0020WebControl\u0020Test
+		SccProjectEnlistmentChoice2 = 2
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9FF0A7E-3ECA-4E79-A2BF-31F50F4DC84C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9FF0A7E-3ECA-4E79-A2BF-31F50F4DC84C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9FF0A7E-3ECA-4E79-A2BF-31F50F4DC84C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9FF0A7E-3ECA-4E79-A2BF-31F50F4DC84C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2355B031-67F7-4EE0-A0FC-1F63E26857FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2355B031-67F7-4EE0-A0FC-1F63E26857FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2355B031-67F7-4EE0-A0FC-1F63E26857FD}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{2355B031-67F7-4EE0-A0FC-1F63E26857FD}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

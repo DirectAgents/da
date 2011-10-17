@@ -1,0 +1,74 @@
+﻿html
+{
+	height: 100%;
+}
+
+.splitter
+{   
+    left: 0;
+    right: 0; 
+    top: 0;
+    bottom: 0;    
+    position: fixed;    
+    z-index: 1;
+    
+    height: 100%;
+}
+
+.splitter .resizableArea 
+{
+	top: 0;
+	width: 100%;
+	height: auto;
+	bottom: 0;
+	display: block;
+	position: absolute;
+	
+	height: 100%;
+}
+
+.splitter .resizableArea .leftPane
+{
+    height: 100%;
+    overflow: auto;
+    float: left;
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;    
+    padding: 3px;
+}
+.splitter .resizableArea .rightPane
+{
+    height: 100%; 
+    overflow: auto;
+    position: relative;
+    z-index: 10;    
+    padding: 3px;
+}
+.splitter .resizableArea .divider
+{
+    width: 4px;
+    height: 100%;    
+    display: block;
+    position: absolute;
+    z-index: 11;
+    
+    cursor: e-resize;    
+    margin: 0;
+    padding: 0;    
+    vertical-align: middle;
+    background-color: #ccc;
+}
+.splitter .resizableArea .divider:hover
+{
+    background-color: #666;
+}
+.splitter .resizableArea .divider div
+{
+    background: transparent url('splitterHandle.gif');    
+    position: absolute;
+    top: 50%;
+    height: 18px;
+    width: 4px;
+}
