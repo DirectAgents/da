@@ -24,16 +24,12 @@ namespace LendingTreeLib
             get
             {
                 string requestIP = Request.UserHostAddress;
+
                 string adminIPs = WebConfigurationManager.AppSettings["AdminIps"];
 
-                if (adminIPs.Contains(requestIP))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                bool result = adminIPs.Contains(requestIP);
+
+                return result;
             }
         }
 
@@ -75,51 +71,54 @@ namespace LendingTreeLib
         protected override void OnPreInit(EventArgs e)
         {
             InjectDependencies();
+
             _Model.PropertyChanged += Model_PropertyChanged;
+
             base.OnPreInit(e);
         }
 
         /// <summary>
-        /// Here we get the LendingTreeAffiliateRequest back from the Session if
-        /// it is there.
+        /// Get LendingTreeAffiliateRequest from the Session if it exists.
         /// </summary>
         /// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {
-            ProcessQueryStringParameterAttributes();
+            //ProcessQueryStringParameterAttributes();
 
             string sessionKey = SessionKeys.QuickMatchPrefix + _Model.DataPropertyName;
+
             if (Session[sessionKey] != null)
             {
                 _Model.Data = (LendingTreeAffiliateRequest)Session[sessionKey];
             }
+
             base.OnLoad(e);
         }
 
-        private void ProcessQueryStringParameterAttributes()
-        {
-            foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
-            {
-                var queryStringParameterAttribute = 
-                    (QueryStringParameterAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(QueryStringParameterAttribute));
+        //private void ProcessQueryStringParameterAttributes()
+        //{
+        //    foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
+        //    {
+        //        var queryStringParameterAttribute = 
+        //            (QueryStringParameterAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(QueryStringParameterAttribute));
                 
-                if (queryStringParameterAttribute != null)
-                {
-                    string valueToSet = Request.QueryString[queryStringParameterAttribute.ParameterName ?? propertyInfo.Name];
-                    if (valueToSet != null)
-                    {
-                        propertyInfo.SetValue(this, valueToSet, null);
-                    }
-                    else
-                    {
-                        if (queryStringParameterAttribute.DefaultValue != null)
-                        {
-                            propertyInfo.SetValue(this, queryStringParameterAttribute.DefaultValue, null);
-                        }
-                    }
-                }
-            }
-        }
+        //        if (queryStringParameterAttribute != null)
+        //        {
+        //            string valueToSet = Request.QueryString[queryStringParameterAttribute.ParameterName ?? propertyInfo.Name];
+        //            if (valueToSet != null)
+        //            {
+        //                propertyInfo.SetValue(this, valueToSet, null);
+        //            }
+        //            else
+        //            {
+        //                if (queryStringParameterAttribute.DefaultValue != null)
+        //                {
+        //                    propertyInfo.SetValue(this, queryStringParameterAttribute.DefaultValue, null);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// When a model property is changed this event stores the value in the session.
@@ -134,11 +133,13 @@ namespace LendingTreeLib
         protected void Model_PropertyChanged(object model, PropertyChangedEventArgs e)
         {
             string propertyName = e.PropertyName;
+
             var propertiesToSave = new string[] 
             { 
                 _Model.DataPropertyName, 
                 SessionKeys.AppID
             };
+
             if (propertiesToSave.Contains(propertyName))
             {
                 Session[SessionKeys.QuickMatchPrefix + propertyName] = (model as ILendingTreeModel)[propertyName];
@@ -146,33 +147,25 @@ namespace LendingTreeLib
         }
 
         /// <summary>
-        /// Here we are using the "object builder" functionality of the Unity container.
-        /// Since instances of a page class are created by the ASP.NET runtime, we obtain
-        /// DI on existing objects by passing "this" into the "BuildUp" method.
+        /// Using "object builder" functionality of the Unity container.
         /// </summary>
         void InjectDependencies()
         {
             var context = HttpContext.Current;
-            if (context == null)
-            {
-                return;
-            }
+            if (context == null) return;
+
             var accessor = context.ApplicationInstance as IContainerAccessor;
-            if (accessor == null)
-            {
-                return;
-            }
+            if (accessor == null) return;
+
             var container = accessor.Container;
-            if (container == null)
-            {
-                throw new InvalidOperationException("No Unity container found");
-            }
+            if (container == null) throw new InvalidOperationException("No Unity container found");
+
             container.BuildUp(this.GetType(), this, this.GetType().FullName);
         }
 
-        public T Resolve<T>()
-        {
-            return (T)(Global.Container.Resolve(typeof(T)));
-        }
+        //public T Resolve<T>()
+        //{
+        //    return (T)(Global.Container.Resolve(typeof(T)));
+        //}
     }
 }

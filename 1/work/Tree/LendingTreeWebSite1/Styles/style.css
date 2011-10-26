@@ -815,3 +815,26 @@ div.smartTipWindow
 {
 	font-size: 11px;
 }
+
+.freeCreditScore
+{
+    margin: 80px;
+}
+.freeCreditScore .lastStep
+{
+    color: #FF0000;
+    font-size: large;
+}
+.freeCreditScore .message div
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.freeCreditScore .getScores
+{
+    float: left;
+}
+.freeCreditScore .freeCreditLogo
+{
+    float: right;
+}

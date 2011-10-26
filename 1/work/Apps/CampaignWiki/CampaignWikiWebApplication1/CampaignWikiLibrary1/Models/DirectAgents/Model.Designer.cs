@@ -350,11 +350,13 @@ namespace CampaignWikiWebApplication1.Models.DirectAgents
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="directTrackResource_Id">Initial value of the DirectTrackResource_Id property.</param>
-        public static DirectTrackCampaignGroup CreateDirectTrackCampaignGroup(global::System.Int32 id, global::System.Int32 directTrackResource_Id)
+        /// <param name="name">Initial value of the Name property.</param>
+        public static DirectTrackCampaignGroup CreateDirectTrackCampaignGroup(global::System.Int32 id, global::System.Int32 directTrackResource_Id, global::System.String name)
         {
             DirectTrackCampaignGroup directTrackCampaignGroup = new DirectTrackCampaignGroup();
             directTrackCampaignGroup.Id = id;
             directTrackCampaignGroup.DirectTrackResource_Id = directTrackResource_Id;
+            directTrackCampaignGroup.Name = name;
             return directTrackCampaignGroup;
         }
 
@@ -411,6 +413,30 @@ namespace CampaignWikiWebApplication1.Models.DirectAgents
         private global::System.Int32 _DirectTrackResource_Id;
         partial void OnDirectTrackResource_IdChanging(global::System.Int32 value);
         partial void OnDirectTrackResource_IdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
 
         #endregion
     

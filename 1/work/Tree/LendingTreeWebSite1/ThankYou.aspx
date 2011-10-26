@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ThankYou.aspx.cs" Inherits="ThankYou" %>
 
+<%@ Register src="Controls/FreeCreditScore.ascx" tagname="FreeCreditScore" tagprefix="uc1" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -21,6 +23,7 @@
                     <p>
                         Your information has been received. A Lending Tree representative will be in touch
                         with you shortly.</p>
+                    <uc1:FreeCreditScore ID="FreeCreditScore1" runat="server" />
                 </div>
             </div>
             <div id="footer-wrapper">

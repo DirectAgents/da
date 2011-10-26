@@ -5,18 +5,16 @@ using System.Text;
 using System.Xml.Linq;
 
 public class BeforeXmlPostCustomLogic
-{
-    private System.Xml.Linq.XDocument _xDoc;
+{    
+    public BeforeXmlPostCustomLogic(System.Xml.Linq.XDocument xDoc)
+    {
+        this._xDoc = xDoc;
+    }
 
     public System.Xml.Linq.XDocument XDoc
     {
         get { return _xDoc; }
         set { _xDoc = value; }
-    }
-
-    public BeforeXmlPostCustomLogic(System.Xml.Linq.XDocument xDoc)
-    {
-        this._xDoc = xDoc;
     }
 
     public string ReferringCdNumber
@@ -29,7 +27,7 @@ public class BeforeXmlPostCustomLogic
 
     public void Check()
     {
-        if (ApplicantHasBadCredit && FifityFiftyChance)
+        if (ApplicantHasBadCredit && OneChanceIn(4))
         {
             CreditHistory.Value = "MAJORCREDITPROBLEMS";
         }
@@ -55,11 +53,10 @@ public class BeforeXmlPostCustomLogic
         }
     }
 
-    private static bool FifityFiftyChance
+    static bool OneChanceIn(int num)
     {
-        get
-        {
-            return new Random().Next(2) == 1;
-        }
+        return new Random().Next(num) == num - 1;
     }
+
+    private System.Xml.Linq.XDocument _xDoc;
 }

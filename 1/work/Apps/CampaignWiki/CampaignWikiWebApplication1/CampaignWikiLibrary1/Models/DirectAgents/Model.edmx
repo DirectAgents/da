@@ -9,21 +9,13 @@
           <EntitySet Name="DirectTrackCampaignGroups" EntityType="DirectAgentsModel.Store.DirectTrackCampaignGroups" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="DirectTrackCampaigns" EntityType="DirectAgentsModel.Store.DirectTrackCampaigns" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="DirectAgentsModel.Store.Users" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserSelectedDirectTrackCampaign" EntityType="DirectAgentsModel.Store.UserSelectedDirectTrackCampaign" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_UserDirectTrackCampaign_DirectTrackCampaign" Association="DirectAgentsModel.Store.FK_UserDirectTrackCampaign_DirectTrackCampaign">
-            <End Role="DirectTrackCampaigns" EntitySet="DirectTrackCampaigns" />
-            <End Role="UserSelectedDirectTrackCampaign" EntitySet="UserSelectedDirectTrackCampaign" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserDirectTrackCampaign_User" Association="DirectAgentsModel.Store.FK_UserDirectTrackCampaign_User">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserSelectedDirectTrackCampaign" EntitySet="UserSelectedDirectTrackCampaign" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="DirectTrackCampaignGroups">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="DirectTrackResource_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DirectTrackCampaigns">
@@ -33,8 +25,8 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CampaignNumber" Type="int" Nullable="false" />
           <Property Name="CampaignName" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="Campaign_Id" Type="int" />
           <Property Name="DirectTrackResource_Id" Type="int" Nullable="false" />
+          <Property Name="Campaign_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -43,38 +35,6 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="varchar" Nullable="false" MaxLength="100" />
         </EntityType>
-        <EntityType Name="UserSelectedDirectTrackCampaign">
-          <Key>
-            <PropertyRef Name="SelectingUsers_Id" />
-            <PropertyRef Name="SelectedCampaigns_Id" />
-          </Key>
-          <Property Name="SelectingUsers_Id" Type="int" Nullable="false" />
-          <Property Name="SelectedCampaigns_Id" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_UserDirectTrackCampaign_DirectTrackCampaign">
-          <End Role="DirectTrackCampaigns" Type="DirectAgentsModel.Store.DirectTrackCampaigns" Multiplicity="1" />
-          <End Role="UserSelectedDirectTrackCampaign" Type="DirectAgentsModel.Store.UserSelectedDirectTrackCampaign" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DirectTrackCampaigns">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserSelectedDirectTrackCampaign">
-              <PropertyRef Name="SelectedCampaigns_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserDirectTrackCampaign_User">
-          <End Role="Users" Type="DirectAgentsModel.Store.Users" Multiplicity="1" />
-          <End Role="UserSelectedDirectTrackCampaign" Type="DirectAgentsModel.Store.UserSelectedDirectTrackCampaign" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserSelectedDirectTrackCampaign">
-              <PropertyRef Name="SelectingUsers_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -117,6 +77,7 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="DirectTrackResource_Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -135,17 +96,10 @@
             <ScalarProperty Name="Id" ColumnName="Id" />
             <ScalarProperty Name="Name" ColumnName="Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <AssociationSetMapping Name="UserSelectedDirectTrackCampaign" TypeName="DirectAgentsModel.UserSelectedDirectTrackCampaign" StoreEntitySet="UserSelectedDirectTrackCampaign">
-            <EndProperty Name="DirectTrackCampaigns">
-              <ScalarProperty Name="Id" ColumnName="SelectedCampaigns_Id" />
-            </EndProperty>
-            <EndProperty Name="Users">
-              <ScalarProperty Name="Id" ColumnName="SelectingUsers_Id" />
-            </EndProperty>
-          </AssociationSetMapping>
           <EntitySetMapping Name="DirectTrackCampaignGroups">
             <EntityTypeMapping TypeName="DirectAgentsModel.DirectTrackCampaignGroup">
               <MappingFragment StoreEntitySet="DirectTrackCampaignGroups">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="DirectTrackResource_Id" ColumnName="DirectTrackResource_Id" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>

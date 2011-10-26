@@ -38,12 +38,13 @@ public class QuickMatchPageBase : PageBase
     /// <param name="e"></param>
     protected override void OnLoad(EventArgs e)
     {
-        // Extract cd number from query string.
         string cdNumber = Request.QueryString[Resources.QueryStringKey.QueryStringParamForCdNumber];  
+
         if (cdNumber != null)
         {
             this.ReferringCdNumber = cdNumber;
         }
+
         base.OnLoad(e);
     }
 
