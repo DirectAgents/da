@@ -1,7 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="ThankYou.aspx.cs" Inherits="ThankYou" %>
 
-<%@ Register src="Controls/FreeCreditScore.ascx" tagname="FreeCreditScore" tagprefix="uc1" %>
-
+<%@ Register Src="Controls/FreeCreditScore.ascx" TagName="FreeCreditScore" TagPrefix="uc1" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -15,10 +14,6 @@
     <div class="website-wrapper">
         <div id="step3" class="board-content-data">
             <div id="page2RailHeader" class="stroke">
-                <div style="text-align: center;">
-                    <h2 class="green">
-                        Thank You</h2>
-                </div>
                 <div style="height: 300px; margin-top: 30px; text-align: center;">
                     <p>
                         Your information has been received. A Lending Tree representative will be in touch
