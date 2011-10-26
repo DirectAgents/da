@@ -37,11 +37,7 @@ public class BeforeXmlPostCustomLogic
     {
         get
         {
-            return this.XDoc.Root
-                        .Element("Request")
-                        .Element("Applicant")
-                        .Element("CreditHistory")
-                        .Element("CreditSelfRating");
+            return this.XDoc.Root.Element("Request").Element("Applicant").Element("CreditHistory").Element("CreditSelfRating");
         }
     }
 
@@ -58,5 +54,5 @@ public class BeforeXmlPostCustomLogic
         return new Random().Next(num) == num - 1;
     }
 
-    private System.Xml.Linq.XDocument _xDoc;
+    System.Xml.Linq.XDocument _xDoc;
 }
