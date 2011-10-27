@@ -11,5 +11,9 @@ public partial class Controls_Page3_Email : LendingTreeLib.UserControlBase
         {
             return TextBox1.Text;
         }
+        set
+        {
+            TextBox1.Text = value;
+        }
     }
 }

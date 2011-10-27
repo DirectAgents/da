@@ -17,7 +17,7 @@ public partial class _Default : QuickMatchPageBase
     /// TODO: create some kind of documentation artifact to track the moving parts of how
     /// this works
     /// </summary>
-    [LendingTreeLib.QueryStringParameter(QueryStringParameterNameForTheme, "1")]
+    [LendingTreeLib.QueryString(QueryStringParameterNameForTheme, "1")]
     public string SiteVariantId { get; set; }
 
     /// <summary>

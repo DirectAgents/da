@@ -15,5 +15,9 @@ public partial class Controls_Page2_MortgageBalance : LendingTreeLib.UserControl
         {
             return DropDownList1.SelectedValue;
         }
+        set
+        {
+            DropDownList1.Items.FindByValue(value).Selected = true;
+        }
     }
 }

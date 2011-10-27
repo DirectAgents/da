@@ -16,7 +16,7 @@ public partial class Controls_Page2_PropertyZip : LendingTreeLib.UserControlBase
     }
 
     public string Value { get { return TextBox1.Text; } set { TextBox1.Text = value; } }
-    
+
     public string ZipValidatorClientID { get { return RegularExpressionValidator1.ClientID; } }
 
 }

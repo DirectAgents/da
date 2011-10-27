@@ -15,5 +15,9 @@ public partial class Controls_Page3_WorkPhone : LendingTreeLib.UserControlBase
         {
             return PhoneNumber1.Value;
         }
+        set
+        {
+            PhoneNumber1.Value = value;
+        }
     }
 }

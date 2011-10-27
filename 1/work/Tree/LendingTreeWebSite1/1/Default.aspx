@@ -9,6 +9,8 @@
     </div>
     <div>
         <uc:PropertyState ID="PropertyState1" runat="server" />
+        <test:Automation ID="Automation1" runat="server" Action="SetProperty" Target="PropertyState1"
+            Property="SelectedValue" Value="NJ" Key="TestAutomation" />
     </div>
     <div>
         <uc:CreditRating ID="CreditRating1" runat="server" />

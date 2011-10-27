@@ -53,7 +53,7 @@ public partial class da_Fix : PageBase
         FixXmlFormatting();
     }
 
-    [QueryStringParameter]
+    [QueryString]
     public string appid { get; set; }
 
     /// <summary>

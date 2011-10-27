@@ -9,8 +9,7 @@
 <%@ Register Src="Controls/Page2/Continue.ascx" TagName="Continue" TagPrefix="uc4" %>
 <%@ Register Src="Controls/Page2/MortgageBalance.ascx" TagName="MortgageBalance"
     TagPrefix="uc5" %>
-<%@ Register Src="Controls/Page2/CashOut.ascx" TagName="CashOut"
-    TagPrefix="uc6" %>
+<%@ Register Src="Controls/Page2/CashOut.ascx" TagName="CashOut" TagPrefix="uc6" %>
 <%@ Register Src="Controls/Page2/MonthlyMortgagePayment.ascx" TagName="MonthlyMortgagePayment"
     TagPrefix="uc7" %>
 <%@ Register Src="Controls/Page2/HadBakruptcy.ascx" TagName="HadBakruptcy" TagPrefix="uc8" %>
@@ -36,14 +35,12 @@
     <!-- JS -->
     <script src="Scripts/screen.js" type="text/javascript"></script>
     <script src="Controls/Page2/Scripts/script.js" type="text/javascript"></script>
-
-<%--    <script src="Scripts/blackbird/blackbird.js" type="text/javascript"></script>
+    <%--    <script src="Scripts/blackbird/blackbird.js" type="text/javascript"></script>
     <link href="Scripts/blackbird/blackbird.css" rel="stylesheet" type="text/css" />--%>
-
 </head>
 <body>
     <form id="form1" runat="server">
-<%--    <div id="ltvmon" style="position: fixed; left: 10px; top: 10px; width: 200px; height: 1.5em; background: red; color: White">
+    <%--    <div id="ltvmon" style="position: fixed; left: 10px; top: 10px; width: 200px; height: 1.5em; background: red; color: White">
         LTV: <span id="ltvmon_val">-</span>
     </div>--%>
     <script type="text/javascript">
@@ -98,10 +95,20 @@
                         <uc1:PropertyPurpose ID="PropertyPurpose1" runat="server" />
                         <uc14:PropertyCity ID="PropertyCity1" runat="server" />
                         <uc2:PropertyZip ID="PropertyZip1" runat="server" />
+                        <test:Automation ID="Automation1" runat="server" Action="SetProperty"
+                            Target="PropertyZip1" Property="Value" Value="90003" Key="TestAutomation" />
                         <uc3:ApproximatePropertyValue ID="ApproximatePropertyValue1" runat="server" />
+                        <test:Automation ID="Automation2" runat="server" Action="SetProperty"
+                            Target="ApproximatePropertyValue1" Property="Value" Value="130000" Key="TestAutomation" />
                         <uc5:MortgageBalance ID="MortgageBalance1" runat="server" />
+                        <test:Automation ID="Automation3" runat="server" Action="SetProperty"
+                            Target="MortgageBalance1" Property="Value" Value="30001" Key="TestAutomation" />
                         <uc6:CashOut ID="CashOut1" runat="server" />
+                        <test:Automation ID="Automation4" runat="server" Action="SetProperty"
+                            Target="CashOut1" Property="Value" Value="5000" Key="TestAutomation" />
                         <uc7:MonthlyMortgagePayment ID="MonthlyMortgagePayment1" runat="server" />
+                        <test:Automation ID="Automation5" runat="server" Action="SetProperty"
+                            Target="MonthlyMortgagePayment1" Property="Value" Value="550" Key="TestAutomation" />
                         <uc8:HadBakruptcy ID="HadBakruptcy1" runat="server" />
                         <uc9:HadForeclosures ID="HadForeclosures1" runat="server" />
                         <uc11:VetranStatus ID="VetranStatus1" runat="server" />

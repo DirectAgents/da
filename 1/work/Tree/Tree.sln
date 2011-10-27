@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "LendingTreeWebSite1", "LendingTreeWebSite1\", "{DCBA6D27-77C6-40CE-8256-ECDEA35A428B}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		ProjectReferences = "{4812F102-DB37-495F-A7E1-038AC7EAC884}|LendingTreeLib.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/LendingTreeWebSite1"
 		Debug.AspNetCompiler.PhysicalPath = "LendingTreeWebSite1\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\LendingTreeWebSite1\"

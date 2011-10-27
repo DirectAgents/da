@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
@@ -19,16 +18,16 @@ namespace LendingTreeLib
         [Dependency]
         public ILogger Logger { get; set; }
 
+        [QueryString]
+        public string Debug { get; set; }
+
         public bool IsAdmin
         {
             get
             {
                 string requestIP = Request.UserHostAddress;
-
                 string adminIPs = WebConfigurationManager.AppSettings["AdminIps"];
-
                 bool result = adminIPs.Contains(requestIP);
-
                 return result;
             }
         }
@@ -41,17 +40,28 @@ namespace LendingTreeLib
             }
         }
 
-        public TT SessionValue<TT>(string sessionKey)
+        public T SessionValue<T>(string key)
         {
-            object sessionValue = Session[sessionKey];
-            if (sessionValue == null)
-            {
-                return default(TT);
-            }
-            else
-            {
-                return (TT)sessionValue;
-            }
+            object sessionValue = Session[key];
+            return (sessionValue == null) ? default(T) : (T)sessionValue;
+        }
+
+        public bool IsSessionValueTrue(string key)
+        {
+            string sessionValue = SessionValue<string>(key);
+            bool result = (sessionValue != null) && (sessionValue == SessionKeys.True);
+            return result;
+        }
+
+        public bool IsSessionValueEnabled(string key)
+        {
+            bool result = IsSessionValueTrue(key + SessionKeys.EnabledSuffix);
+            return result;
+        }
+
+        public void EnableSessionValue(string key)
+        {
+            Session[key + SessionKeys.EnabledSuffix] = SessionKeys.True;
         }
 
         protected void SetVisible(bool visible, System.Web.UI.Control[] controls)
@@ -71,9 +81,7 @@ namespace LendingTreeLib
         protected override void OnPreInit(EventArgs e)
         {
             InjectDependencies();
-
             _Model.PropertyChanged += Model_PropertyChanged;
-
             base.OnPreInit(e);
         }
 
@@ -83,50 +91,38 @@ namespace LendingTreeLib
         /// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {
-            //ProcessQueryStringParameterAttributes();
+            ProcessQueryStringAttributes();
+
+            if (this.Debug == SessionKeys.True) 
+                EnableSessionValue(SessionKeys.AutomationKey);
 
             string sessionKey = SessionKeys.QuickMatchPrefix + _Model.DataPropertyName;
-
-            if (Session[sessionKey] != null)
-            {
+            if (Session[sessionKey] != null) 
                 _Model.Data = (LendingTreeAffiliateRequest)Session[sessionKey];
-            }
 
             base.OnLoad(e);
         }
 
-        //private void ProcessQueryStringParameterAttributes()
-        //{
-        //    foreach (PropertyInfo propertyInfo in this.GetType().GetProperties())
-        //    {
-        //        var queryStringParameterAttribute = 
-        //            (QueryStringParameterAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(QueryStringParameterAttribute));
-                
-        //        if (queryStringParameterAttribute != null)
-        //        {
-        //            string valueToSet = Request.QueryString[queryStringParameterAttribute.ParameterName ?? propertyInfo.Name];
-        //            if (valueToSet != null)
-        //            {
-        //                propertyInfo.SetValue(this, valueToSet, null);
-        //            }
-        //            else
-        //            {
-        //                if (queryStringParameterAttribute.DefaultValue != null)
-        //                {
-        //                    propertyInfo.SetValue(this, queryStringParameterAttribute.DefaultValue, null);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        void ProcessQueryStringAttributes()
+        {
+            foreach (var pi in this.GetType().GetProperties())
+            {
+                var attr = (QueryStringAttribute)Attribute.GetCustomAttribute(pi, typeof(QueryStringAttribute));
+
+                if (attr != null)
+                {
+                    string set = Request.QueryString[attr.ParameterName ?? pi.Name];
+
+                    if (set != null)
+                        pi.SetValue(this, set, null);
+                    else if (attr.DefaultValue != null)
+                        pi.SetValue(this, attr.DefaultValue, null);
+                }
+            }
+        }
 
         /// <summary>
         /// When a model property is changed this event stores the value in the session.
-        /// 
-        /// NOTE: The Data property contains the actual loan application object that will be 
-        /// serialized to an XML POST.  By keeping the entire Data object in session, we do 
-        /// not need to store values of other most other properties, as it would be
-        /// redundant.
         /// </summary>
         /// <param name="model"></param>
         /// <param name="e"></param>
@@ -147,25 +143,35 @@ namespace LendingTreeLib
         }
 
         /// <summary>
-        /// Using "object builder" functionality of the Unity container.
+        /// Object builder functionality of the Unity container.
         /// </summary>
         void InjectDependencies()
         {
             var context = HttpContext.Current;
-            if (context == null) return;
-
-            var accessor = context.ApplicationInstance as IContainerAccessor;
-            if (accessor == null) return;
-
-            var container = accessor.Container;
-            if (container == null) throw new InvalidOperationException("No Unity container found");
-
-            container.BuildUp(this.GetType(), this, this.GetType().FullName);
+            if (context != null)
+            {
+                var accessor = context.ApplicationInstance as IContainerAccessor;
+                if (accessor != null)
+                {
+                    var container = accessor.Container;
+                    if (container != null)
+                    {
+                        container.BuildUp(this.GetType(), this, this.GetType().FullName);
+                    }
+                    else
+                        throw new InvalidOperationException("No Unity container found");
+                }
+            }
         }
 
-        //public T Resolve<T>()
-        //{
-        //    return (T)(Global.Container.Resolve(typeof(T)));
-        //}
+        /// <summary>
+        /// Service locator
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Resolve<T>()
+        {
+            return (T)(Global.Container.Resolve(typeof(T)));
+        }
     }
 }

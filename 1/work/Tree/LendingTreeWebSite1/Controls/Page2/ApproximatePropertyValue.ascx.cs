@@ -16,5 +16,9 @@ public partial class Controls_Page2_ApproximatePropertyValue : LendingTreeLib.Us
         {
             return DropDownList1.SelectedValue;
         }
+        set
+        {
+            DropDownList1.Items.FindByValue(value).Selected = true;
+        }
     }
 }

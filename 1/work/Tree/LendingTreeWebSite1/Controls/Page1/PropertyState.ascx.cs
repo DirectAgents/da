@@ -22,4 +22,11 @@ public partial class Controls_Page1_PropertyState : LendingTreeLib.UserControlBa
             return DropDownList1.SelectedItem.Text;
         }
     }
+    public string SelectedValue
+    {
+        set
+        {
+            DropDownList1.Items.FindByValue(value).Selected = true;
+        }
+    }
 }

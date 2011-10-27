@@ -16,5 +16,9 @@ public partial class Controls_Page3_StreetAddress : LendingTreeLib.UserControlBa
         {
             return TextBox1.Text;
         }
+        set
+        {
+            TextBox1.Text = value;
+        }
     }
 }
