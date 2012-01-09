@@ -3,7 +3,6 @@ using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
-using System.IO;
 
 namespace CampaignWikiWebApplication1.WebUserControls
 {

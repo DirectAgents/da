@@ -12,63 +12,63 @@ namespace CampaignWikiWebApplication1.Templates
     using System;
     
     
-    #line 1 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+    #line 1 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "10.0.0.0")]
     public partial class PreTextTemplate1 : PreTextTemplate1Base
     {
         public virtual string TransformText()
         {
             
-            #line 2 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 2 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Image));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 2 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 2 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(AccountManager));
             
             #line default
             #line hidden
             this.Write(", ");
             
-            #line 2 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 2 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(AdManager));
             
             #line default
             #line hidden
             this.Write("\r\n\r\n");
             
-            #line 4 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 4 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Description));
             
             #line default
             #line hidden
             this.Write("\r\n\r\nAdditional Information: ");
             
-            #line 6 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 6 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(AdditionalInformation));
             
             #line default
             #line hidden
             this.Write("\r\n\r\nType: ");
             
-            #line 8 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 8 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Type));
             
             #line default
             #line hidden
             this.Write("\r\n\r\nLink: ");
             
-            #line 10 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 10 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Link));
             
             #line default
             #line hidden
             this.Write("\r\n\r\nPayout: ");
             
-            #line 12 "C:\Code2011\da\2\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
+            #line 12 "C:\Code2011\da\1\work\Apps\CampaignWiki\CampaignWikiWebApplication1\CampaignWikiLibrary1\Templates\PreTextTemplate1.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(Payout));
             
             #line default

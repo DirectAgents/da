@@ -5,6 +5,7 @@
     border-collapse: collapse;
     background-color: white;
 }
+
 table.campaignList th {
 	border-width: 0px;
 	padding: 0px;
@@ -12,6 +13,7 @@ table.campaignList th {
 	border-color: white;
 	background-color: white;
 }
+
 table.campaignList td {
 	border-width: 0px;
 	padding: 5px;
@@ -19,9 +21,6 @@ table.campaignList td {
 	border-color: white;
 	background-color: white;
 }
-
-/* DEFAULTS
-----------------------------------------------------------*/
 
 body   
 {
@@ -54,10 +53,6 @@ p
     margin-bottom: 10px;
     line-height: 1.6em;
 }
-
-
-/* HEADINGS   
-----------------------------------------------------------*/
 
 h1, h2, h3, h4, h5, h6
 {
@@ -97,16 +92,10 @@ h5, h6
     font-size: 1em;
 }
 
-/* this rule styles <h1> and <h2> tags that are the 
-first child of the left and right table columns */
 .rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
 {
     margin-top: 0px;
 }
-
-
-/* PRIMARY LAYOUT ELEMENTS   
-----------------------------------------------------------*/
 
 .page
 {
@@ -160,10 +149,6 @@ first child of the left and right table columns */
     line-height: normal;
 }
 
-
-/* TAB MENU   
-----------------------------------------------------------*/
-
 div.hideSkiplink
 {
     background-color:#3a4f63;
@@ -208,9 +193,6 @@ div.menu ul li a:active
     color: #cfdbe6;
     text-decoration: none;
 }
-
-/* FORM ELEMENTS   
-----------------------------------------------------------*/
 
 fieldset
 {
@@ -257,9 +239,6 @@ div.accountInfo
 {
     width: 42%;
 }
-
-/* MISC  
-----------------------------------------------------------*/
 
 .clear
 {
