@@ -35,6 +35,106 @@
             <td>
                 <asp:Button ID="LinkButton1" runat="server" OnClick="LinkButton1_Click" Text="Get CSV" />
             </td>
+            <td>
+
+                <asp:ListView ID="ListView1" runat="server" DataKeyNames="id" DataSourceID="SqlDataSource2">
+                    <AlternatingItemTemplate>
+                        <li style="background-color: #FAFAD2;color: #284775;">id:
+                            <asp:Label ID="idLabel" runat="server" Text='<%# Eval("id") %>' />
+                            <br />
+                            name:
+                            <asp:Label ID="nameLabel" runat="server" Text='<%# Eval("name") %>' />
+                            <br />
+                            data:
+                            <asp:Label ID="dataLabel" runat="server" Text='<%# Eval("data") %>' />
+                            <br />
+                            <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
+                        </li>
+                    </AlternatingItemTemplate>
+                    <EditItemTemplate>
+                        <li style="background-color: #FFCC66;color: #000080;">id:
+                            <asp:Label ID="idLabel1" runat="server" Text='<%# Eval("id") %>' />
+                            <br />
+                            name:
+                            <asp:TextBox ID="nameTextBox" runat="server" Text='<%# Bind("name") %>' />
+                            <br />
+                            data:
+                            <asp:TextBox ID="dataTextBox" runat="server" Text='<%# Bind("data") %>' />
+                            <br />
+                            <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" />
+                            <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
+                        </li>
+                    </EditItemTemplate>
+                    <EmptyDataTemplate>
+                        No data was returned.
+                    </EmptyDataTemplate>
+                    <InsertItemTemplate>
+                        <li style="">name:
+                            <asp:TextBox ID="nameTextBox" runat="server" Text='<%# Bind("name") %>' />
+                            <br />data:
+                            <asp:TextBox ID="dataTextBox" runat="server" Text='<%# Bind("data") %>' />
+                            <br />
+                            <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" />
+                            <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
+                        </li>
+                    </InsertItemTemplate>
+                    <ItemSeparatorTemplate>
+<br />
+                    </ItemSeparatorTemplate>
+                    <ItemTemplate>
+                        <li style="background-color: #FFFBD6;color: #333333;">id:
+                            <asp:Label ID="idLabel" runat="server" Text='<%# Eval("id") %>' />
+                            <br />
+                            name:
+                            <asp:Label ID="nameLabel" runat="server" Text='<%# Eval("name") %>' />
+                            <br />
+                            data:
+                            <asp:Label ID="dataLabel" runat="server" Text='<%# Eval("data") %>' />
+                            <br />
+                            <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
+                        </li>
+                    </ItemTemplate>
+                    <LayoutTemplate>
+                        <ul ID="itemPlaceholderContainer" runat="server" style="font-family: Verdana, Arial, Helvetica, sans-serif;">
+                            <li runat="server" id="itemPlaceholder" />
+                        </ul>
+                        <div style="text-align: center;background-color: #FFCC66;font-family: Verdana, Arial, Helvetica, sans-serif;color: #333333;">
+                        </div>
+                    </LayoutTemplate>
+                    <SelectedItemTemplate>
+                        <li style="background-color: #FFCC66;font-weight: bold;color: #000080;">id:
+                            <asp:Label ID="idLabel" runat="server" Text='<%# Eval("id") %>' />
+                            <br />
+                            name:
+                            <asp:Label ID="nameLabel" runat="server" Text='<%# Eval("name") %>' />
+                            <br />
+                            data:
+                            <asp:Label ID="dataLabel" runat="server" Text='<%# Eval("data") %>' />
+                            <br />
+                            <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
+                        </li>
+                    </SelectedItemTemplate>
+                </asp:ListView>
+
+                <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:LendingTreeWebConnectionString %>" 
+                    DeleteCommand="DELETE FROM [Infos] WHERE [id] = @id" 
+                    InsertCommand="INSERT INTO [Infos] ([name], [data]) VALUES (@name, @data)" SelectCommand="SELECT * FROM [Infos]" 
+                    UpdateCommand="UPDATE [Infos] SET [name] = @name, [data] = @data WHERE [id] = @id">
+                    <DeleteParameters>
+                        <asp:Parameter Name="id" Type="Int32" />
+                    </DeleteParameters>
+                    <InsertParameters>
+                        <asp:Parameter Name="name" Type="String" />
+                        <asp:Parameter Name="data" Type="String" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="name" Type="String" />
+                        <asp:Parameter Name="data" Type="String" />
+                        <asp:Parameter Name="id" Type="Int32" />
+                    </UpdateParameters>
+                </asp:SqlDataSource>
+            </td>
         </tr>
     </table>
     <div>
