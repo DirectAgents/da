@@ -16,21 +16,27 @@ namespace LendingTreeLib
             BuildContainer();
         }
 
-        void Application_End(object sender, EventArgs e)
+        protected static void BuildContainer()
         {
-            CleanUp();
-        }
+            IUnityContainer container = new UnityContainer();
 
-        protected static void CleanUp()
-        {
-            if (Container != null)
-            {
-                Container.Dispose();
-            }
+            container
+
+                .RegisterType<ILogger, DatabaseLogger>()
+
+                .RegisterInstance<LendingTreeConfig>(LendingTreeConfig.Create(System.Web.Hosting.HostingEnvironment.MapPath(
+                    "~/App_Data/LendingTreeConfig." + WebConfigurationManager.AppSettings["LendingTreeConfiguration"] + ".xml")))
+
+                .RegisterInstance<string>("ConnectionString",
+                    ConfigurationManager.ConnectionStrings["LendingTreeWebConnectionString"].ConnectionString)
+
+                .RegisterInstance<string>("StatesExcludedFromDisclosure",
+                    WebConfigurationManager.AppSettings["StatesExcludedFromDisclosure"]);
+
+            Container = container;
         }
 
         private static IUnityContainer _container;
-
         public static IUnityContainer Container
         {
             get
@@ -51,24 +57,17 @@ namespace LendingTreeLib
             }
         }
 
-        protected static void BuildContainer()
+        void Application_End(object sender, EventArgs e)
         {
-            IUnityContainer container = new UnityContainer();
+            CleanUp();
+        }
 
-            container
-
-                .RegisterType<ILogger, DatabaseLogger>()
-
-                .RegisterInstance<LendingTreeConfig>(LendingTreeConfig.Create(System.Web.Hosting.HostingEnvironment.MapPath(
-                    "~/App_Data/LendingTreeConfig." + WebConfigurationManager.AppSettings["LendingTreeConfiguration"] + ".xml")))
-
-                .RegisterInstance<string>("ConnectionString",
-                    ConfigurationManager.ConnectionStrings["LendingTreeWebConnectionString"].ConnectionString)
-
-                .RegisterInstance<string>("StatesExcludedFromDisclosure",
-                    WebConfigurationManager.AppSettings["StatesExcludedFromDisclosure"]);
-
-            Container = container;
+        protected static void CleanUp()
+        {
+            if (Container != null)
+            {
+                Container.Dispose();
+            }
         }
     }
 }

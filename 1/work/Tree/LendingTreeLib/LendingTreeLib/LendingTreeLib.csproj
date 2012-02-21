@@ -76,7 +76,7 @@
     <Compile Include="Common\Utf8StringWriter.cs" />
     <Compile Include="Common\XmlDeserializer.cs" />
     <Compile Include="QueryStringAttribute.cs" />
-    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Loggers\ExtensionMethods.cs" />
     <Compile Include="IContainerAccessor.cs" />
     <Compile Include="ILendingTreeModel.cs" />
     <Compile Include="Global.cs" />

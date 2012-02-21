@@ -40,6 +40,129 @@ namespace LendingTreeLib
             }
         }
 
+        /// <summary>
+        /// Here is where things get kicked off in terms of a page request.
+        /// Dependency injection is performed and events are subscribed to
+        /// in the model which we use to manage session state.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnPreInit(EventArgs e)
+        {
+            InjectDependencies();
+
+            _Model.PropertyChanged += Model_PropertyChanged;
+
+            base.OnPreInit(e);
+        }
+
+        /// <summary>
+        /// Object builder functionality of the Unity container.
+        /// </summary>
+        void InjectDependencies()
+        {
+            var context = HttpContext.Current;
+            if (context != null)
+            {
+                var accessor = context.ApplicationInstance as IContainerAccessor;
+                if (accessor != null)
+                {
+                    var container = accessor.Container;
+                    if (container != null)
+                    {
+                        container.BuildUp(this.GetType(), this, this.GetType().FullName);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException("No Unity container found");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// When a model property is changed this event stores the value in the session.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="propertyChangedEvent"></param>
+        protected void Model_PropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEvent)
+        {
+            string propertyName = propertyChangedEvent.PropertyName;
+
+            var propertiesToSave = new string[] { 
+                                                    _Model.DataPropertyName, 
+                                                    SessionKeys.AppID
+                                                };
+
+            if (propertiesToSave.Contains(propertyName))
+            {
+                Session[SessionKeys.QuickMatchPrefix + propertyName] = (sender as ILendingTreeModel)[propertyName];
+            }
+        }
+
+        /// <summary>
+        /// Get LendingTreeAffiliateRequest from the Session if it exists.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnLoad(EventArgs e)
+        {
+            ProcessQueryStringAttributes();
+
+            InitializeDebugMode();
+
+            InitializeModel();
+
+            base.OnLoad(e);
+        }
+
+        private void InitializeModel()
+        {
+            string lendingTreeAffiliateRequestsessionKey = SessionKeys.QuickMatchPrefix + _Model.DataPropertyName;
+            if (Session[lendingTreeAffiliateRequestsessionKey] != null)
+            {
+                _Model.Data = (LendingTreeAffiliateRequest)Session[lendingTreeAffiliateRequestsessionKey];
+            }
+        }
+
+        private void InitializeDebugMode()
+        {
+            if (this.Debug == SessionKeys.True)
+            {
+                EnableSessionValue(SessionKeys.AutomationKey);
+            }
+        }
+
+        private void ProcessQueryStringAttributes()
+        {
+            foreach (var pi in this.GetType().GetProperties())
+            {
+                var attr = (QueryStringAttribute)Attribute.GetCustomAttribute(pi, typeof(QueryStringAttribute));
+
+                if (attr != null)
+                {
+                    string set = Request.QueryString[attr.ParameterName ?? pi.Name];
+
+                    if (set != null)
+                    {
+                        pi.SetValue(this, set, null);
+                    }
+                    else if (attr.DefaultValue != null)
+                    {
+                        pi.SetValue(this, attr.DefaultValue, null);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Service locator
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T Resolve<T>()
+        {
+            return (T)(Global.Container.Resolve(typeof(T)));
+        }
+
         public T SessionValue<T>(string key)
         {
             object sessionValue = Session[key];
@@ -70,108 +193,6 @@ namespace LendingTreeLib
             {
                 control.Visible = visible;
             }
-        }
-
-        /// <summary>
-        /// Here is where things get kicked off in terms of a page request.
-        /// Dependency injection is performed and events are subscribed to
-        /// in the model which we use to manage session state.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnPreInit(EventArgs e)
-        {
-            InjectDependencies();
-            _Model.PropertyChanged += Model_PropertyChanged;
-            base.OnPreInit(e);
-        }
-
-        /// <summary>
-        /// Get LendingTreeAffiliateRequest from the Session if it exists.
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnLoad(EventArgs e)
-        {
-            ProcessQueryStringAttributes();
-
-            if (this.Debug == SessionKeys.True) 
-                EnableSessionValue(SessionKeys.AutomationKey);
-
-            string sessionKey = SessionKeys.QuickMatchPrefix + _Model.DataPropertyName;
-            if (Session[sessionKey] != null) 
-                _Model.Data = (LendingTreeAffiliateRequest)Session[sessionKey];
-
-            base.OnLoad(e);
-        }
-
-        void ProcessQueryStringAttributes()
-        {
-            foreach (var pi in this.GetType().GetProperties())
-            {
-                var attr = (QueryStringAttribute)Attribute.GetCustomAttribute(pi, typeof(QueryStringAttribute));
-
-                if (attr != null)
-                {
-                    string set = Request.QueryString[attr.ParameterName ?? pi.Name];
-
-                    if (set != null)
-                        pi.SetValue(this, set, null);
-                    else if (attr.DefaultValue != null)
-                        pi.SetValue(this, attr.DefaultValue, null);
-                }
-            }
-        }
-
-        /// <summary>
-        /// When a model property is changed this event stores the value in the session.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="e"></param>
-        protected void Model_PropertyChanged(object model, PropertyChangedEventArgs e)
-        {
-            string propertyName = e.PropertyName;
-
-            var propertiesToSave = new string[] 
-            { 
-                _Model.DataPropertyName, 
-                SessionKeys.AppID
-            };
-
-            if (propertiesToSave.Contains(propertyName))
-            {
-                Session[SessionKeys.QuickMatchPrefix + propertyName] = (model as ILendingTreeModel)[propertyName];
-            }
-        }
-
-        /// <summary>
-        /// Object builder functionality of the Unity container.
-        /// </summary>
-        void InjectDependencies()
-        {
-            var context = HttpContext.Current;
-            if (context != null)
-            {
-                var accessor = context.ApplicationInstance as IContainerAccessor;
-                if (accessor != null)
-                {
-                    var container = accessor.Container;
-                    if (container != null)
-                    {
-                        container.BuildUp(this.GetType(), this, this.GetType().FullName);
-                    }
-                    else
-                        throw new InvalidOperationException("No Unity container found");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Service locator
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T Resolve<T>()
-        {
-            return (T)(Global.Container.Resolve(typeof(T)));
         }
     }
 }
