@@ -27,7 +27,7 @@ public class BeforeXmlPostCustomLogic
 
     public void Check()
     {
-        if (ApplicantHasBadCredit && OneChanceIn(4))
+        if (ApplicantHasBadCredit && OneChanceIn(3))
         {
             CreditHistory.Value = "MAJORCREDITPROBLEMS";
         }
