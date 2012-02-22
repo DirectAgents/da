@@ -16,6 +16,8 @@ public partial class ThankYou : QuickMatchPageBase
             Response.Redirect(UrlFor(EPages.Page1));
         }
 
+        Model.AffiliateSiteID = this.ReferringCdNumber;
+
         // NOTE: this logic can probably be removed since the ESourceId comes
         // from the theme configuration
         string esid = SessionValue<string>("ESourceId");

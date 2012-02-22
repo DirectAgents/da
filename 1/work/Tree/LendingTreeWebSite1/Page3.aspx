@@ -74,18 +74,18 @@
                         <div id="form_step3_inner">
                             <uc1:FirstName ID="FirstName1" runat="server" />
                             <test:Automation ID="Automation1" runat="server" Action="SetProperty" Target="FirstName1"
-                                Property="Value" Value="Bill" Key="TestAutomation" />
+                                Property="Value" Value="Test" Key="TestAutomation" />
                             <uc2:LastName ID="LastName1" runat="server" />
                             <test:Automation ID="Automation2" runat="server" Action="SetProperty" Target="LastName1"
-                                Property="Value" Value="Clay" Key="TestAutomation" />
+                                Property="Value" Value="Test" Key="TestAutomation" />
                             <uc3:StreetAddress ID="StreetAddress1" runat="server" />
                             <test:Automation ID="Automation3" runat="server" Action="SetProperty" Target="StreetAddress1"
-                                Property="Value" Value="Nakatomi Tower 2121 Avenue of the Stars, Century City, Los Angeles"
+                                Property="Value" Value="Test"
                                 Key="TestAutomation" />
                             <uc4:ZipCode ID="ZipCode1" runat="server" />
                             <uc5:Email ID="Email1" runat="server" />
                             <test:Automation ID="Automation4" runat="server" Action="SetProperty" Target="Email1"
-                                Property="Value" Value="bclay@nakacorp.com" Key="TestAutomation" />
+                                Property="Value" Value="test@test.com" Key="TestAutomation" />
                             <uc6:HomePhone ID="HomePhone1" runat="server" />
                             <test:Automation ID="Automation5" runat="server" Action="SetProperty" Target="HomePhone1"
                                 Property="Value" Value="310-555-1111" Key="TestAutomation" />
@@ -97,7 +97,7 @@
                                 Property="Value" Value="11/05/1955" Key="TestAutomation" />
                             <uc10:SocialSecurityNumber ID="SocialSecurityNumber1" runat="server" Msg="NOT REQUIRED, but providing this final detail could help you save!" />
                             <test:Automation ID="Automation8" runat="server" Action="SetProperty" Target="SocialSecurityNumber1"
-                                Property="Value" Value="165-656-9999" Key="TestAutomation" />
+                                Property="Value" Value="999-99-9999" Key="TestAutomation" />
                             <asp:Button ID="ShowMyResults1" runat="server" Text="" class="btnPage3" OnClick="ShowMyResults1_ButtonClick" />
                         </div>
                         <div id="submit-0" class="submitboard">

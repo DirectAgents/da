@@ -20,7 +20,7 @@ public partial class Controls_Page3_SocialSecurityNumber : LendingTreeLib.UserCo
         {
             TextBox1.Text = value.Substring(0, 3);
             TextBox2.Text = value.Substring(4, 2);
-            TextBox3.Text = value.Substring(8, 4);
+            TextBox3.Text = value.Substring(7, 4);
         }
     }
     public string Msg

@@ -386,6 +386,9 @@ namespace LendingTreeLib.Schemas
 
         private YesNoType lTLOptinField;
 
+        private string affiliateSiteID;
+
+
         /// <remarks/>
         public string LendingTreeAffiliatePartnerCode
         {
@@ -551,6 +554,20 @@ namespace LendingTreeLib.Schemas
             {
                 this.lTLOptinField = value;
                 this.RaisePropertyChanged("LTLOptin");
+            }
+        }
+
+        /// <remarks/>
+        public string AffiliateSiteID
+        {
+            get
+            {
+                return this.affiliateSiteID;
+            }
+            set
+            {
+                this.affiliateSiteID = value;
+                this.RaisePropertyChanged("AffiliateSiteID");
             }
         }
 

@@ -7,13 +7,13 @@ namespace LendingTreeLib
 {
     public class LendingTreeModel : INotifyPropertyChanged, ILendingTreeModel
     {
-        LendingTreeAffiliateRequest _data = null;
-
         [Dependency]
         public LendingTreeConfig LendingTreeConfig { get; set; }
 
         [Dependency("StatesExcludedFromDisclosure")]
         public string StatesExcludedFromDisclosure { get; set; }
+
+        LendingTreeAffiliateRequest _data = null;
 
         /// <summary>
         /// LendingTreeAffiliateRequest holds the information that translates to an XML POST.
@@ -23,7 +23,6 @@ namespace LendingTreeLib
         {
             get
             {
-                // This won't be null if logic in Page_Load pull it from Session
                 if (_data == null)
                 {
                     _data = new LendingTreeAffiliateRequest();
@@ -34,7 +33,7 @@ namespace LendingTreeLib
             }
             set
             {
-                // You can't set the data property once it is set once
+                // Ensure property is on set one time.
                 if (_data != null)
                 {
                     throw new Exception("model already exists");
@@ -478,6 +477,19 @@ namespace LendingTreeLib
             {
                 Data.Request.SourceOfRequest.LTLOptin = value ? YesNoType.Y : YesNoType.N;
                 OnDataChanged("IsVetran");
+            }
+        }
+
+        public string AffiliateSiteID
+        {
+            get
+            {
+                return Data.Request.SourceOfRequest.AffiliateSiteID;
+            }
+            set
+            {
+                Data.Request.SourceOfRequest.AffiliateSiteID = value;
+                OnDataChanged("AffiliateSiteID");
             }
         }
 

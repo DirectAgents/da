@@ -29,6 +29,7 @@
         string WorkPhone { get; set; }
         string ApplicantZipCode { get; set; }
         bool LendingTreeLoansOptIn { get; set; }
+        string AffiliateSiteID { get; set; }
         bool IsVetran { get; set; }
         decimal PurchasePrice { get; set; }
         decimal DownPayment { get; set; }

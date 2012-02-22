@@ -11,7 +11,7 @@ public class Report : IHttpHandler
     const string _toKey = "to";
     const string _textContentType = "text/csv";
     const string _csvContentDisposition = "attachment; filename=lendingtree.csv";
-    const string _sql = "SELECT * FROM dbo.GetLeads() WHERE Timestamp >= '{0:M/d/yyyy HH:mm:ss}' and Timestamp <= '{1:M/d/yyyy HH:mm:ss}'";
+    const string _sql = "SELECT * FROM dbo.GetLeads2('{0:M/d/yyyy HH:mm:ss}','{1:M/d/yyyy HH:mm:ss}')";
     
     HttpContext _context = null;
 
@@ -103,7 +103,7 @@ public class Report : IHttpHandler
     {
         get
         {
-            return new DateTime(Int64.Parse(_context.Request[_toKey]));
+            return new DateTime(Int64.Parse(_context.Request[_toKey])).AddDays(1); // before the following day
         }
     }
     

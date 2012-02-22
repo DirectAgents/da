@@ -6,20 +6,33 @@ public partial class da_Default : QuickMatchPageBase
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        GridView1.DataBound += new EventHandler(GridView1_DataBound);
-
-        if (IsAdmin)
-        {
-            if (!Page.IsPostBack)
-            {
-                CalendarFrom.SelectedDate = DateTime.Today;
-                CalendarTo.SelectedDate = DateTime.Now;
-            }
-        }
-        else
+        if (!IsAdmin)
         {
             Response.Redirect("~/");
         }
+
+        GridView1.DataBound += new EventHandler(GridView1_DataBound);
+
+        if (!IsPostBack)
+        {
+            Session["fromtime"] = DateTime.Today.ToShortDateString();
+            Session["totime"] = DateTime.Today.AddDays(1).ToShortDateString();
+        }
+    }
+
+    protected void GraphsCheckBox_CheckChanged(object sender, EventArgs e)
+    {
+        GraphsPanel.Visible = GraphsCheckBox.Checked;
+    }
+
+    protected void CalendarFrom_SelectionChanged(object sender, EventArgs e)
+    {
+        Session["fromtime"] = CalendarFrom.SelectedDate.ToString("MM/dd/yyyy");
+    }
+
+    protected void CalendarFrom_SelectionChanged2(object sender, EventArgs e)
+    {
+        Session["totime"] = CalendarTo.SelectedDate.AddDays(1).ToString("MM/dd/yyyy");
     }
 
     void GridView1_DataBound(object sender, EventArgs e)
