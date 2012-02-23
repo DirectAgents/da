@@ -10,51 +10,24 @@ public partial class da_Default : QuickMatchPageBase
         {
             Response.Redirect("~/");
         }
-
         GridView1.DataBound += new EventHandler(GridView1_DataBound);
-
-        InitializeDates();
     }
 
-    private void InitializeDates()
+    protected void Page_PreRender(object sender, EventArgs e)
     {
-        var from = DateTime.Today;
-        var to = DateTime.Today.AddDays(1);
-
-        if (CalendarFrom.SelectedDate == DateTime.MinValue)
+        if (FromDateSelector.SelectedDate == DateTime.MinValue)
         {
-            CalendarFrom.SelectedDate = from;
+            FromDateSelector.SelectedDate = DateTime.Today;
         }
-
-        if (CalendarTo.SelectedDate == DateTime.MinValue)
+        if (ToDateSelector.SelectedDate == DateTime.MinValue)
         {
-            CalendarTo.SelectedDate = to;
-        }
-
-        if (Session["fromtime"] == null)
-        {
-            Session["fromtime"] = from.ToString("yyyy-MM-dd");
-        }
-
-        if (Session["totime"] == null)
-        {
-            Session["totime"] = to.ToString("yyyy-MM-dd");
+            ToDateSelector.SelectedDate = DateTime.Today;
         }
     }
 
     protected void GraphsCheckBox_CheckChanged(object sender, EventArgs e)
     {
         GraphsPanel.Visible = GraphsCheckBox.Checked;
-    }
-
-    protected void CalendarFrom_SelectionChanged(object sender, EventArgs e)
-    {
-        Session["fromtime"] = CalendarFrom.SelectedDate.ToString("yyyy-MM-dd");
-    }
-
-    protected void CalendarFrom_SelectionChanged2(object sender, EventArgs e)
-    {
-        Session["totime"] = CalendarTo.SelectedDate.AddDays(1).ToString("yyyy-MM-dd");
     }
 
     void GridView1_DataBound(object sender, EventArgs e)
@@ -74,10 +47,16 @@ public partial class da_Default : QuickMatchPageBase
 
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
-        string fromTicks = CalendarFrom.SelectedDate.Ticks.ToString();
-        string toTicks = CalendarTo.SelectedDate.Ticks.ToString();
+        string fromTicks = FromDateSelector.SelectedDate.Ticks.ToString();
+        string toTicks = ToDateSelector.SelectedDate.Ticks.ToString();
         string urlFormat = "Report.ashx?from={0}&to={1}";
         string url = string.Format(urlFormat, fromTicks, toTicks);
         Response.Redirect(url);
+    }
+
+    protected void DropSessionButton_Click(object sender, EventArgs e)
+    {
+        Session.Abandon();
+        Response.Redirect("~/da");
     }
 }

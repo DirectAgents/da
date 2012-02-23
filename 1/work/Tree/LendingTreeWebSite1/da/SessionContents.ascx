@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="SessionContents.ascx.cs" Inherits="da_SessionContents" %>
+<asp:Xml ID="SessionContentXmlTransform" runat="server" TransformSource="~/App_Data/TransformSession.xslt"></asp:Xml>
