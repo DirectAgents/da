@@ -59,4 +59,9 @@ public partial class da_Default : QuickMatchPageBase
         Session.Abandon();
         Response.Redirect("~/da");
     }
+
+    protected void SqlDataSource1_Selecting(object sender, SqlDataSourceSelectingEventArgs e)
+    {
+        e.Command.CommandTimeout = 10000;
+    }
 }

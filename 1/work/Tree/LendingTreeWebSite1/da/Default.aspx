@@ -132,10 +132,11 @@
         <PagerSettings Mode="Numeric" Position="TopAndBottom" />
     </asp:GridView>
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:LendingTreeWebConnectionString %>"
-        SelectCommand="SELECT * FROM dbo.GetLeads2(@FromTimestamp, @ToTimestamp) order by [Timestamp] desc">
+        SelectCommand="SELECT * FROM dbo.GetLeads2(@FromTimestamp, @ToTimestamp) order by [Timestamp] desc" 
+        onselecting="SqlDataSource1_Selecting">
         <SelectParameters>
-            <asp:SessionParameter Name="FromTimestamp" SessionField="fromtime" DbType="DateTime" />
-            <asp:SessionParameter Name="ToTimestamp" SessionField="totime" DbType="DateTime" />
+            <asp:SessionParameter Name="FromTimestamp" SessionField="fromtime" />
+            <asp:SessionParameter Name="ToTimestamp" SessionField="totime" />
         </SelectParameters>
     </asp:SqlDataSource>
     <asp:LinkButton ID="DropSessionButton" runat="server" onclick="DropSessionButton_Click">Drop Session</asp:LinkButton>
