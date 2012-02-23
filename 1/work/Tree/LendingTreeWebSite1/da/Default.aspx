@@ -66,7 +66,7 @@
         </tr>
     </table>
     <asp:Panel ID="GraphsPanel" runat="server" Visible="false">
-        <table border="0" cellpadding="0" cellspacing="0">
+<%--        <table border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td>
                     <asp:Chart ID="Chart1" runat="server" DataSourceID="SqlDataSource3" Width="300px" Height="400px">
@@ -107,7 +107,7 @@
                     </asp:SqlDataSource>
                 </td>
             </tr>
-        </table>
+        </table>--%>
     </asp:Panel>
     <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1" AllowPaging="True"
         PageSize="100" BackColor="White" BorderColor="#999999" BorderStyle="Solid" BorderWidth="1px" CellPadding="3" Font-Size="Small"
