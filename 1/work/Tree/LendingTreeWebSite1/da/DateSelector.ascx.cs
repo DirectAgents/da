@@ -16,7 +16,7 @@ public partial class DateSelector : System.Web.UI.UserControl
 
     protected void Page_Init()
     {
-        this.DateFormat = "yyyy/MM/dd";
+        this.DateFormat = "yyyy-MM-dd";
         this.DisplayFormat = "MM/dd/yyyy";
     }
 
@@ -24,11 +24,11 @@ public partial class DateSelector : System.Web.UI.UserControl
     {
         if (sender is TextBox)
         {
-            string selectedDate = (sender as TextBox).Text;
-            if (!string.IsNullOrWhiteSpace(selectedDate))
+            string selectedDateText = (sender as TextBox).Text;
+            if (!string.IsNullOrWhiteSpace(selectedDateText))
             {
                 DateTime parsedDate;
-                bool successfullyParsedDate = DateTime.TryParse(selectedDate, out parsedDate);
+                bool successfullyParsedDate = DateTime.TryParse(selectedDateText, out parsedDate);
                 if (successfullyParsedDate)
                 {
                     SelectedDate = parsedDate;
@@ -42,35 +42,35 @@ public partial class DateSelector : System.Web.UI.UserControl
     //-------------------------------------------------------------------------
     #region Private Methods
     //-------------------------------------------------------------------------
+    private DateTime GetSelectedDate()
+    {
+        return GetSelectedDateFromSession();
+    }
+    
     private void SetSelectedDate(DateTime selectedDate)
     {
         PutSelectedDateInSession(selectedDate);
         DateSelectorTextBox.Text = selectedDate.ToString(this.DisplayFormat);
     }
 
-    private void PutSelectedDateInSession(DateTime selectedDate)
-    {
-        if (GetSelectedDateFromSession() != selectedDate)
-        {
-            Session[this.SelectedDateSessionKey] = selectedDate;
-        }
-    }
-
-    private DateTime GetSelectedDate()
-    {
-        return GetSelectedDateFromSession();
-    }
-
     private DateTime GetSelectedDateFromSession()
     {
-        DateTime? dateInSession = Session[this.SelectedDateSessionKey] as DateTime?;
+        string dateInSession = Session[this.SelectedDateSessionKey] as string;
         if (dateInSession != null)
         {
-            return dateInSession.Value;
+            return DateTime.Parse(dateInSession);
         }
         else
         {
             return DateTime.MinValue;
+        }
+    }
+
+    private void PutSelectedDateInSession(DateTime selectedDate)
+    {
+        if (GetSelectedDateFromSession() != selectedDate)
+        {
+            Session[this.SelectedDateSessionKey] = selectedDate.ToString(this.DateFormat);
         }
     }
     #endregion

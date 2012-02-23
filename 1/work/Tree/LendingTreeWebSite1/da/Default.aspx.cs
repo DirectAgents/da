@@ -27,7 +27,7 @@ public partial class da_Default : QuickMatchPageBase
 
     protected void GraphsCheckBox_CheckChanged(object sender, EventArgs e)
     {
-        GraphsPanel.Visible = GraphsCheckBox.Checked;
+        //GraphsPanel.Visible = GraphsCheckBox.Checked;
     }
 
     void GridView1_DataBound(object sender, EventArgs e)

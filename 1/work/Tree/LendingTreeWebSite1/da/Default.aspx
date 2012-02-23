@@ -26,12 +26,12 @@
                             <uc1:DateSelector ID="ToDateSelector" runat="server" SelectedDateSessionKey="totime" />
                         </td>
                     </tr>
-                    <tr>
+<%--                    <tr>
                         <td colspan="2">
                             <asp:CheckBox runat="server" ID="GraphsCheckBox" AutoPostBack="true" OnCheckedChanged="GraphsCheckBox_CheckChanged" Checked="false"
                                 Text="Show Charts" />
                         </td>
-                    </tr>
+                    </tr>--%>
                 </table>
             </td>
             <td>
@@ -132,7 +132,7 @@
         <PagerSettings Mode="Numeric" Position="TopAndBottom" />
     </asp:GridView>
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:LendingTreeWebConnectionString %>"
-        SelectCommand="SELECT * FROM dbo.GetLeads2(@FromTimestamp, @ToTimestamp)">
+        SelectCommand="SELECT * FROM dbo.GetLeads2(@FromTimestamp, @ToTimestamp) order by [Timestamp] desc">
         <SelectParameters>
             <asp:SessionParameter Name="FromTimestamp" SessionField="fromtime" DbType="DateTime" />
             <asp:SessionParameter Name="ToTimestamp" SessionField="totime" DbType="DateTime" />
