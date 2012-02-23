@@ -13,10 +13,32 @@ public partial class da_Default : QuickMatchPageBase
 
         GridView1.DataBound += new EventHandler(GridView1_DataBound);
 
-        if (!IsPostBack)
+        InitializeDates();
+    }
+
+    private void InitializeDates()
+    {
+        var from = DateTime.Today;
+        var to = DateTime.Today.AddDays(1);
+
+        if (CalendarFrom.SelectedDate == DateTime.MinValue)
         {
-            Session["fromtime"] = DateTime.Today.ToShortDateString();
-            Session["totime"] = DateTime.Today.AddDays(1).ToShortDateString();
+            CalendarFrom.SelectedDate = from;
+        }
+
+        if (CalendarTo.SelectedDate == DateTime.MinValue)
+        {
+            CalendarTo.SelectedDate = to;
+        }
+
+        if (Session["fromtime"] == null)
+        {
+            Session["fromtime"] = from.ToString("yyyy-MM-dd");
+        }
+
+        if (Session["totime"] == null)
+        {
+            Session["totime"] = to.ToString("yyyy-MM-dd");
         }
     }
 
@@ -27,12 +49,12 @@ public partial class da_Default : QuickMatchPageBase
 
     protected void CalendarFrom_SelectionChanged(object sender, EventArgs e)
     {
-        Session["fromtime"] = CalendarFrom.SelectedDate.ToString("MM/dd/yyyy");
+        Session["fromtime"] = CalendarFrom.SelectedDate.ToString("yyyy-MM-dd");
     }
 
     protected void CalendarFrom_SelectionChanged2(object sender, EventArgs e)
     {
-        Session["totime"] = CalendarTo.SelectedDate.AddDays(1).ToString("MM/dd/yyyy");
+        Session["totime"] = CalendarTo.SelectedDate.AddDays(1).ToString("yyyy-MM-dd");
     }
 
     void GridView1_DataBound(object sender, EventArgs e)
