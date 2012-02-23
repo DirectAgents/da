@@ -26,7 +26,7 @@
                             <uc1:DateSelector ID="ToDateSelector" runat="server" SelectedDateSessionKey="totime" />
                         </td>
                     </tr>
-<%--                    <tr>
+                    <%--                    <tr>
                         <td colspan="2">
                             <asp:CheckBox runat="server" ID="GraphsCheckBox" AutoPostBack="true" OnCheckedChanged="GraphsCheckBox_CheckChanged" Checked="false"
                                 Text="Show Charts" />
@@ -66,7 +66,7 @@
         </tr>
     </table>
     <asp:Panel ID="GraphsPanel" runat="server" Visible="false">
-<%--        <table border="0" cellpadding="0" cellspacing="0">
+        <%--        <table border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td>
                     <asp:Chart ID="Chart1" runat="server" DataSourceID="SqlDataSource3" Width="300px" Height="400px">
@@ -132,12 +132,13 @@
         <PagerSettings Mode="Numeric" Position="TopAndBottom" />
     </asp:GridView>
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:LendingTreeWebConnectionString %>"
-        SelectCommand="SELECT * FROM dbo.GetLeads2(@FromTimestamp, @ToTimestamp) order by [Timestamp] desc" 
-        onselecting="SqlDataSource1_Selecting">
+        SelectCommand="GetLeads3" 
+        OnSelecting="SqlDataSource1_Selecting"
+        SelectCommandType="StoredProcedure">
         <SelectParameters>
-            <asp:SessionParameter Name="FromTimestamp" SessionField="fromtime" />
-            <asp:SessionParameter Name="ToTimestamp" SessionField="totime" />
+            <asp:ControlParameter ControlID="FromDateSelector" Name="FromTimestamp" PropertyName="SelectedDate" />
+            <asp:ControlParameter ControlID="ToDateSelector" Name="ToTimestamp" PropertyName="SelectedDate" />
         </SelectParameters>
     </asp:SqlDataSource>
-    <asp:LinkButton ID="DropSessionButton" runat="server" onclick="DropSessionButton_Click">Drop Session</asp:LinkButton>
+    <asp:LinkButton ID="DropSessionButton" runat="server" OnClick="DropSessionButton_Click">Drop Session</asp:LinkButton>
 </asp:Content>
