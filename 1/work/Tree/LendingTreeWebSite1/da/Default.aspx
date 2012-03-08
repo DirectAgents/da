@@ -15,7 +15,7 @@
                             From:
                         </td>
                         <td>
-                            <uc1:DateSelector ID="FromDateSelector" runat="server" SelectedDateSessionKey="fromtime" />
+                   <%--         <uc1:DateSelector ID="FromDateSelector" runat="server" SelectedDateSessionKey="fromtime" />--%>
                         </td>
                     </tr>
                     <tr>
@@ -23,7 +23,7 @@
                             To:
                         </td>
                         <td>
-                            <uc1:DateSelector ID="ToDateSelector" runat="server" SelectedDateSessionKey="totime" />
+                    <%--        <uc1:DateSelector ID="ToDateSelector" runat="server" SelectedDateSessionKey="totime" />--%>
                         </td>
                     </tr>
                     <%--                    <tr>

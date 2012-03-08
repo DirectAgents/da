@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LendingTreeWebModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="LendingTreeWebModelStoreContainer">
+          <EntitySet Name="EventData" EntityType="LendingTreeWebModel.Store.EventData" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EventType" EntityType="LendingTreeWebModel.Store.EventType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Infos" EntityType="LendingTreeWebModel.Store.Infos" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="WebLogEntry" EntityType="LendingTreeWebModel.Store.WebLogEntry" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_WebLogEntry_EventData" Association="LendingTreeWebModel.Store.FK_WebLogEntry_EventData">
+            <End Role="EventData" EntitySet="EventData" />
+            <End Role="WebLogEntry" EntitySet="WebLogEntry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebLogEntry_EventType" Association="LendingTreeWebModel.Store.FK_WebLogEntry_EventType">
+            <End Role="EventType" EntitySet="EventType" />
+            <End Role="WebLogEntry" EntitySet="WebLogEntry" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="EventData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Data" Type="xml" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Infos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="data" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WebLogEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="EventTypeId" Type="int" Nullable="false" />
+          <Property Name="EventDataId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_WebLogEntry_EventData">
+          <End Role="EventData" Type="LendingTreeWebModel.Store.EventData" Multiplicity="1" />
+          <End Role="WebLogEntry" Type="LendingTreeWebModel.Store.WebLogEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventData">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebLogEntry">
+              <PropertyRef Name="EventDataId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebLogEntry_EventType">
+          <End Role="EventType" Type="LendingTreeWebModel.Store.EventType" Multiplicity="1" />
+          <End Role="WebLogEntry" Type="LendingTreeWebModel.Store.WebLogEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebLogEntry">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetLeads3" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FromTimestamp" Type="datetime" Mode="In" />
+          <Parameter Name="ToTimestamp" Type="datetime" Mode="In" />
+        </Function>
+        <!--Errors Found During Generation:
+      warning 6013: The table/view 'LendingTreeWeb.dbo.zips' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+      
+      <EntityType Name="zips">
+        <Property Name="ZIP Code" Type="varchar" MaxLength="5" />
+        <Property Name="City" Type="varchar" MaxLength="100" />
+        <Property Name="State Abbreviation" Type="varchar" MaxLength="2" />
+      </EntityType>-->
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LendingTreeWebModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="LendingTreeWebEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="EventDatas" EntityType="LendingTreeWebModel.EventData" />
+          <EntitySet Name="EventTypes" EntityType="LendingTreeWebModel.EventType" />
+          <EntitySet Name="Infos" EntityType="LendingTreeWebModel.Info" />
+          <EntitySet Name="WebLogEntries" EntityType="LendingTreeWebModel.WebLogEntry" />
+          <AssociationSet Name="FK_WebLogEntry_EventData" Association="LendingTreeWebModel.FK_WebLogEntry_EventData">
+            <End Role="EventData" EntitySet="EventDatas" />
+            <End Role="WebLogEntry" EntitySet="WebLogEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WebLogEntry_EventType" Association="LendingTreeWebModel.FK_WebLogEntry_EventType">
+            <End Role="EventType" EntitySet="EventTypes" />
+            <End Role="WebLogEntry" EntitySet="WebLogEntries" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="EventData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Data" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="WebLogEntries" Relationship="LendingTreeWebModel.FK_WebLogEntry_EventData" FromRole="EventData" ToRole="WebLogEntry" />
+        </EntityType>
+        <EntityType Name="EventType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="WebLogEntries" Relationship="LendingTreeWebModel.FK_WebLogEntry_EventType" FromRole="EventType" ToRole="WebLogEntry" />
+        </EntityType>
+        <EntityType Name="Info">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Type="Int32" Name="id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="data" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="WebLogEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="Timestamp" Nullable="false" />
+          <Property Type="Int32" Name="EventTypeId" Nullable="false" />
+          <Property Type="Int32" Name="EventDataId" Nullable="false" />
+          <NavigationProperty Name="EventData" Relationship="LendingTreeWebModel.FK_WebLogEntry_EventData" FromRole="WebLogEntry" ToRole="EventData" />
+          <NavigationProperty Name="EventType" Relationship="LendingTreeWebModel.FK_WebLogEntry_EventType" FromRole="WebLogEntry" ToRole="EventType" />
+        </EntityType>
+        <Association Name="FK_WebLogEntry_EventData">
+          <End Type="LendingTreeWebModel.EventData" Role="EventData" Multiplicity="1" />
+          <End Type="LendingTreeWebModel.WebLogEntry" Role="WebLogEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventData">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebLogEntry">
+              <PropertyRef Name="EventDataId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WebLogEntry_EventType">
+          <End Type="LendingTreeWebModel.EventType" Role="EventType" Multiplicity="1" />
+          <End Type="LendingTreeWebModel.WebLogEntry" Role="WebLogEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WebLogEntry">
+              <PropertyRef Name="EventTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LendingTreeWebModelStoreContainer" CdmEntityContainer="LendingTreeWebEntities" >
+          <EntitySetMapping Name="EventDatas">
+            <EntityTypeMapping TypeName="LendingTreeWebModel.EventData">
+              <MappingFragment StoreEntitySet="EventData">
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventTypes">
+            <EntityTypeMapping TypeName="LendingTreeWebModel.EventType">
+              <MappingFragment StoreEntitySet="EventType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Infos">
+            <EntityTypeMapping TypeName="LendingTreeWebModel.Info">
+              <MappingFragment StoreEntitySet="Infos">
+                <ScalarProperty Name="data" ColumnName="data" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WebLogEntries">
+            <EntityTypeMapping TypeName="LendingTreeWebModel.WebLogEntry">
+              <MappingFragment StoreEntitySet="WebLogEntry">
+                <ScalarProperty Name="EventDataId" ColumnName="EventDataId" />
+                <ScalarProperty Name="EventTypeId" ColumnName="EventTypeId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="Model" >
+        <EntityTypeShape EntityType="LendingTreeWebModel.EventData" Width="1.5" PointX="0.75" PointY="1.25" Height="1.5956835937499998" />
+        <EntityTypeShape EntityType="LendingTreeWebModel.EventType" Width="1.5" PointX="0.75" PointY="5.25" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="LendingTreeWebModel.Info" Width="1.5" PointX="2.75" PointY="4.75" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="LendingTreeWebModel.WebLogEntry" Width="1.5" PointX="3" PointY="0.875" Height="2.1725878906249996" />
+        <AssociationConnector Association="LendingTreeWebModel.FK_WebLogEntry_EventData" >
+          <ConnectorPoint PointX="2.25" PointY="2.047841796875" />
+          <ConnectorPoint PointX="3" PointY="2.047841796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="LendingTreeWebModel.FK_WebLogEntry_EventType" >
+          <ConnectorPoint PointX="2.25" PointY="6.62693359375" />
+          <ConnectorPoint PointX="4.40625" PointY="6.62693359375" />
+          <ConnectorPoint PointX="4.40625" PointY="3.0475878906249996" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

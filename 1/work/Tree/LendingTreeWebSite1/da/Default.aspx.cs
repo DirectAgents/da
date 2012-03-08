@@ -15,14 +15,14 @@ public partial class da_Default : QuickMatchPageBase
 
     protected void Page_PreRender(object sender, EventArgs e)
     {
-        if (FromDateSelector.SelectedDate == DateTime.MinValue)
-        {
-            FromDateSelector.SelectedDate = DateTime.Today;
-        }
-        if (ToDateSelector.SelectedDate == DateTime.MinValue)
-        {
-            ToDateSelector.SelectedDate = DateTime.Today;
-        }
+        //if (FromDateSelector.SelectedDate == DateTime.MinValue)
+        //{
+        //    FromDateSelector.SelectedDate = DateTime.Today;
+        //}
+        //if (ToDateSelector.SelectedDate == DateTime.MinValue)
+        //{
+        //    ToDateSelector.SelectedDate = DateTime.Today;
+        //}
     }
 
     protected void GraphsCheckBox_CheckChanged(object sender, EventArgs e)
@@ -47,8 +47,10 @@ public partial class da_Default : QuickMatchPageBase
 
     protected void LinkButton1_Click(object sender, EventArgs e)
     {
-        string fromTicks = FromDateSelector.SelectedDate.Ticks.ToString();
-        string toTicks = ToDateSelector.SelectedDate.Ticks.ToString();
+        //string fromTicks = FromDateSelector.SelectedDate.Ticks.ToString();
+        //string toTicks = ToDateSelector.SelectedDate.Ticks.ToString();
+        string fromTicks = DateTime.Today.AddDays(7).Ticks.ToString();
+        string toTicks = DateTime.Today.Ticks.ToString();
         string urlFormat = "Report.ashx?from={0}&to={1}";
         string url = string.Format(urlFormat, fromTicks, toTicks);
         Response.Redirect(url);
