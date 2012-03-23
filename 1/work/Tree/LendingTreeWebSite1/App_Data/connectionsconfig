@@ -1,4 +1,4 @@
 ﻿<connectionStrings>
   <!-- on the live site, the connection string uses SQL Server authentication -->
-  <add name="LendingTreeWebConnectionString" connectionString="Data Source=biz2\da;Initial Catalog=LendingTreeWeb;Integrated Security=True" providerName="System.Data.SqlClient"/>
+  <add name="LendingTreeWebConnectionString" connectionString="Data Source=biz2.directagents.local\da;Initial Catalog=LendingTreeWeb;Persist Security Info=True;User ID=alper2;Password=@Welcome2012" providerName="System.Data.SqlClient"/>
 </connectionStrings>

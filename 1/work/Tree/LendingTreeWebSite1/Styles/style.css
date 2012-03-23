@@ -51,7 +51,7 @@ Body
     color: rgb(69, 85, 96);
     margin: 0pt;
     padding: 0pt;
-    background: url('../images/bg-repeat.jpg') repeat-y scroll center top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-repeat.jpg') repeat-y scroll center top transparent;
 }
 .website-wrapper
 {
@@ -114,37 +114,55 @@ h2
 {
     font-size: 18px;
 }
-.left-rail
+.center-rail
 {
     text-align: center;
-    width: 210px;
+    width: 600px;
     color: rgb(102, 102, 102);
     display: inline-block;
     height: auto;
+	margin:0 auto;
+	margin-top:20px;
 }
-.left-rail h2
+.center-rail h2
 {
     font-weight: normal;
+	font-size:24px;
 }
+
+
 .board-content-data
 {
-    margin: 0pt auto;
+    text-align:center;
     width: 809px;
     padding: 0px;
     display: block;
+	margin-top
+	
 }
+
+
+.form-fields-inner{
+	margin-top:30px;
+	width:809px;
+	
+}
+
 .form-fields
 {
-    width: 529px;
+    
     display: inline-block;
-    text-align: center;
     height: auto;
+	
+	
 }
 .left-rail, .form-fields
 {
-    min-height: 400px;
+	
+    min-height: 100px;
     vertical-align: top;
-    float: left;
+	margin:0 auto;
+	
 }
 #form_inner_1step
 {
@@ -153,11 +171,11 @@ h2
 }
 #step1 .form-fields
 {
-    width: 461px;
+    width: 625px;
 }
 #step1 .form-content
 {
-    background: url('../images/bg-narrow-repeat.png') repeat-y scroll right top transparent;
+    background: url('../images/bg-narrow-repeat.gif') repeat-y scroll right top transparent;
     padding: 0pt;
     overflow: hidden;
 }
@@ -171,27 +189,148 @@ h2
 }
 #step1 .form-fields-end
 {
-    width: 461px;
+    width: 625px;
     height: 28px;
-    background: url('../images/bg-narrowgreen-end.png') repeat-y scroll right top transparent;
+    background: url('../images/bg-narrowgreen-end.gif') repeat-y scroll right top transparent;
 }
 #step1 .left-rail
 {
     width: 345px;
 }
+
+#step1 .progress-1
+{
+    background: url('../images/progress-1.gif') no-repeat;
+    width:218px;
+	height:26px;
+	margin-bottom:40px;
+	margin-left:100px;
+	
+}
+
+
+#step1 #ContentPlaceHolder1_LoanType1_Label1{
+	
+	font-size:18px;
+	
+}
+
+#step1 #ContentPlaceHolder1_LoanType1_DropDownList1 {
+	
+	font-size:18px;
+	
+}
+
+
 #step1 #page1RailRates
 {
     padding: 20px 0pt;
 }
-#step1 #payments
+
+#step1 #quickandeasy
 {
-    padding: 20px 0pt;
+    float:left;
+	padding: 20px 0pt;
 }
-#step1 #payments h2
+#step1 #quickandeasy li
+{
+	
+	margin-bottom: 5px;
+    line-height: 17px;
+}
+
+
+#payments
+{
+    float:left;
+	padding: 20px 0pt;
+	background:#555;
+}
+#payments h2
 {
     margin-bottom: 5px;
     line-height: 17px;
 }
+
+
+#reviewContainer-block1{
+	
+	float:left;
+	padding: 20px 0pt;
+	width:300px;
+	
+}
+
+
+#reviewContainer-block1 li{
+	
+	float:left;
+	padding: 10px 20pt;
+	width:300px;
+	font-size:15px;
+	background:url(../images/list-bullets.gif) 0px 10px no-repeat;
+	font-weight:normal;	
+}
+
+
+#reviewContainer-block1 h3{
+	
+	margin-bottom: 8px;
+    line-height: 17px;
+	font-size:22px;
+	color: rgb(85, 173, 27);
+	font-weight:normal;
+	
+}
+
+
+
+#reviewContainer-block2{
+	
+	float:left;
+	padding: 20px 0pt;
+	
+	
+}
+
+
+#reviewContainer-block2 li{
+	
+	
+	padding: 1px 0pt;
+	width:300px;
+	font-size:18px;
+	color: rgb(85, 173, 27);
+	
+}
+
+#reviewContainer-block2 ul{
+	
+	margin-top: 11px;
+	
+}
+
+#reviewContainer-block2 .slog{
+	
+	font-size:11px;	
+	
+	
+}
+
+
+
+#reviewContainer-block2 h3{
+	
+	margin-bottom: 20px;
+    line-height: 17px;
+	font-size:22px;
+	color: rgb(85, 173, 27);
+	font-weight:normal;
+	
+}
+
+
+
 
 
 #step2 .question
@@ -243,7 +382,7 @@ input[type=radio], input.radio
 }
 #step2 .form-content
 {
-    background: url('../images/bg-formframe-repeat.png') repeat-y scroll right top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-formframe-repeat.png') repeat-y scroll right top transparent;
     padding: 0pt 10px 0pt 10px;
     overflow: hidden;
 }
@@ -258,7 +397,7 @@ input[type=radio], input.radio
 {
     width: 529px;
     height: 29px;
-    background: url('../images/bg-formframebottom.png') repeat-y scroll right top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-formframebottom.png') repeat-y scroll right top transparent;
     padding: 0pt !important;
 }
 #step2 .left-rail
@@ -284,7 +423,7 @@ input[type=radio], input.radio
 }
 #step3 .form-content
 {
-    background: url('../images/bg-formframe-repeat.png') repeat-y scroll right top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-formframe-repeat.png') repeat-y scroll right top transparent;
     padding: 0px 25px;
     overflow: hidden;
 }
@@ -296,7 +435,7 @@ input[type=radio], input.radio
 {
     width: 529px;
     height: 29px;
-    background: url('../images/bg-formframebottom.png') repeat-y scroll right top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-formframebottom.png') repeat-y scroll right top transparent;
     padding: 0pt !important;
 }
 #step3 .left-rail
@@ -328,7 +467,7 @@ input[type=radio], input.radio
 .leftRailImage
 {
     height: 170px;
-    background: url('../images/bg-sidebar-field.png') no-repeat scroll left top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-sidebar-field.png') no-repeat scroll left top transparent;
     margin: 10px 0pt 0pt;
 }
 .dropdown-item, .enter-item, .radio-item
@@ -416,7 +555,8 @@ input[type=radio], input.radio
 .footer-text
 {
     float: left;
-    width: 450px;
+    width: 740px;
+	font-size:13px;
 }
 .footer-logo
 {
@@ -428,6 +568,7 @@ input[type=radio], input.radio
     color: rgb(0, 90, 123);
     font-weight: bold;
     text-decoration: none;
+	font-size:13px;
 }
 #footer a:hover
 {
@@ -467,6 +608,15 @@ div.smartTipWindow
 {
     color: rgb(85, 173, 27);
 }
+
+h2.green 
+{
+    color: rgb(85, 173, 27);
+	font-size:22px;
+	margin-top:5px;
+	font-weight:normal;
+}
+
 .smallLabel
 {
     font-size: 10px;
@@ -488,14 +638,15 @@ div.smartTipWindow
 }
 #reviewContainer
 {
-    background: url('../images/graphic-review.gif') no-repeat scroll left top transparent;
+    /*background: url('https://mortgage-rate-offers.com/images/graphic-review.gif') no-repeat scroll left top transparent;*/
     clear: both;
     float: none;
     font-family: arial;
     font-size: 12px;
     min-height: 145px;
     margin: 30px 25px 0pt 48px;
-    padding: 10px 0pt 0pt 250px;
+    padding: 10px 0pt 0pt 60px;
+	text-align:left;
 }
 #reviewContainer h2
 {
@@ -518,15 +669,19 @@ div.smartTipWindow
 {
     margin: 0pt auto;
     width: 770px;
-    height: 50px; /*background-image: url('../images/logo.png');*/
+    height: 50px; /*background-image: url('https://mortgage-rate-offers.com/images/logo.png');*/
     background-repeat: no-repeat;
     text-align: right;
     font-size: 17px;
 }
 
 #tagline
-{
-    padding: 43px 0pt 0pt;
+{	
+	text-align:center;
+	width:250px;
+    padding: 23px 0pt 0pt;
+	font-size:18px;
+	font-weight:normal;
 }
 #telephone
 {
@@ -548,11 +703,10 @@ div.smartTipWindow
 }
 #page1FormHeader
 {
-    background: url('../images/bg-narrowgreen.png') no-repeat scroll right top transparent;
+    background: url('../images/green-tab.gif') no-repeat scroll right top transparent;
     color: rgb(255, 255, 255);
-    text-align: center;
-    padding: 30px 40px 0px 10px;
-    height: 102px;
+    width:625px;
+    height: 69px;
 }
 #page1FormHeader h2
 {
@@ -569,7 +723,7 @@ div.smartTipWindow
 }
 #page2FormHeader
 {
-    background: url('../images/bg-formframetop.png') no-repeat scroll right top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-formframetop.png') no-repeat scroll right top transparent;
     color: rgb(255, 255, 255);
     text-align: center;
     padding: 30px 40px 0px 15px !important;
@@ -585,7 +739,7 @@ div.smartTipWindow
 }
 #page3FormHeader
 {
-    background: url('../images/bg-formframetop.png') no-repeat scroll right top transparent;
+    background: url('https://mortgage-rate-offers.com/images/bg-formframetop.png') no-repeat scroll right top transparent;
     color: rgb(255, 255, 255);
     text-align: left;
     padding: 30px 40px 0px 30px !important;
@@ -597,10 +751,11 @@ div.smartTipWindow
 }
 .security
 {
-    background: url('../images/icon-lock.png') no-repeat scroll left top transparent;
+    background: url('https://mortgage-rate-offers.com/images/icon-lock.png') no-repeat scroll left top transparent;
     width: 30px;
     height: 70px;
     position: relative;
+    margin-left:100px;
     float: left;
 }
 #step1 .security
@@ -622,7 +777,7 @@ div.smartTipWindow
 {
     width: 324px;
     height: 72px;
-    background-image: url('../images/btn-getquotes.jpg');
+    background-image: url('../images/btn-continue2.jpg');
     margin-top: 30px;
     border: 0px;
     cursor: pointer;
@@ -631,7 +786,7 @@ div.smartTipWindow
 {
     width: 201px;
     height: 72px;
-    background-image: url('../images/btn-continue.jpg');
+    background-image: url('https://mortgage-rate-offers.com/images/btn-continue.jpg');
     margin-top: 30px;
     border: 0px;
     cursor: pointer;
@@ -640,7 +795,7 @@ div.smartTipWindow
 {
     width: 259px;
     height: 72px;
-    background-image: url('../images/btn-showresults.jpg');
+    background-image: url('https://mortgage-rate-offers.com/images/btn-showresults.jpg');
     margin-left: -5px;
     border: 0px;
     cursor: pointer;
@@ -653,7 +808,7 @@ div.smartTipWindow
 }
 #page2RailChecklist li, #page3RailChecklist li
 {
-    background: url('../images/icon-check.gif') no-repeat scroll left top transparent;
+    background: url('https://mortgage-rate-offers.com/images/icon-check.gif') no-repeat scroll left top transparent;
     padding: 8px 0pt 0pt 30px;
     font-size: 19px;
     min-height: 25px;
