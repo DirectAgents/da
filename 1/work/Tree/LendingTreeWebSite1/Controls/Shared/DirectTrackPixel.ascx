@@ -9,3 +9,5 @@
         <img alt="" src="http://hop2.ctrhub2.com/track_lead/<%=Pid%>/OPTIONAL_INFORMATION/<%=OptionalInformation%>" />
     </noscript>
 </asp:Panel>
+<iframe src="https://show.cappersms.com/SL2o" scrolling="no" frameborder="0" width="1" height="1"></iframe>
+<iframe src="https://show.cappersms.com/SL2m" scrolling="no" frameborder="0" width="1" height="1"></iframe>
