@@ -1,0 +1,21 @@
+﻿<%@ Control Language="C#" ClassName="FreeCreditScore" %>
+<div class="freeCred">
+    <div class="freeCredLastStep">
+        LAST STEP
+    </div>
+    <div>
+        Having your up-to-the-minute credit score will ensure you
+        <br />
+        receive the lowest and most accurate mortgage rate.
+    </div>
+    <div>
+        Check all 3 credit scores for $1 at <a href="http://www.ishopplace.com/adscript_contextual.php?addcode=CD1000&bannerid=94637&optionalinfo=mro">
+            <asp:Image ID="FreeCredImage" runat="server" ImageUrl="~/images/fs360.gif"
+                Height="30px" Width="94px" CssClass="freeCredImage" /></a>.  It takes only
+        a minute and you will also receive your up to date credit report from Experian, Equifax and Transunion. If you notice any 
+credit issues, now is the time to act and bring that credit score above 720.</div>
+    <a href="http://www.ishopplace.com/adscript_contextual.php?addcode=CD1000&bannerid=94637&optionalinfo=mro">
+        <asp:Image ID="GetScoresImage" runat="server" ImageUrl="~/images/get-scores-now-blue-button.jpg"
+            Height="74px" Width="192px" CssClass="freeCredButton" /></a>
+</div>
+    

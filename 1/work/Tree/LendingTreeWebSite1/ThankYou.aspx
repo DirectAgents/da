@@ -16,7 +16,8 @@
             <div id="page2RailHeader" class="stroke">
                 <div style="height: 300px; margin-top: 30px; text-align: center;">
                     <p>
-                        Your information has been received. A Lending Tree representative will be in touch with you shortly.</p>
+                        Your information has been received. A Lending Tree representative will be in touch
+                        with you shortly.</p>
                     <uc1:FreeCreditScore ID="FreeCreditScore1" runat="server" />
                 </div>
             </div>
@@ -30,23 +31,25 @@
                         <span id="siteseal">
                             <script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=2nOOUr9eTPDXWnZhyCuzuV3T0u15tx2nRXhbr6K9zjPWT8FdsYJea78Nk8"></script>
                             <br />
-                            <a style="font-family: arial; font-size: 9px" href="https://www.godaddy.com/email/email-hosting.aspx" target="_blank">email
-                                hosting</a></span>
+                            <a style="font-family: arial; font-size: 9px" href="https://www.godaddy.com/email/email-hosting.aspx"
+                                target="_blank">email hosting</a></span>
                         <!--END CERTIFICATE TRUST LOGO-->
                         <p>
-                            Online Security:<a target="_blank" href="https://www.lendingtree.com/about-us/online-security/"> <span>Protect Against Fraud</span></a></p>
+                            Online Security:<a target="_blank" href="https://www.lendingtree.com/about-us/online-security/">
+                                <span>Protect Against Fraud</span></a></p>
                     </div>
                     <!--End .footer-logo-->
                     <div class="footer-text">
-                        <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">Privacy
-                            Policy</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">Terms of
-                                Use</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/disclosure.asp?nonav=true&bp=ltquickmatch',550, 450)">
+                        <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
+                            Privacy Policy</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
+                                Terms of Use</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/stmrc/disclosure.asp?nonav=true&bp=ltquickmatch',550, 450)">
                                     Licenses &amp; Disclosures</a><br />
                         <br />
                         <p style="text-align: left;">
-                            LendingTree technology and processes are patented under U.S. Patent Nos. 6,385,594 and 6,611,816 and licensed under U.S.
-                            Patent Nos. 5,995,947 and 5,758,328. © 1998 - 2011 LendingTree, LLC. All Rights Reserved. This site is directed at, and
-                            made available to, persons in the continental U.S., Alaska and Hawaii only.</p>
+                            LendingTree technology and processes are patented under U.S. Patent Nos. 6,385,594
+                            and 6,611,816 and licensed under U.S. Patent Nos. 5,995,947 and 5,758,328. © 1998
+                            - 2011 LendingTree, LLC. All Rights Reserved. This site is directed at, and made
+                            available to, persons in the continental U.S., Alaska and Hawaii only.</p>
                     </div>
                     <!--End .footer-text-->
                 </div>
@@ -54,9 +57,6 @@
             </div>
         </div>
     </div>
-    <%-- ----------  --%>
-    <%-- PIXEL FIRE  --%>
-    <%-- ----------  --%>
     <uc:DirectTrackPixel ID="DirectTrackPixel1" runat="server" ExtraPixel="false" />
     <uc:ViewSession ID="ViewSession1" runat="server" />
     </form>
