@@ -175,6 +175,7 @@
     <EmbeddedResource Include="SessionKeys.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SessionKeys.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
