@@ -85,7 +85,7 @@ public partial class Page2 : QuickMatchPageBase
     {
         Model.PropertyType = PropertyType1.Value;
         Model.PropertyUse = PropertyPurpose1.Value;
-        Model.LendingTreeLoansOptIn = LendingTreeLoansOptIn1.Value;
+        //Model.LendingTreeLoansOptIn = LendingTreeLoansOptIn1.Value;
         Model.IsVetran = VetranStatus1.Value;
         Model.BankruptcyDischarged = HadBakruptcy1.Value;
         Model.ForeclosureDischarged = HadForeclosures1.Value;

@@ -38,9 +38,9 @@
                     Step 3 of 3</div>
                 <div id="page2RailHeader" class="stroke">
                     <h2 class="green">
-                        Lock in Your
+                        See if you can
                         <br />
-                        Lowest Rate Today
+                        lower your rate today
                     </h2>
                 </div>
                 <div id="page3RailChecklist" class="stroke">
@@ -103,27 +103,26 @@
                         <div id="submit-0" class="submitboard">
                             <div class="read-detail">
                                 <h5 class="small-caption">
-                                    By clicking on the "show my results" button above, you agree and accept:</h5>
+                                    By clicking on the button above,  consent, acknowledge and agree to the following and accept:</h5>
                                 <div class="scroll-content-block">
                                     <div class="accept-detail-panel">
                                         <ul>
                                             <li>our <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
                                                 <span>Terms of Use Agreement</span></a> and <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
                                                     <span>Privacy Policy</span></a></li>
-                                            <li>to receive important notices, disclosures and other communications ("Disclosures
-                                                and Communications") in electronic form (either email or via the Internet) as provided
-                                                for in the <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/LTLEConsent.asp')">
-                                                    <span>Consent for Electronic Disclosures and Communications from LendingTree Loans</span></a>
-                                                and / or <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/NetworkEConsent.asp')">
-                                                    <span>Network Lenders</span></a>. In addition, if you proceed with a Loan Application
-                                                with LendingTree Loans, LendingTree Loans can provide you with Disclosures and Communications
-                                                in Electronic form. You understand that you will need an email address, Internet
-                                                access and PDF software to review the Disclosures and Communications.</li>
+                                            <li>to receive important notices, disclosures and other communications ("Disclosures and Communications") in electronic form (either email or via the Internet) as 
+                                            provided for in this
+                                             <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/LTLEConsent.asp')">
+                                                    <span>Consent to Receive Electronic Disclosures from Lending Tree  </span></a>
+                                                and/or our <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/NetworkEConsent.asp')">
+                                                    <span>Network Lenders</span></a>. In addition, if you proceed with a Loan Application with 
+                                                    our Network Lenders, they can provide you with Disclosures and Communications in Electronic form. You understand that you will need an email address, Internet 
+                                                    access and PDF software to review the Disclosures and Communications.</li>
                                             <li>that we may access your credit file even if your social security number is not provided.</li>
                                             <%if (Model.RequiresDisclosure)
                                               {  %>
-                                            <li>that I have received and reviewed the <a href="javascript:STMRCWindow('https://secure.lendingtree.com/stmrc/brokerstatedisclosure.asp?state=<%=State%>')">
-                                                Mortgage Broker Disclosures</a> for <span id="myStateDisclosure">
+                                            <li>that you have received and reviewed the <a href="javascript:STMRCWindow('https://secure.lendingtree.com/stmrc/brokerstatedisclosure.asp?state=<%=State%>')">
+                                                Mortgage Broker Disclosures</a> for your state <span id="myStateDisclosure">
                                                     <%=State%></span> </li>
                                             <%} %>
                                         </ul>

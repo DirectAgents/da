@@ -15,8 +15,6 @@
 <%@ Register Src="Controls/Page2/HadBakruptcy.ascx" TagName="HadBakruptcy" TagPrefix="uc8" %>
 <%@ Register Src="Controls/Page2/HadForeclosures.ascx" TagName="HadForeclosures"
     TagPrefix="uc9" %>
-<%@ Register Src="Controls/Shared/LendingTreeLoansOptIn.ascx" TagName="LendingTreeLoansOptIn"
-    TagPrefix="uc10" %>
 <%@ Register Src="Controls/Shared/VetranStatus.ascx" TagName="VetranStatus" TagPrefix="uc11" %>
 <%@ Register Src="Controls/Page2/PurchasePrice.ascx" TagName="PurchasePrice" TagPrefix="uc12" %>
 <%@ Register Src="Controls/Page2/DownPayment.ascx" TagName="DownPayment" TagPrefix="uc13" %>
@@ -66,9 +64,9 @@
                     Step 2 of 3</div>
                 <div id="page2RailHeader" class="stroke">
                     <h2 class="green">
-                        Lock in Your
+                        See if you can
                         <br />
-                        Lowest Rate Today
+                        lower your rate today
                     </h2>
                 </div>
                 <div id="page2RailChecklist" class="stroke">
@@ -112,9 +110,6 @@
                         <uc8:HadBakruptcy ID="HadBakruptcy1" runat="server" />
                         <uc9:HadForeclosures ID="HadForeclosures1" runat="server" />
                         <uc11:VetranStatus ID="VetranStatus1" runat="server" />
-                    </div>
-                    <div>
-                        <uc10:LendingTreeLoansOptIn ID="LendingTreeLoansOptIn1" runat="server" />
                     </div>
                     <div style="width: 400px; padding-right: 150px;">
                         <div class="security">

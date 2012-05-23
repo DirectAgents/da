@@ -467,18 +467,18 @@ namespace LendingTreeLib
             }
         }
 
-        public bool LendingTreeLoansOptIn
-        {
-            get
-            {
-                return Data.Request.SourceOfRequest.LTLOptin == YesNoType.Y;
-            }
-            set
-            {
-                Data.Request.SourceOfRequest.LTLOptin = value ? YesNoType.Y : YesNoType.N;
-                OnDataChanged("IsVetran");
-            }
-        }
+        //public bool LendingTreeLoansOptIn
+        //{
+        //    get
+        //    {
+        //        return Data.Request.SourceOfRequest.LTLOptin == YesNoType.Y;
+        //    }
+        //    set
+        //    {
+        //        Data.Request.SourceOfRequest.LTLOptin = value ? YesNoType.Y : YesNoType.N;
+        //        OnDataChanged("IsVetran");
+        //    }
+        //}
 
         public string AffiliateSiteID
         {

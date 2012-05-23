@@ -28,7 +28,7 @@
         string Address { get; set; }
         string WorkPhone { get; set; }
         string ApplicantZipCode { get; set; }
-        bool LendingTreeLoansOptIn { get; set; }
+        //bool LendingTreeLoansOptIn { get; set; }
         string AffiliateSiteID { get; set; }
         bool IsVetran { get; set; }
         decimal PurchasePrice { get; set; }
