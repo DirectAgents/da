@@ -146,7 +146,8 @@
                     <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
                         Privacy Policy</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
                             Terms of Use</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/disclosure.asp?nonav=true&bp=ltquickmatch',550, 450)">
-                                Licenses &amp; Disclosures</a><br />
+                                Licenses &amp; Disclosures</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/promotional_disclosuresv1.asp',550, 450)">
+                                Full Advertising Disclosures</a><br />
                     <br />
                     <p style="text-align: left;">
                         LendingTree technology and processes are patented under U.S. Patent Nos. 6,385,594
