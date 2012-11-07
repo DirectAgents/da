@@ -469,21 +469,33 @@ div.smartTipWindow
 }
 #reviewContainer
 {
-	background: url('../images/graphic-review.gif') no-repeat scroll left top transparent;
+	/*background: url('../images/graphic-review.gif') no-repeat scroll left top transparent;*/
 	clear: both;
-	float: none;
+	float: left;
+	min-height: 145px;
+	margin: 30px 25px 0pt 8px;
+	padding: 10px 0pt 0pt 0px;
+}
+
+#quote
+{
+	clear: both;
+	float: left;
 	font-family: arial;
 	font-size: 12px;
 	min-height: 145px;
-	margin: 30px 25px 0pt 48px;
-	padding: 10px 0pt 0pt 250px;
+	margin: 30px 25px 0pt px;
+	padding: 10px 0pt 0pt 0px;
 }
-#reviewContainer h2
+
+
+#quote h2
 {
 	color: rgb(101, 101, 101);
 	font-size: 20px;
 	margin: 0pt 0pt 15px;
 }
+
 .hiddenuid
 {
 	color: white;
