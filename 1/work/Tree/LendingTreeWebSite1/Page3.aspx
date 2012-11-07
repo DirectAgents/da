@@ -103,26 +103,26 @@
                         <div id="submit-0" class="submitboard">
                             <div class="read-detail">
                                 <h5 class="small-caption">
-                                    By clicking on the button above,  consent, acknowledge and agree to the following and accept:</h5>
+                                    By clicking on the "button" above, you consent, acknowledge and agree to the following:</h5>
                                 <div class="scroll-content-block">
                                     <div class="accept-detail-panel">
                                         <ul>
-                                            <li>our <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
+                                            <li>Our <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
                                                 <span>Terms of Use Agreement</span></a> and <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
                                                     <span>Privacy Policy</span></a></li>
-                                            <li>to receive important notices, disclosures and other communications ("Disclosures and Communications") in electronic form (either email or via the Internet) as 
-                                            provided for in this
-                                             <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/LTLEConsent.asp')">
-                                                    <span>Consent to Receive Electronic Disclosures from Lending Tree  </span></a>
-                                                and/or our <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/NetworkEConsent.asp')">
-                                                    <span>Network Lenders</span></a>. In addition, if you proceed with a Loan Application with 
-                                                    our Network Lenders, they can provide you with Disclosures and Communications in Electronic form. You understand that you will need an email address, Internet 
-                                                    access and PDF software to review the Disclosures and Communications.</li>
-                                            <li>that we may access your credit file even if your social security number is not provided.</li>
+                                            <li>To receive important notices, and other communications at any telephone number or email address (including a mobile device) you entered so 
+                                            that LendingTree, up to five (5) lenders with whom you have been matched, or one of its third party associates can reach you regarding this request. 
+                                            This authorization removes any previous registration(s) on a federal or state Do-Not-Call (DNC) registry or any internal opt-out/unsubscribe requests you may have previously 
+                                            requested with LendingTree or matched lenders.</li>
+                                            
+                                            
+                                            <li>That LendingTree, a lender with whom you have been matched, or one of its third party associates may use an automatic dialing system in connection 
+                                            with calls made to any telephone number you entered, even 
+                                            if it is a cellular phone number or other service for which the called person(s) could be charged for such call.</li>
                                             <%if (Model.RequiresDisclosure)
                                               {  %>
-                                            <li>that you have received and reviewed the <a href="javascript:STMRCWindow('https://secure.lendingtree.com/stmrc/brokerstatedisclosure.asp?state=<%=State%>')">
-                                                Mortgage Broker Disclosures</a> for your state <span id="myStateDisclosure">
+                                            <li>That I have received and reviewed the <a href="javascript:STMRCWindow('https://secure.lendingtree.com/stmrc/brokerstatedisclosure.asp?state=<%=State%>')">
+                                                Mortgage Broker Disclosures</a> for my state <span id="myStateDisclosure">
                                                     <%=State%></span> </li>
                                             <%} %>
                                         </ul>
@@ -163,10 +163,10 @@
                 </div>
                 <!--End .footer-logo-->
                 <div class="footer-text">
-                    <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
-                        Privacy Policy</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
-                            Terms of Use</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/disclosure.asp?nonav=true&bp=ltquickmatch',550, 450)">
-                                Licenses &amp; Disclosures</a>| <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/promotional_disclosuresv1.asp',550, 450)">
+                  <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/privacy-policy', 550, 450)">
+                        Privacy Policy</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/terms-of-use')">
+                            Terms of Use</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/licenses-and-disclosures',550, 450)">
+                                Licenses &amp; Disclosures</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/promotional_disclosuresv1.asp',550, 450)">
                                 Full Advertising Disclosures</a><br />
                     <br />
                     <p style="text-align: left;">

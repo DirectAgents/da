@@ -35,7 +35,30 @@
                 Text="*" ControlToValidate="TextBox3" runat="server" Enabled="false" Display="Dynamic" />
         </span>
             <div class="smallLabel_img">
-                <img src="./images/small-lock.png" alt="" />
+                
+                
+                <a href="#" class="tip"><img src="./images/small-lock.png" alt="" /><span>
+    <ul>
+    <li>Our <div class="terms_of_use_agreement" onclick="agreement();">Terms of Use Agreement</div> and <div class="privacy_policy" onclick="privacy_policy();">Privacy Policy.</div></li>
+    <li>
+    To receive important notices, and other communications at any telephone number or email address (including a mobile device)<br>
+    you entered so that LendingTree, up to five (5) lenders with whom you have been matched, or one of its third party associates can<br> 
+    reach you regarding this request. This authorization removes any previous registration(s) on a federal or state Do-Not-Call (DNC) <br>
+    registry or any internal opt-out/unsubscribe requests you may have previously requested with LendingTree or matched lenders.
+    </li>
+    <li>
+    That LendingTree, a lender with whom you have been matched, or one of its third party associates may use an automatic dialing system<br> 
+    in connection with calls made to any telephone number you entered, even if it is a cellular phone number or other service for which the <br>
+    called person(s) could be charged for such call.
+    </li>
+    <li>
+   That I have received and reviewed the <div class="mortgage_broker_disclosure" onclick="mortgage_broker_disclosure();">Mortgage Broker Disclosures</div> for my state.
+    </li>
+    </ul>
+    </span></a>
+                
+                
+                
             </div>
             <uc2:SSNReadMore ID="SSNReadMore1" runat="server" Visible="false" />
         </span>

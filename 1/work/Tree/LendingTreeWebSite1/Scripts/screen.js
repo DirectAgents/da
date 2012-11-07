@@ -141,3 +141,17 @@ function showOrHideImage($target, bShow, src) {
 }
 
 
+
+
+function agreement() {
+	document.location.href='http://www1.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true';
+   }
+function privacy_policy() {
+	document.location.href='http://www1.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch';
+   }  
+function mortgage_broker_disclosure() {
+	document.location.href='https://secure.lendingtree.com/stmrc/brokerstatedisclosure.asp';
+   }      
+
+
+

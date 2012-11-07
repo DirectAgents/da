@@ -50,7 +50,7 @@
     </div>
     <div class="website-wrapper">
         <div id="topheader" class="png">
-            <span id="tagline" class="inline">Get instant mortgage offers </span>
+            <span id="tagline" class="inline">Get mortgage offers </span>
             <div id="promoHeader" class="header inline hide">
             </div>
             <div id="promoSubHeader" class="subheader">
@@ -143,9 +143,9 @@
                 </div>
                 <!--End .footer-logo-->
                 <div class="footer-text">
-                    <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
-                        Privacy Policy</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
-                            Terms of Use</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/disclosure.asp?nonav=true&bp=ltquickmatch',550, 450)">
+                    <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/privacy-policy', 550, 450)">
+                        Privacy Policy</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/terms-of-use')">
+                            Terms of Use</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/licenses-and-disclosures',550, 450)">
                                 Licenses &amp; Disclosures</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/promotional_disclosuresv1.asp',550, 450)">
                                 Full Advertising Disclosures</a><br />
                     <br />
