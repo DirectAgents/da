@@ -38,23 +38,42 @@
                 
                 
                 <a href="#" class="tip"><img src="./images/small-lock.png" alt="" /><span>
+   <div id="tip-list">
     <ul>
+
     <li>Our <div class="terms_of_use_agreement" onclick="agreement();">Terms of Use Agreement</div> and <div class="privacy_policy" onclick="privacy_policy();">Privacy Policy.</div></li>
+
     <li>
-    To receive important notices, and other communications at any telephone number or email address (including a mobile device)<br>
-    you entered so that LendingTree, up to five (5) lenders with whom you have been matched, or one of its third party associates can<br> 
-    reach you regarding this request. This authorization removes any previous registration(s) on a federal or state Do-Not-Call (DNC) <br>
-    registry or any internal opt-out/unsubscribe requests you may have previously requested with LendingTree or matched lenders.
+
+    To receive important notices, and other communications<br /> at any telephone number or email address (including a <br />mobile device)
+
+    you entered so that LendingTree, up to <br />five (5) lenders with whom you have been matched, or <br />one of its third party associates can
+
+    reach you regarding <br />this request. This authorization removes any previous <br />registration(s) on a federal or state Do-Not-Call (DNC) <br>
+
+    registry or any internal opt-out/unsubscribe requests <br />you may have previously requested with LendingTree <br />or matched lenders.
+
     </li>
+
     <li>
-    That LendingTree, a lender with whom you have been matched, or one of its third party associates may use an automatic dialing system<br> 
-    in connection with calls made to any telephone number you entered, even if it is a cellular phone number or other service for which the <br>
+
+    That LendingTree, a lender with whom you have been <br />matched, or one of its third party associates may use an <br />automatic dialing system
+
+    in connection with calls made to <br />any telephone number you entered, even if it is a cellular <br />phone number or other service for which the <br>
+
     called person(s) could be charged for such call.
+
     </li>
+
     <li>
-   That I have received and reviewed the <div class="mortgage_broker_disclosure" onclick="mortgage_broker_disclosure();">Mortgage Broker Disclosures</div> for my state.
+
+   That I have received and reviewed the <br /><div class="mortgage_broker_disclosure" onclick="mortgage_broker_disclosure();">Mortgage Broker Disclosures</div> for my state.
+
     </li>
+
     </ul>
+ 
+ </div>   
     </span></a>
                 
                 
