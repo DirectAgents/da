@@ -38,13 +38,14 @@
     <a href="#" class="tip">
     <div class="explain-this">Explain this <span>
       <div id="tip-list"> We use your information to do what is called a "soft credit pull".<br />
-        This does not affect your credit. 
-        If you choose to move forward<br />
-        with one of the offers you receive, you will work directly with <br />
-        the lender, 
-        and at that time, with your approval, 
-        they will <br />
-        conduct the official "hard" credit pull. </div>
+        We use your information to do what is called a "soft credit<br />
+        pull". This does not affect your credit. 
+        If you choose to <br />
+        move forward with one of the offers you receive, you will <br />
+        work directly with the lender, 
+        and at that time, with your <br />
+        approval, 
+        they will conduct the official "hard" credit pull. </div>
       </span> </div>
     </a>
     <uc2:SSNReadMore ID="SSNReadMore1" runat="server" Visible="false" />

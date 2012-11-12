@@ -854,13 +854,13 @@ a.tip:hover span {
   position: absolute; 
   padding: .5em;
   content: attr(title);
-  max-width: 360px;
+  max-width: 320px;
   text-align: left;
   width: auto;
-  height: 75px;
+  height: 80px;
   white-space: nowrap;
   top: -100px;
-  left:-10px;
+  left:140px;
   background:#55ad1b;
   -moz-border-radius:10px;
   -webkit-border-radius:10px;
