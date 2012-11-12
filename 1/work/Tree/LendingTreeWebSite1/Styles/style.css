@@ -854,12 +854,12 @@ a.tip:hover span {
   position: absolute; 
   padding: .5em;
   content: attr(title);
-  max-width: 320px;
+  max-width: 360px;
   text-align: left;
   width: auto;
-  height: 300px;
+  height: 75px;
   white-space: nowrap;
-  top: -320px;
+  top: -100px;
   left:-10px;
   background:#55ad1b;
   -moz-border-radius:10px;
@@ -888,3 +888,6 @@ a.tip:hover span:after {
 .terms_of_use_agreement{display:inline; text-decoration:underline;}
 .privacy_policy{display:inline; text-decoration:underline;}
 .mortgage_broker_disclosure{display:inline; text-decoration:underline;}
+
+.explain-this{ background:url("../images/question-mark.gif") no-repeat; height:12px; width:100px; float:left; 
+margin-left:10px; padding-left:15px; padding-top:4px;}
