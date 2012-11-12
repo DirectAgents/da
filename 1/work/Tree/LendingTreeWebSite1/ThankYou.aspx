@@ -43,7 +43,7 @@
                        <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/privacy-policy', 550, 450)">
                         Privacy Policy</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/terms-of-use')">
                             Terms of Use</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/licenses-and-disclosures',550, 450)">
-                                Licenses &amp; Disclosures</a> | <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/promotional_disclosuresv1.asp',550, 450)">
+                                Licenses &amp; Disclosures</a> | <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/advertising-disclosures',550, 450)">
                                 Full Advertising Disclosures</a><br />
                         <br />
                         <p style="text-align: left;">
