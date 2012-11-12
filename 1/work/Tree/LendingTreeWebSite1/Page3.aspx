@@ -30,7 +30,7 @@
     <form id="form1" runat="server">
     <div class="website-wrapper">
         <div id="topheader" class="png">
-            <span id="tagline" class="inline">Get instant mortgage offers </span>
+            <span id="tagline" class="inline">Get mortgage offers</span>
         </div>
         <div id="step3" class="board-content-data">
             <div class="left-rail inline">
@@ -107,10 +107,10 @@
                                 <div class="scroll-content-block">
                                     <div class="accept-detail-panel">
                                         <ul>
-                                            <li>Our <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
-                                                <span>Terms of Use Agreement</span></a> and <a href="javascript:STMRCWindow('http://www.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
+                                            <li>Our <a href="javascript:STMRCWindow('http://www1.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
+                                                <span>Terms of Use Agreement</span></a> and <a href="javascript:STMRCWindow('http://www1.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
                                                     <span>Privacy Policy</span></a></li>
-                                            <li>To receive important notices, and other communications at any telephone number or email address (including a mobile device) you entered so 
+                                            <li>To receive important notices, and other <a href="#">communications</a> at any telephone number or email address (including a mobile device) you entered so 
                                             that LendingTree, up to five (5) lenders with whom you have been matched, or one of its third party associates can reach you regarding this request. 
                                             This authorization removes any previous registration(s) on a federal or state Do-Not-Call (DNC) registry or any internal opt-out/unsubscribe requests you may have previously 
                                             requested with LendingTree or matched lenders.</li>
