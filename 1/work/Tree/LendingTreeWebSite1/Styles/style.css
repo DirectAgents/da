@@ -859,7 +859,7 @@ a.tip:hover span {
   width: auto;
   height: 80px;
   white-space: nowrap;
-  top: -110px;
+  top: -100px;
   left:140px;
   background:#55ad1b;
   -moz-border-radius:10px;
@@ -888,7 +888,7 @@ a.tip:hover span:after {
   left:1em;
 }
 
-#tip-list li{margin-bottom:10px;}
+
 
 .terms_of_use_agreement{display:inline; text-decoration:underline;}
 .privacy_policy{display:inline; text-decoration:underline;}
