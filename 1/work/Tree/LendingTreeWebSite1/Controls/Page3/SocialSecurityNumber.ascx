@@ -37,7 +37,7 @@
     <div class="smallLabel_img"> <a href="#"><img src="./images/small-lock.png" alt="" /></a> </div>
     <a href="#" class="tip">
     <div class="explain-this">Explain this <span>
-      <div id="tip-list"> We use your information to do what is called a "soft credit pull".<br>
+      <div id="tip-list"> We use your information to do what is called a "soft credit <br>pull".
        This does not affect your credit. 
     If you choose to <br>move forward with one of the offers you receive, you will <br>work directly with the lender, 
     and at that time, with your <br />approval, 
