@@ -479,13 +479,15 @@ div.smartTipWindow
 
 #quote
 {
-	clear: both;
+	
 	float: left;
+	width:470px;
 	font-family: arial;
 	font-size: 12px;
 	min-height: 145px;
-	margin: 30px 25px 0pt px;
-	padding: 10px 0pt 0pt 0px;
+	margin: 0px 25px 0pt px;
+	padding: 60px 0pt 0pt 0px;
+	line-height:18px;
 }
 
 
@@ -775,4 +777,4 @@ div.smartTipWindow
 }
 
 .explain-this{ background:url("../images/question-mark.gif") no-repeat; height:12px; width:100px; position:absolute; 
-margin-left:-160px; margin-top:-20px; padding-left:15px; padding-top:4px;}
+margin-left:-170px; margin-top:-20px; padding-left:15px; padding-top:4px;}
