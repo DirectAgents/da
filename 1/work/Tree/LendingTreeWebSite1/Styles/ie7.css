@@ -773,3 +773,6 @@ div.smartTipWindow
 {
 	font-size: 11px;
 }
+
+.explain-this{ background:url("../images/question-mark.gif") no-repeat; height:12px; width:100px; position:absolute; 
+margin-left:-150px; margin-top:-30px; padding-left:15px; padding-top:4px;}
