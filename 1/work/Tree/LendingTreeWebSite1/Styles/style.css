@@ -894,5 +894,5 @@ a.tip:hover span:after {
 .privacy_policy{display:inline; text-decoration:underline;}
 .mortgage_broker_disclosure{display:inline; text-decoration:underline;}
 
-.explain-this{ background:url("../images/question-mark.gif") no-repeat; height:12px; width:200px; float:left; 
-margin-left:10px; padding-left:15px; padding-top:4px; display:inline;}
+.explain-this{ background:url("../images/question-mark.gif") no-repeat; height:12px; width:100px; float:left; 
+margin-left:10px; padding-left:15px; padding-top:4px;}
