@@ -61,9 +61,12 @@ Body
 
 #topheader
 {
-	margin: 0pt auto;
-	width: 820px;
-	min-height: 85px;
+    margin: 0pt auto;
+    width: 770px;
+    height: 50px; /*background-image: url('https://mortgage-rate-offers.com/images/logo.png');*/
+    background-repeat: no-repeat;
+    text-align: right;
+    font-size: 17px;
 }
 
 .header
