@@ -107,8 +107,8 @@
                                 <div class="scroll-content-block">
                                     <div class="accept-detail-panel">
                                         <ul>
-                                            <li>Our <a href="javascript:STMRCWindow('http://www1.lendingtree.com/stmrc/termsofuse.asp?bp=v3&nonav=true')">
-                                                <span>Terms of Use Agreement</span></a> and <a href="javascript:STMRCWindow('http://www1.lendingtree.com/stmrc/privacy.asp?nonav=true&bp=ltquickmatch', 550, 450)">
+                                            <li>Our <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/terms-of-use')">
+                                                <span>Terms of Use Agreement</span></a> and <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/privacy-policy', 550, 450)">
                                                     <span>Privacy Policy</span></a></li>
                                             <li>To receive important notices, and other <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/network-lenders-consent')">communications</a> at any telephone number or email address (including a mobile device) you entered so 
                                             that LendingTree, up to five (5) lenders with whom you have been matched, or one of its third party associates can reach you regarding this request. 
