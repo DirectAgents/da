@@ -41,7 +41,7 @@ public partial class ThankYou : QuickMatchPageBase
 
             var customLogic = new BeforeXmlPostCustomLogic(xDoc);
             customLogic.ReferringCdNumber = this.ReferringCdNumber;
-            customLogic.Check();
+            //customLogic.Check();
 
             Logger.Log(
                 customLogic.XDoc.Root,
