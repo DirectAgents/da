@@ -44,9 +44,9 @@
                     <h2>
                         Refinance Rates From</h2>
                     <div class="rate">
-                       3.125%
+                        <%=RefinanceRate%>%
                         <br />
-                        (3.297% APR)*</div>
+                        (<%=APR%>% APR)*</div>
                     <h2>
                         Affordable Mortgage Payments</h2>
                     <div class="smallLabel">
