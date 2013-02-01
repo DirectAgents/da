@@ -50,17 +50,17 @@
                     <h2>
                         Affordable Mortgage Payments</h2>
                     <div class="smallLabel">
-                        Payment examples below based on 5/1 ARM Rates</div>
+                        <%=GetInfo("AffordablePaymentsMessage")%></div>
                 </div>
                 <div id="payments">
                     <h2 class="green">
-                        $225,000 mortgage for $889/month
+                        $<%=GetInfo("Amount1")%> mortgage for $<%=GetInfo("MonthlyAmount1")%>/month
                     </h2>
                     <h2 class="green">
-                        $250,000 mortgage for $988/month
+                        $<%=GetInfo("Amount2")%> mortgage for $<%=GetInfo("MonthlyAmount2")%>/month
                     </h2>
                     <h2 class="green">
-                        $400,000 mortgage for $1,606/month
+                        $<%=GetInfo("Amount3")%> mortgage for $<%=GetInfo("MonthlyAmount3")%>/month
                     </h2>
                     <div class="disclosure">
                         <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/advertising-disclosures')">

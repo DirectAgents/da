@@ -31,7 +31,7 @@ public partial class _1_MasterPage : System.Web.UI.MasterPage
         }
     }
     
-    private string GetInfo(string s)
+    public string GetInfo(string s)
     {
         string result;
         string key = "Info_" + s;
