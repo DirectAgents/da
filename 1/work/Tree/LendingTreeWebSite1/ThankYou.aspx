@@ -62,7 +62,7 @@
     <uc:DirectTrackPixel ID="DirectTrackPixel1" runat="server" ExtraPixel="false" />
     <uc:ViewSession ID="ViewSession1" runat="server" />
     </form>
-    <script type="text/javascript">
+<%--    <script type="text/javascript">
         alert("calling");
         $(function () {
             var leadData = { id: "<%=Model.AppID%>" };
@@ -76,6 +76,6 @@
                 }
             });
         });
-    </script>
+    </script>--%>
 </body>
 </html>
