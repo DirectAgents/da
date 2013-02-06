@@ -4,6 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <script src="Scripts/jquery-1.4.1.min.js"></script>
     <script src="Scripts/JScript.js" type="text/javascript"></script>
     <script src="Scripts/screen.js" type="text/javascript"></script>
     <title></title>
@@ -61,5 +62,20 @@
     <uc:DirectTrackPixel ID="DirectTrackPixel1" runat="server" ExtraPixel="false" />
     <uc:ViewSession ID="ViewSession1" runat="server" />
     </form>
+    <script type="text/javascript">
+        alert("calling");
+        $(function () {
+            var leadData = { id: "<%=Model.AppID%>" };
+            $.ajax({
+                type: "POST",
+                url: "track.asmx/lead",
+                data: leadData,
+                dataType: "json",
+                success: function () {
+                    alert("success");
+                }
+            });
+        });
+    </script>
 </body>
 </html>

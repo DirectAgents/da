@@ -1,0 +1,21 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="System.Xml.Linq" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Xml.Linq" #>
+<#@ output extension=".cs" #>
+<#
+XElement xe = XElement.Load(this.Host.ResolvePath(".") + "..\\App_Data\\connectionsconfig");
+var items = xe.Elements("add");
+#>
+using System.Web.Configuration;
+namespace LendingTreeWeb
+{
+	public class ConnectionStrings
+	{
+<#foreach(var item in items) {#>
+		public static string <#=item.Attribute("name").Value#>= WebConfigurationManager.ConnectionStrings["<#=item.Attribute("name").Value#>"].ConnectionString;
+<#}#>
+	}
+}
