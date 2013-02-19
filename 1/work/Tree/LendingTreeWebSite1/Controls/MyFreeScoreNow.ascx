@@ -4,16 +4,16 @@
 </br>
         LAST STEP
     </div>
+   
     <div>
-        Having your up-to-date credit score will ensure you
-        
-        receive the lowest </br>and most accurate mortgage rate.
-    </div>
-    <div>
-        Check your 3 credit scores for $1 at <a href="http://trk2it1.com/?a=40316&c=2671&s1=">FreeScore360.com</a>.  It takes only
-        a minute and you will also receive </br>your up-to-date credit reports from Experian, Equifax and Transunion. If you notice any 
-credit issues</br>from any of the credit bureaus, now is the time to act and bring your credit score above 720.</div>
-   <a href="http://trk2it1.com/?a=40316&c=2671&s1=">
+        Knowing where your credit score* ranges and what’s in your credit report will ensure you receive the lowest possible and most accurate mortgage rate.    Mistakes in your report and inaccuracies may cost you thousands!
+Get your free credit score and report at <a href="http://trk2it2.com/?a=40316&c=2953&s1=">MyFreeScoreNow.com</a>. It takes only a minute and all 3 credit reports and scores from Experian, Equifax and 
+Transunion are available.  Your scores can vary up to 100 points between the bureaus. You will receive a personalized credit score report detailing 
+what factors there are for why your score is not higher. And if you notice any inaccuracies or negative items, now is the time to act and access 
+the help that may bring your score up to the highest it can be for your situation. Enroll now to learn more and also about how you can earn a $50 
+monthly dining gift certificate  - every month from <a href="http://trk2it2.com/?a=40316&c=2953&s1=">MyFreeScoreNow.com</a>
+        </div>
+   <a href="http://trk2it2.com/?a=40316&c=2953&s1=">
 
 <!--	<a href="http://directagents.go2cloud.org/aff_c?offer_id=22&aff_id=1&aff_sub=CD1000&url_id=34">
 -->    
@@ -21,4 +21,8 @@ credit issues</br>from any of the credit bureaus, now is the time to act and bri
             Height="74px" Width="192px" CssClass="freeCredButton" /></a>
 </br>
 </br>
+* The score provided is based on your Experian credit report and indicates your relative credit risk level for educational purposes and is not the final score used by lenders.
 </div>
+
+
+
