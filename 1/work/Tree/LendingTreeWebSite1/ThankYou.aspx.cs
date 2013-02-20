@@ -16,6 +16,8 @@ public partial class ThankYou : QuickMatchPageBase
             Response.Redirect(UrlFor(EPages.Page1));
         }
 
+        ShowCreditScoreAd();
+
         Model.AffiliateSiteID = this.ReferringCdNumber;
 
         // NOTE: this logic can probably be removed since the ESourceId comes
@@ -73,5 +75,12 @@ public partial class ThankYou : QuickMatchPageBase
 
         // Now that the pixel has fired, we clear the session so it all has to start over.
         Session.Abandon();
+    }
+
+    // Randomly display one of (FreeCreditScore1, MyFreeScoreNow1)
+    private void ShowCreditScoreAd()
+    {
+        FreeCreditScore1.Visible = (new Random().Next(2) == 1);
+        MyFreeScoreNow1.Visible = !FreeCreditScore1.Visible;
     }
 }
