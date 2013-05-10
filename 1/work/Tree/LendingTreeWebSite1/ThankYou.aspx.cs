@@ -80,7 +80,11 @@ public partial class ThankYou : QuickMatchPageBase
     // Randomly display one of (FreeCreditScore1, MyFreeScoreNow1)
     private void ShowCreditScoreAd()
     {
-        FreeCreditScore1.Visible = (new Random().Next(2) == 1);
-        MyFreeScoreNow1.Visible = !FreeCreditScore1.Visible;
+        FreeCreditScore1.Visible = true;
+
+        // AdRotator functionality disabled per request from SC
+        //
+        //FreeCreditScore1.Visible = (new Random().Next(2) == 1);
+        //MyFreeScoreNow1.Visible = !FreeCreditScore1.Visible;
     }
 }
