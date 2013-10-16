@@ -108,17 +108,34 @@
                                     <div class="accept-detail-panel">
                                         <ul>
                                             <li>Our <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/terms-of-use')">
-                                                <span>Terms of Use Agreement</span></a> and <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/privacy-policy', 550, 450)">
-                                                    <span>Privacy Policy</span></a></li>
-                                            <li>To receive important notices, and other <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/network-lenders-consent')">communications</a> at any telephone number or email address (including a mobile device) you entered so 
-                                            that LendingTree, up to five (5) lenders with whom you have been matched, or one of its third party associates can reach you regarding this request. 
-                                            This authorization removes any previous registration(s) on a federal or state Do-Not-Call (DNC) registry or any internal opt-out/unsubscribe requests you may have previously 
-                                            requested with LendingTree or matched lenders.</li>
+                                                <span>Terms of Use Agreement</span></a>, <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/privacy-policy', 550, 450)">
+                                                    <span>Privacy Policy</span></a> and to receive important notices and other <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/network-lenders-consent')">communications</a> electronically.</li>
+                                            <li>
+                                            We take your privacy seriously.  You are providing express consent to share 
+                                                your information with up to five (5) Network 
+                                                <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/terms-of-use#3A.%20Terms%20Applicable%20to%20All%20Mortgage%20Loan%20Request%20Services')">lenders</a>, and for LendingTree, parties calling on behalf of LendingTree, Network lenders, or an authorized third party on their behalf to call you (including through automated means; e.g. autodialing, text and pre-recorded messaging) via telephone, mobile device (including SMS and MMS) and/or email, even if your telephone number is currently listed on any internal, corporate, state, 
+                                                federal or national Do-Not-Call (DNC) list. 
+
+
+                                            </li>
+
+
+                                            <li>
+
+                                            Consent is not required as a condition to utilize LendingTree's services, 
+                                                and you may choose to be contacted by an individual customer care representative(s) by calling 1-888-272-1355 or you may utilize our services using LendingTree's 
+                                                <a href="javascript:STMRCWindow('https://www.lendingtree.com/loan-explorer#/offers/75c4b209-1d46-4d9d-ae26-b795c1d9c394')">LoanExplorer</a>.   
+                                                You may opt-out of receiving calls at any time by clicking <a href="javascript:STMRCWindow('https://www.lendingtree.com/legal/do-not-call')">Do-Not-Call</a>.
+
+                                            </li>
+
+                                            <li>
+                                            You are providing written consent under the Fair Credit Report Act for LendingTree, LLC and its lenders with whom you are matched to obtain consumer report "soft inquiry" information from your credit profile or other information from our contracted Credit Bureau.
+
+                                            </li>
                                             
                                             
-                                            <li>That LendingTree, a lender with whom you have been matched, or one of its third party associates may use an automatic dialing system in connection 
-                                            with calls made to any telephone number you entered, even 
-                                            if it is a cellular phone number or other service for which the called person(s) could be charged for such call.</li>
+                                            
                                             <%if (Model.RequiresDisclosure)
                                               {  %>
                                             <li>That I have received and reviewed the <a href="javascript:STMRCWindow('https://secure.lendingtree.com/stmrc/brokerstatedisclosure.asp?state=<%=State%>')">
@@ -126,11 +143,7 @@
                                                     <%=State%></span> </li>
                                             <%} %>
                                             
-                                            <li>
-                                            You are providing written consent under the Fair Credit Report Act for LendingTree, LLC and its 
-                                            lenders with whom you are matched to obtain consumer report "soft inquiry" 
-                                            information from your credit profile or other information from our contracted Credit Bureau.
-                                            </li>
+                                            
                                             
                                         </ul>
                                     </div>
