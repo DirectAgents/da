@@ -89,6 +89,41 @@
                             <uc6:HomePhone ID="HomePhone1" runat="server" />
                             <test:Automation ID="Automation5" runat="server" Action="SetProperty" Target="HomePhone1"
                                 Property="Value" Value="310-555-1111" Key="TestAutomation" />
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".do-not-call").click(function () {
+            window.open("http://www.lendingtree.com/legal/do-not-call", '_blank');
+        });
+    });
+</script>
+
+
+ 
+  <div style="float:left; position:absolute; width:100px; margin-top:-20px; margin-left:290px; font-size:10px;">                       
+    <a href="#" class="tip2">
+    <div class="explain-this">Explain this <span>
+      <div id="tip-list"> 
+
+
+          By providing a phone number, you are agreeing that LendingTree, its Network <br /> Lenders, 
+          and/or partners may contact you at this number, or another number <br /> that you later provide. 
+          You also agree to receive calls and messages from automated <br />dialing systems and/or 
+          by pre-recorded message, and text messages (where applicable)<br /> at these numbers. Normal 
+          cell phone charges may apply if you provide a<br /> cellular number. You may continue with 
+          our services without providing a phone <br />number by calling 1-888-272-1355 or by visiting
+          LendingTree LoanExplorer.<br /> 
+          You may opt-out of receiving calls at any time by clicking 
+          <div class="do-not-call" style="display:inline">Do-Not-Call</div>.
+       
+       </div>
+      </span> </div>
+    </a>
+</div>
+
+  
                             <uc7:WorkPhone ID="WorkPhone1" runat="server" />
                             <test:Automation ID="Automation6" runat="server" Action="SetProperty" Target="WorkPhone1"
                                 Property="Value" Value="310-555-2222" Key="TestAutomation" />
