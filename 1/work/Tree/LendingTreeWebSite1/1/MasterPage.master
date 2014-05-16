@@ -42,11 +42,11 @@
                 </div>
                 <div id="page1RailRates" class="stroke">
                     <h2>
-                        Initial Refinance Rates From</h2>
+                        5/1 ARM Rates as low as</h2>
                     <div class="rate">
                         <%=RefinanceRate%>%
                         <br />
-                        (<%=APR%>% APR)*</div>
+                        (<%=APR%>% APR)</div>
                     <h2>
                         Affordable Mortgage Payments</h2>
                     <div class="smallLabel">
