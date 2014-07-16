@@ -1,0 +1,39 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Webcrawler Search Engine Scraper</title>
+</head>
+<body>
+
+    <h2>Webcrawler v1.0</h2>
+
+<form action="@Url.Action("Process")" method="post">
+Google Search Query: <input type="text" size ="50" name="query"><br>
+Text Search Within Results: <input type="text" size = "30" name="searchString"><br>
+Target Site(s) To Scan For (separate multiple instances with single space): <input type="text" size="100" name="website"><br>
+Number of Google Pages to Parse: <input type="number" name="numPages"><br>
+Exclude Results With Links to Target(s): <input type="radio" name="exclude" value = "yes">Yes <input type="radio" name="exclude" value = "no">No<br>
+Delay Time (sec): <input type="number" name="delay"><br>
+<input type="submit">
+</form>
+
+@*    @Html.DisplayNameFor(model => model.query)
+    @for(int i = 0; i < 5; i++)
+    {
+        <span>this is a line @i</span>
+        <br />
+    }
+    Query: @Model.query
+    <br />
+    Target URL: @Model.url
+    <br />*@
+
+</body>
+</html>

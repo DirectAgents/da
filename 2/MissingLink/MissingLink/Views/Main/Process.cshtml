@@ -1,0 +1,50 @@
+﻿@model MvcApplication1.Models.ProcessHub
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Webcrawler Results</title>
+</head>
+
+<body>
+<p>Process Results:</p>
+
+    <p>
+    Google Search Query: @Model.query <br>
+    Text Search Within Results: @Model.searchString <br>
+    Target Website(s) To Link To: @Model.target_website_htmlview<br>
+    Number of Google Pages to Parse: @Model.limit <br>
+    Exclude Results With Links to Target(s): @Model.exclude <br>
+    Delay Time: @Model.timer ms <br>
+    </p>
+
+    <p>
+    Total number of Results: @Model.results.Count()<br>
+    Results Omitted: @Model.results_excluded.Count()<br>
+    </p>
+
+    @foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
+        @s.url<br>
+        if (s.exception) {
+            <text> ERROR: </text> @s.errorMsg<br>
+            continue;
+        }
+        if (s.linksToTarget) {
+            <text> OK: Site features links that point to target(s).<br></text>
+        }
+        else {
+            <text> NOT: No links to target(s) found.<br></text>
+        }
+
+        if (s.containsPhrase) {
+            <text> OK: Site contains instances of given phrase.</text><br>
+        }
+        else {
+            <text> NOT: Given phrase not found.</text><br>
+        }
+        <br>
+    }
+
+</body>
+</html>

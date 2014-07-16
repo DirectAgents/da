@@ -18,7 +18,7 @@ Thumbs.db
 *.cache
 *.ilk
 *.log
-#[Bb]in
+[Bb]in
 [Dd]ebug*/
 *.lib
 *.sbr
@@ -30,11 +30,9 @@ _ReSharper*/
 connectionsconfig
 1/work/Tree/LendingTreeWebSite1/Web.config
 Bizware/
-2/
 Apps/
 boost/
 aforge/
 utils/
 1/work/OpenSource/
 1/work/Tree/LendingTreeWebSite1/da/Data/responses/*.xml
-3/
