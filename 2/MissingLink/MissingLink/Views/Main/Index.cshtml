@@ -7,6 +7,8 @@
 
 <html>
 <head>
+@*    <script src="jquery-2.1.1.min.js"></script>
+    <script src="jquery.calculation.min.js"></script>*@
     <meta name="viewport" content="width=device-width" />
     <title>Webcrawler Search Engine Scraper</title>
 </head>
@@ -14,15 +16,42 @@
 
     <h2>Webcrawler v1.0</h2>
 
-<form action="@Url.Action("Process")" method="post">
+<form id="form" action="@Url.Action("Process")" method="post">
 Google Search Query: <input type="text" size ="50" name="query"><br>
 Text Search Within Results: <input type="text" size = "30" name="searchString"><br>
 Target Site(s) To Scan For (separate multiple instances with single space): <input type="text" size="100" name="website"><br>
-Number of Google Pages to Parse: <input type="number" name="numPages"><br>
+Number of Results to Scan: <input type="number" name="numResults"><br>
 Exclude Results With Links to Target(s): <input type="radio" name="exclude" value = "yes">Yes <input type="radio" name="exclude" value = "no">No<br>
+<!--Jump Depth: <input type="number" name="jump"><br> -->
 Delay Time (sec): <input type="number" name="delay"><br>
-<input type="submit">
+<input type="submit"><br>
+
+Estimated Time to Completion: <div id="eta"></div>
+
 </form>
+
+@*<script>
+    $(document).ready(function () {
+        $('input.amount').keyup(function () {
+            calculateTotal(this);
+        });
+    });
+
+    function calculateTotal(src) {
+        var sum = 0,
+            tbl = $(src).closest('table');
+        tbl.find('input.number').each(function (index, elem) {
+            var val = parseFloat($(elem).val());
+            if (!isNaN(val)) {
+                sum += val;
+            }
+        });
+        tbl.find('.total').html(sum.toFixed(0));
+    }
+</script>*@
+
+<p>
+</p>
 
 @*    @Html.DisplayNameFor(model => model.query)
     @for(int i = 0; i < 5; i++)
