@@ -12,17 +12,19 @@
 
     <p>
     Google Search Query: @Model.query <br>
-    Text Search Within Results: @Model.searchString <br>
+    Text Search Within Results: @if (Model.phraseSearch == true) { @Model.searchString }
+                                else { <text><i>(No Phrase Entered)</i></text>} <br>
     Target Website(s) To Link To: @Model.target_website_htmlview<br>
     Number of Results to Scan: @Model.limit <br>
     Exclude Results With Links to Target(s):
         @if (Model.exclude == true) { <text>yes</text> }
         else { <text>no</text> }<br>
-    Delay Time: @Model.timer ms <br>
+    Delay Time: @Model.timer sec <br>
     </p>
 
     <p>
-    Total number of Results: @Model.results.Count()<br>
+    Maximum Range of Google Results: @Model.max_googleResults<br>
+    Number of Results Retrieved: @Model.results.Count()<br>
     Results Omitted: @Model.results_excluded.Count()<br>
     </p>
 
@@ -38,14 +40,15 @@
             <text> - OK: Site features links that point to target(s).<br></text>
         }
         else {
-            <text> - NOT: No links to target(s) found.<br></text>
+            <text> - NOTE: No links to target(s) found.<br></text>
         }
-
-        if (s.containsPhrase) {
-            <text> - OK: Site contains instances of given phrase.</text><br>
-        }
-        else {
-            <text> - NOT: Given phrase not found.</text><br>
+        if (Model.phraseSearch) {
+            if (s.containsPhrase) {
+                <text> - OK: Site contains instances of given phrase.</text><br>
+            }
+            else {
+                <text> - NOTE: Given phrase not found.</text><br>
+            }
         }
         <br>
     }

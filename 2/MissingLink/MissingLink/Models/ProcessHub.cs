@@ -41,10 +41,11 @@ namespace MvcApplication1.Models
         public string client_site { get; set; }
         public List<string> target_website { get; set; }
         public string target_website_htmlview { get; set; }
-        public List<string> search_result_url { get; set; }
         public int limit { get; set; }
         public int timer { get; set; }
+        public int max_googleResults { get; set; }
         public bool exclude { get; set; }
+        public bool phraseSearch { get; set; }
         public List<SearchResult> results { get; set; }
         public List<SearchResult> results_excluded { get; set; }
 
@@ -104,7 +105,7 @@ namespace MvcApplication1.Models
         {
             // Parsing list of websites to target
             target_website = new List<string>();
-            target_website_htmlview = "";
+            target_website_htmlview = param_website;
             results = new List<SearchResult>();
             results_excluded = new List<SearchResult>();
             if (param_website.Equals("") || param_website == null)
@@ -126,11 +127,13 @@ namespace MvcApplication1.Models
 
             // Setting phrase search query
             searchString = "";
-            if (param_searchString != null) searchString = param_searchString;
+            phraseSearch = true;
+            if (param_searchString == null || param_searchString == "")
+                phraseSearch = false;
 
             // Setting limit on number of Google results pages
             limit = 1;
-            if (param_numResults > 1 || param_numResults < 0) limit = param_numResults;
+            if (param_numResults > 1) limit = param_numResults;
 
             // Setting config option on exclusion of positive results
             exclude = false;
@@ -138,9 +141,9 @@ namespace MvcApplication1.Models
 
             // Setting timer; input in seconds
             timer = 0;
-            if (param_delay > 1 || param_delay < 0) timer = 0;
+            if (param_delay > 1 || param_delay < 0 ) timer = 0;
             else timer = param_delay;
-            timer *= 100;
+            timer *= 1000;
 
             // Other important variables
             url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=" + HttpUtility.UrlEncode(query);
@@ -155,7 +158,6 @@ namespace MvcApplication1.Models
         {
             watch = new Stopwatch();
             watch.Start();
-            search_result_url = new List<string>();
             // Processing Google search results. Page is parsed from JSON string.
             bool complete = false;
             int count = 0;
@@ -167,10 +169,12 @@ namespace MvcApplication1.Models
             {
                 string temp = (new WebClient()).DownloadString(url);
                 dynamic parsed = Newtonsoft.Json.JsonConvert.DeserializeObject(temp);
+                max_googleResults = Convert.ToInt32(parsed["responseData"]["cursor"]["estimatedResultCount"]);
                 for (int j = 0; j < 4; j++)
                 {
                     string address = parsed["responseData"]["results"][j]["url"];
-                    search_result_url.Add(address);
+                    SearchResult r = scrapeURL(count+1, address, target_website, exclude, searchString);
+                    results.Add(r);
                     count++;
                     if (count == limit)
                     {
@@ -182,16 +186,6 @@ namespace MvcApplication1.Models
                 furtherSearchValue += 4;
                 url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + furtherSearchValue + "&q=" + HttpUtility.UrlEncode(query);
                 Thread.Sleep(timer);
-            }
-
-            // Processing post-parsed URLs.
-            count = 1;
-            foreach (string s in search_result_url)
-            {
-                //System.Diagnostics.Debug.WriteLine(s); // diagnostic printing
-                SearchResult r = scrapeURL(count, s, target_website, exclude, searchString);
-                results.Add(r);
-                count++;
             }
 
             TrimExclusions(results);
@@ -230,13 +224,16 @@ namespace MvcApplication1.Models
                 string pageData = (new WebClient()).DownloadString(link);
                 pageData.Replace('"', '\"');
                 foreach (string s in target_website)
+                {
                     if (pageData.Contains(s))
                     {
                         sr.linksToTarget = true;
                         if (exclude) sr.skip = true;
                     }
+                }
 
-                if (pageData.Contains(searchString))
+                bool contains = pageData.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0;
+                if (contains)        // original condition: (pageData.Contains(searchString)
                     sr.containsPhrase = true;
 
                 return sr;

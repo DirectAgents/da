@@ -7,12 +7,43 @@
 
 <html>
 <head>
-@*    <script src="jquery-2.1.1.min.js"></script>
-    <script src="jquery.calculation.min.js"></script>*@
+    <!-- <script src="jquery-2.1.1.min.js"></script> -->
+@*    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>*@
+    <script>
+
+
+            //$(document).ready(function () {
+            //    $("#form").keydown(function () {
+            //        $("#eta").text(calcETA(document.getElementById("#numResults"), document.getElementById("#delay")) + " sec");
+            //    });
+            //});
+
+        function calcETA() {
+            var t = 475;
+            var x = document.getElementById("numResults").value;
+            var y = document.getElementById("delay").value;
+            x = +x;
+            y = +y;
+            if (x < 0) x = 0;
+            if (y < 0) y = 0;
+            var googlePages = ~~(x / 4);
+            if (x % 4 > 0) googlePages++;
+            var z = ((x * t) + (googlePages * t) + ((y * 1000) * googlePages) - (y * 1000)) * 0.001;
+            //var z = ((x * t) + (googlePages * t) + ((y * 1000) * x) - (y * 1000)) * 0.001;
+            z = Math.round(z * 100) / 100;
+            if (z < 0) z = 0;
+            document.getElementById("eta").innerHTML = "Estimated Time to Completion: " + z + " sec.";
+            }
+
+    </script>
+
     <meta name="viewport" content="width=device-width" />
     <title>Webcrawler Search Engine Scraper</title>
+
 </head>
 <body>
+
+
 
     <h2>Webcrawler v1.0</h2>
 
@@ -20,15 +51,17 @@
 Google Search Query: <input type="text" size ="50" name="query"><br>
 Text Search Within Results: <input type="text" size = "30" name="searchString"><br>
 Target Site(s) To Scan For (separate multiple instances with single space): <input type="text" size="100" name="website"><br>
-Number of Results to Scan: <input type="number" name="numResults"><br>
-Exclude Results With Links to Target(s): <input type="radio" name="exclude" value = "yes">Yes <input type="radio" name="exclude" value = "no">No<br>
-<!--Jump Depth: <input type="number" name="jump"><br> -->
-Delay Time (sec): <input type="number" name="delay"><br>
+Number of Results to Scan: <input type="number" id="numResults" name="numResults" value="4" onchange="calcETA()"><br>
+Exclude Results With Links to Target(s): <input type="radio" name="exclude" value = "yes">Yes <input type="radio" name="exclude" value = "no" checked="checked">No<br>
+<!--Start At ID#: <input type="number" name="jump"><br> -->
+Delay Time Between Each Call To Google (sec): <input type="number" step="any" id="delay" name="delay" value="0" onchange="calcETA()"><br>
 <input type="submit"><br>
 
-Estimated Time to Completion: <div id="eta"></div>
-
 </form>
+
+
+
+<p id="eta">Estimated Time to Completion: </p>
 
 @*<script>
     $(document).ready(function () {
