@@ -36,6 +36,8 @@ namespace MvcApplication1.Models
 
         public Stopwatch watch;
 
+        public float delay_time_display { get; set; }
+        public float total_time { get; set; }
         public string query { get; set; }
         public string searchString { get; set; }
         public string client_site { get; set; }
@@ -101,7 +103,7 @@ namespace MvcApplication1.Models
          *          param_searchString: phrase to be searched for
          *          param_website: website(s)
          **/
-        public ProcessHub(string param_query, string param_searchString, string param_website, int param_numResults, string param_exclude, int param_delay)
+        public ProcessHub(string param_query, string param_searchString, string param_website, int param_numResults, string param_exclude, float param_delay)
         {
             // Parsing list of websites to target
             target_website = new List<string>();
@@ -130,6 +132,7 @@ namespace MvcApplication1.Models
             phraseSearch = true;
             if (param_searchString == null || param_searchString == "")
                 phraseSearch = false;
+            else searchString = param_searchString;
 
             // Setting limit on number of Google results pages
             limit = 1;
@@ -141,9 +144,16 @@ namespace MvcApplication1.Models
 
             // Setting timer; input in seconds
             timer = 0;
-            if (param_delay > 1 || param_delay < 0 ) timer = 0;
-            else timer = param_delay;
-            timer *= 1000;
+            if (param_delay < 0)
+            {
+                timer = 0;
+                delay_time_display = 0.0F;
+            }
+            else
+            {
+                timer = (int)(param_delay * 1000);
+                delay_time_display = param_delay;
+            }
 
             // Other important variables
             url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=" + HttpUtility.UrlEncode(query);
@@ -191,6 +201,7 @@ namespace MvcApplication1.Models
             TrimExclusions(results);
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));
+            total_time = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
         } // run
 

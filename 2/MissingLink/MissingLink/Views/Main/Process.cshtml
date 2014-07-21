@@ -19,13 +19,14 @@
     Exclude Results With Links to Target(s):
         @if (Model.exclude == true) { <text>yes</text> }
         else { <text>no</text> }<br>
-    Delay Time: @Model.timer sec <br>
+    Delay Time: @Model.delay_time_display sec <br>
     </p>
 
     <p>
     Maximum Range of Google Results: @Model.max_googleResults<br>
     Number of Results Retrieved: @Model.results.Count()<br>
     Results Omitted: @Model.results_excluded.Count()<br>
+    Total Time: @Model.total_time sec<br>
     </p>
 
     @foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {

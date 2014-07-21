@@ -25,7 +25,7 @@ namespace MvcApplication1.Controllers
             return View();
         }
 
-        public ActionResult Process(string query, string searchString, string website, int numResults, string exclude, int delay) {
+        public ActionResult Process(string query, string searchString, string website, int numResults, string exclude, float delay) {
             p = new ProcessHub(query, searchString, website, numResults, exclude, delay);
             p.run();
             return View(p);
