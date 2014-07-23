@@ -34,8 +34,6 @@ namespace MvcApplication1.Models
             }
         } // SearchResult class
 
-        public Stopwatch watch;
-
         public float delay_time_display { get; set; }
         public float total_time { get; set; }
         public string query { get; set; }
@@ -50,19 +48,25 @@ namespace MvcApplication1.Models
         public bool phraseSearch { get; set; }
         public List<SearchResult> results { get; set; }
         public List<SearchResult> results_excluded { get; set; }
+        public int jump { get; set; }
 
         private static string url;
 
         /**
-         *
+         * Formats website entries as provided by the user. Method automatically
+         * attaches protocols, prefixes, and suffixes where needed.
+         * @para string[] sites: array of strings representing URLs
          **/
-        private List<string> FormatLinks(string[] sites) {
+        private List<string> FormatLinks(string[] sites)
+        {
             List<string> bin = new List<string>();
-            for (int i = 0; i < sites.Length; i++) {
+            for (int i = 0; i < sites.Length; i++)
+            {
 
                 string[] breakdown = sites[i].Split('.');
 
-                if (breakdown.Length <= 1) {                            // a single name was provided, nothing more; very vague; default to http[s]://www.[address].com
+                if (breakdown.Length <= 1)
+                {                            // a single name was provided, nothing more; very vague; default to http[s]://www.[address].com
                     bin.Add("href=\"http://" + sites[i] + ".com");
                     bin.Add("href=\"https://" + sites[i] + ".com");
                     bin.Add("href=\"http://www." + sites[i] + ".com");
@@ -79,7 +83,8 @@ namespace MvcApplication1.Models
                         bin.Add("href=\"http://" + sites[i]);
                         bin.Add("href=\"https://" + sites[i]);
                     }
-                    else {                                                  // just sitename.com provided
+                    else
+                    {                                                  // just sitename.com provided
                         bin.Add("href=\"http://" + sites[i]);
                         bin.Add("href=\"https://" + sites[i]);
                         bin.Add("href=\"http://www." + sites[i]);
@@ -90,12 +95,13 @@ namespace MvcApplication1.Models
             return bin;
         } // FormatLink
 
-        private bool blankSpot(string[] s) {
+        private bool containsBlankSpot(string[] s)
+        {
             bool b = false;
             for (int i = 0; i < s.Length; i++)
                 if (s[i].Equals("") || s[i] == null) b = true;
             return b;
-        } // blankSpot
+        } // containsBlankSpot
 
         /**
          * Main Constructor for ProcessHub.
@@ -103,7 +109,7 @@ namespace MvcApplication1.Models
          *          param_searchString: phrase to be searched for
          *          param_website: website(s)
          **/
-        public ProcessHub(string param_query, string param_searchString, string param_website, int param_numResults, string param_exclude, float param_delay)
+        public ProcessHub(string param_query, string param_searchString, string param_website, int param_numResults, string param_exclude, int param_jump, float param_delay)
         {
             // Parsing list of websites to target
             target_website = new List<string>();
@@ -142,6 +148,11 @@ namespace MvcApplication1.Models
             exclude = false;
             if (param_exclude.Equals("yes")) exclude = true;
 
+            // Setting jump point
+            jump = 0;
+            if (param_jump < 1) jump = 0;
+            else jump = param_jump - 1;
+
             // Setting timer; input in seconds
             timer = 0;
             if (param_delay < 0)
@@ -156,7 +167,7 @@ namespace MvcApplication1.Models
             }
 
             // Other important variables
-            url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=" + HttpUtility.UrlEncode(query);
+            //url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=" + HttpUtility.UrlEncode(query);
         } // primary constructor
 
         /**
@@ -166,14 +177,14 @@ namespace MvcApplication1.Models
          **/
         public void run()
         {
-            watch = new Stopwatch();
+            url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query);
+            Stopwatch watch = new Stopwatch();
             watch.Start();
             // Processing Google search results. Page is parsed from JSON string.
             bool complete = false;
             int count = 0;
-            int furtherSearchValue = 0;
             int pages = limit / 4;
-            if ((limit%4) > 0) pages++;
+            if ((limit % 4) > 0) pages++;
 
             for (int i = 0; i < pages; i++)
             {
@@ -183,7 +194,7 @@ namespace MvcApplication1.Models
                 for (int j = 0; j < 4; j++)
                 {
                     string address = parsed["responseData"]["results"][j]["url"];
-                    SearchResult r = scrapeURL(count+1, address, target_website, exclude, searchString);
+                    SearchResult r = scrapeURL(jump + 1, address, target_website, exclude, searchString);
                     results.Add(r);
                     count++;
                     if (count == limit)
@@ -191,14 +202,14 @@ namespace MvcApplication1.Models
                         complete = true;
                         break;
                     }
+                    jump++;
                 }
                 if (complete) break;
-                furtherSearchValue += 4;
-                url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + furtherSearchValue + "&q=" + HttpUtility.UrlEncode(query);
+                url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query);
                 Thread.Sleep(timer);
             }
 
-            TrimExclusions(results);
+            //TrimExclusions(results);
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));
             total_time = (float)watch.ElapsedMilliseconds / 1000;
@@ -229,7 +240,7 @@ namespace MvcApplication1.Models
          **/
         private SearchResult scrapeURL(int num, string link, List<string> target_website, bool exclude, string searchString)
         {
-            SearchResult sr = new SearchResult(num,link);
+            SearchResult sr = new SearchResult(num, link);
             try
             {
                 string pageData = (new WebClient()).DownloadString(link);
@@ -244,7 +255,7 @@ namespace MvcApplication1.Models
                 }
 
                 bool contains = pageData.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0;
-                if (contains)        // original condition: (pageData.Contains(searchString)
+                if (contains)        // original condition: (pageData.Contains(searchString))
                     sr.containsPhrase = true;
 
                 return sr;
@@ -258,6 +269,11 @@ namespace MvcApplication1.Models
             }
         } // scrapeURL
 
+        /**
+         * Prints out all SearchResults information stored in a list
+         * in the output console. Useful for testing purposes.
+         * @para List<SearchResult> results:    list of SearchResults
+         **/
         private void DiagnosticPrint(List<SearchResult> results)
         {
             foreach (SearchResult sr in results)
@@ -281,18 +297,26 @@ namespace MvcApplication1.Models
             }
         } // DiagnosticPrint
 
+        /**
+         * Quick shortcut method for printing to the diagnostic console, sans new line.
+         * @para string s:  the string to be printed
+         **/
         private void display(string s)
         {
             System.Diagnostics.Debug.Write(s);
         } // display
 
+        /**
+         * Quick shortcut method for printing to the diagnostic console, with new line.
+         * @para string s:  the string to be printed
+         **/
         private void displayln(string s)
         {
             System.Diagnostics.Debug.WriteLine(s);
         } // displayln
 
-    }
+    } // public class ProcessHub
 
 
 
-}
+} // namespace

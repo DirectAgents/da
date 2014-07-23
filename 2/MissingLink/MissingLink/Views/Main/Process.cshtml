@@ -1,4 +1,9 @@
-﻿@model MvcApplication1.Models.ProcessHub
+﻿@{
+    ViewBag.Title = "Processed Results";
+}
+
+
+@model MvcApplication1.Models.ProcessHub
 
 <!DOCTYPE html>
 <html>
@@ -31,10 +36,11 @@
 
     @foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
         if (s.skip) { continue; }
-        <text>ID: </text>@s.id<br>
+        <text>Rank ID: </text>@s.id<br>
         <a href="@s.url">@s.url</a><br>
         if (s.exception) {
             <text> - ERROR: </text> @s.errorMsg<br>
+            <br>
             continue;
         }
         if (s.linksToTarget) {
@@ -53,6 +59,8 @@
         }
         <br>
     }
+
+    @Html.ActionLink("Next Set of Results", "Next")
 
 </body>
 </html>

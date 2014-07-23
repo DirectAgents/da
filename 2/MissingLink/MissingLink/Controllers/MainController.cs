@@ -25,10 +25,22 @@ namespace MvcApplication1.Controllers
             return View();
         }
 
-        public ActionResult Process(string query, string searchString, string website, int numResults, string exclude, float delay) {
-            p = new ProcessHub(query, searchString, website, numResults, exclude, delay);
+        public ActionResult Process(ParameterKeeper param) {
+            Session["Params"] = param;
+            p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
             p.run();
             return View(p);
+        }
+
+        public ActionResult Next()
+        {
+            ParameterKeeper param = (ParameterKeeper)Session["Params"];
+
+            param.jump += param.numResults;
+            p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
+            p.run();
+            return View("Process",p);
+            //return Content("okay");
         }
 
     } // class MainController
