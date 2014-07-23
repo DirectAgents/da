@@ -7,11 +7,13 @@ using System.Web.Mvc;
 using System.Net;
 using System.Threading;
 
+using CsvHelper;
+using System.IO;
+
 namespace MvcApplication1.Controllers
 {
     public class MainController : Controller
     {
-        public static ProcessHub p;
 
         public ActionResult Index()
         {
@@ -20,14 +22,12 @@ namespace MvcApplication1.Controllers
             //    //url = link,
             //    //query = query,
             //};
-
-            //ViewData["abc"] = 555;
             return View();
         }
 
         public ActionResult Process(ParameterKeeper param) {
             Session["Params"] = param;
-            p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
+            ProcessHub p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
             p.run();
             return View(p);
         }
@@ -37,10 +37,24 @@ namespace MvcApplication1.Controllers
             ParameterKeeper param = (ParameterKeeper)Session["Params"];
 
             param.jump += param.numResults;
-            p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
+            ProcessHub p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
             p.run();
             return View("Process",p);
             //return Content("okay");
+        }
+
+        public FileResult ExportResults(List<MvcApplication1.Models.ProcessHub.SearchResult> list) {
+
+            throw new NotImplementedException();
+
+            var output = new MemoryStream();
+            var writer = new StreamWriter(output);
+
+            writer.WriteLine("Exported via Direct Agents: MissingLink");
+            writer.WriteLine(DateTime.Now.ToString() + "\n");
+
+            var csv = new CsvWriter(writer);
+
         }
 
     } // class MainController

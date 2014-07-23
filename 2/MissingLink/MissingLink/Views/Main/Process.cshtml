@@ -34,7 +34,12 @@
     Total Time: @Model.total_time sec<br>
     </p>
 
-    @foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
+    @if (Model.search_error_encountered) {
+    <text>Your search has been halted due to a critical error encountered during your Google search. Please see error message below:</text><br>
+    @Model.search_error_msg<br>
+    }
+    else {
+    foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
         if (s.skip) { continue; }
         <text>Rank ID: </text>@s.id<br>
         <a href="@s.url">@s.url</a><br>
@@ -59,8 +64,9 @@
         }
         <br>
     }
-
-    @Html.ActionLink("Next Set of Results", "Next")
-
+    <br>
+    @Html.ActionLink("Next Set of Results", "Next")<br>
+    @Html.ActionLink("Export CSV [Not Yet Implemented]", "ExportResults")
+    }
 </body>
 </html>

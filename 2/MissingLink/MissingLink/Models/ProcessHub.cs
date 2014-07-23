@@ -34,6 +34,9 @@ namespace MvcApplication1.Models
             }
         } // SearchResult class
 
+        public bool search_error_encountered { get; set; }
+        public string search_error_msg { get; set; }
+
         public float delay_time_display { get; set; }
         public float total_time { get; set; }
         public string query { get; set; }
@@ -95,6 +98,9 @@ namespace MvcApplication1.Models
             return bin;
         } // FormatLink
 
+        /**
+         * Determines if there are any empty or null strings in an array of strings.
+         **/
         private bool containsBlankSpot(string[] s)
         {
             bool b = false;
@@ -177,7 +183,9 @@ namespace MvcApplication1.Models
          **/
         public void run()
         {
-            url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query);
+            search_error_encountered = false;
+
+            url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query) + "&userip=" + "24.103.67.186";
             Stopwatch watch = new Stopwatch();
             watch.Start();
             // Processing Google search results. Page is parsed from JSON string.
@@ -186,9 +194,21 @@ namespace MvcApplication1.Models
             int pages = limit / 4;
             if ((limit % 4) > 0) pages++;
 
+            WebClient w = new WebClient();
+            w.Headers.Add("Referer", "http://www.directagents.com");
+
             for (int i = 0; i < pages; i++)
             {
-                string temp = (new WebClient()).DownloadString(url);
+                string temp;
+                try
+                {
+                    temp = w.DownloadString(url);
+                }
+                catch (System.Net.WebException e) {
+                    search_error_encountered = true;
+                    search_error_msg = e.ToString();
+                    break;
+                }
                 dynamic parsed = Newtonsoft.Json.JsonConvert.DeserializeObject(temp);
                 max_googleResults = Convert.ToInt32(parsed["responseData"]["cursor"]["estimatedResultCount"]);
                 for (int j = 0; j < 4; j++)
@@ -197,15 +217,16 @@ namespace MvcApplication1.Models
                     SearchResult r = scrapeURL(jump + 1, address, target_website, exclude, searchString);
                     results.Add(r);
                     count++;
+                    jump++;
                     if (count == limit)
                     {
                         complete = true;
                         break;
                     }
-                    jump++;
+                    //jump++;
                 }
                 if (complete) break;
-                url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query);
+                url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query) + "&userip=" + "24.103.67.186";
                 Thread.Sleep(timer);
             }
 
@@ -243,7 +264,10 @@ namespace MvcApplication1.Models
             SearchResult sr = new SearchResult(num, link);
             try
             {
-                string pageData = (new WebClient()).DownloadString(link);
+                WebClient w = new WebClient();
+                w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
+                string pageData = w.DownloadString(link);
+                //string pageData = (new WebClient()).DownloadString(link);
                 pageData.Replace('"', '\"');
                 foreach (string s in target_website)
                 {
@@ -260,9 +284,9 @@ namespace MvcApplication1.Models
 
                 return sr;
             }
-            catch (Exception e)
+            catch (System.Net.WebException e)
             {
-                displayln(e.ToString());
+                //displayln(e.ToString());
                 sr.exception = true;
                 sr.errorMsg = e.ToString();
                 return sr;
@@ -296,6 +320,7 @@ namespace MvcApplication1.Models
                 displayln("");
             }
         } // DiagnosticPrint
+
 
         /**
          * Quick shortcut method for printing to the diagnostic console, sans new line.
