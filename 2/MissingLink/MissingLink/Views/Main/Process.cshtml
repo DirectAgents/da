@@ -29,17 +29,17 @@
 
     <p>
     Maximum Range of Google Results: @Model.max_googleResults<br>
-    Number of Results Retrieved: @Model.results.Count()<br>
-    Results Omitted: @Model.results_excluded.Count()<br>
+    Number of Results Found: @Model.results.Count()<br>
+    Results Omitted: @Model.omit_count<br>
     Total Time: @Model.total_time sec<br>
     </p>
 
     @if (Model.search_error_encountered) {
-    <text>Your search has been halted due to a critical error encountered during your Google search. Please see error message below:</text><br>
+    <text>ERROR: Your search was halted due to a critical error encountered during your Google search. Please see error message below:</text><br>
     @Model.search_error_msg<br>
+    <br>
     }
-    else {
-    foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
+    @foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
         if (s.skip) { continue; }
         <text>Rank ID: </text>@s.id<br>
         <a href="@s.url">@s.url</a><br>
@@ -66,7 +66,6 @@
     }
     <br>
     @Html.ActionLink("Next Set of Results", "Next")<br>
-    @Html.ActionLink("Export CSV [Not Yet Implemented]", "ExportResults")
-    }
+    @Html.ActionLink("Export Session to CSV", "ExportResults")<br>
 </body>
 </html>

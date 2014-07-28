@@ -50,8 +50,8 @@ namespace MvcApplication1.Models
         public bool exclude { get; set; }
         public bool phraseSearch { get; set; }
         public List<SearchResult> results { get; set; }
-        public List<SearchResult> results_excluded { get; set; }
         public int jump { get; set; }
+        public int omit_count;
 
         private static string url;
 
@@ -121,16 +121,10 @@ namespace MvcApplication1.Models
             target_website = new List<string>();
             target_website_htmlview = param_website;
             results = new List<SearchResult>();
-            results_excluded = new List<SearchResult>();
             if (param_website.Equals("") || param_website == null)
                 target_website.Add("");
             else
-            {
-
                 target_website = FormatLinks(param_website.Split(' '));
-                //foreach (string z in target_website)
-                //    displayln(z);
-            }
 
             // Setting target site
             client_site = param_website;
@@ -173,7 +167,7 @@ namespace MvcApplication1.Models
             }
 
             // Other important variables
-            //url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=" + HttpUtility.UrlEncode(query);
+            omit_count = 0;
         } // primary constructor
 
         /**
@@ -205,8 +199,9 @@ namespace MvcApplication1.Models
                     temp = w.DownloadString(url);
                 }
                 catch (System.Net.WebException e) {
+                    HttpWebResponse res = (HttpWebResponse)e.Response;
                     search_error_encountered = true;
-                    search_error_msg = e.ToString();
+                    search_error_msg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
                     break;
                 }
                 dynamic parsed = Newtonsoft.Json.JsonConvert.DeserializeObject(temp);
@@ -223,36 +218,17 @@ namespace MvcApplication1.Models
                         complete = true;
                         break;
                     }
-                    //jump++;
                 }
                 if (complete) break;
                 url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query) + "&userip=" + "24.103.67.186";
                 Thread.Sleep(timer);
             }
 
-            //TrimExclusions(results);
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));
             total_time = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
         } // run
-
-        /**
-         * Results that are to be skipped over are referenced in a separate list.
-         * Previous iteration completely removed the SearchResult object from the results
-         * list, but this feature was removed to retain references to the omitted results
-         * for future use.
-         * @para results:   A list of SearchResult objects
-         **/
-        private void TrimExclusions(List<SearchResult> results)
-        {
-            SearchResult[] results_arr = results.ToArray();
-            for (int i = 0; i < results_arr.Length; i++)
-            {
-                if (results_arr[i].skip)
-                    results_excluded.Add(results_arr[i]);
-            }
-        } // TrimExclusions
 
         /**
          * Retrieves the page data from a given webpage in string form, and prepares it for computing
@@ -267,28 +243,29 @@ namespace MvcApplication1.Models
                 WebClient w = new WebClient();
                 w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
                 string pageData = w.DownloadString(link);
-                //string pageData = (new WebClient()).DownloadString(link);
                 pageData.Replace('"', '\"');
                 foreach (string s in target_website)
                 {
                     if (pageData.Contains(s))
                     {
                         sr.linksToTarget = true;
-                        if (exclude) sr.skip = true;
+                        if (exclude)
+                        {
+                            sr.skip = true;
+                            omit_count++;
+                        }
                     }
                 }
-
                 bool contains = pageData.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0;
-                if (contains)        // original condition: (pageData.Contains(searchString))
+                if (contains)
                     sr.containsPhrase = true;
-
                 return sr;
             }
             catch (System.Net.WebException e)
             {
-                //displayln(e.ToString());
+                HttpWebResponse res = (HttpWebResponse)e.Response;
                 sr.exception = true;
-                sr.errorMsg = e.ToString();
+                sr.errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
                 return sr;
             }
         } // scrapeURL
@@ -321,7 +298,6 @@ namespace MvcApplication1.Models
             }
         } // DiagnosticPrint
 
-
         /**
          * Quick shortcut method for printing to the diagnostic console, sans new line.
          * @para string s:  the string to be printed
@@ -341,7 +317,4 @@ namespace MvcApplication1.Models
         } // displayln
 
     } // public class ProcessHub
-
-
-
 } // namespace

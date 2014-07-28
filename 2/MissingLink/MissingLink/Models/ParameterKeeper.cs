@@ -17,5 +17,7 @@ namespace MvcApplication1.Models
         public int jump { get; set; }
         public float delay { get; set; }
 
+        public List<MvcApplication1.Models.ProcessHub.SearchResult> results { get; set; }
+        public int omit_count { get; set; }
     }
 }
