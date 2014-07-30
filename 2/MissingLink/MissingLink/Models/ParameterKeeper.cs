@@ -30,6 +30,7 @@ namespace MvcApplication1.Models
 
         public List<MvcApplication1.Models.ProcessHub.SearchResult> results { get; set; }
         public int omit_count { get; set; }
+        public bool omit_results { get; set; }
         public bool search_error_encountered { get; set; }
         public string search_error_msg { get; set; }
     }

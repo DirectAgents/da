@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -41,8 +40,6 @@ namespace MvcApplication1.Models
 
         public float delay_time_display { get; set; }
         public float total_time { get; set; }
-
-        [Required]
         public string query { get; set; }
         public string searchString { get; set; }
         public string client_site { get; set; }
@@ -55,7 +52,7 @@ namespace MvcApplication1.Models
         public bool phraseSearch { get; set; }
         public List<SearchResult> results { get; set; }
         public int jump { get; set; }
-        public int omit_count;
+        public int omit_count { get; set; }
 
         private static string url;
 
@@ -119,55 +116,55 @@ namespace MvcApplication1.Models
          *          param_searchString: phrase to be searched for
          *          param_website: website(s)
          **/
-        public ProcessHub(string param_query, string param_searchString, string param_website, int param_numResults, string param_exclude, int param_jump, float param_delay)
+        public ProcessHub (ParameterKeeper incoming)
         {
             // Parsing list of websites to target
             target_website = new List<string>();
-            target_website_htmlview = param_website;
+            target_website_htmlview = incoming.website;
             results = new List<SearchResult>();
-            if (param_website.Equals("") || param_website == null)
+            if (incoming.website.Equals("") || incoming.website == null)
                 target_website.Add("");
             else
-                target_website = FormatLinks(param_website.Split(' '));
+                target_website = FormatLinks(incoming.website.Split(' '));
 
             // Setting target site
-            client_site = param_website;
+            client_site = incoming.website;
 
             // Setting Google search query
             query = "";
-            if (param_query != null) query = param_query;
+            if (incoming.query != null) query = incoming.query;
 
             // Setting phrase search query
             searchString = "";
             phraseSearch = true;
-            if (param_searchString == null || param_searchString == "")
+            if (incoming.searchString == null || incoming.searchString == "")
                 phraseSearch = false;
-            else searchString = param_searchString;
+            else searchString = incoming.searchString;
 
             // Setting limit on number of Google results pages
             limit = 1;
-            if (param_numResults > 1) limit = param_numResults;
+            if (incoming.numResults > 1) limit = incoming.numResults;
 
             // Setting config option on exclusion of positive results
             exclude = false;
-            if (param_exclude.Equals("yes")) exclude = true;
+            if (incoming.exclude.Equals("yes")) exclude = true;
 
             // Setting jump point
             jump = 0;
-            if (param_jump < 1) jump = 0;
-            else jump = param_jump - 1;
+            if (incoming.jump < 1) jump = 0;
+            else jump = incoming.jump - 1;
 
             // Setting timer; input in seconds
             timer = 0;
-            if (param_delay < 0)
+            if (incoming.delay < 0)
             {
                 timer = 0;
                 delay_time_display = 0.0F;
             }
             else
             {
-                timer = (int)(param_delay * 1000);
-                delay_time_display = param_delay;
+                timer = (int)(incoming.delay * 1000);
+                delay_time_display = incoming.delay;
             }
 
             // Other important variables

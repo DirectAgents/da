@@ -31,15 +31,9 @@ namespace MvcApplication1.Controllers
             if (ModelState.IsValid)
             {
                 Session["Params"] = param;
-                ProcessHub p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
+                ProcessHub p = new ProcessHub(param);
                 p.run();
-                param.results = p.results;
-                param.omit_count = p.omit_count;
-                if (p.search_error_encountered)
-                {
-                    param.search_error_encountered = p.search_error_encountered;
-                    param.search_error_msg = p.search_error_msg;
-                }
+                updateResults(p, param);
                 return View(p);
             }
             else {
@@ -50,10 +44,20 @@ namespace MvcApplication1.Controllers
         public ActionResult Next()
         {
             ParameterKeeper param = (ParameterKeeper)Session["Params"];
-
             param.jump += param.numResults;
-            ProcessHub p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
+            ProcessHub p = new ProcessHub(param);
             p.run();
+            updateResults(p, param);
+            return View("Process",p);
+        }
+
+        /**
+         * Performs updating of search results and potential error messages.
+         * Para@    ProcessHub p
+         *          ParameterKeeper param
+         **/
+        private void updateResults(ProcessHub p, ParameterKeeper param)
+        {
             param.results = p.results;
             param.omit_count = p.omit_count;
             if (p.search_error_encountered)
@@ -61,8 +65,7 @@ namespace MvcApplication1.Controllers
                 param.search_error_encountered = p.search_error_encountered;
                 param.search_error_msg = p.search_error_msg;
             }
-            return View("Process",p);
-        }
+        } // updateResults
 
         public FileResult ExportResults() {
 
