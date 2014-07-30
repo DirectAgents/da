@@ -26,6 +26,10 @@ namespace MvcApplication1.Controllers
             p.run();
             param.results = p.results;
             param.omit_count = p.omit_count;
+            if (p.search_error_encountered) {
+                param.search_error_encountered = p.search_error_encountered;
+                param.search_error_msg = p.search_error_msg;
+            }
             return View(p);
         }
 
@@ -38,6 +42,11 @@ namespace MvcApplication1.Controllers
             p.run();
             param.results = p.results;
             param.omit_count = p.omit_count;
+            if (p.search_error_encountered)
+            {
+                param.search_error_encountered = p.search_error_encountered;
+                param.search_error_msg = p.search_error_msg;
+            }
             return View("Process",p);
         }
 
@@ -73,6 +82,14 @@ namespace MvcApplication1.Controllers
             csv.WriteField("Results Omitted");
             csv.WriteField(param.omit_count);
             csv.NextRecord();
+
+            if (param.search_error_encountered)
+            {
+                csv.WriteField("Search Error Encountered");
+                csv.WriteField(param.search_error_msg);
+                csv.NextRecord();
+            }
+
             csv.NextRecord();
 
             csv.WriteField("Rank ID");
@@ -81,7 +98,6 @@ namespace MvcApplication1.Controllers
             csv.WriteField("Contains Phrase");
             csv.WriteField("Errors");
             csv.NextRecord();
-            
 
             foreach (MvcApplication1.Models.ProcessHub.SearchResult sr in l) {
 
@@ -92,9 +108,11 @@ namespace MvcApplication1.Controllers
                 if (sr.linksToTarget) csv.WriteField("yes");
                 else if (sr.exception) csv.WriteField("n/a");
                 else csv.WriteField("no");
-                if (sr.containsPhrase) csv.WriteField("yes");
-                else if (sr.exception) csv.WriteField("n/a");
+
+                if (sr.exception || param.searchString == null || param.searchString.Equals("")) csv.WriteField("n/a");
+                else if (sr.containsPhrase) csv.WriteField("yes");
                 else csv.WriteField("no");
+
                 if (sr.exception) csv.WriteField(sr.errorMsg);
                 else csv.WriteField("none");
                 csv.NextRecord();

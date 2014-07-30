@@ -41,25 +41,26 @@
     <title>Webcrawler Search Engine Scraper</title>
 
 </head>
-<body>
+
+<body onload="calcETA()">
 
 
 
     <h2>MissingLink Application v1.0</h2>
 
 <form id="form" action="@Url.Action("Process")" method="post">
-Google Search Query: <input type="text" size ="50" name="query"><br>
+Google Search Query: <input type="text" size ="50" name="query" required><br>
 Text Search Within Results: <input type="text" size = "30" name="searchString"><br>
-Target Site(s) To Scan For (separate multiple instances with single space): <input type="text" size="100" name="website"><br>
-Number of Results to Scan: <input type="number" id="numResults" name="numResults" value="4" onchange="calcETA()"><br>
+Target Site(s) To Scan For (separate multiple instances with single space): <input type="text" size="100" name="website" required><br>
+Number of Results to Scan: <input type="number" id="numResults" name="numResults" value="4" min="1" onchange="calcETA()"><br>
 Exclude Results With Links to Target(s): <input type="radio" name="exclude" value = "yes" checked="checked">Yes <input type="radio" name="exclude" value = "no">No<br>
-Start At Rank ID#: <input type="number" value="1" name="jump"><br>
-Delay Time Between Each Call To Google (sec): <input type="number" step="any" id="delay" name="delay" value="0" onchange="calcETA()"><br>
+Start At Rank ID#: <input type="number" value="1" min="1" name="jump"><br>
+Delay Time Between Each Call To Google (sec): <input type="number" step="any" id="delay" name="delay" value="0" min="0" onchange="calcETA()"><br>
 <input type="submit"><br>
 
 </form>
 
-<p id="eta">Estimated Time to Completion: </p>
+<p id="eta">Estimated Time to Completion: 0 sec.</p>
 
 @*<script>
     $(document).ready(function () {
@@ -91,6 +92,5 @@ Delay Time Between Each Call To Google (sec): <input type="number" step="any" id
     <br />
     Target URL: @Model.url
     <br />*@
-
 </body>
 </html>
