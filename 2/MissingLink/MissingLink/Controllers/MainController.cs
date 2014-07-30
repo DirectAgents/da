@@ -17,20 +17,34 @@ namespace MvcApplication1.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            ParameterKeeper pk = new ParameterKeeper
+            {
+                numResults = 4,
+                jump = 1,
+                exclude = "yes",
+                delay = 0
+            };
+            return View(pk);
         }
 
         public ActionResult Process(ParameterKeeper param) {
-            Session["Params"] = param;
-            ProcessHub p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
-            p.run();
-            param.results = p.results;
-            param.omit_count = p.omit_count;
-            if (p.search_error_encountered) {
-                param.search_error_encountered = p.search_error_encountered;
-                param.search_error_msg = p.search_error_msg;
+            if (ModelState.IsValid)
+            {
+                Session["Params"] = param;
+                ProcessHub p = new ProcessHub(param.query, param.searchString, param.website, param.numResults, param.exclude, param.jump, param.delay);
+                p.run();
+                param.results = p.results;
+                param.omit_count = p.omit_count;
+                if (p.search_error_encountered)
+                {
+                    param.search_error_encountered = p.search_error_encountered;
+                    param.search_error_msg = p.search_error_msg;
+                }
+                return View(p);
             }
-            return View(p);
+            else {
+                return View("Index",param);
+            }
         }
 
         public ActionResult Next()

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Web;
+
 
 namespace MvcApplication1.Models
 {
@@ -39,6 +41,8 @@ namespace MvcApplication1.Models
 
         public float delay_time_display { get; set; }
         public float total_time { get; set; }
+
+        [Required]
         public string query { get; set; }
         public string searchString { get; set; }
         public string client_site { get; set; }
@@ -194,18 +198,26 @@ namespace MvcApplication1.Models
             for (int i = 0; i < pages; i++)
             {
                 string temp;
+                dynamic parsed = "";
                 try
                 {
                     temp = w.DownloadString(url);
+                    parsed = Newtonsoft.Json.JsonConvert.DeserializeObject(temp);
+                    max_googleResults = Convert.ToInt32(parsed["responseData"]["cursor"]["estimatedResultCount"]);
                 }
-                catch (System.Net.WebException e) {
-                    HttpWebResponse res = (HttpWebResponse)e.Response;
+                catch (System.Net.WebException e1)
+                {
+                    HttpWebResponse res = (HttpWebResponse)e1.Response;
                     search_error_encountered = true;
                     search_error_msg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
                     break;
                 }
-                dynamic parsed = Newtonsoft.Json.JsonConvert.DeserializeObject(temp);
-                max_googleResults = Convert.ToInt32(parsed["responseData"]["cursor"]["estimatedResultCount"]);
+                catch (InvalidOperationException e2)
+                {
+                    search_error_encountered = true;
+                    search_error_msg = String.Concat("HTTP Status Code ", parsed["responseStatus"], ": ", parsed["responseDetails"]);
+                    break;
+                }
                 for (int j = 0; j < 4; j++)
                 {
                     string address = parsed["responseData"]["results"][j]["url"];
