@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Web;
-
+using System.Data.Services.Client;
 
 namespace MvcApplication1.Models
 {
@@ -14,17 +14,30 @@ namespace MvcApplication1.Models
      **/
     public class ProcessHub
     {
+
+        private class MyWebClient : WebClient
+        {
+            protected override WebRequest GetWebRequest(Uri uri)
+            {
+                WebRequest w = base.GetWebRequest(uri);
+                w.Timeout = 10000;
+                return w;
+            }
+        }
+
         /**
          * The container class SearchResult is integrated into ProcessHub to minimize clutter.
          **/
         public class SearchResult
         {
-            public string url, errorMsg;
+            public string url, errorMsg, title;
             public bool linksToTarget, containsPhrase, skip, exception;
             public int id;
 
-            public SearchResult(int num, string param_url)
+            // For Bing
+            public SearchResult(int num, string param_title, string param_url)
             {
+                title = param_title;
                 url = param_url;
                 id = num;
                 linksToTarget = false;
@@ -45,16 +58,17 @@ namespace MvcApplication1.Models
         public string client_site { get; set; }
         public List<string> target_website { get; set; }
         public string target_website_htmlview { get; set; }
-        public int limit { get; set; }
+        public int top { get; set; }
         public int timer { get; set; }
         public int max_googleResults { get; set; }
         public bool exclude { get; set; }
         public bool phraseSearch { get; set; }
         public List<SearchResult> results { get; set; }
-        public int jump { get; set; }
+        public int skip { get; set; }
         public int omit_count { get; set; }
 
-        private static string url;
+        // Bing-related
+        private const string AccountKey = "cU1u2NEkgkFY33IvcQxwngH38LyfutFTKY2tkQYq8ps";
 
         /**
          * Formats website entries as provided by the user. Method automatically
@@ -142,17 +156,15 @@ namespace MvcApplication1.Models
             else searchString = incoming.searchString;
 
             // Setting limit on number of Google results pages
-            limit = 1;
-            if (incoming.numResults > 1) limit = incoming.numResults;
+            top = 1;
+            if (incoming.top > 1) top = incoming.top;
 
             // Setting config option on exclusion of positive results
             exclude = false;
             if (incoming.exclude.Equals("yes")) exclude = true;
 
             // Setting jump point
-            jump = 0;
-            if (incoming.jump < 1) jump = 0;
-            else jump = incoming.jump - 1;
+            skip = incoming.skip - 1;
 
             // Setting timer; input in seconds
             timer = 0;
@@ -178,61 +190,44 @@ namespace MvcApplication1.Models
          **/
         public void run()
         {
-            search_error_encountered = false;
-
-            url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query) + "&userip=" + "24.103.67.186";
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            // Processing Google search results. Page is parsed from JSON string.
+
+            search_error_encountered = false;
             bool complete = false;
             int count = 0;
-            int pages = limit / 4;
-            if ((limit % 4) > 0) pages++;
+            int pages = top / 50;
+            if ((top % 50) > 0) pages++;
 
-            WebClient w = new WebClient();
-            w.Headers.Add("Referer", "http://www.directagents.com");
+            string rootUrl = "https://api.datamarket.azure.com/Bing/Search";
+            var bingContainer = new Bing.BingSearchContainer(new Uri(rootUrl));
+            string market = "en-us";
+            bingContainer.Credentials = new NetworkCredential(AccountKey, AccountKey);
 
             for (int i = 0; i < pages; i++)
             {
-                string temp;
-                dynamic parsed = "";
-                try
+                var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
+                if (top < 50)
+                    webQuery = webQuery.AddQueryOption("$top", top);
+                else
+                    webQuery = webQuery.AddQueryOption("$top", 50);
+                webQuery = webQuery.AddQueryOption("$skip", skip);
+                var webResults = webQuery.Execute();
+
+                foreach (var result in webResults)
                 {
-                    temp = w.DownloadString(url);
-                    parsed = Newtonsoft.Json.JsonConvert.DeserializeObject(temp);
-                    max_googleResults = Convert.ToInt32(parsed["responseData"]["cursor"]["estimatedResultCount"]);
-                }
-                catch (System.Net.WebException e1)
-                {
-                    HttpWebResponse res = (HttpWebResponse)e1.Response;
-                    search_error_encountered = true;
-                    search_error_msg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
-                    break;
-                }
-                catch (InvalidOperationException e2)
-                {
-                    search_error_encountered = true;
-                    search_error_msg = String.Concat("HTTP Status Code ", parsed["responseStatus"], ": ", parsed["responseDetails"]);
-                    break;
-                }
-                for (int j = 0; j < 4; j++)
-                {
-                    string address = parsed["responseData"]["results"][j]["url"];
-                    SearchResult r = scrapeURL(jump + 1, address, target_website, exclude, searchString);
+                    SearchResult r = scrapeURL(skip + 1, result.Title, result.Url, target_website, exclude, searchString);
                     results.Add(r);
                     count++;
-                    jump++;
-                    if (count == limit)
+                    skip++;
+                    if (count == top)
                     {
                         complete = true;
                         break;
                     }
                 }
                 if (complete) break;
-                url = "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&start=" + jump + "&q=" + HttpUtility.UrlEncode(query) + "&userip=" + "24.103.67.186";
-                Thread.Sleep(timer);
             }
-
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));
             total_time = (float)watch.ElapsedMilliseconds / 1000;
@@ -244,12 +239,12 @@ namespace MvcApplication1.Models
          * by escaping specific chars. The string is then examined for links that lead back to the target
          * website(s), and instances of the given phrase string.
          **/
-        private SearchResult scrapeURL(int num, string link, List<string> target_website, bool exclude, string searchString)
+        private SearchResult scrapeURL(int num, string title, string link, List<string> target_website, bool exclude, string searchString)
         {
-            SearchResult sr = new SearchResult(num, link);
+            SearchResult sr = new SearchResult(num, title, link);
             try
             {
-                WebClient w = new WebClient();
+                MyWebClient w = new MyWebClient();
                 w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
                 string pageData = w.DownloadString(link);
                 pageData.Replace('"', '\"');
@@ -274,7 +269,9 @@ namespace MvcApplication1.Models
             {
                 HttpWebResponse res = (HttpWebResponse)e.Response;
                 sr.exception = true;
-                sr.errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
+                if (res == null) sr.errorMsg = e.Message;
+                else
+                    sr.errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
                 return sr;
             }
         } // scrapeURL

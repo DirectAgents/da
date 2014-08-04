@@ -20,17 +20,14 @@
             //});
 
         function calcETA() {
-            var t = 475;
-            var x = document.getElementById("numResults").value;
-            var y = document.getElementById("delay").value;
+            var t = 495;
+            var x = document.getElementById("top").value;
             x = +x;
-            y = +y;
             if (x < 0) x = 0;
-            if (y < 0) y = 0;
-            var googlePages = ~~(x / 4);
-            if (x % 4 > 0) googlePages++;
-            var z = ((x * t) + (googlePages * t) + ((y * 1000) * googlePages) - (y * 1000)) * 0.001;
-            //var z = ((x * t) + (googlePages * t) + ((y * 1000) * x) - (y * 1000)) * 0.001;
+            var BingPages = ~~(x / 50);
+            if (x % 50 > 0) BingPages++;
+            //var z = (x * t) * 0.001;
+            var z = ((x * t) + (BingPages * t));
             z = Math.round(z * 100) / 100;
             if (z < 0) z = 0;
             document.getElementById("eta").innerHTML = "Estimated Time to Completion: " + z + " sec.";
@@ -71,20 +68,16 @@
             <td><input type="text" size="65" name="website" required></td>
         </tr>
         <tr>
-            <td>Number of Results to Scan<br>(max 64)</td>
-            <td><input type="number" id="numResults" name="numResults" value="@Model.numResults" min="1" max="64" onchange="calcETA()"></td>
+            <td>Number of Results to Scan<br>(max 1000)</td>
+            <td><input type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>
         </tr>
         <tr>
             <td>Exclude Results With Links to Target(s)</td>
             <td><input type="radio" name="exclude" value = "yes" checked="checked">Yes <input type="radio" name="exclude" value = "no">No</td>
         </tr>
         <tr>
-            <td>Start At Rank ID#<br>(max 61)</td>
-            <td><input type="number" value="@Model.jump" min="1" max="61" name="jump"></td>
-        </tr>
-        <tr>
-            <td>Delay Time Between Each Call To Google (sec)<br>(max 60.0)</td>
-            <td><input type="number" step="any" id="delay" name="delay" value="@Model.delay" min="0" max="60" onchange="calcETA()"></td>
+            <td>Start At Rank ID#<br>(max 951)</td>
+            <td><input type="number" value="@Model.skip" min="1" max="951" name="skip"></td>
         </tr>
         <tr>
             <td><input type="submit" value ="Perform Search"></td>

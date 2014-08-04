@@ -19,10 +19,9 @@ namespace MvcApplication1.Controllers
         {
             ParameterKeeper pk = new ParameterKeeper
             {
-                numResults = 4,
-                jump = 1,
+                top = 10,
+                skip = 1,
                 exclude = "yes",
-                delay = 0
             };
             return View(pk);
         }
@@ -44,8 +43,8 @@ namespace MvcApplication1.Controllers
         public ActionResult Next()
         {
             ParameterKeeper param = (ParameterKeeper)Session["Params"];
-            param.jump += param.numResults;
             ProcessHub p = new ProcessHub(param);
+            p.results = param.results;
             p.run();
             updateResults(p, param);
             return View("Process",p);
@@ -58,6 +57,7 @@ namespace MvcApplication1.Controllers
          **/
         private void updateResults(ProcessHub p, ParameterKeeper param)
         {
+            param.skip += param.top;
             param.results = p.results;
             param.omit_count = p.omit_count;
             if (p.search_error_encountered)
@@ -75,7 +75,7 @@ namespace MvcApplication1.Controllers
             return complete_file;
         }
 
-        private FileResult WriteFile(List<MvcApplication1.Models.ProcessHub.SearchResult> l, ParameterKeeper param) {
+        private FileResult WriteFile(List<MvcApplication1.Models.ProcessHub.SearchResult> list, ParameterKeeper param) {
 
             var output = new MemoryStream();
             var writer = new StreamWriter(output);
@@ -110,17 +110,19 @@ namespace MvcApplication1.Controllers
             csv.NextRecord();
 
             csv.WriteField("Rank ID");
+            csv.WriteField("Title");
             csv.WriteField("URL");
             csv.WriteField("Links To Target");
             csv.WriteField("Contains Phrase");
             csv.WriteField("Errors");
             csv.NextRecord();
 
-            foreach (MvcApplication1.Models.ProcessHub.SearchResult sr in l) {
+            foreach (MvcApplication1.Models.ProcessHub.SearchResult sr in list) {
 
                 if (sr.skip) continue;
 
                 csv.WriteField(sr.id);
+                csv.WriteField(sr.title);
                 csv.WriteField(sr.url);
                 if (sr.linksToTarget) csv.WriteField("yes");
                 else if (sr.exception) csv.WriteField("n/a");
