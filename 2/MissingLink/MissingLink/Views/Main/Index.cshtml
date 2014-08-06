@@ -11,7 +11,7 @@
     <script>
 
         function calcETA() {
-            var t = 1.3977;
+            var t = 1.89;
             var x = document.getElementById("top").value;
             x = +x;
             if (x < 0) x = 0;
@@ -64,6 +64,10 @@
         <tr>
             <td>Exclude Results With Links to Target(s)</td>
             <td><input type="radio" name="exclude" value = "yes" checked="checked">Yes <input type="radio" name="exclude" value = "no">No</td>
+        </tr>
+        <tr>
+            <td>Display Search Results</td>
+            <td><input type="radio" name="displayall" value = "yes" checked="checked">Yes <input type="radio" name="displayall" value = "no">No</td>
         </tr>
         <tr>
             <td>Start At Rank ID#<br>(max 1001)</td>

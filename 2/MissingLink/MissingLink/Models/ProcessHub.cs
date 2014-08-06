@@ -22,7 +22,7 @@ namespace MvcApplication1.Models
             protected override WebRequest GetWebRequest(Uri uri)
             {
                 WebRequest w = base.GetWebRequest(uri);
-                w.Timeout = 9000;
+                w.Timeout = 8000;
                 return w;
             }
         }
@@ -77,6 +77,7 @@ namespace MvcApplication1.Models
         public List<SearchResult> results { get; set; }
         public int skip { get; set; }
         public int omit_count { get; set; }
+        public bool display_all { get; set; }
         // Bing-related
         private const string AccountKey = "cU1u2NEkgkFY33IvcQxwngH38LyfutFTKY2tkQYq8ps";
         private int indices, threadsComplete, threadsRunning;
@@ -176,6 +177,10 @@ namespace MvcApplication1.Models
             exclude = false;
             if (incoming.exclude.Equals("yes")) exclude = true;
 
+            // Display settings
+            display_all = false;
+            if (incoming.displayall.Equals("yes")) display_all = true;
+
             // Setting jump point
             skip = incoming.skip - 1;
 
@@ -191,6 +196,8 @@ namespace MvcApplication1.Models
                 timer = (int)(incoming.delay * 1000);
                 delay_time_display = incoming.delay;
             }
+
+
 
             // Other important variables
             omit_count = 0;

@@ -22,6 +22,7 @@ namespace MvcApplication1.Controllers
                 top = 50,
                 skip = 1,
                 exclude = "yes",
+                displayall = "yes"
             };
             return View(pk);
         }

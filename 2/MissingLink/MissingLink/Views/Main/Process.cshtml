@@ -39,32 +39,34 @@
     @Model.search_error_msg<br>
     <br>
     }
-    @foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
-        if (s.skip) { continue; }
-        <text>Rank ID: </text>@s.id<br>
-        <a href="@s.url">@s.title</a><br>
-        @s.url<br>
-        if (s.exception) {
-            <text> - ERROR: </text> @s.errorMsg<br>
-            <br>
-            continue;
-        }
-        if (s.linksToTarget) {
-            <text> - OK: Site features links that point to target(s).<br></text>
-        }
-        else {
-            <text> - NOTE: No links to target(s) found.<br></text>
-        }
-        if (Model.phraseSearch) {
-            if (s.containsPhrase) {
-                <text> - OK: Site contains instances of given phrase.</text><br>
+        @if (Model.display_all) {
+            foreach (MvcApplication1.Models.ProcessHub.SearchResult s in Model.results) {
+                if (s.skip) { continue; }
+                <text>Rank ID: </text>@s.id<br>
+                <a href="@s.url">@s.title</a><br>
+                @s.url<br>
+                if (s.exception) {
+                    <text> - ERROR: </text> @s.errorMsg<br>
+                    <br>
+                    continue;
+                }
+                if (s.linksToTarget) {
+                    <text> - OK: Site features links that point to target(s).<br></text>
+                }
+                else {
+                    <text> - NOTE: No links to target(s) found.<br></text>
+                }
+                if (Model.phraseSearch) {
+                    if (s.containsPhrase) {
+                        <text> - OK: Site contains instances of given phrase.</text><br>
+                    }
+                    else {
+                        <text> - NOTE: Given phrase not found.</text><br>
+                    }
+                }
+                <br>
             }
-            else {
-                <text> - NOTE: Given phrase not found.</text><br>
-            }
         }
-        <br>
-    }
     <br>
     @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
     @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Next")<br>

@@ -21,6 +21,7 @@ namespace MvcApplication1.Models
         public int top { get; set; }
         
         public string exclude { get; set; }
+        public string displayall { get; set; }
 
         [Range(1, 1001, ErrorMessage = "Can only jump between Rank IDs 1 and 1001.")]
         public int skip { get; set; }
