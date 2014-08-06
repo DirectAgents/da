@@ -22,7 +22,7 @@ namespace MvcApplication1.Models
         
         public string exclude { get; set; }
 
-        [Range(1, 951, ErrorMessage = "Can only jump between Rank IDs 1 and 951.")]
+        [Range(1, 1001, ErrorMessage = "Can only jump between Rank IDs 1 and 1001.")]
         public int skip { get; set; }
         
         [Range(0,60, ErrorMessage = "Delay time must be between 0.0 and 60.0 sec.")]

@@ -6,6 +6,8 @@ using System.Net;
 using System.Threading;
 using System.Web;
 using System.Data.Services.Client;
+using System.Collections;
+using System.Runtime.CompilerServices;
 
 namespace MvcApplication1.Models
 {
@@ -20,7 +22,7 @@ namespace MvcApplication1.Models
             protected override WebRequest GetWebRequest(Uri uri)
             {
                 WebRequest w = base.GetWebRequest(uri);
-                w.Timeout = 10000;
+                w.Timeout = 9000;
                 return w;
             }
         }
@@ -46,6 +48,15 @@ namespace MvcApplication1.Models
                 exception = false;
                 errorMsg = "";
             }
+
+            public SearchResult() {
+                linksToTarget = false;
+                containsPhrase = false;
+                skip = false;
+                exception = false;
+                errorMsg = "";
+            }
+
         } // SearchResult class
 
         public bool search_error_encountered { get; set; }
@@ -66,9 +77,10 @@ namespace MvcApplication1.Models
         public List<SearchResult> results { get; set; }
         public int skip { get; set; }
         public int omit_count { get; set; }
-
         // Bing-related
         private const string AccountKey = "cU1u2NEkgkFY33IvcQxwngH38LyfutFTKY2tkQYq8ps";
+        private int indices, threadsComplete, threadsRunning;
+        private bool hubLock;
 
         /**
          * Formats website entries as provided by the user. Method automatically
@@ -158,6 +170,7 @@ namespace MvcApplication1.Models
             // Setting limit on number of Google results pages
             top = 1;
             if (incoming.top > 1) top = incoming.top;
+            indices = top;
 
             // Setting config option on exclusion of positive results
             exclude = false;
@@ -181,6 +194,7 @@ namespace MvcApplication1.Models
 
             // Other important variables
             omit_count = 0;
+            hubLock = true;
         } // primary constructor
 
         /**
@@ -206,7 +220,7 @@ namespace MvcApplication1.Models
 
             for (int i = 0; i < pages; i++)
             {
-                var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
+               var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
                 if (top < 50)
                     webQuery = webQuery.AddQueryOption("$top", top);
                 else
@@ -216,8 +230,7 @@ namespace MvcApplication1.Models
 
                 foreach (var result in webResults)
                 {
-                    SearchResult r = scrapeURL(skip + 1, result.Title, result.Url, target_website, exclude, searchString);
-                    results.Add(r);
+                    results.Add(new SearchResult(skip + 1, result.Title, result.Url));
                     count++;
                     skip++;
                     if (count == top)
@@ -226,54 +239,149 @@ namespace MvcApplication1.Models
                         break;
                     }
                 }
+
                 if (complete) break;
             }
+            /**NOTE: The beneath for-loop creates 1 thread per result, versus the 10 per result that is currently in place.**/
+
+            //for (int i = 0; i < top; i++)
+            //{
+            //    Thread t = StartThread(i);
+            //}
+
+            threadsRunning = results.Count/10 ;
+            if (results.Count % 10 > 0) threadsRunning++;
+            threadsComplete = 0;
+
+            int quota = results.Count;
+            while (quota > 0)
+            {
+                int x, y;
+                y = quota - 1;   // setting max index
+                if (quota % 10 > 0)
+                {
+                    x = quota - (quota % 10);
+                    quota -= quota % 10;
+                }
+                else
+                {
+                    quota -= 10;
+                    x = quota;
+                }
+                Thread t = StartThread(x,y);
+            }
+
+            while (hubLock) { Thread.Sleep(100); }
+
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));
             total_time = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
-        } // run
+        }
+
+        public Thread StartThread(int i)
+        {
+            var t = new Thread(() => scrapeURL(i));
+            t.Start();
+            return t;
+        }
+
+        public Thread StartThread(int x, int y)
+        {
+                var t = new Thread(() => ScrapeBatch(x,y));
+                t.Start();
+                return t;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        private void incrementOmitCount() {
+            omit_count++;
+        } // incrementOmitCount
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        private void checkLock() {
+            threadsComplete++;
+            if (threadsComplete >= threadsRunning) { hubLock = false; }
+        }
+
+        private void ScrapeBatch(int x, int y)
+        {
+            for (int i = x; i <= y; i++) {
+                try
+                {
+                    MyWebClient w = new MyWebClient();
+                    w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
+                    string pageData = w.DownloadString(results[i].url);
+                    pageData.Replace('"', '\"');
+                    foreach (string s in target_website)
+                    {
+                        if (pageData.Contains(s))
+                        {
+                            results[i].linksToTarget = true;
+                            if (exclude)
+                            {
+                                results[i].skip = true;
+                                incrementOmitCount();
+                            }
+                        }
+                    }
+                    bool contains = pageData.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (contains)
+                    {
+                        results[i].containsPhrase = true;
+                    }
+                }
+                catch (System.Net.WebException e)
+                {
+                    HttpWebResponse res = (HttpWebResponse)e.Response;
+                    results[i].exception = true;
+                    if (res == null) results[i].errorMsg = e.Message;
+                    else
+                        results[i].errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
+                }
+            }
+            checkLock();
+
+        } // ScrapeBatch
 
         /**
          * Retrieves the page data from a given webpage in string form, and prepares it for computing
          * by escaping specific chars. The string is then examined for links that lead back to the target
          * website(s), and instances of the given phrase string.
          **/
-        private SearchResult scrapeURL(int num, string title, string link, List<string> target_website, bool exclude, string searchString)
+        private void scrapeURL(int i)
         {
-            SearchResult sr = new SearchResult(num, title, link);
             try
             {
                 MyWebClient w = new MyWebClient();
                 w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
-                string pageData = w.DownloadString(link);
+                string pageData = w.DownloadString(results[i].url);
                 pageData.Replace('"', '\"');
                 foreach (string s in target_website)
                 {
                     if (pageData.Contains(s))
                     {
-                        sr.linksToTarget = true;
+                        results[i].linksToTarget = true;
                         if (exclude)
                         {
-                            sr.skip = true;
-                            omit_count++;
+                            results[i].skip = true;
+                            incrementOmitCount();
                         }
                     }
                 }
                 bool contains = pageData.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0;
                 if (contains)
-                    sr.containsPhrase = true;
-                return sr;
+                    results[i].containsPhrase = true;
             }
             catch (System.Net.WebException e)
             {
                 HttpWebResponse res = (HttpWebResponse)e.Response;
-                sr.exception = true;
-                if (res == null) sr.errorMsg = e.Message;
+                results[i].exception = true;
+                if (res == null) results[i].errorMsg = e.Message;
                 else
-                    sr.errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
-                return sr;
+                    results[i].errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
             }
+            checkLock();
         } // scrapeURL
 
         /**

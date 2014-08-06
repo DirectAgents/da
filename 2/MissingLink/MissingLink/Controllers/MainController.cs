@@ -19,7 +19,7 @@ namespace MvcApplication1.Controllers
         {
             ParameterKeeper pk = new ParameterKeeper
             {
-                top = 10,
+                top = 50,
                 skip = 1,
                 exclude = "yes",
             };
@@ -29,6 +29,9 @@ namespace MvcApplication1.Controllers
         public ActionResult Process(ParameterKeeper param) {
             if (ModelState.IsValid)
             {
+                if ((param.top + param.skip) > 1001)
+                    param.top = 1001 - param.skip;
+
                 Session["Params"] = param;
                 ProcessHub p = new ProcessHub(param);
                 p.run();

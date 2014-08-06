@@ -8,30 +8,20 @@
 
 <html>
 <head>
-    <!-- <script src="jquery-2.1.1.min.js"></script> -->
-@*    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>*@
     <script>
 
-
-            //$(document).ready(function () {
-            //    $("#form").keydown(function () {
-            //        $("#eta").text(calcETA(document.getElementById("#numResults"), document.getElementById("#delay")) + " sec");
-            //    });
-            //});
-
         function calcETA() {
-            var t = 495;
+            var t = 1.3977;
             var x = document.getElementById("top").value;
             x = +x;
             if (x < 0) x = 0;
             var BingPages = ~~(x / 50);
             if (x % 50 > 0) BingPages++;
-            //var z = (x * t) * 0.001;
-            var z = ((x * t) + (BingPages * t));
+            var z = (BingPages * t) + ((x/10) * t);
             z = Math.round(z * 100) / 100;
             if (z < 0) z = 0;
             document.getElementById("eta").innerHTML = "Estimated Time to Completion: " + z + " sec.";
-            }
+        }
 
     </script>
 
@@ -54,7 +44,7 @@
 
     <table>
         <tr>
-            <td>Google Search Query</td>
+            <td>Bing Search Query</td>
             <!-- <td>@Html.EditorFor(m => m.query)</td> -->
             <td><input type="text" size ="65" name="query" required></td>
         </tr>
@@ -76,46 +66,19 @@
             <td><input type="radio" name="exclude" value = "yes" checked="checked">Yes <input type="radio" name="exclude" value = "no">No</td>
         </tr>
         <tr>
-            <td>Start At Rank ID#<br>(max 951)</td>
-            <td><input type="number" value="@Model.skip" min="1" max="951" name="skip"></td>
+            <td>Start At Rank ID#<br>(max 1001)</td>
+            <td><input type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
         </tr>
         <tr>
             <td><input type="submit" value ="Perform Search"></td>
         </tr>
     </table>
+
 }
 
 <p id="eta">Estimated Time to Completion: 0 sec.</p>
 
-@*<script>
-    $(document).ready(function () {
-        $('input.amount').keyup(function () {
-            calculateTotal(this);
-        });
-    });
+<p>Note: Results limited to the top 1000.</p>
 
-    function calculateTotal(src) {
-        var sum = 0,
-            tbl = $(src).closest('table');
-        tbl.find('input.number').each(function (index, elem) {
-            var val = parseFloat($(elem).val());
-            if (!isNaN(val)) {
-                sum += val;
-            }
-        });
-        tbl.find('.total').html(sum.toFixed(0));
-    }
-</script>*@
-
-@*    @Html.DisplayNameFor(model => model.query)
-    @for(int i = 0; i < 5; i++)
-    {
-        <span>this is a line @i</span>
-        <br />
-    }
-    Query: @Model.query
-    <br />
-    Target URL: @Model.url
-    <br />*@
 </body>
 </html>
