@@ -33,7 +33,7 @@ namespace MvcApplication1.Models
         public class SearchResult
         {
             public string url, errorMsg, title;
-            public bool linksToTarget, containsPhrase, skip, exception;
+            public bool linksToTarget, containsPhrase, skip, exception, scraped;
             public int id;
 
             // For Bing
@@ -47,6 +47,7 @@ namespace MvcApplication1.Models
                 skip = false;
                 exception = false;
                 errorMsg = "";
+                scraped = false;
             }
 
             public SearchResult() {
@@ -55,6 +56,7 @@ namespace MvcApplication1.Models
                 skip = false;
                 exception = false;
                 errorMsg = "";
+                scraped = false;
             }
 
         } // SearchResult class
@@ -314,6 +316,7 @@ namespace MvcApplication1.Models
         private void ScrapeBatch(int x, int y)
         {
             for (int i = x; i <= y; i++) {
+                if (results[i].scraped) continue;
                 try
                 {
                     MyWebClient w = new MyWebClient();
@@ -346,6 +349,7 @@ namespace MvcApplication1.Models
                     else
                         results[i].errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
                 }
+                results[i].scraped = true;
             }
             checkLock();
 
