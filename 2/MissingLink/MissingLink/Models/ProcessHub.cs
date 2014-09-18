@@ -8,6 +8,8 @@ using System.Web;
 using System.Data.Services.Client;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.IO;
 
 namespace MvcApplication1.Models
 {
@@ -107,14 +109,20 @@ namespace MvcApplication1.Models
                 }
                 else
                 {
-                    if ((sites[i].Substring(0, 4)).Equals("http"))       // assume that exact link is provided as needed; can be either http or https
-                    {
-                        bin.Add("href=\"" + sites[i]);
-                    }
-                    else if ((sites[i].Substring(0, 4)).Equals("www."))     // part link provided; must add protocol
+                    if ((sites[i].Substring(0, 7)).Equals("http://"))       // remove procotol prefix http
+                        sites[i] = sites[i].Substring(7, sites[i].Length - 7);
+                    else if ((sites[i].Substring(0, 8)).Equals("https://")) // remove protocol prefix https
+                        sites[i] = sites[i].Substring(8, sites[i].Length - 8); 
+
+
+                    if ((sites[i].Substring(0, 4)).Equals("www."))     // part link provided; must add protocol
                     {
                         bin.Add("href=\"http://" + sites[i]);
                         bin.Add("href=\"https://" + sites[i]);
+                        
+                        bin.Add("href=\"http://" + sites[i].Substring(4, sites[i].Length - 4));
+                        bin.Add("href=\"https://" + sites[i].Substring(4, sites[i].Length - 4));
+
                     }
                     else
                     {                                                  // just sitename.com provided
@@ -125,6 +133,8 @@ namespace MvcApplication1.Models
                     }
                 }
             }
+            for (int i = 0; i < bin.Count; i++)
+                displayln(bin[i]);
             return bin;
         } // FormatLink
 
@@ -313,15 +323,45 @@ namespace MvcApplication1.Models
             if (threadsComplete >= threadsRunning) { hubLock = false; }
         }
 
+        /**
+         * Scrapes websites in multiple batches, as opposed to single pages.
+         * Uses HttpWebRequest, along with specific settings that mimic a web browser.
+         * The line
+         *      if (response.StatusCode != HttpStatusCode.OK)
+         * is questionable; w.GetResponse() can throw a WebException that bypasses the
+         * if statement entirely.
+         **/
         private void ScrapeBatch(int x, int y)
         {
             for (int i = x; i <= y; i++) {
                 if (results[i].scraped) continue;
                 try
                 {
-                    MyWebClient w = new MyWebClient();
-                    w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
-                    string pageData = w.DownloadString(results[i].url);
+                    string pageData = "";
+                    int status = 0;
+                    HttpWebResponse response = null;
+                    HttpWebRequest w = (HttpWebRequest)WebRequest.Create(results[i].url);
+                    w.Timeout = 8000;
+                    w.ContentLength = 0;
+                    w.Method = WebRequestMethods.Http.Get;
+                    CookieContainer cookieJar = new CookieContainer();
+                    w.CookieContainer = cookieJar;
+                    w.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0";
+                    response = (HttpWebResponse)w.GetResponse();
+                    //displayln("Response " + response.StatusCode + ": " + response.StatusDescription);
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        results[i].exception = true;
+                        results[i].errorMsg = response.StatusDescription;
+                        continue;
+                    }
+                    //Encoding responseEncoding = Encoding.GetEncoding(response.CharacterSet);
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default))
+                    {
+                        pageData = reader.ReadToEnd();
+                    }
+                    status = (int)response.StatusCode;
+
                     pageData.Replace('"', '\"');
                     foreach (string s in target_website)
                     {
@@ -341,6 +381,10 @@ namespace MvcApplication1.Models
                         results[i].containsPhrase = true;
                     }
                 }
+                catch (System.Net.ProtocolViolationException e) {
+                    results[i].exception = true;
+                    results[i].errorMsg = "Protocol Violation: " + e.Message;
+                }
                 catch (System.Net.WebException e)
                 {
                     HttpWebResponse res = (HttpWebResponse)e.Response;
@@ -352,13 +396,13 @@ namespace MvcApplication1.Models
                 results[i].scraped = true;
             }
             checkLock();
-
         } // ScrapeBatch
 
         /**
          * Retrieves the page data from a given webpage in string form, and prepares it for computing
          * by escaping specific chars. The string is then examined for links that lead back to the target
          * website(s), and instances of the given phrase string.
+         * NOTE: Uses the old MyWebClient class to grab data; see the code used in ScrapeBatch().
          **/
         private void scrapeURL(int i)
         {
@@ -442,4 +486,5 @@ namespace MvcApplication1.Models
         } // displayln
 
     } // public class ProcessHub
+
 } // namespace
