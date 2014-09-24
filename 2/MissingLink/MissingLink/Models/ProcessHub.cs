@@ -402,7 +402,7 @@ namespace MvcApplication1.Models
          * Retrieves the page data from a given webpage in string form, and prepares it for computing
          * by escaping specific chars. The string is then examined for links that lead back to the target
          * website(s), and instances of the given phrase string.
-         * NOTE: Uses the old MyWebClient class to grab data; see the code used in ScrapeBatch().
+         * NOTE: This code is out of date; it uses the old MyWebClient class to grab data; see the code used in ScrapeBatch().
          **/
         private void scrapeURL(int i)
         {

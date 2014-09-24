@@ -1,0 +1,77 @@
+﻿@model MissingLinkPro.Models.ParameterKeeper
+
+@{
+    ViewBag.Title = "Webcrawler Search Engine Scraper";
+}
+
+<h2>MissingLink Application v1.0</h2>
+
+<!-- <form id="form" action="@Url.Action("Process")" method="post" novalidate> -->
+
+@using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form" }))
+{
+    @Html.ValidationSummary()
+
+    <table>
+        <tr>
+            <td>Bing Search Query</td>
+            <!-- <td>@Html.EditorFor(m => m.query)</td> -->
+            <td><input type="text" size ="65" name="query" required></td>
+        </tr>
+        <tr>
+            <td>Phrase Search</td>
+            <td><input type="text" size = "65" name="searchString"></td>
+            <!-- <td>@Html.EditorFor(m => m.searchString)</td> -->
+        </tr>
+        <tr>
+            <td>Target Site(s) To Scan For<br>(separate multiple instances with single space)</td>
+            <td><input type="text" size="65" name="website" required></td>
+        </tr>
+        <tr>
+            <td>Number of Results to Scan<br>(max 1000)</td>
+            <td><input type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>
+        </tr>
+        <tr>
+            <td>Exclude Results With Links to Target(s)</td>
+            <td><input type="radio" name="exclude" value = "yes" checked="checked">Yes <input type="radio" name="exclude" value = "no">No</td>
+        </tr>
+        <tr>
+            <td>Display Search Results</td>
+            <td><input type="radio" name="displayall" value = "yes" checked="checked">Yes <input type="radio" name="displayall" value = "no">No</td>
+        </tr>
+        <tr>
+            <td>Start At Rank ID#<br>(max 1001)</td>
+            <td><input type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value ="Perform Search"></td>
+        </tr>
+    </table>
+
+}
+
+<p id="eta">Estimated Time to Completion: 0 sec.</p>
+
+<p>Note: Results limited to the top 1000.</p>
+
+@section Scripts {
+<script>
+
+    $(function () {
+        calcETA();
+    });
+
+    function calcETA() {
+        var t = 1.95;
+        var x = document.getElementById("top").value;
+        x = +x;
+        if (x < 0) x = 0;
+        var BingPages = ~~(x / 50);
+        if (x % 50 > 0) BingPages++;
+        var z = (BingPages * t) + ((x/10) * t);
+        z = Math.round(z * 100) / 100;
+        if (z < 0) z = 0;
+        document.getElementById("eta").innerHTML = "Average Estimated Time to Completion: " + z + " sec.";
+    }
+</script>
+}

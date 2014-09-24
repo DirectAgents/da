@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Results";
+}
+
+
+@model MissingLinkPro.Models.ProcessHub
+
+
+<br>
+<p><h2>Results For This Run:</h2><br></p>
+<br>
+    <p>
+    Google Search Query: @Model.query <br>
+    Text Search Within Results: @if (Model.phraseSearch == true) { @Model.searchString }
+                                else { <text><i>(No Phrase Entered)</i></text>} <br>
+    Target Website(s) To Link To: @Model.target_website_htmlview<br>
+    Number of Results to Scan: @Model.top <br>
+    Exclude Results With Links to Target(s):
+        @if (Model.exclude == true) { <text>yes</text> }
+        else { <text>no</text> }<br>
+    <!-- Delay Time: @Model.delay_time_display sec <br> -->
+    </p>
+
+    <p>
+    <br>
+    <!-- Maximum Range of Google Results: @Model.max_googleResults<br> -->
+    Number of Results Found: @Model.results.Count()<br>
+    Results Omitted: @Model.omit_count<br>
+    Total Time: @Model.total_time sec<br>
+    </p>
+
+    <p>
+    <br>
+    @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
+    @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Process")<br>
+    <br>
+    </p>
+
+    @if (Model.search_error_encountered) {
+    <text>ERROR: Your search was halted due to a critical error encountered during your Google search. Please see error message below:</text><br>
+    @Model.search_error_msg<br>
+    <br><br>
+    }
+        @if (Model.display_all) {
+            foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.results) {
+                if (s.skip) { continue; }
+                <text>---<br></text>
+                <text>Rank ID: </text>@s.id<br>
+                <a href="@s.url">@s.title</a><br>
+                @s.url<br>
+                if (s.exception) {
+                    <text> - ERROR: </text> @s.errorMsg<br>
+                    <br>
+                    continue;
+                }
+                if (s.linksToTarget) {
+                    <text> - OK: Site features links that point to target(s).<br></text>
+                }
+                else {
+                    <text> - NOTE: No links to target(s) found.<br></text>
+                }
+                if (Model.phraseSearch) {
+                    if (s.containsPhrase) {
+                        <text> - OK: Site contains instances of given phrase.</text><br>
+                    }
+                    else {
+                        <text> - NOTE: Given phrase not found.</text><br>
+                    }
+                }
+                <br>
+            }
+        }
+    <br>
