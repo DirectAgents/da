@@ -9,12 +9,40 @@ using System.Threading;
 
 using CsvHelper;
 using System.IO;
+using System.Threading.Tasks;
+
+using IdentitySample.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System.Configuration;
 
 namespace MissingLinkPro.Controllers
 {
     [Authorize]
     public class ApplicationController : Controller
     {
+        public ApplicationController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationController()
+        {
+        }
+
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         public ActionResult Index()
         {
@@ -34,17 +62,44 @@ namespace MissingLinkPro.Controllers
          * else-if that follows into if, and change the Next Set of Results link in Process.cshtml
          * accordingly.
          **/
-        public ActionResult Process(ParameterKeeper param) {
+        public async Task<ActionResult> Process(ParameterKeeper param) {
 
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            // Initial time validation check.
+            int DailyCap = Convert.ToInt32(ConfigurationManager.AppSettings["MaxQueriesPerDay"]);
+            if (user.QueriesPerformed >= DailyCap)
+            {
+                DateTime endTime = DateTime.Now.Date;
+                user.DateTimeStamp = user.DateTimeStamp.Date;
+                displayln("endTime = " + endTime);
+                displayln("userDTS = " + user.DateTimeStamp);
+                if (endTime <= user.DateTimeStamp)
+                {
+                    return View("DailyMaxReached");
+                }
+                else
+                {
+                    user.QueriesPerformed = 0;
+                }
+            }
+
+            // If a session is continuing from the previous (user chooses to retrieve next set of results).
             if ((ParameterKeeper)Session["Params"] != null) {
                 param = (ParameterKeeper)Session["Params"];
                 ProcessHub p = new ProcessHub(param);
                 p.results = param.results;
                 p.run();
                 updateResults(p, param);
+
+                user.QueriesPerformed++;
+                user.DateTimeStamp = DateTime.Now.Date;
+                await UserManager.UpdateAsync(user);
+
                 return View("Process", p);
             }
 
+            // Fresh run; should check validity of inputs.
             else if (ModelState.IsValid)
             {
                 if ((param.top + param.skip) > 1001)
@@ -54,6 +109,11 @@ namespace MissingLinkPro.Controllers
                 ProcessHub p = new ProcessHub(param);
                 p.run();
                 updateResults(p, param);
+
+                user.QueriesPerformed++;
+                user.DateTimeStamp = DateTime.Now.Date;
+                await UserManager.UpdateAsync(user);
+
                 return View(p);
             }
             else {
@@ -61,13 +121,21 @@ namespace MissingLinkPro.Controllers
             }
         }
 
-        public ActionResult Next()
+        public async Task<ActionResult> Next()
         {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            int DailyCap = Convert.ToInt32(ConfigurationManager.AppSettings["MaxQueriesPerDay"]);
+            if (user.QueriesPerformed >= DailyCap) return View("DailyMaxReached");
+
             ParameterKeeper param = (ParameterKeeper)Session["Params"];
             ProcessHub p = new ProcessHub(param);
             p.results = param.results;
             p.run();
             updateResults(p, param);
+
+            user.QueriesPerformed++;
+            await UserManager.UpdateAsync(user);
+
             return View("Process",p);
         }
 
@@ -162,6 +230,24 @@ namespace MissingLinkPro.Controllers
             output.Position = 0;
             return File(output, "application/CSV", "ExportResults.csv");
         } // WriteFile
+
+        /**
+         * Quick shortcut method for printing to the diagnostic console, sans new line.
+         * @para string s:  the string to be printed
+         **/
+        private void display(string s)
+        {
+            System.Diagnostics.Debug.Write(s);
+        } // display
+
+        /**
+         * Quick shortcut method for printing to the diagnostic console, with new line.
+         * @para string s:  the string to be printed
+         **/
+        private void displayln(string s)
+        {
+            System.Diagnostics.Debug.WriteLine(s);
+        } // displayln
 
     } // class MainController
 } // EOF

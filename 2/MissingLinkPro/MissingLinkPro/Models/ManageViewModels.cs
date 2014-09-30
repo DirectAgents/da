@@ -12,6 +12,11 @@ namespace IdentitySample.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public bool HasFirstName { get; set; }
+        public bool HasLastName { get; set; }
     }
 
     public class ManageLoginsViewModel
@@ -37,6 +42,17 @@ namespace IdentitySample.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class ChangeNameViewModel
+    {
+        public string Id { get; set; }
+
+        [Display(Name = "First Name")]
+        public string NewFirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string NewLastName { get; set; }
     }
 
     public class ChangePasswordViewModel

@@ -41,16 +41,22 @@ namespace IdentitySample.Controllers
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.ChangeNameSuccess ? "Your new name has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two factor provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "The phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
 
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
             var model = new IndexViewModel
             {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
                 HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
+                //PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId()),
                 Logins = await UserManager.GetLoginsAsync(User.Identity.GetUserId()),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
@@ -230,6 +236,46 @@ namespace IdentitySample.Controllers
         }
 
         //
+        // GET: /Manage/ChangeName
+        public ActionResult ChangeName()
+        {
+            return View();
+        }
+
+        //
+        // POST: Manage/ChangeName
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeName(ChangeNameViewModel editName)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                //var user = await UserManager.FindByIdAsync(editName.Id);
+                if (user == null)
+                {
+                    return HttpNotFound();
+                }
+
+                user.FirstName = editName.NewFirstName;
+                user.LastName = editName.NewLastName;
+
+                var userSynced = await UserManager.UpdateAsync(user);
+
+                if (!userSynced.Succeeded)
+                {
+                    ModelState.AddModelError("", userSynced.Errors.First());
+                    return View();
+                }
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangeNameSuccess} );
+            }
+            ModelState.AddModelError("", "Something failed.");
+            return View(editName);
+        }
+
+
+
+        //
         // POST: /Account/Manage
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -381,6 +427,7 @@ namespace IdentitySample.Controllers
         {
             AddPhoneSuccess,
             ChangePasswordSuccess,
+            ChangeNameSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,

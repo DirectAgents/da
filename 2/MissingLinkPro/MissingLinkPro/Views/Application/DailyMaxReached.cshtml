@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = "Daily Maximum Reached";
+}
+
+<h2>Daily Maximum Reached</h2>
+
+You have reached the daily limit of @System.Web.Configuration.WebConfigurationManager.AppSettings["MaxQueriesPerDay"] runs performed.<br>
+Please wait until midnight for your allowance to reset, or contact the Admin for additional options.

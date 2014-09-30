@@ -211,6 +211,22 @@
     <Compile Include="Migrations\201409242002269_InitialCreate.Designer.cs">
       <DependentUpon>201409242002269_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409291535283_Naming.cs" />
+    <Compile Include="Migrations\201409291535283_Naming.Designer.cs">
+      <DependentUpon>201409291535283_Naming.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409292056547_QueriesPerformed.cs" />
+    <Compile Include="Migrations\201409292056547_QueriesPerformed.Designer.cs">
+      <DependentUpon>201409292056547_QueriesPerformed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409292150532_DateTime.cs" />
+    <Compile Include="Migrations\201409292150532_DateTime.Designer.cs">
+      <DependentUpon>201409292150532_DateTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409292154094_DateTimeFix.cs" />
+    <Compile Include="Migrations\201409292154094_DateTimeFix.Designer.cs">
+      <DependentUpon>201409292154094_DateTimeFix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -269,6 +285,8 @@
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Application\Process.cshtml" />
+    <Content Include="Views\Manage\ChangeName.cshtml" />
+    <Content Include="Views\Application\DailyMaxReached.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -285,6 +303,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201409242002269_InitialCreate.resx">
       <DependentUpon>201409242002269_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409291535283_Naming.resx">
+      <DependentUpon>201409291535283_Naming.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409292056547_QueriesPerformed.resx">
+      <DependentUpon>201409292056547_QueriesPerformed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409292150532_DateTime.resx">
+      <DependentUpon>201409292150532_DateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409292154094_DateTimeFix.resx">
+      <DependentUpon>201409292154094_DateTimeFix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

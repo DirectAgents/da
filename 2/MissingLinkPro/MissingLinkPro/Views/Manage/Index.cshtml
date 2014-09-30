@@ -18,6 +18,10 @@
             }
         </p>
         <p>
+            Registered Name: @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+            [@Html.ActionLink("Change Name", "ChangeName")]
+        </p>
+        <p>
             Phone Number: @(Model.PhoneNumber ?? "None") [
             @if (Model.PhoneNumber != null)
             {
