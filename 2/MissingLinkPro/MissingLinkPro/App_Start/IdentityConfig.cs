@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
+using MissingLinkPro.Models;
+using System.Configuration;
 
 namespace IdentitySample.Models
 {
@@ -87,6 +89,8 @@ namespace IdentitySample.Models
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
+            Emailer emailer = new Emailer(new System.Net.NetworkCredential(ConfigurationManager.AppSettings["Emailer_Username"],ConfigurationManager.AppSettings["Emailer_Password"]));
+            emailer.SendEmail(ConfigurationManager.AppSettings["Emailer_Username"], message.Destination, null, message.Subject, message.Body, true);
             return Task.FromResult(0);
         }
     }

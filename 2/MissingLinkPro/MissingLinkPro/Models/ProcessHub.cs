@@ -10,6 +10,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.IO;
+using System.Configuration;
 
 namespace MissingLinkPro.Models
 {
@@ -83,7 +84,7 @@ namespace MissingLinkPro.Models
         public int omit_count { get; set; }
         public bool display_all { get; set; }
         // Bing-related
-        private const string AccountKey = "cU1u2NEkgkFY33IvcQxwngH38LyfutFTKY2tkQYq8ps";
+        private string AccountKey = ConfigurationManager.AppSettings["BingAPIKey"];
         private int indices, threadsComplete, threadsRunning;
         private bool hubLock;
 
