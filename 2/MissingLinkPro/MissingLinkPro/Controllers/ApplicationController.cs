@@ -93,7 +93,9 @@ namespace MissingLinkPro.Controllers
                 updateResults(p, param);
 
                 user.QueriesPerformed++;
-                user.DateTimeStamp = DateTime.Now.Date;
+                user.TotalQueriesPerformed++;
+                //user.DateTimeStamp = DateTime.Now.Date;
+                user.DateTimeStamp = DateTime.Now;
                 await UserManager.UpdateAsync(user);
 
                 return View("Process", p);
@@ -111,7 +113,9 @@ namespace MissingLinkPro.Controllers
                 updateResults(p, param);
 
                 user.QueriesPerformed++;
-                user.DateTimeStamp = DateTime.Now.Date;
+                user.TotalQueriesPerformed++;
+                //user.DateTimeStamp = DateTime.Now.Date;
+                user.DateTimeStamp = DateTime.Now;
                 await UserManager.UpdateAsync(user);
 
                 return View(p);

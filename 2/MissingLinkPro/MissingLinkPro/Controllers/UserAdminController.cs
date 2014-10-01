@@ -142,6 +142,9 @@ namespace IdentitySample.Controllers
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                QueriesPerformed = user.QueriesPerformed,
+                TotalQueriesPerformed = user.TotalQueriesPerformed,
+                LastQueryTime = user.DateTimeStamp,
                 RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
                 {
                     Selected = userRoles.Contains(x.Name),
@@ -155,7 +158,7 @@ namespace IdentitySample.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,QueriesPerformed")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
@@ -169,6 +172,7 @@ namespace IdentitySample.Controllers
                 user.Email = editUser.Email;
                 user.FirstName = editUser.FirstName;
                 user.LastName = editUser.LastName;
+                user.QueriesPerformed = editUser.QueriesPerformed;
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 

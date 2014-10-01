@@ -1,12 +1,16 @@
 ﻿@model IdentitySample.Models.IndexViewModel
 @{
-    ViewBag.Title = "Manage your account";
+    ViewBag.Title = "Manage Your Account";
 }
 
 <h2>@ViewBag.Title.</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
     <div class="col-md-8">
+        <p><br>
+            Total Runs Performed: @Html.DisplayFor(model => model.TotalQueriesPerformed)
+            <br>
+        </p>
         <p>
             @if (Model.HasPassword)
             {

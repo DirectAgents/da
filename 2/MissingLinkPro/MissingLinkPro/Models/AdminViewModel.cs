@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -26,6 +27,15 @@ namespace IdentitySample.Models
 
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [Display(Name = "Runs Performed Today")]
+        public int QueriesPerformed { get; set; }
+
+        [Display(Name = "Lifetime Runs")]
+        public int TotalQueriesPerformed { get; set; }
+
+        [Display(Name = "Last Query")]
+        public DateTime LastQueryTime { get; set; }
 
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }

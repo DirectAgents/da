@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +18,10 @@ namespace IdentitySample.Models
         public string LastName { get; set; }
         public bool HasFirstName { get; set; }
         public bool HasLastName { get; set; }
+
+        public DateTime DateTimeStamp { get; set; }
+        public int QueriesPerformed { get; set; }
+        public int TotalQueriesPerformed { get; set; }
     }
 
     public class ManageLoginsViewModel

@@ -15,9 +15,11 @@ namespace IdentitySample.Models
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Display(Name = "Number of Queries Performed")]
+        [Display(Name = "Queries Performed")]
         public int QueriesPerformed { get; set; }
-        [Display(Name = "DateTime of Last Query")]
+        [Display(Name = "Total Lifetime Queries")]
+        public int TotalQueriesPerformed { get; set; }
+        [Display(Name = "DateTime: Last Query")]
         public DateTime DateTimeStamp { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
