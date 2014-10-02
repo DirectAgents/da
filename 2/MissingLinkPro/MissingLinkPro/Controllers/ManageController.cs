@@ -58,6 +58,7 @@ namespace IdentitySample.Controllers
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber,
                 TotalQueriesPerformed = user.TotalQueriesPerformed,
+                DateTimeStamp = user.DateTimeStamp,
                 HasPassword = HasPassword(),
                 //PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId()),

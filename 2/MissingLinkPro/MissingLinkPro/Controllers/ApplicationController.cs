@@ -16,6 +16,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Configuration;
+using MissingLinkPro.Helpers;
 
 namespace MissingLinkPro.Controllers
 {
@@ -56,6 +57,13 @@ namespace MissingLinkPro.Controllers
             return View(pk);
         }
 
+        public ActionResult DailyMaxReached() {
+            Setting s = new Setting();
+            int? i = SettingsHelper.RetrieveDailyLimitSetting();
+            s.Value = i.ToString();
+            return View(s);
+        }
+
         /**
          * The first if-statement was added to circumvent the need for the Next ActionResult below.
          * Should it ever need to be reverted back, simply remove this if-statement, and change the
@@ -65,9 +73,7 @@ namespace MissingLinkPro.Controllers
         public async Task<ActionResult> Process(ParameterKeeper param) {
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
-            // Initial time validation check.
-            int DailyCap = Convert.ToInt32(ConfigurationManager.AppSettings["MaxQueriesPerDay"]);
+            int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
             if (user.QueriesPerformed >= DailyCap)
             {
                 DateTime endTime = DateTime.Now.Date;
@@ -76,7 +82,7 @@ namespace MissingLinkPro.Controllers
                 displayln("userDTS = " + user.DateTimeStamp);
                 if (endTime <= user.DateTimeStamp)
                 {
-                    return View("DailyMaxReached");
+                    return View("DailyMaxReached", new Setting { Value = DailyCap.ToString() });
                 }
                 else
                 {
@@ -125,6 +131,9 @@ namespace MissingLinkPro.Controllers
             }
         }
 
+        /**
+         * CURRENTLY NOT IN USE; CODE REQUIRES UPDATING IF USING. 
+         **/
         public async Task<ActionResult> Next()
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());

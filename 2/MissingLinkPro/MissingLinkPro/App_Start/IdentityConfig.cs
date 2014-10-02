@@ -118,8 +118,8 @@ namespace IdentitySample.Models
         public static void InitializeIdentityForEF(ApplicationDbContext db) {
             var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
-            const string name = "admin@example.com";
-            const string password = "Admin@123456";
+            const string name = "admin@directagents.com";
+            const string password = "Password3!";
             const string roleName = "Admin";
 
             //Create Role Admin if it does not exist
@@ -129,9 +129,16 @@ namespace IdentitySample.Models
                 var roleresult = roleManager.Create(role);
             }
 
+            //Create Settings DailyLimit if it does not exist
+            var settings = db.Settings.ToList();
+            if (settings == null) {
+                db.Settings.Add(new Setting { SettingName = "Daily Limit", Value = "10" });
+                db.SaveChanges();
+            }
+
             var user = userManager.FindByName(name);
             if (user == null) {
-                user = new ApplicationUser { UserName = name, Email = name };
+                user = new ApplicationUser { UserName = name, Email = name, DateTimeStamp = DateTime.Now };
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
             }

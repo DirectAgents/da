@@ -31,8 +31,19 @@ namespace IdentitySample.Models
         }
     }
 
+    public class Setting
+    {
+        public int Id { get; set; }
+        [Display(Name = "Setting")]
+        public string SettingName { set; get; }
+        [Display(Name = "Value")]
+        public string Value { get; set; }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Setting> Settings { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

@@ -177,6 +177,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\biz.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -205,10 +206,12 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Migrations\201409242002269_InitialCreate.cs" />
     <Compile Include="Migrations\201409242002269_InitialCreate.Designer.cs">
       <DependentUpon>201409242002269_InitialCreate.cs</DependentUpon>
@@ -232,6 +235,10 @@
     <Compile Include="Migrations\201410011602501_TotalQueriesPerformed.cs" />
     <Compile Include="Migrations\201410011602501_TotalQueriesPerformed.Designer.cs">
       <DependentUpon>201410011602501_TotalQueriesPerformed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410022152335_Settings.cs" />
+    <Compile Include="Migrations\201410022152335_Settings.Designer.cs">
+      <DependentUpon>201410022152335_Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -294,6 +301,11 @@
     <Content Include="Views\Application\Process.cshtml" />
     <Content Include="Views\Manage\ChangeName.cshtml" />
     <Content Include="Views\Application\DailyMaxReached.cshtml" />
+    <Content Include="Views\Settings\Create.cshtml" />
+    <Content Include="Views\Settings\Delete.cshtml" />
+    <Content Include="Views\Settings\Details.cshtml" />
+    <Content Include="Views\Settings\Edit.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -326,6 +338,9 @@
     <EmbeddedResource Include="Migrations\201410011602501_TotalQueriesPerformed.resx">
       <DependentUpon>201410011602501_TotalQueriesPerformed.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410022152335_Settings.resx">
+      <DependentUpon>201410022152335_Settings.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -340,7 +355,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>57883</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:51603/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

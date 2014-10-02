@@ -8,8 +8,8 @@
 <div class="row">
     <div class="col-md-8">
         <p><br>
-            Total Runs Performed: @Html.DisplayFor(model => model.TotalQueriesPerformed)
-            <br>
+            Total Runs Performed: @Html.DisplayFor(model => model.TotalQueriesPerformed)<br>
+            Time of Last Run: @Html.DisplayFor(model => model.DateTimeStamp)<br>
         </p>
         <p>
             @if (Model.HasPassword)
