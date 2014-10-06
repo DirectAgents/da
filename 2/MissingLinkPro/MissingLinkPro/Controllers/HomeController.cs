@@ -14,7 +14,6 @@ namespace IdentitySample.Controllers
             return Redirect("http://www.directagents.com/");
         }
 
-        [Authorize]
         public ActionResult About()
         {
             ViewBag.Message = "Your app description page.";
