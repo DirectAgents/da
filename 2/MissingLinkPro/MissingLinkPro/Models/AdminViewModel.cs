@@ -29,6 +29,7 @@ namespace IdentitySample.Models
         public string LastName { get; set; }
 
         [Display(Name = "Runs Performed Today")]
+        [Range(0, Int32.MaxValue, ErrorMessage = "This field cannot be less than 0.")]
         public int QueriesPerformed { get; set; }
 
         [Display(Name = "Lifetime Runs")]

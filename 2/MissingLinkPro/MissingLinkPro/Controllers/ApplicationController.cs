@@ -47,12 +47,16 @@ namespace MissingLinkPro.Controllers
 
         public ActionResult Index()
         {
+            // If user is accessing Index page, any previous Session should be flushed.
+            if ((ParameterKeeper)Session["Params"] != null)
+                Session["Params"] = null;
+
             ParameterKeeper pk = new ParameterKeeper
             {
                 top = 50,
                 skip = 1,
                 exclude = "yes",
-                displayall = "yes"
+                displayall = "yes",
             };
             return View(pk);
         }
@@ -70,8 +74,8 @@ namespace MissingLinkPro.Controllers
          * else-if that follows into if, and change the Next Set of Results link in Process.cshtml
          * accordingly.
          **/
-        public async Task<ActionResult> Process(ParameterKeeper param) {
-
+        public async Task<ActionResult> Process(ParameterKeeper param, bool newSession = false)
+        {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
             if (user.QueriesPerformed >= DailyCap)
@@ -90,21 +94,21 @@ namespace MissingLinkPro.Controllers
                 }
             }
 
+            // Will occur if the param is coming from the Application Index page, where newSession is always set to true.
+            // If coming via click on Next Set of Results, this will always be false.
+            if (newSession == true)
+            {
+                Session["Params"] = null;
+            }
+
+            ProcessHub p = null;
+
             // If a session is continuing from the previous (user chooses to retrieve next set of results).
-            if ((ParameterKeeper)Session["Params"] != null) {
+            if ((ParameterKeeper)Session["Params"] != null)
+            {
                 param = (ParameterKeeper)Session["Params"];
-                ProcessHub p = new ProcessHub(param);
+                p = new ProcessHub(param);
                 p.results = param.results;
-                p.run();
-                updateResults(p, param);
-
-                user.QueriesPerformed++;
-                user.TotalQueriesPerformed++;
-                //user.DateTimeStamp = DateTime.Now.Date;
-                user.DateTimeStamp = DateTime.Now;
-                await UserManager.UpdateAsync(user);
-
-                return View("Process", p);
             }
 
             // Fresh run; should check validity of inputs.
@@ -113,26 +117,24 @@ namespace MissingLinkPro.Controllers
                 if ((param.top + param.skip) > 1001)
                     param.top = 1001 - param.skip;
 
-                Session["Params"] = param;
-                ProcessHub p = new ProcessHub(param);
-                p.run();
-                updateResults(p, param);
-
-                user.QueriesPerformed++;
-                user.TotalQueriesPerformed++;
-                //user.DateTimeStamp = DateTime.Now.Date;
-                user.DateTimeStamp = DateTime.Now;
-                await UserManager.UpdateAsync(user);
-
-                return View(p);
+                p = new ProcessHub(param);
             }
-            else {
-                return View("Index",param);
-            }
-        }
+            else
+                return View("Index", param);
+
+            p.run();
+            updateResults(p, param);
+            Session["Params"] = param;
+            user.QueriesPerformed++;
+            user.TotalQueriesPerformed++;
+            user.DateTimeStamp = DateTime.Now;
+            //user.DateTimeStamp = DateTime.Now.Date;       // Use this line if you care only about the specific date and not time.
+            await UserManager.UpdateAsync(user);
+            return View(p);
+        } // Process
 
         /**
-         * CURRENTLY NOT IN USE; CODE REQUIRES UPDATING IF USING. 
+         * CURRENTLY NOT IN USE; CODE REQUIRES UPDATING IF RE-IMPLEMENTING.
          **/
         public async Task<ActionResult> Next()
         {
@@ -153,7 +155,7 @@ namespace MissingLinkPro.Controllers
         }
 
         /**
-         * Performs updating of search results and potential error messages.
+         * Performs updating of search results and potential error messages; saves to ParameterKeeper.
          * Para@    ProcessHub p
          *          ParameterKeeper param
          **/
