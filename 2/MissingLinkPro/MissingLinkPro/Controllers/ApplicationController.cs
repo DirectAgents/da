@@ -57,6 +57,7 @@ namespace MissingLinkPro.Controllers
                 skip = 1,
                 exclude = "yes",
                 displayall = "yes",
+                resultType = "web",
             };
             return View(pk);
         }
@@ -76,6 +77,8 @@ namespace MissingLinkPro.Controllers
          **/
         public async Task<ActionResult> Process(ParameterKeeper param, bool newSession = false)
         {
+
+            // Initial verification; checks if user has exceeded daily limit.
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
             if (user.QueriesPerformed >= DailyCap)
@@ -94,7 +97,7 @@ namespace MissingLinkPro.Controllers
                 }
             }
 
-            // Will occur if the param is coming from the Application Index page, where newSession is always set to true.
+            // If-staement will occur if the param is coming from the Application Index page, where newSession is always set to true.
             // If coming via click on Next Set of Results, this will always be false.
             if (newSession == true)
             {
@@ -134,7 +137,7 @@ namespace MissingLinkPro.Controllers
         } // Process
 
         /**
-         * CURRENTLY NOT IN USE; CODE REQUIRES UPDATING IF RE-IMPLEMENTING.
+         * CURRENTLY NOT IN USE; CODE REQUIRES COMPLETE UPDATE IF RE-IMPLEMENTING.
          **/
         public async Task<ActionResult> Next()
         {

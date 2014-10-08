@@ -19,7 +19,8 @@ namespace MissingLinkPro.Models
         
         [Range(1, 1000, ErrorMessage = "Number of results must be between 1 and 1000.")]
         public int top { get; set; }
-        
+
+        public string resultType { get; set; }
         public string exclude { get; set; }
         public string displayall { get; set; }
 

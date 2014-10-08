@@ -15,6 +15,7 @@
                                 else { <text><i>(No Phrase Entered)</i></text>} <br>
     Target Website(s) To Link To: @Model.target_website_htmlview<br>
     Number of Results to Scan: @Model.top <br>
+    Type of Results: @Model.resultType <br>
     Exclude Results With Links to Target(s):
         @if (Model.exclude == true) { <text>yes</text> }
         else { <text>no</text> }<br>

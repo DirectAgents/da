@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System;
+using MissingLinkPro.Models;
 
 namespace IdentitySample.Models
 {
@@ -43,6 +44,7 @@ namespace IdentitySample.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Setting> Settings { get; set; }
+        //public DbSet<SearchResult> SearchResults { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

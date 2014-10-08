@@ -31,6 +31,11 @@
             <td>Number of Results to Scan<br>(max 1000)</td>
             <td><input type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>
         </tr>
+            <tr>
+            <td>Type of Results</td>
+            <td><input type="radio" name="resultType" value = "web" checked="checked">Web <input type="radio" name="resultType" value = "news">News
+            </td>
+        </tr>
         <tr>
             <td>Exclude Results With Links to Target(s)</td>
             <td><input type="radio" name="exclude" value = "yes" checked="checked">Yes <input type="radio" name="exclude" value = "no">No</td>

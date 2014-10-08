@@ -78,6 +78,7 @@ namespace MissingLinkPro.Models
         public int timer { get; set; }
         public int max_googleResults { get; set; }
         public bool exclude { get; set; }
+        public string resultType { get; set; }
         public bool phraseSearch { get; set; }
         public List<SearchResult> results { get; set; }
         public int skip { get; set; }
@@ -181,6 +182,9 @@ namespace MissingLinkPro.Models
                 phraseSearch = false;
             else searchString = incoming.searchString;
 
+            // Setting result type.
+            resultType = incoming.resultType;
+
             // Setting limit on number of Google results pages
             top = 1;
             if (incoming.top > 1) top = incoming.top;
@@ -226,42 +230,26 @@ namespace MissingLinkPro.Models
         {
             Stopwatch watch = new Stopwatch();
             watch.Start();
-
             search_error_encountered = false;
-            bool complete = false;
-            int count = 0;
-            int pages = top / 50;
-            if ((top % 50) > 0) pages++;
 
             string rootUrl = "https://api.datamarket.azure.com/Bing/Search";
             var bingContainer = new Bing.BingSearchContainer(new Uri(rootUrl));
             string market = "en-us";
             bingContainer.Credentials = new NetworkCredential(AccountKey, AccountKey);
 
-            for (int i = 0; i < pages; i++)
+            if (resultType.Equals("news"))
             {
-               var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
-                if (top < 50)
-                    webQuery = webQuery.AddQueryOption("$top", top);
-                else
-                    webQuery = webQuery.AddQueryOption("$top", 50);
-                webQuery = webQuery.AddQueryOption("$skip", skip);
-                var webResults = webQuery.Execute();
-
-                foreach (var result in webResults)
-                {
-                    results.Add(new SearchResult(skip + 1, result.Title, result.Url));
-                    count++;
-                    skip++;
-                    if (count == top)
-                    {
-                        complete = true;
-                        break;
-                    }
-                }
-
-                if (complete) break;
+                int pages = top / 15;
+                if ((top % 15) > 0) pages++;
+                processNews(bingContainer, pages, query, market);
             }
+            else
+            {
+                int pages = top / 50;
+                if ((top % 50) > 0) pages++;
+                processWeb(bingContainer, pages, query, market);
+            }
+
             /**NOTE: The beneath for-loop creates 1 thread per result, versus the 10 per result that is currently in place.**/
 
             //for (int i = 0; i < top; i++)
@@ -298,6 +286,68 @@ namespace MissingLinkPro.Models
             total_time = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
         }
+
+        private void processWeb(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
+        {
+            int count = 0;
+            bool complete = false;
+            for (int i = 0; i < pages; i++)
+            {
+                var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
+                if (top < 50)
+                    webQuery = webQuery.AddQueryOption("$top", top);
+                else
+                    webQuery = webQuery.AddQueryOption("$top", 50);
+                webQuery = webQuery.AddQueryOption("$skip", skip);
+
+                var webResults = webQuery.Execute();
+
+                foreach (var result in webResults)
+                {
+                    results.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                    count++;
+                    skip++;
+                    if (count == top)
+                    {
+                        complete = true;
+                        break;
+                    }
+                }
+
+                if (complete) break;
+            }
+        } // processWeb
+
+        private void processNews(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
+        {
+            int count = 0;
+            bool complete = false;
+            for (int i = 0; i < pages; i++)
+            {
+                var webQuery = bingContainer.News(query,null,market,null,null,null,null,null,null);
+                if (top < 15)
+                    webQuery = webQuery.AddQueryOption("$top", top);
+                else
+                    webQuery = webQuery.AddQueryOption("$top", 15);
+                webQuery = webQuery.AddQueryOption("$skip", skip);
+
+                var webResults = webQuery.Execute();
+
+                foreach (var result in webResults)
+                {
+                    results.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                    count++;
+                    skip++;
+                    if (count == top)
+                    {
+                        complete = true;
+                        break;
+                    }
+                }
+
+                if (complete) break;
+            }
+        } // processNews
 
         public Thread StartThread(int i)
         {
