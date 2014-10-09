@@ -10,24 +10,22 @@
 <p><h2>Results For This Run:</h2><br></p>
 <br>
     <p>
-    Google Search Query: @Model.query <br>
-    Text Search Within Results: @if (Model.phraseSearch == true) { @Model.searchString }
+    Search Query: @Model.BingSearchQuery <br>
+    Text Search Within Results: @if (Model.PhraseSearchEnabled == true) { @Model.PhraseSearchString }
                                 else { <text><i>(No Phrase Entered)</i></text>} <br>
-    Target Website(s) To Link To: @Model.target_website_htmlview<br>
+    Target Website(s) To Link To: @Model.ClientWebsite<br>
     Number of Results to Scan: @Model.top <br>
-    Type of Results: @Model.resultType <br>
+    Type of Results: @Model.ResultType <br>
     Exclude Results With Links to Target(s):
-        @if (Model.exclude == true) { <text>yes</text> }
+        @if (Model.ExcludeLinkbackResults == true) { <text>yes</text> }
         else { <text>no</text> }<br>
-    <!-- Delay Time: @Model.delay_time_display sec <br> -->
     </p>
 
     <p>
     <br>
-    <!-- Maximum Range of Google Results: @Model.max_googleResults<br> -->
-    Number of Results Found: @Model.results.Count()<br>
-    Results Omitted: @Model.omit_count<br>
-    Total Time: @Model.total_time sec<br>
+    Number of Results Found: @Model.ParsedResults.Count()<br>
+    Results Omitted: @Model.OmitCount<br>
+    Total Time: @Model.TotalRunTime sec<br>
     </p>
 
     <p>
@@ -37,31 +35,31 @@
     <br>
     </p>
 
-    @if (Model.search_error_encountered) {
+    @if (Model.SearchErrorEncountered) {
     <text>ERROR: Your search was halted due to a critical error encountered during your Google search. Please see error message below:</text><br>
-    @Model.search_error_msg<br>
+    @Model.SearchErrorMsg<br>
     <br><br>
     }
-        @if (Model.display_all) {
-            foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.results) {
-                if (s.skip) { continue; }
+        @if (Model.DisplayAllResults) {
+            foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.ParsedResults) {
+                if (s.SkipThisResult) { continue; }
                 <text>---<br></text>
-                <text>Rank ID: </text>@s.id<br>
-                <a href="@s.url">@s.title</a><br>
-                @s.url<br>
-                if (s.exception) {
-                    <text> - ERROR: </text> @s.errorMsg<br>
+                <text>Rank ID: </text>@s.Id<br>
+                <a href="@s.Url">@s.Title</a><br>
+                @s.Url<br>
+                if (s.ExceptionFound) {
+                    <text> - ERROR: </text> @s.ErrorMsg<br>
                     <br>
                     continue;
                 }
-                if (s.linksToTarget) {
+                if (s.LinksToClientWebsite) {
                     <text> - OK: Site features links that point to target(s).<br></text>
                 }
                 else {
                     <text> - NOTE: No links to target(s) found.<br></text>
                 }
-                if (Model.phraseSearch) {
-                    if (s.containsPhrase) {
+                if (Model.PhraseSearchEnabled) {
+                    if (s.ContainsSearchPhrase) {
                         <text> - OK: Site contains instances of given phrase.</text><br>
                     }
                     else {

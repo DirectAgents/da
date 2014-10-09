@@ -19,7 +19,9 @@ namespace MissingLinkPro.Models
      **/
     public class ProcessHub
     {
-
+        /**
+         * Class established specifically to allow overriding of HTML request timeout duration.
+         **/
         private class MyWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri uri)
@@ -28,122 +30,124 @@ namespace MissingLinkPro.Models
                 w.Timeout = 8000;
                 return w;
             }
-        }
+        } // class MyWebClient
 
         /**
          * The container class SearchResult is integrated into ProcessHub to minimize clutter.
          **/
         public class SearchResult
         {
-            public string url, errorMsg, title;
-            public bool linksToTarget, containsPhrase, skip, exception, scraped;
-            public int id;
+            public string Url, ErrorMsg, Title;
+            public bool LinksToClientWebsite, ContainsSearchPhrase, SkipThisResult, ExceptionFound, Scraped;
+            public int Id;
 
             // For Bing
             public SearchResult(int num, string param_title, string param_url)
             {
-                title = param_title;
-                url = param_url;
-                id = num;
-                linksToTarget = false;
-                containsPhrase = false;
-                skip = false;
-                exception = false;
-                errorMsg = "";
-                scraped = false;
+                Title = param_title;
+                Url = param_url;
+                Id = num;
+                LinksToClientWebsite = false;
+                ContainsSearchPhrase = false;
+                SkipThisResult = false;
+                ExceptionFound = false;
+                ErrorMsg = "";
+                Scraped = false;
             }
 
             public SearchResult() {
-                linksToTarget = false;
-                containsPhrase = false;
-                skip = false;
-                exception = false;
-                errorMsg = "";
-                scraped = false;
+                LinksToClientWebsite = false;
+                ContainsSearchPhrase = false;
+                SkipThisResult = false;
+                ExceptionFound = false;
+                ErrorMsg = "";
+                Scraped = false;
             }
 
         } // SearchResult class
 
-        public bool search_error_encountered { get; set; }
-        public string search_error_msg { get; set; }
+        public bool SearchErrorEncountered { get; set; }
+        public string SearchErrorMsg { get; set; }
+        public float TotalRunTime { get; set; }
 
-        public float delay_time_display { get; set; }
-        public float total_time { get; set; }
-        public string query { get; set; }
-        public string searchString { get; set; }
-        public string client_site { get; set; }
-        public List<string> target_website { get; set; }
-        public string target_website_htmlview { get; set; }
+        // Form Field Parameters
+        public string BingSearchQuery { get; set; }
+        public string PhraseSearchString { get; set; }
+        public string ClientWebsite { get; set; }
+        public bool ExcludeLinkbackResults { get; set; }
+        public bool DisplayAllResults { get; set; }
+        public string ResultType { get; set; }
         public int top { get; set; }
-        public int timer { get; set; }
-        public int max_googleResults { get; set; }
-        public bool exclude { get; set; }
-        public string resultType { get; set; }
-        public bool phraseSearch { get; set; }
-        public List<SearchResult> results { get; set; }
         public int skip { get; set; }
-        public int omit_count { get; set; }
-        public bool display_all { get; set; }
+
+        // Parsed informational vars
+        public List<string> ClientWebsiteParsed { get; set; }
+        public bool PhraseSearchEnabled { get; set; }
+        public List<SearchResult> ParsedResults { get; set; }
+        public int OmitCount { get; set; }
+
         // Bing-related
         private string AccountKey = ConfigurationManager.AppSettings["BingAPIKey"];
-        private int indices, threadsComplete, threadsRunning;
-        private bool hubLock;
+
+        // Multi-threading vars
+        private int ThreadsComplete, ThreadsRunning;
+        private bool HubLock;
 
         /**
          * Formats website entries as provided by the user. Method automatically
          * attaches protocols, prefixes, and suffixes where needed.
          * @para string[] sites: array of strings representing URLs
          **/
-        private List<string> FormatLinks(string[] sites)
+        private List<string> FormatLinks(string[] websites)
         {
-            List<string> bin = new List<string>();
-            for (int i = 0; i < sites.Length; i++)
+            List<string> temp = new List<string>();
+            for (int i = 0; i < websites.Length; i++)
             {
 
-                string[] breakdown = sites[i].Split('.');
+                string[] breakdown = websites[i].Split('.');
 
                 if (breakdown.Length <= 1)
                 {                            // a single name was provided, nothing more; very vague; default to http[s]://www.[address].com
-                    bin.Add("href=\"http://" + sites[i] + ".com");
-                    bin.Add("href=\"https://" + sites[i] + ".com");
-                    bin.Add("href=\"http://www." + sites[i] + ".com");
-                    bin.Add("href=\"https://www." + sites[i] + ".com");
+                    temp.Add("href=\"http://" + websites[i] + ".com");
+                    temp.Add("href=\"https://" + websites[i] + ".com");
+                    temp.Add("href=\"http://www." + websites[i] + ".com");
+                    temp.Add("href=\"https://www." + websites[i] + ".com");
                 }
                 else
                 {
-                    if ((sites[i].Substring(0, 7)).Equals("http://"))       // remove procotol prefix http
-                        sites[i] = sites[i].Substring(7, sites[i].Length - 7);
-                    else if ((sites[i].Substring(0, 8)).Equals("https://")) // remove protocol prefix https
-                        sites[i] = sites[i].Substring(8, sites[i].Length - 8); 
+                    if ((websites[i].Substring(0, 7)).Equals("http://"))       // remove procotol prefix http
+                        websites[i] = websites[i].Substring(7, websites[i].Length - 7);
+                    else if ((websites[i].Substring(0, 8)).Equals("https://")) // remove protocol prefix https
+                        websites[i] = websites[i].Substring(8, websites[i].Length - 8); 
 
 
-                    if ((sites[i].Substring(0, 4)).Equals("www."))     // part link provided; must add protocol
+                    if ((websites[i].Substring(0, 4)).Equals("www."))     // part link provided; must add protocol
                     {
-                        bin.Add("href=\"http://" + sites[i]);
-                        bin.Add("href=\"https://" + sites[i]);
+                        temp.Add("href=\"http://" + websites[i]);
+                        temp.Add("href=\"https://" + websites[i]);
                         
-                        bin.Add("href=\"http://" + sites[i].Substring(4, sites[i].Length - 4));
-                        bin.Add("href=\"https://" + sites[i].Substring(4, sites[i].Length - 4));
+                        temp.Add("href=\"http://" + websites[i].Substring(4, websites[i].Length - 4));
+                        temp.Add("href=\"https://" + websites[i].Substring(4, websites[i].Length - 4));
 
                     }
                     else
                     {                                                  // just sitename.com provided
-                        bin.Add("href=\"http://" + sites[i]);
-                        bin.Add("href=\"https://" + sites[i]);
-                        bin.Add("href=\"http://www." + sites[i]);
-                        bin.Add("href=\"https://www." + sites[i]);
+                        temp.Add("href=\"http://" + websites[i]);
+                        temp.Add("href=\"https://" + websites[i]);
+                        temp.Add("href=\"http://www." + websites[i]);
+                        temp.Add("href=\"https://www." + websites[i]);
                     }
                 }
             }
-            for (int i = 0; i < bin.Count; i++)
-                displayln(bin[i]);
-            return bin;
+            for (int i = 0; i < temp.Count; i++)
+                displayln(temp[i]);
+            return temp;
         } // FormatLink
 
         /**
          * Determines if there are any empty or null strings in an array of strings.
          **/
-        private bool containsBlankSpot(string[] s)
+        private bool ContainsBlankSpot(string[] s)
         {
             bool b = false;
             for (int i = 0; i < s.Length; i++)
@@ -160,94 +164,73 @@ namespace MissingLinkPro.Models
         public ProcessHub (ParameterKeeper incoming)
         {
             // Parsing list of websites to target
-            target_website = new List<string>();
-            target_website_htmlview = incoming.website;
-            results = new List<SearchResult>();
-            if (incoming.website.Equals("") || incoming.website == null)
-                target_website.Add("");
+            ClientWebsiteParsed = new List<string>();
+            ClientWebsite = incoming.ClientWebsite;
+            ParsedResults = new List<SearchResult>();
+            if (incoming.ClientWebsite.Equals("") || incoming.ClientWebsite == null)
+                ClientWebsiteParsed.Add("");
             else
-                target_website = FormatLinks(incoming.website.Split(' '));
-
-            // Setting target site
-            client_site = incoming.website;
+                ClientWebsiteParsed = FormatLinks(incoming.ClientWebsite.Split(' '));
 
             // Setting Google search query
-            query = "";
-            if (incoming.query != null) query = incoming.query;
+            BingSearchQuery = "";
+            if (incoming.BingSearchQuery != null) BingSearchQuery = incoming.BingSearchQuery;
 
             // Setting phrase search query
-            searchString = "";
-            phraseSearch = true;
-            if (incoming.searchString == null || incoming.searchString == "")
-                phraseSearch = false;
-            else searchString = incoming.searchString;
+            PhraseSearchString = "";
+            PhraseSearchEnabled = true;
+            if (incoming.PhraseSearchString == null || incoming.PhraseSearchString == "")
+                PhraseSearchEnabled = false;
+            else PhraseSearchString = incoming.PhraseSearchString;
 
             // Setting result type.
-            resultType = incoming.resultType;
+            ResultType = incoming.ResultType;
 
-            // Setting limit on number of Google results pages
+            // Setting limit on number of results per query
             top = 1;
             if (incoming.top > 1) top = incoming.top;
-            indices = top;
 
             // Setting config option on exclusion of positive results
-            exclude = false;
-            if (incoming.exclude.Equals("yes")) exclude = true;
+            ExcludeLinkbackResults = false;
+            if (incoming.ExcludeLinkbackResults == true) ExcludeLinkbackResults = true;
 
             // Display settings
-            display_all = false;
-            if (incoming.displayall.Equals("yes")) display_all = true;
+            DisplayAllResults = false;
+            if (incoming.DisplayAllResults == true) DisplayAllResults = true;
 
             // Setting jump point
             skip = incoming.skip - 1;
 
-            // Setting timer; input in seconds
-            timer = 0;
-            if (incoming.delay < 0)
-            {
-                timer = 0;
-                delay_time_display = 0.0F;
-            }
-            else
-            {
-                timer = (int)(incoming.delay * 1000);
-                delay_time_display = incoming.delay;
-            }
-
-
-
             // Other important variables
-            omit_count = 0;
-            hubLock = true;
+            OmitCount = 0;
+            HubLock = true;
         } // primary constructor
 
         /**
-         * The driver method of ProcessHub. The run() method retrieves search results from Google in the form of JSON data,
-         * and parses it via JSON.NET, a third-party addon. The Google Search API only allows for four search results at a time.
-         * A delay timer is implemented between pages to simulate a human user.
+         * The driver method of ProcessHub. Performs search, and parses results.
          **/
         public void run()
         {
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            search_error_encountered = false;
+            SearchErrorEncountered = false;
 
             string rootUrl = "https://api.datamarket.azure.com/Bing/Search";
             var bingContainer = new Bing.BingSearchContainer(new Uri(rootUrl));
             string market = "en-us";
             bingContainer.Credentials = new NetworkCredential(AccountKey, AccountKey);
 
-            if (resultType.Equals("news"))
+            if (ResultType.Equals("news"))
             {
                 int pages = top / 15;
                 if ((top % 15) > 0) pages++;
-                processNews(bingContainer, pages, query, market);
+                processNews(bingContainer, pages, BingSearchQuery, market);
             }
             else
             {
                 int pages = top / 50;
                 if ((top % 50) > 0) pages++;
-                processWeb(bingContainer, pages, query, market);
+                processWeb(bingContainer, pages, BingSearchQuery, market);
             }
 
             /**NOTE: The beneath for-loop creates 1 thread per result, versus the 10 per result that is currently in place.**/
@@ -257,33 +240,34 @@ namespace MissingLinkPro.Models
             //    Thread t = StartThread(i);
             //}
 
-            threadsRunning = results.Count/10 ;
-            if (results.Count % 10 > 0) threadsRunning++;
-            threadsComplete = 0;
+            int NumResultsPerThread = 5; // set number of threads here
+            ThreadsRunning = ParsedResults.Count/NumResultsPerThread;
+            if (ParsedResults.Count % NumResultsPerThread > 0) ThreadsRunning++;
+            ThreadsComplete = 0;
 
-            int quota = results.Count;
+            int quota = ParsedResults.Count;
             while (quota > 0)
             {
                 int x, y;
                 y = quota - 1;   // setting max index
-                if (quota % 10 > 0)
+                if (quota % NumResultsPerThread > 0)
                 {
-                    x = quota - (quota % 10);
-                    quota -= quota % 10;
+                    x = quota - (quota % NumResultsPerThread);
+                    quota -= quota % NumResultsPerThread;
                 }
                 else
                 {
-                    quota -= 10;
+                    quota -= NumResultsPerThread;
                     x = quota;
                 }
                 Thread t = StartThread(x,y);
             }
 
-            while (hubLock) { Thread.Sleep(100); }
+            while (HubLock) { Thread.Sleep(100); }
 
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));
-            total_time = (float)watch.ElapsedMilliseconds / 1000;
+            TotalRunTime = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
         }
 
@@ -304,7 +288,7 @@ namespace MissingLinkPro.Models
 
                 foreach (var result in webResults)
                 {
-                    results.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
                     count++;
                     skip++;
                     if (count == top)
@@ -335,7 +319,7 @@ namespace MissingLinkPro.Models
 
                 foreach (var result in webResults)
                 {
-                    results.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
                     count++;
                     skip++;
                     if (count == top)
@@ -365,13 +349,13 @@ namespace MissingLinkPro.Models
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void incrementOmitCount() {
-            omit_count++;
+            OmitCount++;
         } // incrementOmitCount
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         private void checkLock() {
-            threadsComplete++;
-            if (threadsComplete >= threadsRunning) { hubLock = false; }
+            ThreadsComplete++;
+            if (ThreadsComplete >= ThreadsRunning) { HubLock = false; }
         }
 
         /**
@@ -385,13 +369,13 @@ namespace MissingLinkPro.Models
         private void ScrapeBatch(int x, int y)
         {
             for (int i = x; i <= y; i++) {
-                if (results[i].scraped) continue;
+                if (ParsedResults[i].Scraped) continue;
                 try
                 {
                     string pageData = "";
                     int status = 0;
                     HttpWebResponse response = null;
-                    HttpWebRequest w = (HttpWebRequest)WebRequest.Create(results[i].url);
+                    HttpWebRequest w = (HttpWebRequest)WebRequest.Create(ParsedResults[i].Url);
                     w.Timeout = 8000;
                     w.ContentLength = 0;
                     w.Method = WebRequestMethods.Http.Get;
@@ -402,8 +386,8 @@ namespace MissingLinkPro.Models
                     //displayln("Response " + response.StatusCode + ": " + response.StatusDescription);
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
-                        results[i].exception = true;
-                        results[i].errorMsg = response.StatusDescription;
+                        ParsedResults[i].ExceptionFound = true;
+                        ParsedResults[i].ErrorMsg = response.StatusDescription;
                         continue;
                     }
                     //Encoding responseEncoding = Encoding.GetEncoding(response.CharacterSet);
@@ -414,37 +398,37 @@ namespace MissingLinkPro.Models
                     status = (int)response.StatusCode;
 
                     pageData.Replace('"', '\"');
-                    foreach (string s in target_website)
+                    foreach (string s in ClientWebsiteParsed)
                     {
                         if (pageData.Contains(s))
                         {
-                            results[i].linksToTarget = true;
-                            if (exclude)
+                            ParsedResults[i].LinksToClientWebsite = true;
+                            if (ExcludeLinkbackResults)
                             {
-                                results[i].skip = true;
+                                ParsedResults[i].SkipThisResult = true;
                                 incrementOmitCount();
                             }
                         }
                     }
-                    bool contains = pageData.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0;
+                    bool contains = pageData.IndexOf(PhraseSearchString, StringComparison.OrdinalIgnoreCase) >= 0;
                     if (contains)
                     {
-                        results[i].containsPhrase = true;
+                        ParsedResults[i].ContainsSearchPhrase = true;
                     }
                 }
                 catch (System.Net.ProtocolViolationException e) {
-                    results[i].exception = true;
-                    results[i].errorMsg = "Protocol Violation: " + e.Message;
+                    ParsedResults[i].ExceptionFound = true;
+                    ParsedResults[i].ErrorMsg = "Protocol Violation: " + e.Message;
                 }
                 catch (System.Net.WebException e)
                 {
                     HttpWebResponse res = (HttpWebResponse)e.Response;
-                    results[i].exception = true;
-                    if (res == null) results[i].errorMsg = e.Message;
+                    ParsedResults[i].ExceptionFound = true;
+                    if (res == null) ParsedResults[i].ErrorMsg = e.Message;
                     else
-                        results[i].errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
+                        ParsedResults[i].ErrorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
                 }
-                results[i].scraped = true;
+                ParsedResults[i].Scraped = true;
             }
             checkLock();
         } // ScrapeBatch
@@ -453,7 +437,7 @@ namespace MissingLinkPro.Models
          * Retrieves the page data from a given webpage in string form, and prepares it for computing
          * by escaping specific chars. The string is then examined for links that lead back to the target
          * website(s), and instances of the given phrase string.
-         * NOTE: This code is out of date; it uses the old MyWebClient class to grab data; see the code used in ScrapeBatch().
+         * NOTE: This method is outdated; it uses the old MyWebClient class to grab data; see the code used in ScrapeBatch().
          **/
         private void scrapeURL(int i)
         {
@@ -461,31 +445,31 @@ namespace MissingLinkPro.Models
             {
                 MyWebClient w = new MyWebClient();
                 w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
-                string pageData = w.DownloadString(results[i].url);
+                string pageData = w.DownloadString(ParsedResults[i].Url);
                 pageData.Replace('"', '\"');
-                foreach (string s in target_website)
+                foreach (string s in ClientWebsiteParsed)
                 {
                     if (pageData.Contains(s))
                     {
-                        results[i].linksToTarget = true;
-                        if (exclude)
+                        ParsedResults[i].LinksToClientWebsite = true;
+                        if (ExcludeLinkbackResults)
                         {
-                            results[i].skip = true;
+                            ParsedResults[i].SkipThisResult = true;
                             incrementOmitCount();
                         }
                     }
                 }
-                bool contains = pageData.IndexOf(searchString, StringComparison.OrdinalIgnoreCase) >= 0;
+                bool contains = pageData.IndexOf(PhraseSearchString, StringComparison.OrdinalIgnoreCase) >= 0;
                 if (contains)
-                    results[i].containsPhrase = true;
+                    ParsedResults[i].ContainsSearchPhrase = true;
             }
             catch (System.Net.WebException e)
             {
                 HttpWebResponse res = (HttpWebResponse)e.Response;
-                results[i].exception = true;
-                if (res == null) results[i].errorMsg = e.Message;
+                ParsedResults[i].ExceptionFound = true;
+                if (res == null) ParsedResults[i].ErrorMsg = e.Message;
                 else
-                    results[i].errorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
+                    ParsedResults[i].ErrorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
             }
             checkLock();
         } // scrapeURL
@@ -500,19 +484,19 @@ namespace MissingLinkPro.Models
             foreach (SearchResult sr in results)
             {
 
-                if (sr.skip) continue;
+                if (sr.SkipThisResult) continue;
 
-                displayln(sr.url);
-                if (sr.exception)
+                displayln(sr.Url);
+                if (sr.ExceptionFound)
                 {
-                    displayln(sr.errorMsg);
+                    displayln(sr.ErrorMsg);
                     continue;
                 }
-                if (sr.linksToTarget) displayln("OKAY: Site features links that point to target(s).");
+                if (sr.LinksToClientWebsite) displayln("OKAY: Site features links that point to target(s).");
                 else displayln("NOT: No links to target(s) found.");
 
-                if (sr.containsPhrase) displayln("OKAY: Site contains instances of " + searchString);
-                else displayln("NOT: No instances of " + searchString + " found.");
+                if (sr.ContainsSearchPhrase) displayln("OKAY: Site contains instances of " + PhraseSearchString);
+                else displayln("NOT: No instances of " + PhraseSearchString + " found.");
 
                 displayln("");
             }

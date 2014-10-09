@@ -55,9 +55,9 @@ namespace MissingLinkPro.Controllers
             {
                 top = 50,
                 skip = 1,
-                exclude = "yes",
-                displayall = "yes",
-                resultType = "web",
+                ExcludeLinkbackResults = true,
+                DisplayAllResults = true,
+                ResultType = "web"
             };
             return View(pk);
         }
@@ -75,7 +75,7 @@ namespace MissingLinkPro.Controllers
          * else-if that follows into if, and change the Next Set of Results link in Process.cshtml
          * accordingly.
          **/
-        public async Task<ActionResult> Process(ParameterKeeper param, bool newSession = false)
+        public async Task<ActionResult> Process(ParameterKeeper param, bool NewSession = false)
         {
 
             // Initial verification; checks if user has exceeded daily limit.
@@ -83,11 +83,11 @@ namespace MissingLinkPro.Controllers
             int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
             if (user.QueriesPerformed >= DailyCap)
             {
-                DateTime endTime = DateTime.Now.Date;
+                DateTime EndTime = DateTime.Now.Date;
                 user.DateTimeStamp = user.DateTimeStamp.Date;
-                displayln("endTime = " + endTime);
+                displayln("endTime = " + EndTime);
                 displayln("userDTS = " + user.DateTimeStamp);
-                if (endTime <= user.DateTimeStamp)
+                if (EndTime <= user.DateTimeStamp)
                 {
                     return View("DailyMaxReached", new Setting { Value = DailyCap.ToString() });
                 }
@@ -99,41 +99,54 @@ namespace MissingLinkPro.Controllers
 
             // If-staement will occur if the param is coming from the Application Index page, where newSession is always set to true.
             // If coming via click on Next Set of Results, this will always be false.
-            if (newSession == true)
+            if (NewSession == true)
             {
                 Session["Params"] = null;
             }
 
-            ProcessHub p = null;
+            ProcessHub ph = null;
 
             // If a session is continuing from the previous (user chooses to retrieve next set of results).
             if ((ParameterKeeper)Session["Params"] != null)
             {
                 param = (ParameterKeeper)Session["Params"];
-                p = new ProcessHub(param);
-                p.results = param.results;
+                ph = new ProcessHub(param);
+                ph.ParsedResults = param.ParsedResults;
             }
 
             // Fresh run; should check validity of inputs.
             else if (ModelState.IsValid)
             {
+                // Tamper-checking
                 if ((param.top + param.skip) > 1001)
-                    param.top = 1001 - param.skip;
+                {
+                    if (param.skip > param.top)
+                        param.top = 1001 - param.skip;
+                    else if (param.top > param.skip)
+                    {
+                        param.top = 1;
+                        param.skip = 1001;
+                    }
+                    else if (param.top == param.skip)
+                    {
+                        param.top = 1001 - param.top;
+                    }
+                }
 
-                p = new ProcessHub(param);
+                ph = new ProcessHub(param);
             }
             else
                 return View("Index", param);
 
-            p.run();
-            updateResults(p, param);
+            ph.run();
+            updateResults(ph, param);
             Session["Params"] = param;
             user.QueriesPerformed++;
             user.TotalQueriesPerformed++;
             user.DateTimeStamp = DateTime.Now;
-            //user.DateTimeStamp = DateTime.Now.Date;       // Use this line if you care only about the specific date and not time.
+            //user.DateTimeStamp = DateTime.Now.Date;       // Use this line if you care only about the specific date and not exact time.
             await UserManager.UpdateAsync(user);
-            return View(p);
+            return View(ph);
         } // Process
 
         /**
@@ -147,7 +160,7 @@ namespace MissingLinkPro.Controllers
 
             ParameterKeeper param = (ParameterKeeper)Session["Params"];
             ProcessHub p = new ProcessHub(param);
-            p.results = param.results;
+            p.ParsedResults = param.ParsedResults;
             p.run();
             updateResults(p, param);
 
@@ -165,20 +178,19 @@ namespace MissingLinkPro.Controllers
         private void updateResults(ProcessHub p, ParameterKeeper param)
         {
             param.skip += param.top;
-            param.results = p.results;
-            param.omit_count = p.omit_count;
-            if (p.search_error_encountered)
+            param.ParsedResults = p.ParsedResults;
+            param.OmitCount = p.OmitCount;
+            if (p.SearchErrorEncountered)
             {
-                param.search_error_encountered = p.search_error_encountered;
-                param.search_error_msg = p.search_error_msg;
+                param.SearchErrorEncountered = p.SearchErrorEncountered;
+                param.SearchErrorMsg = p.SearchErrorMsg;
             }
         } // updateResults
 
         public FileResult ExportResults() {
 
-            //return Content("Not Yet Implemented");
             ParameterKeeper param = (ParameterKeeper)Session["Params"];
-            FileResult complete_file = WriteFile(param.results, param);
+            FileResult complete_file = WriteFile(param.ParsedResults, param);
             return complete_file;
         }
 
@@ -192,25 +204,25 @@ namespace MissingLinkPro.Controllers
             writer.WriteLine(DateTime.Now.ToString() + "\n");
 
             csv.WriteField("Google Search Query");
-            csv.WriteField(param.query);
+            csv.WriteField(param.BingSearchQuery);
             csv.NextRecord();
             csv.WriteField("Phrase Search");
-            csv.WriteField(param.searchString);
+            csv.WriteField(param.PhraseSearchString);
             csv.NextRecord();
             csv.WriteField("Target Website To Link To");
-            csv.WriteField(param.website);
+            csv.WriteField(param.ClientWebsite);
             csv.NextRecord();
             csv.WriteField("Number of Results Found");
-            csv.WriteField(param.results.Count);
+            csv.WriteField(param.ParsedResults.Count);
             csv.NextRecord();
             csv.WriteField("Results Omitted");
-            csv.WriteField(param.omit_count);
+            csv.WriteField(param.OmitCount);
             csv.NextRecord();
 
-            if (param.search_error_encountered)
+            if (param.SearchErrorEncountered)
             {
                 csv.WriteField("Search Error Encountered");
-                csv.WriteField(param.search_error_msg);
+                csv.WriteField(param.SearchErrorMsg);
                 csv.NextRecord();
             }
 
@@ -226,20 +238,20 @@ namespace MissingLinkPro.Controllers
 
             foreach (MissingLinkPro.Models.ProcessHub.SearchResult sr in list) {
 
-                if (sr.skip) continue;
+                if (sr.SkipThisResult) continue;
 
-                csv.WriteField(sr.id);
-                csv.WriteField(sr.title);
-                csv.WriteField(sr.url);
-                if (sr.linksToTarget) csv.WriteField("yes");
-                else if (sr.exception) csv.WriteField("n/a");
+                csv.WriteField(sr.Id);
+                csv.WriteField(sr.Title);
+                csv.WriteField(sr.Url);
+                if (sr.LinksToClientWebsite) csv.WriteField("yes");
+                else if (sr.ExceptionFound) csv.WriteField("n/a");
                 else csv.WriteField("no");
 
-                if (sr.exception || param.searchString == null || param.searchString.Equals("")) csv.WriteField("n/a");
-                else if (sr.containsPhrase) csv.WriteField("yes");
+                if (sr.ExceptionFound || param.PhraseSearchString == null || param.PhraseSearchString.Equals("")) csv.WriteField("n/a");
+                else if (sr.ContainsSearchPhrase) csv.WriteField("yes");
                 else csv.WriteField("no");
 
-                if (sr.exception) csv.WriteField(sr.errorMsg);
+                if (sr.ExceptionFound) csv.WriteField(sr.ErrorMsg);
                 else csv.WriteField("none");
                 csv.NextRecord();
             }

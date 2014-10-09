@@ -15,17 +15,17 @@
     <table>
         <tr>
             <td>Search Query</td>
-            <!-- <td>@Html.EditorFor(m => m.query)</td> -->
-            <td><input type="text" size ="65" name="query" required></td>
+            <!-- <td>@Html.EditorFor(m => m.BingSearchQuery)</td> -->
+            <td><input type="text" size ="65" name="BingSearchQuery" required></td>
         </tr>
         <tr>
             <td>Phrase Search</td>
-            <td><input type="text" size = "65" name="searchString"></td>
-            <!-- <td>@Html.EditorFor(m => m.searchString)</td> -->
+            <td><input type="text" size = "65" name="PhraseSearchString"></td>
+            <!-- <td>@Html.EditorFor(m => m.PhraseSearchString)</td> -->
         </tr>
         <tr>
             <td>Target Site(s) To Scan For<br>(separate multiple instances with single space)</td>
-            <td><input type="text" size="65" name="website" required></td>
+            <td><input type="text" size="65" name="ClientWebsite" required></td>
         </tr>
         <tr>
             <td>Number of Results to Scan<br>(max 1000)</td>
@@ -33,16 +33,16 @@
         </tr>
             <tr>
             <td>Type of Results</td>
-            <td><input type="radio" name="resultType" value = "web" checked="checked">Web <input type="radio" name="resultType" value = "news">News
+            <td><input type="radio" name="ResultType" value = "web" checked="checked">Web <input type="radio" name="ResultType" value = "news">News
             </td>
         </tr>
         <tr>
             <td>Exclude Results With Links to Target(s)</td>
-            <td><input type="radio" name="exclude" value = "yes" checked="checked">Yes <input type="radio" name="exclude" value = "no">No</td>
+            <td><input type="radio" name="ExcludeLinkbackResults" value = "true" checked="checked">Yes <input type="radio" name="ExcludeLinkbackResults" value = "false">No</td>
         </tr>
         <tr>
             <td>Display Search Results</td>
-            <td><input type="radio" name="displayall" value = "yes" checked="checked">Yes <input type="radio" name="displayall" value = "no">No</td>
+            <td><input type="radio" name="DisplayAllResults" value = "true" checked="checked">Yes <input type="radio" name="DisplayAllResults" value = "false">No</td>
         </tr>
         <tr>
             <td>Start At Rank ID#<br>(max 1001)</td>
@@ -52,7 +52,7 @@
             <td><input type="submit" value ="Perform Search"></td>
         </tr>
     </table>
-    <input type="hidden" name="newSession" value="true">
+    <input type="hidden" name="NewSession" value="true">
 }
 
 <p id="eta">Estimated Time to Completion: 0 sec.</p>
