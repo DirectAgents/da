@@ -24,7 +24,12 @@
             <!-- <td>@Html.EditorFor(m => m.PhraseSearchString)</td> -->
         </tr>
         <tr>
-            <td>Target Site(s) To Scan For<br>(separate multiple instances with single space)</td>
+            <td>Exclude Terms</td>
+            <td><input type="text" size = "65" name="ExcludeString"></td>
+            <!-- <td>@Html.EditorFor(m => m.ExcludeString)</td> -->
+        </tr>
+        <tr>
+            <td>Target Site To Scan For<br></td>
             <td><input type="text" size="65" name="ClientWebsite" required></td>
         </tr>
         <tr>
@@ -37,7 +42,7 @@
             </td>
         </tr>
         <tr>
-            <td>Exclude Results With Links to Target(s)</td>
+            <td>Exclude Results With Links to Target</td>
             <td><input type="radio" name="ExcludeLinkbackResults" value = "true" checked="checked">Yes <input type="radio" name="ExcludeLinkbackResults" value = "false">No</td>
         </tr>
         <tr>

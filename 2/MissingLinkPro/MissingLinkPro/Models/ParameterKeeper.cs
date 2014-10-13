@@ -15,6 +15,9 @@ namespace MissingLinkPro.Models
 
         [Display(Name = "Phrase Search")]
         public string PhraseSearchString { get; set; }
+
+        [Display(Name = "Excluding")]
+        public string ExcludeString { get; set; }
         
         [Required(ErrorMessage = "You must provide at least one website to seek out.")]
         public string ClientWebsite { get; set; }

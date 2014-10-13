@@ -78,6 +78,8 @@ namespace MissingLinkPro.Controllers
         public async Task<ActionResult> Process(ParameterKeeper param, bool NewSession = false)
         {
 
+            //if (param.top % 50 > 0) return View("Index",param);
+
             // Initial verification; checks if user has exceeded daily limit.
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();

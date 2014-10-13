@@ -12,8 +12,10 @@
     <p>
     Search Query: @Model.BingSearchQuery <br>
     Text Search Within Results: @if (Model.PhraseSearchEnabled == true) { @Model.PhraseSearchString }
-                                else { <text><i>(No Phrase Entered)</i></text>} <br>
-    Target Website(s) To Link To: @Model.ClientWebsite<br>
+                                else { <text><i>(No Entry)</i></text>} <br>
+    Excluding Phrase: @if (Model.ExcludeEnabled == true) { @Model.ExcludeString }
+                                else { <text><i>(No Entry)</i></text>} <br>
+    Target Website To Link To: @Model.ClientWebsite<br>
     Number of Results to Scan: @Model.top <br>
     Type of Results: @Model.ResultType <br>
     Exclude Results With Links to Target(s):

@@ -73,6 +73,7 @@ namespace MissingLinkPro.Models
         // Form Field Parameters
         public string BingSearchQuery { get; set; }
         public string PhraseSearchString { get; set; }
+        public string ExcludeString { get; set; }
         public string ClientWebsite { get; set; }
         public bool ExcludeLinkbackResults { get; set; }
         public bool DisplayAllResults { get; set; }
@@ -80,9 +81,10 @@ namespace MissingLinkPro.Models
         public int top { get; set; }
         public int skip { get; set; }
 
-        // Parsed informational vars
+        // Parsed informational variables
         public List<string> ClientWebsiteParsed { get; set; }
         public bool PhraseSearchEnabled { get; set; }
+        public bool ExcludeEnabled { get; set; }
         public List<SearchResult> ParsedResults { get; set; }
         public int OmitCount { get; set; }
 
@@ -183,12 +185,19 @@ namespace MissingLinkPro.Models
                 PhraseSearchEnabled = false;
             else PhraseSearchString = incoming.PhraseSearchString;
 
+            // Setting exclude string
+            ExcludeString = "";
+            ExcludeEnabled = true;
+            if (incoming.ExcludeString == null || incoming.ExcludeString == "")
+                ExcludeEnabled = false;
+            else ExcludeString = incoming.ExcludeString;
+
             // Setting result type.
             ResultType = incoming.ResultType;
 
             // Setting limit on number of results per query
             top = 1;
-            if (incoming.top > 1) top = incoming.top;
+            if (incoming.top > top) top = incoming.top;
 
             // Setting config option on exclusion of positive results
             ExcludeLinkbackResults = false;
@@ -211,6 +220,7 @@ namespace MissingLinkPro.Models
          **/
         public void run()
         {
+
             Stopwatch watch = new Stopwatch();
             watch.Start();
             SearchErrorEncountered = false;
@@ -220,17 +230,25 @@ namespace MissingLinkPro.Models
             string market = "en-us";
             bingContainer.Credentials = new NetworkCredential(AccountKey, AccountKey);
 
+            string QueryAttachment = "";
+            if (ExcludeEnabled)
+            {
+                var ExcludeSplits = ExcludeString.Split(new string[] { "\" \"", "\"" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var split in ExcludeSplits)
+                    QueryAttachment += (" -" + split);
+            }
+
             if (ResultType.Equals("news"))
             {
                 int pages = top / 15;
                 if ((top % 15) > 0) pages++;
-                processNews(bingContainer, pages, BingSearchQuery, market);
+                processNews(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
             }
             else
             {
                 int pages = top / 50;
                 if ((top % 50) > 0) pages++;
-                processWeb(bingContainer, pages, BingSearchQuery, market);
+                processWeb(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
             }
 
             /**NOTE: The beneath for-loop creates 1 thread per result, versus the 10 per result that is currently in place.**/
