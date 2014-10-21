@@ -305,7 +305,7 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Proxima Nova", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
   color: #333333;
@@ -322,7 +322,7 @@ textarea {
 }
 
 a {
-  color: #428bca;
+  color: #999;
   text-decoration: none;
 }
 
@@ -481,10 +481,11 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Proxima Nova", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.1;
-  color: inherit;
+  color: #ababab;
+  line-height: 10%
 }
 
 h1 small,
@@ -1300,13 +1301,13 @@ pre code {
     width: 91.66666666666666%;
   }
   .col-md-10 {
-    width: 83.33333333333334%;
+    width: 84.33333333333334%;
   }
   .col-md-9 {
     width: 75%;
   }
   .col-md-8 {
-    width: 66.66666666666666%;
+    width: 100%;
   }
   .col-md-7 {
     width: 58.333333333333336%;
@@ -1324,7 +1325,7 @@ pre code {
     width: 25%;
   }
   .col-md-2 {
-    width: 16.666666666666664%;
+    width: 50%;
   }
   .col-md-1 {
     width: 8.333333333333332%;
@@ -2230,7 +2231,7 @@ textarea.input-lg {
 
 @media (min-width: 768px) {
   .form-horizontal .control-label {
-    text-align: right;
+    text-align: left;
   }
 }
 
@@ -4074,13 +4075,13 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 10px 11px;
 }
 
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: transparent;
 }
 
 .nav > li.disabled > a {
@@ -4540,7 +4541,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-nav > li > a {
   padding-top: 10px;
   padding-bottom: 10px;
-  line-height: 20px;
+  line-height: 26px;
 }
 
 @media (max-width: 767px) {
@@ -4575,8 +4576,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 }
 
@@ -4727,7 +4728,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-  background-color: #dddddd;
+  background-color: #999999;
 }
 
 .navbar-default .navbar-toggle .icon-bar {

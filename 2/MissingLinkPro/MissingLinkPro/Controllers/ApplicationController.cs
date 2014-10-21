@@ -143,11 +143,14 @@ namespace MissingLinkPro.Controllers
             ph.run();
             updateResults(ph, param);
             Session["Params"] = param;
-            user.QueriesPerformed++;
-            user.TotalQueriesPerformed++;
-            user.DateTimeStamp = DateTime.Now;
-            //user.DateTimeStamp = DateTime.Now.Date;       // Use this line if you care only about the specific date and not exact time.
-            await UserManager.UpdateAsync(user);
+            if (!ph.SearchErrorEncountered)
+            {
+                user.QueriesPerformed++;
+                user.TotalQueriesPerformed++;
+                user.DateTimeStamp = DateTime.Now;
+                //user.DateTimeStamp = DateTime.Now.Date;       // Use this line if you care only about the specific date and not exact time.
+                await UserManager.UpdateAsync(user);
+            }
             return View(ph);
         } // Process
 

@@ -1,14 +1,68 @@
 ﻿@model MissingLinkPro.Models.ParameterKeeper
 
 @{
-    ViewBag.Title = "Main Page";
+    ViewBag.Title = "Begin Your Search";
 }
 
-<h2>DirectLink Application v1.0</h2>
+@Styles.Render("~Content/css")
+
 
 <!-- <form id="form" action="@Url.Action("Process")" method="post" novalidate> -->
 
 @using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form" }))
+{
+    @Html.ValidationSummary()
+
+    <table class="table1">
+        <tr>
+            <td>Search Query</td>
+            <td>Phrase Search</td>
+        </tr>
+        <tr>
+            <td><input class="form-field" type="text" size ="65" name="BingSearchQuery" required></td>
+            <td><input class="form-field" type="text" size = "65" name="PhraseSearchString"></td>
+        </tr>
+        <tr>
+            <td>Exclude Terms</td>
+            <td>Target Site To Scan For<br></td>
+        </tr>
+        <tr>
+            <td><input class="form-field" type="text" size = "65" name="ExcludeString"></td>
+            <td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>
+        </tr>
+        <tr>
+            <td style="line-height:20px;">Number of Results to Scan<br><h6>(Max: 1000 Results)</h6></td>
+            <td style="line-height:20px;">Start At Rank ID#<br><h6>(Max: Rank 1001)</h6></td>
+        </tr>
+            <tr>
+            <td><input class="form-field" type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>
+            <td><input class="form-field" type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
+
+        </tr>
+        <tr>
+             <td>Type of Results</td>
+             <td class="radio-btn-position"><input class="radio-btn" type="radio" name="ResultType" value = "web" checked="checked"> Web <h7 style="padding-left:35px;"><input class="radio-btn" type="radio" name="ResultType" value = "news"> News</h7></td>
+        <tr>
+            <td>Exclude Results With Links to Target</td>
+            <td class="radio-btn-position"><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "true" checked="checked"> Yes <h7><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "false"> No</h7></td>
+        </tr>
+        <tr>
+            <td>Display Search Results</td>
+            <td class="radio-btn-position"><input class="radio-btn" type="radio" name="DisplayAllResults" value = "true" checked="checked"> Yes <h7><input class="radio-btn" type="radio" name="DisplayAllResults" value = "false"> No</h7></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+          @*<input type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search" style="align-content:center"> *@
+        </tr>
+    </table>
+    <div class="big-orange-btn-location">
+    <input type="hidden" name="NewSession" value="true">
+                <input type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search"></div>
+}
+
+
+@* @using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form" }))
 {
     @Html.ValidationSummary()
 
@@ -54,15 +108,17 @@
             <td><input type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
         </tr>
         <tr>
-            <td><input type="submit" value ="Perform Search"></td>
+            <td><input type="image" src="~/Images/btn_search.gif" value ="Perform Search"></td>
         </tr>
     </table>
     <input type="hidden" name="NewSession" value="true">
-}
+}*@
 
+<div class="eta-indicator">
 <p id="eta">Estimated Time to Completion: 0 sec.</p>
+    </div>
 
-<p>Note: Results limited to the top 1000.</p>
+@*<p>Note: Results limited to the top 1000.</p>*@
 
 @section Scripts {
 <script>

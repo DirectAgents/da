@@ -6,10 +6,18 @@
     <title>@ViewBag.Title - Direct Agents | DirectLink Backlink Search</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+        <header>
+            <a href="@Url.Action("Index", "Home")" style="margin-left:469px;"><img src="@Url.Content("~/Images/logo.png")"/></a>
+            @*<a href="http://missinglink.directagents.local/Application" style="margin-left: 469px;">
+                <img src="/Images/logo.png" style="margin-top:7px;"></a> *@
+            <img src="~/Images/top_msg.png" alt="Direct Agents" align:"right" style="margin-left:400px;">
+        </header>
+
+    @* <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -38,14 +46,47 @@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Direct Agents | DirectLink Backlink Search Application</p>
-        </footer>
-    </div>
+    </div> *@
+
+        <div class="container">
+            <div class="image-overlay">
+                <div class="title-bar"><p>@ViewBag.Title</p>
+                                <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+                    @if (Request.IsAuthenticated) {
+                        <li>@Html.ActionLink("Application","Index","Application")</li>
+                    }
+
+                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
+                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
+                        <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+                    }
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+
+                </div>
+                <div class="body-content" style="">
+                     @RenderBody()
+                </div>
+            </div>   
+            <div class="footer">
+                <p><a class="i-btn" href="http://missinglink.directagents.local/Application"><img src="/Images/btn_info.png" style="margin-top:7px;"></a></p>
+                <p>&copy; @DateTime.Now.Year - Direct Agents | DirectLink Backlink Search Application</p>
+            </div>
+        </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

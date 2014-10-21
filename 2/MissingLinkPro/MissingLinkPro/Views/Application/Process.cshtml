@@ -1,13 +1,14 @@
 ﻿@{
-    ViewBag.Title = "Results";
+    ViewBag.Title = "Search Results";
 }
 
+@Styles.Render("~Content/css")
 
 @model MissingLinkPro.Models.ProcessHub
 
 @*  *@
 <br>
-<p><h2>Results For This Run:</h2><br></p>
+@*<p><h2>Results For This Run:</h2><br></p>
 <br>
     <p>
     Search Query: @Model.BingSearchQuery <br>
@@ -21,32 +22,78 @@
     Exclude Results With Links to Target(s):
         @if (Model.ExcludeLinkbackResults == true) { <text>yes</text> }
         else { <text>no</text> }<br>
-    </p>
+    </p> *@
 
-    <p>
-    <br>
-    Number of Results Found: @Model.ParsedResults.Count()<br>
-    Results Omitted: @Model.OmitCount<br>
-    Total Time: @Model.TotalRunTime sec<br>
-    </p>
+<table class="table2" style="margin: 0px auto;">
 
-    <p>
-    <br>
-    @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
-    @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Process")<br>
-    <br>
-    </p>
+    <tr>
+    <td class="a">Search Query: </td>
+        <td class="b">@Model.BingSearchQuery</td>
+    </tr>
+    <tr>
+    <td class="a">Text Search Within Results: </td>
+        <td class="b">@if (Model.PhraseSearchEnabled == true) { @Model.PhraseSearchString }
+                                else { <text><h8>No Entry</h8></text>}
+        </td>
+    </tr>
+    <tr>
+    <td class="a">Excluding Phrase: </td>
+        <td class="b">@if (Model.ExcludeEnabled == true) { @Model.ExcludeString }
+                                else { <text><h8>No Entry</h8></text>}
+        </td>
+    </tr>
+    <tr>
+    <td class="a">Target Website To Link To: </td>
+        <td class="b">@Model.ClientWebsite</td>
+    </tr>
+    <tr>
+    <td class="a">Number of Results to Scan: </td>
+        <td class="b">@Model.top</td>
+    </tr>
+    <tr>
+    <td class="a">Type of Results: </td>
+        <td class="b">@Model.ResultType </td>
+    </tr>
+    <tr>
+    <td class="a">Exclude Results With Links to Target(s): </td>
+        <td class="b">@if (Model.ExcludeLinkbackResults == true) { <text>yes</text> }
+        else { <text>no</text> }</td>
+    </tr>
+    <tr>
+    <td class="a">Number of Results Found: </td>
+        <td class="b">@Model.ParsedResults.Count()</td>
+    </tr>
+    <tr>
+        <td class="a">Results Omitted: </td>
+        <td class="b">@Model.OmitCount</td>
+    </tr>
+    <tr>
+        <td class="a">Total Time: </td>
+        <td class="b">@Model.TotalRunTime sec</td>
+    </tr>
+    <tr>
 
+    </tr>
+</table>
+
+<div style="padding-top:30px; padding-bottom:20px; margin-left:125px;">
+    <a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a>
+    <a href="@Url.Action("Process", "Application")" style="padding:2px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a>
+</div>
+
+    @* @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
+    @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Process") *@
+
+    <br>
     @if (Model.SearchErrorEncountered) {
-    <text>ERROR: Your search was halted due to a critical error encountered during your Google search. Please see error message below:</text><br>
+    <text>ERROR: Your search was halted due to a critical error encountered during your search. Please see error message below:</text><br>
     @Model.SearchErrorMsg<br>
     <br><br>
     }
         @if (Model.DisplayAllResults) {
             foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.ParsedResults) {
                 if (s.SkipThisResult) { continue; }
-                <text>---<br></text>
-                <text>Rank ID: </text>@s.Id<br>
+                <text><b class="result-heading">Rank: </b></text><b class="result-heading">@s.Id</b><br>
                 <a href="@s.Url">@s.Title</a><br>
                 @s.Url<br>
                 if (s.ExceptionFound) {
@@ -58,7 +105,7 @@
                     <text> - OK: Site features links that point to target(s).<br></text>
                 }
                 else {
-                    <text> - NOTE: No links to target(s) found.<br></text>
+                    <text> - NOTE: No links to target found.<br></text>
                 }
                 if (Model.PhraseSearchEnabled) {
                     if (s.ContainsSearchPhrase) {
@@ -71,4 +118,4 @@
                 <br>
             }
         }
-    <br>
+    <br><br><br>

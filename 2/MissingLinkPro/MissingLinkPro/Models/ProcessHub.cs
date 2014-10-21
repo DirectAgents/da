@@ -237,20 +237,26 @@ namespace MissingLinkPro.Models
                 foreach (var split in ExcludeSplits)
                     QueryAttachment += (" -" + split);
             }
-
-            if (ResultType.Equals("news"))
+            try
             {
-                int pages = top / 15;
-                if ((top % 15) > 0) pages++;
-                processNews(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
+                if (ResultType.Equals("news"))
+                {
+                    int pages = top / 15;
+                    if ((top % 15) > 0) pages++;
+                    processNews(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
+                }
+                else
+                {
+                    int pages = top / 50;
+                    if ((top % 50) > 0) pages++;
+                    processWeb(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
+                }
             }
-            else
-            {
-                int pages = top / 50;
-                if ((top % 50) > 0) pages++;
-                processWeb(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
-            }
-
+                // This IOException typically occurs when the Bing request comes back with problems.
+                catch (IOException e) {
+                    SearchErrorEncountered = true;
+                    SearchErrorMsg = e.Message;
+                }
             /**NOTE: The beneath for-loop creates 1 thread per result, versus the 10 per result that is currently in place.**/
 
             //for (int i = 0; i < top; i++)
@@ -434,7 +440,12 @@ namespace MissingLinkPro.Models
                         ParsedResults[i].ContainsSearchPhrase = true;
                     }
                 }
-                catch (System.Net.ProtocolViolationException e) {
+                catch (System.IO.IOException e) {
+                    ParsedResults[i].ExceptionFound = true;
+                    ParsedResults[i].ErrorMsg = "IO Exception: " + e.Message;
+                }
+                catch (System.Net.ProtocolViolationException e)
+                {
                     ParsedResults[i].ExceptionFound = true;
                     ParsedResults[i].ErrorMsg = "Protocol Violation: " + e.Message;
                 }

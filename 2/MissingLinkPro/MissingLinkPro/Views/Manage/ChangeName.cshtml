@@ -3,12 +3,13 @@
     ViewBag.Title = "Change Name";
 }
 
-<h2>@ViewBag.Title.</h2>
+@Styles.Render("~Content/css")
+
+<h2>Please Fill Out The Form Below</h2>
 
 @using (Html.BeginForm("ChangeName", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Change Name Form</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">

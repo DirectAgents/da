@@ -1,14 +1,13 @@
 ﻿@model IdentitySample.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create New Account";
 }
-
-<h2>@ViewBag.Title.</h2>
+@Styles.Render("~Content/css")
 
 @using (Html.BeginForm("Create", "UsersAdmin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
+    <h4>Please fill out and submit the form below.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-error" })
     <div class="form-group">
@@ -59,6 +58,7 @@
         </div>
     </div>
 }
+<br><br>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
