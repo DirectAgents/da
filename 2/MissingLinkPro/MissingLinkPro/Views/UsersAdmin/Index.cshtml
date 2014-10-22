@@ -22,7 +22,13 @@
             @Html.DisplayNameFor(model => model.LastName)
         </th>
         <th>
-
+            @Html.DisplayNameFor(model => model.PackageId)
+        </th>
+                <th>
+            @Html.DisplayNameFor(model => model.EmailConfirmed)
+        </th>
+        <th>
+            Options
         </th>
     </tr>
 
@@ -37,6 +43,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Package.Name)
+            </td>
+                        <td>
+                @Html.DisplayFor(modelItem => item.EmailConfirmed)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

@@ -56,6 +56,7 @@ namespace IdentitySample.Controllers
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                Package = user.Package,
                 PhoneNumber = user.PhoneNumber,
                 TotalQueriesPerformed = user.TotalQueriesPerformed,
                 DateTimeStamp = user.DateTimeStamp,

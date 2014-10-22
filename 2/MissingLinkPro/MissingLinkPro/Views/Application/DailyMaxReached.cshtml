@@ -4,9 +4,15 @@
     ViewBag.Title = "Daily Maximum Reached";
 }
 
-<h2>Daily Maximum Reached</h2>
+@Styles.Render("~Content/css")
 
-<p>
+
+<h2>Daily Maximum Reached</h2>
+<br>
+
+<div style="padding:20px;">
+    <p>
 You have reached your limit of @Html.DisplayFor(model => model.Value) runs per day.<br>
-Please wait until midnight for your allowance to reset, or contact the Admin for additional options.
-</p>
+Please wait until midnight for your allowance to reset, or contact the Admin for additional options.<br>
+        </p>
+</div>

@@ -38,6 +38,12 @@ namespace IdentitySample.Models
         [Display(Name = "Last Query")]
         public DateTime LastQueryTime { get; set; }
 
+        [Display(Name = "Package")]
+        public int? PackageId { get; set; }
+
+        [Display(Name = "Email Confirmed")]
+        public bool EmailConfirmed { get; set; }
+
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 }

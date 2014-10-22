@@ -8,6 +8,7 @@ namespace IdentitySample.Models
 {
     public class IndexViewModel
     {
+        public Package Package { get; set; }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }

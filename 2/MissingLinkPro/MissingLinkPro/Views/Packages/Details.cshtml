@@ -1,0 +1,50 @@
+﻿@model IdentitySample.Models.Package
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Package</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SearchesPerMonth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SearchesPerMonth)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxResults)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxResults)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CostPerMonth)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CostPerMonth)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

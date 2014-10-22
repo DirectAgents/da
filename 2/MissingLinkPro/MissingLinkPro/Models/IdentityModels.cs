@@ -22,6 +22,10 @@ namespace IdentitySample.Models
         public int TotalQueriesPerformed { get; set; }
         [Display(Name = "DateTime: Last Query")]
         public DateTime DateTimeStamp { get; set; }
+        [Display(Name = "Package")]
+        public int? PackageId { get; set; }
+        [Display(Name = "Package")]
+        public virtual Package Package { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -41,9 +45,24 @@ namespace IdentitySample.Models
         public string Value { get; set; }
     }
 
+    public class Package
+    {
+        [Display(Name = "Package ID")]
+        public int Id { get; set; }
+        [Display(Name = "Package")]
+        public string Name { get; set; }
+        [Display(Name = "Searches/Month")]
+        public int SearchesPerMonth { get; set; }
+        [Display(Name = "Max Results")]
+        public int MaxResults { get; set; }
+        [Display(Name = "Cost/Month")]
+        public decimal CostPerMonth { get; set; }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<Package> Packages { get; set; }
         //public DbSet<SearchResult> SearchResults { get; set; }
 
         public ApplicationDbContext()

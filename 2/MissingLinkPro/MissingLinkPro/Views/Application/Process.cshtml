@@ -76,9 +76,13 @@
     </tr>
 </table>
 
-<div style="padding-top:30px; padding-bottom:20px; margin-left:86px;">
-    <a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a>
-    <a href="@Url.Action("Process", "Application")" style="padding:2px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a>
+<div class="process-buttons" style="padding-top:30px; display:table;">
+    <table>
+        <tr>
+    <td><a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
+    <td><a href="@Url.Action("Process", "Application")" style="padding:2px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
+            </tr>
+        </table>
 </div>
 
     @* @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>

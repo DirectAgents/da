@@ -16,6 +16,9 @@ namespace IdentitySample.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersAdminController : Controller
     {
+
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public UsersAdminController()
         {
         }
@@ -136,6 +139,7 @@ namespace IdentitySample.Controllers
 
             var userRoles = await UserManager.GetRolesAsync(user.Id);
 
+            ViewBag.PackageId = new SelectList(db.Packages, "Id", "Name", user.PackageId);
             return View(new EditUserViewModel()
             {
                 Id = user.Id,
@@ -145,6 +149,8 @@ namespace IdentitySample.Controllers
                 QueriesPerformed = user.QueriesPerformed,
                 TotalQueriesPerformed = user.TotalQueriesPerformed,
                 LastQueryTime = user.DateTimeStamp,
+                PackageId = user.PackageId,
+                EmailConfirmed = user.EmailConfirmed,
                 RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
                 {
                     Selected = userRoles.Contains(x.Name),
@@ -158,7 +164,7 @@ namespace IdentitySample.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,QueriesPerformed")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,QueriesPerformed,PackageId,EmailConfirmed")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
@@ -173,6 +179,8 @@ namespace IdentitySample.Controllers
                 user.FirstName = editUser.FirstName;
                 user.LastName = editUser.LastName;
                 user.QueriesPerformed = editUser.QueriesPerformed;
+                user.PackageId = editUser.PackageId;
+                user.EmailConfirmed = editUser.EmailConfirmed;
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 
@@ -183,19 +191,22 @@ namespace IdentitySample.Controllers
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", result.Errors.First());
-                    return View();
+                    ViewBag.PackageId = new SelectList(db.Packages, "Id", "Name", editUser.PackageId);
+                    return View(editUser);
                 }
                 result = await UserManager.RemoveFromRolesAsync(user.Id, userRoles.Except(selectedRole).ToArray<string>());
 
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", result.Errors.First());
-                    return View();
+                    ViewBag.PackageId = new SelectList(db.Packages, "Id", "Name", editUser.PackageId);
+                    return View(editUser);
                 }
                 return RedirectToAction("Index");
             }
+            ViewBag.PackageId = new SelectList(db.Packages, "Id", "Name", editUser.PackageId);
             ModelState.AddModelError("", "Something failed.");
-            return View();
+            return View(editUser);
         }
 
         //
@@ -241,6 +252,15 @@ namespace IdentitySample.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

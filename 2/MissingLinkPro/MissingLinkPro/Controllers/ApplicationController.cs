@@ -69,6 +69,10 @@ namespace MissingLinkPro.Controllers
             return View(s);
         }
 
+        public ActionResult EmailNotConfirmed(ApplicationUser a) {
+            return View(a);
+        }
+
         /**
          * The first if-statement was added to circumvent the need for the Next ActionResult below.
          * Should it ever need to be reverted back, simply remove this if-statement, and change the
@@ -82,6 +86,11 @@ namespace MissingLinkPro.Controllers
 
             // Initial verification; checks if user has exceeded daily limit.
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (!user.EmailConfirmed) {
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+            }
+
             int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
             if (user.QueriesPerformed >= DailyCap)
             {
