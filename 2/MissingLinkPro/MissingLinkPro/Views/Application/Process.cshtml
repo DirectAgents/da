@@ -30,13 +30,13 @@
     <td class="a">Search Query: </td>
         <td class="b">@Model.BingSearchQuery</td>
     </tr>
-    <tr>
+    @*<tr>
     <td class="a">Text Search Within Results: </td>
         <td class="b">@if (Model.PhraseSearchEnabled == true) { @Model.PhraseSearchString }
                                 else { <text><h8>No Entry</h8></text>}
         </td>
     </tr>
-    <tr>
+    <tr> *@
     <td class="a">Excluding Phrase: </td>
         <td class="b">@if (Model.ExcludeEnabled == true) { @Model.ExcludeString }
                                 else { <text><h8>No Entry</h8></text>}
@@ -76,7 +76,7 @@
     </tr>
 </table>
 
-<div style="padding-top:30px; padding-bottom:20px; margin-left:125px;">
+<div style="padding-top:30px; padding-bottom:20px; margin-left:86px;">
     <a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a>
     <a href="@Url.Action("Process", "Application")" style="padding:2px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a>
 </div>
@@ -102,7 +102,7 @@
                     continue;
                 }
                 if (s.LinksToClientWebsite) {
-                    <text> - OK: Site features links that point to target(s).<br></text>
+                    <text> - OK: Site features links that point to target.<br></text>
                 }
                 else {
                     <text> - NOTE: No links to target found.<br></text>

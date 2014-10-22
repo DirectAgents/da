@@ -16,19 +16,21 @@
     <table class="table1">
         <tr>
             <td>Search Query</td>
-            <td>Phrase Search</td>
+            <td>Target Site To Scan For</td>
+            @*<td>Phrase Search</td>*@
         </tr>
         <tr>
             <td><input class="form-field" type="text" size ="65" name="BingSearchQuery" required></td>
-            <td><input class="form-field" type="text" size = "65" name="PhraseSearchString"></td>
+            @*<td><input class="form-field" type="text" size = "65" name="PhraseSearchString"></td>*@
+            <td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>
         </tr>
         <tr>
             <td>Exclude Terms</td>
-            <td>Target Site To Scan For<br></td>
+            @*<td>Target Site To Scan For</td>*@
         </tr>
         <tr>
             <td><input class="form-field" type="text" size = "65" name="ExcludeString"></td>
-            <td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>
+            @*<td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>*@
         </tr>
         <tr>
             <td style="line-height:20px;">Number of Results to Scan<br><h6>(Max: 1000 Results)</h6></td>
