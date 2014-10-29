@@ -87,26 +87,40 @@ namespace MissingLinkPro.Controllers
             // Initial verification; checks if user has exceeded daily limit.
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
+            // Email not confirmed
             if (!user.EmailConfirmed) {
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
             }
 
-            int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
-            if (user.QueriesPerformed >= DailyCap)
+            // Need to perform anniversary check; how will payment be integrated here?
+            DateTime CurrentDate = DateTime.Now;
+
+            // Reset number of queries performed for the month if current date is later than user's one-month-later date.
+            if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
             {
-                DateTime EndTime = DateTime.Now.Date;
-                user.DateTimeStamp = user.DateTimeStamp.Date;
-                displayln("endTime = " + EndTime);
-                displayln("userDTS = " + user.DateTimeStamp);
-                if (EndTime <= user.DateTimeStamp)
-                {
-                    return View("DailyMaxReached", new Setting { Value = DailyCap.ToString() });
-                }
-                else
-                {
-                    user.QueriesPerformed = 0;
-                }
+                user.QueriesPerformed = 0;
+                while ((user.Anniversary.AddMonths(1)).CompareTo(CurrentDate) < 0)      // Need to calculate new user end date.
+                    user.Anniversary = user.Anniversary.AddMonths(1);
             }
+
+            if (user.QueriesPerformed >= user.Package.SearchesPerMonth) return View("MonthlyMaxReached", user);
+
+            //int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
+            //if (user.QueriesPerformed >= DailyCap)
+            //{
+            //    DateTime EndTime = DateTime.Now.Date;
+            //    user.DateTimeStamp = user.DateTimeStamp.Date;
+            //    displayln("endTime = " + EndTime);
+            //    displayln("userDTS = " + user.DateTimeStamp);
+            //    if (EndTime <= user.DateTimeStamp)
+            //    {
+            //        return View("DailyMaxReached", new Setting { Value = DailyCap.ToString() });
+            //    }
+            //    else
+            //    {
+            //        user.QueriesPerformed = 0;
+            //    }
+            //}
 
             // If-staement will occur if the param is coming from the Application Index page, where newSession is always set to true.
             // If coming via click on Next Set of Results, this will always be false.
@@ -116,6 +130,7 @@ namespace MissingLinkPro.Controllers
             }
 
             ProcessHub ph = null;
+            if (param.top > user.Package.MaxResults) param.top = user.Package.MaxResults;
 
             // If a session is continuing from the previous (user chooses to retrieve next set of results).
             if ((ParameterKeeper)Session["Params"] != null)
@@ -152,7 +167,7 @@ namespace MissingLinkPro.Controllers
             ph.run();
             updateResults(ph, param);
             Session["Params"] = param;
-            if (!ph.SearchErrorEncountered)
+            if (!ph.SearchErrorEncountered)     // If no search error returned from Bing API.
             {
                 user.QueriesPerformed++;
                 user.TotalQueriesPerformed++;
@@ -164,6 +179,7 @@ namespace MissingLinkPro.Controllers
         } // Process
 
         /**
+         * Depracated version of Next() that was used in previous versions of this application.
          * CURRENTLY NOT IN USE; CODE REQUIRES COMPLETE UPDATE IF RE-IMPLEMENTING.
          **/
         public async Task<ActionResult> Next()

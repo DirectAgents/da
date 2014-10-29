@@ -10,9 +10,32 @@
 <div class="row">
     <div class="col-md-8">
         <p><br>
-            Package Subscription: @Html.DisplayFor(model => model.Package.Name)<br>
-            Total Runs Performed: @Html.DisplayFor(model => model.TotalQueriesPerformed)<br>
-            Time of Last Run: @Html.DisplayFor(model => model.DateTimeStamp)<br>
+            <table style="margin-bottom:40px;">
+                <tr>
+                    <td><h8>Package Subscription</h8></td>
+                    <td>@Model.Package.Name</td>
+                </tr>
+                <tr>
+                    <td><h8>Package Details</h8></td>
+                    <td>@Model.Package.SearchesPerMonth Searches/Month, @Model.Package.MaxResults Results/Search</td>
+                </tr>
+                <tr>
+                <td><h8 style="margin-right:50px;">Searches Performed This Month</h8></td>
+                <td>@Model.QueriesPerformed</td>
+                </tr>
+                <tr>
+                <td><h8>Activation Date</h8></td>
+                <td>@Model.Anniversary</td>
+                </tr>
+                <tr>
+                <td><h8>Next Reset Date</h8></td>
+                <td>@Model.Anniversary.AddMonths(1)</td>
+                </tr>
+                <tr>
+                <td><h8>Time of Last Run</h8></td>
+                <td>@Model.DateTimeStamp</td>
+                </tr>
+                </table>
         </p>
         <p>
             @if (Model.HasPassword)

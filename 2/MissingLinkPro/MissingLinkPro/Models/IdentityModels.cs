@@ -16,12 +16,14 @@ namespace IdentitySample.Models
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Display(Name = "Queries Performed")]
+        [Display(Name = "Searches This Month")]
         public int QueriesPerformed { get; set; }
         [Display(Name = "Total Lifetime Queries")]
         public int TotalQueriesPerformed { get; set; }
         [Display(Name = "DateTime: Last Query")]
         public DateTime DateTimeStamp { get; set; }
+        [Display(Name = "Activation Date")]
+        public DateTime Anniversary { get; set; }
         [Display(Name = "Package")]
         public int? PackageId { get; set; }
         [Display(Name = "Package")]

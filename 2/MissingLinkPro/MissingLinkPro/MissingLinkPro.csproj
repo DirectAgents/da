@@ -262,6 +262,10 @@
     <Compile Include="Migrations\201410221934438_MigPackage.Designer.cs">
       <DependentUpon>201410221934438_MigPackage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410272102410_Anniversary.cs" />
+    <Compile Include="Migrations\201410272102410_Anniversary.Designer.cs">
+      <DependentUpon>201410272102410_Anniversary.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -334,6 +338,7 @@
     <Content Include="Views\Packages\Edit.cshtml" />
     <Content Include="Views\Packages\Index.cshtml" />
     <Content Include="Views\Application\EmailNotConfirmed.cshtml" />
+    <Content Include="Views\Application\MonthlyMaxReached.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -371,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410221934438_MigPackage.resx">
       <DependentUpon>201410221934438_MigPackage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410272102410_Anniversary.resx">
+      <DependentUpon>201410272102410_Anniversary.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

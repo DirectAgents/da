@@ -19,6 +19,7 @@ namespace IdentitySample.Models
         public string LastName { get; set; }
         public bool HasFirstName { get; set; }
         public bool HasLastName { get; set; }
+        public DateTime Anniversary { get; set; }
 
         public DateTime DateTimeStamp { get; set; }
         public int QueriesPerformed { get; set; }

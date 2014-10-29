@@ -48,6 +48,24 @@
             @Html.DisplayFor(model => model.DateTimeStamp)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Anniversary)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Anniversary)
+        </dd>
+        <dt>
+            Next Reset Date
+        </dt>
+        <dd>
+            @Model.Anniversary.AddMonths(1)
+        </dd>
+         <dt>
+            @Html.DisplayNameFor(model => model.PackageId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Package.Name)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.EmailConfirmed)
         </dt>
         <dd>
