@@ -235,12 +235,15 @@ namespace MissingLinkPro.Controllers
 
             csv.WriteField("Google Search Query");
             csv.WriteField(param.BingSearchQuery);
-            csv.NextRecord();
-            csv.WriteField("Phrase Search");
-            csv.WriteField(param.PhraseSearchString);
+            //csv.NextRecord();
+            //csv.WriteField("Phrase Search");
+            //csv.WriteField(param.PhraseSearchString);
             csv.NextRecord();
             csv.WriteField("Target Website To Link To");
             csv.WriteField(param.ClientWebsite);
+            csv.NextRecord();
+            csv.WriteField("Result Type");
+            csv.WriteField(param.ResultType);
             csv.NextRecord();
             csv.WriteField("Number of Results Found");
             csv.WriteField(param.ParsedResults.Count);
@@ -262,7 +265,11 @@ namespace MissingLinkPro.Controllers
             csv.WriteField("Title");
             csv.WriteField("URL");
             csv.WriteField("Links To Target");
-            csv.WriteField("Contains Phrase");
+            //csv.WriteField("Contains Phrase");
+            if (param.ResultType.Equals("news")){
+                csv.WriteField("Source");
+                csv.WriteField("Indexed On");
+            }
             csv.WriteField("Errors");
             csv.NextRecord();
 
@@ -277,9 +284,14 @@ namespace MissingLinkPro.Controllers
                 else if (sr.ExceptionFound) csv.WriteField("n/a");
                 else csv.WriteField("no");
 
-                if (sr.ExceptionFound || param.PhraseSearchString == null || param.PhraseSearchString.Equals("")) csv.WriteField("n/a");
-                else if (sr.ContainsSearchPhrase) csv.WriteField("yes");
-                else csv.WriteField("no");
+                //if (sr.ExceptionFound || param.PhraseSearchString == null || param.PhraseSearchString.Equals("")) csv.WriteField("n/a");
+                //else if (sr.ContainsSearchPhrase) csv.WriteField("yes");
+                //else csv.WriteField("no");
+
+                if (param.ResultType.Equals("news")) {
+                    csv.WriteField(sr.Source);
+                    csv.WriteField(sr.Date);
+                }
 
                 if (sr.ExceptionFound) csv.WriteField(sr.ErrorMsg);
                 else csv.WriteField("none");

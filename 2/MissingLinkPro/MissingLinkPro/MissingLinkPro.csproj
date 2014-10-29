@@ -181,6 +181,9 @@
     <Content Include="Images\btn_info.png" />
     <Content Include="Images\btn_next.gif" />
     <Content Include="Images\btn_search.gif" />
+    <Content Include="Images\linkback_err.png" />
+    <Content Include="Images\linkback_no.png" />
+    <Content Include="Images\linkback_yes.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\shadow_L.png" />
     <Content Include="Images\shadow_R.png" />

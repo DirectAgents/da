@@ -94,32 +94,55 @@
     @Model.SearchErrorMsg<br>
     <br><br>
     }
+        <table class="results-table">
         @if (Model.DisplayAllResults) {
+          <tr>
+          <th style="padding-right:30px;">Rank</th>
+          <th>Result</th>
+          <th style="padding-right:15px;">Linkback</th>
+          @if (Model.ResultType.Equals("news")) { <th>Source</th> <th>Indexed</th> }
+          </tr>
+            <tr><td> </td></tr>
             foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.ParsedResults) {
                 if (s.SkipThisResult) { continue; }
-                <text><b class="result-heading">Rank: </b></text><b class="result-heading">@s.Id</b><br>
-                <a href="@s.Url">@s.Title</a><br>
-                @s.Url<br>
-                if (s.ExceptionFound) {
-                    <text> - ERROR: </text> @s.ErrorMsg<br>
-                    <br>
-                    continue;
+                <tr>
+                    <td style="vertical-align:top; width:75px;"><b class="result-heading">@s.Id</b></td>
+                    <td style="width:800px;">
+                        <a href="@s.Url">@s.Title</a><br>
+                        @s.Url<br>
+                @if (s.ExceptionFound) {
+                    @Html.Raw(" - ERROR: ") @s.ErrorMsg<br>
+                    @*continue;*@
                 }
-                if (s.LinksToClientWebsite) {
-                    <text> - OK: Site features links that point to target.<br></text>
-                }
-                else {
-                    <text> - NOTE: No links to target found.<br></text>
-                }
-                if (Model.PhraseSearchEnabled) {
+
+                @if (Model.PhraseSearchEnabled) {
                     if (s.ContainsSearchPhrase) {
-                        <text> - OK: Site contains instances of given phrase.</text><br>
+                        @Html.Raw(" - OK: Site contains instances of given phrase.")<br>
                     }
                     else {
-                        <text> - NOTE: Given phrase not found.</text><br>
+                        @Html.Raw(" - NOTE: Given phrase not found.")<br>
                     }
                 }
-                <br>
+                        <br>
+                    </td>
+                    <td class="linkback-graphic">
+                        @if (s.LinksToClientWebsite) {
+                            <img src="~/Images/linkback_yes.png" />
+                        }
+                        else if (s.ExceptionFound) {
+                            <img src="~/Images/linkback_err.png"/>
+                        }
+                        else {
+                            <img src="~/Images/linkback_no.png"/>
+                        }
+                    </td>
+                    @if (Model.ResultType.Equals("news")) {
+                    <td style="vertical-align:top; padding-right:10px;">@s.Source</td>
+                    <td style="vertical-align:top;">@s.Date</td>
+                    }
+                </tr>
+
             }
         }
-    <br><br><br>
+        </table>
+    <br><br><br><br>

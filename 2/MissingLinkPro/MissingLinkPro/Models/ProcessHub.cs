@@ -41,6 +41,9 @@ namespace MissingLinkPro.Models
             public bool LinksToClientWebsite, ContainsSearchPhrase, SkipThisResult, ExceptionFound, Scraped;
             public int Id;
 
+            public string Source;
+            public DateTime? Date;
+
             // For Bing
             public SearchResult(int num, string param_title, string param_url)
             {
@@ -53,6 +56,22 @@ namespace MissingLinkPro.Models
                 ExceptionFound = false;
                 ErrorMsg = "";
                 Scraped = false;
+            }
+
+            // For News Results specifically
+            public SearchResult(int num, string param_title, string param_url, string param_source, DateTime? param_date)
+            {
+                Title = param_title;
+                Url = param_url;
+                Id = num;
+                LinksToClientWebsite = false;
+                ContainsSearchPhrase = false;
+                SkipThisResult = false;
+                ExceptionFound = false;
+                ErrorMsg = "";
+                Scraped = false;
+                Source = param_source;
+                Date = param_date;
             }
 
             public SearchResult() {
@@ -295,6 +314,14 @@ namespace MissingLinkPro.Models
             //DiagnosticPrint(results);
         }
 
+        private Uri AttachUriParameter(Uri link, string parameter)
+        {
+            UriBuilder builder = new UriBuilder(link);
+            builder.Host += parameter;
+            Uri result = builder.Uri;
+            return result;
+        } // AttachUriParameter
+
         private void processWeb(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
         {
             int count = 0;
@@ -343,7 +370,7 @@ namespace MissingLinkPro.Models
 
                 foreach (var result in webResults)
                 {
-                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
                     count++;
                     skip++;
                     if (count == top)
