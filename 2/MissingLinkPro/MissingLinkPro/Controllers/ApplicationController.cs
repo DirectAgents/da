@@ -122,7 +122,7 @@ namespace MissingLinkPro.Controllers
             //    }
             //}
 
-            // If-staement will occur if the param is coming from the Application Index page, where newSession is always set to true.
+            // If-statement will occur if the param is coming from the Application Index page, where newSession is always set to true.
             // If coming via click on Next Set of Results, this will always be false.
             if (NewSession == true)
             {
@@ -144,18 +144,18 @@ namespace MissingLinkPro.Controllers
             else if (ModelState.IsValid)
             {
                 // Tamper-checking
-                if ((param.top + param.skip) > 1001)
+                if ((param.top + param.skip) > 1000)
                 {
                     if (param.skip > param.top)
-                        param.top = 1001 - param.skip;
+                        param.top = 1000 - param.skip;
                     else if (param.top > param.skip)
                     {
                         param.top = 1;
-                        param.skip = 1001;
+                        param.skip = 1000;
                     }
                     else if (param.top == param.skip)
                     {
-                        param.top = 1001 - param.top;
+                        param.top = 1000 - param.top;
                     }
                 }
 
@@ -208,6 +208,7 @@ namespace MissingLinkPro.Controllers
         private void updateResults(ProcessHub p, ParameterKeeper param)
         {
             param.skip += param.top;
+            //param.top += param.Increment;
             param.ParsedResults = p.ParsedResults;
             param.OmitCount = p.OmitCount;
             if (p.SearchErrorEncountered)
@@ -233,7 +234,7 @@ namespace MissingLinkPro.Controllers
             writer.WriteLine("MissingLink Data Export");
             writer.WriteLine(DateTime.Now.ToString() + "\n");
 
-            csv.WriteField("Google Search Query");
+            csv.WriteField("Search Query");
             csv.WriteField(param.BingSearchQuery);
             //csv.NextRecord();
             //csv.WriteField("Phrase Search");

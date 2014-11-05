@@ -741,40 +741,53 @@ namespace Bing {
         /// <param name="Latitude">Latitude Sample Values : 47.603450</param>
         /// <param name="Longitude">Longitude Sample Values : -122.329696</param>
         /// <param name="WebFileType">File extensions to return Sample Values : XLS</param>
-        public DataServiceQuery<WebResult> Web(String Query, String Options, String WebSearchOptions, String Market, String Adult, Double? Latitude, Double? Longitude, String WebFileType) {
-            if ((Query == null)) {
+        /// 
+
+        public DataServiceQuery<WebResult> Web(String Query, String Options, String WebSearchOptions, String Market, String Adult, Double? Latitude, Double? Longitude, String WebFileType)
+        {
+            if ((Query == null))
+            {
                 throw new System.ArgumentNullException("Query", "Query value cannot be null");
             }
             DataServiceQuery<WebResult> query;
             query = base.CreateQuery<WebResult>("Web");
-            if ((Query != null)) {
+            if ((Query != null))
+            {
                 query = query.AddQueryOption("Query", string.Concat("\'", System.Uri.EscapeDataString(Query), "\'"));
             }
-            if ((Options != null)) {
+            if ((Options != null))
+            {
                 query = query.AddQueryOption("Options", string.Concat("\'", System.Uri.EscapeDataString(Options), "\'"));
             }
-            if ((WebSearchOptions != null)) {
+            if ((WebSearchOptions != null))
+            {
                 query = query.AddQueryOption("WebSearchOptions", string.Concat("\'", System.Uri.EscapeDataString(WebSearchOptions), "\'"));
             }
-            if ((Market != null)) {
+            if ((Market != null))
+            {
                 query = query.AddQueryOption("Market", string.Concat("\'", System.Uri.EscapeDataString(Market), "\'"));
             }
-            if ((Adult != null)) {
+            if ((Adult != null))
+            {
                 query = query.AddQueryOption("Adult", string.Concat("\'", System.Uri.EscapeDataString(Adult), "\'"));
             }
-            if (((Latitude != null) 
-                        && (Latitude.HasValue == true))) {
+            if (((Latitude != null)
+                        && (Latitude.HasValue == true)))
+            {
                 query = query.AddQueryOption("Latitude", Latitude.Value);
             }
-            if (((Longitude != null) 
-                        && (Longitude.HasValue == true))) {
+            if (((Longitude != null)
+                        && (Longitude.HasValue == true)))
+            {
                 query = query.AddQueryOption("Longitude", Longitude.Value);
             }
-            if ((WebFileType != null)) {
+            if ((WebFileType != null))
+            {
                 query = query.AddQueryOption("WebFileType", string.Concat("\'", System.Uri.EscapeDataString(WebFileType), "\'"));
             }
             return query;
         }
+
         
         /// <summary>
         /// </summary>

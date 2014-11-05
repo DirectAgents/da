@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.IO;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace MissingLinkPro.Models
 {
@@ -88,6 +89,7 @@ namespace MissingLinkPro.Models
         public bool SearchErrorEncountered { get; set; }
         public string SearchErrorMsg { get; set; }
         public float TotalRunTime { get; set; }
+        public int MaxYRange { get; set; }
 
         // Form Field Parameters
         public string BingSearchQuery { get; set; }
@@ -133,22 +135,30 @@ namespace MissingLinkPro.Models
                     temp.Add("href=\"https://" + websites[i] + ".com");
                     temp.Add("href=\"http://www." + websites[i] + ".com");
                     temp.Add("href=\"https://www." + websites[i] + ".com");
+                    temp.Add("href='http://" + websites[i] + ".com");
+                    temp.Add("href='https://" + websites[i] + ".com");
+                    temp.Add("href='http://www." + websites[i] + ".com");
+                    temp.Add("href='https://www." + websites[i] + ".com");
                 }
                 else
                 {
-                    if ((websites[i].Substring(0, 7)).Equals("http://"))       // remove procotol prefix http
-                        websites[i] = websites[i].Substring(7, websites[i].Length - 7);
-                    else if ((websites[i].Substring(0, 8)).Equals("https://")) // remove protocol prefix https
-                        websites[i] = websites[i].Substring(8, websites[i].Length - 8); 
+                    if ((websites[i].Substring(0, 5)).Equals("http:"))       // remove procotol prefix http
+                        websites[i] = websites[i].Substring(5, websites[i].Length - 5);
+                    else if ((websites[i].Substring(0, 6)).Equals("https:")) // remove protocol prefix https
+                        websites[i] = websites[i].Substring(6, websites[i].Length - 6); 
 
 
                     if ((websites[i].Substring(0, 4)).Equals("www."))     // part link provided; must add protocol
                     {
                         temp.Add("href=\"http://" + websites[i]);
                         temp.Add("href=\"https://" + websites[i]);
+                        temp.Add("href='http://" + websites[i]);
+                        temp.Add("href='https://" + websites[i]);
                         
                         temp.Add("href=\"http://" + websites[i].Substring(4, websites[i].Length - 4));
                         temp.Add("href=\"https://" + websites[i].Substring(4, websites[i].Length - 4));
+                        temp.Add("href='http://" + websites[i].Substring(4, websites[i].Length - 4));
+                        temp.Add("href='https://" + websites[i].Substring(4, websites[i].Length - 4));
 
                     }
                     else
@@ -157,6 +167,10 @@ namespace MissingLinkPro.Models
                         temp.Add("href=\"https://" + websites[i]);
                         temp.Add("href=\"http://www." + websites[i]);
                         temp.Add("href=\"https://www." + websites[i]);
+                        temp.Add("href='http://" + websites[i]);
+                        temp.Add("href='https://" + websites[i]);
+                        temp.Add("href='http://www." + websites[i]);
+                        temp.Add("href='https://www." + websites[i]);
                     }
                 }
             }
@@ -244,10 +258,7 @@ namespace MissingLinkPro.Models
             watch.Start();
             SearchErrorEncountered = false;
 
-            string rootUrl = "https://api.datamarket.azure.com/Bing/Search";
-            var bingContainer = new Bing.BingSearchContainer(new Uri(rootUrl));
             string market = "en-us";
-            bingContainer.Credentials = new NetworkCredential(AccountKey, AccountKey);
 
             string QueryAttachment = "";
             if (ExcludeEnabled)
@@ -260,15 +271,24 @@ namespace MissingLinkPro.Models
             {
                 if (ResultType.Equals("news"))
                 {
+
+                    string rootUrl = "https://api.datamarket.azure.com/Bing/Search";
+                    var bingContainer = new Bing.BingSearchContainer(new Uri(rootUrl));
+                    bingContainer.Credentials = new NetworkCredential(AccountKey, AccountKey);
+
                     int pages = top / 15;
                     if ((top % 15) > 0) pages++;
                     processNews(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
                 }
                 else
                 {
+                    string rootUrl = "https://api.datamarket.azure.com/Bing/SearchWeb/";
+                    var bingContainerWebOnly = new BingWebOnly.BingSearchContainer(new Uri(rootUrl));
+                    bingContainerWebOnly.Credentials = new NetworkCredential(AccountKey, AccountKey);
+
                     int pages = top / 50;
                     if ((top % 50) > 0) pages++;
-                    processWeb(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
+                    processWeb(bingContainerWebOnly, pages, BingSearchQuery + QueryAttachment, market);
                 }
             }
                 // This IOException typically occurs when the Bing request comes back with problems.
@@ -322,13 +342,19 @@ namespace MissingLinkPro.Models
             return result;
         } // AttachUriParameter
 
-        private void processWeb(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
+        private void processWeb(BingWebOnly.BingSearchContainer bingContainer, int pages, string query, string market)
         {
+            int TopReference = top;
+            List<SearchResult> temp = new List<SearchResult>();
+
+            //while (temp.Count < top)
+            //{
             int count = 0;
             bool complete = false;
             for (int i = 0; i < pages; i++)
             {
-                var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
+                var webQuery = bingContainer.Web(query, market, null, null, null, null, null, null);
+                //var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
                 if (top < 50)
                     webQuery = webQuery.AddQueryOption("$top", top);
                 else
@@ -337,8 +363,14 @@ namespace MissingLinkPro.Models
 
                 var webResults = webQuery.Execute();
 
+                displayln("Page " + i);
+                displayln("top = " + top);
+                displayln("skip = " + skip);
+                //displayln("Number of results: " + webResults.Count() + "");
+
                 foreach (var result in webResults)
                 {
+                    if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue;
                     ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
                     count++;
                     skip++;
@@ -348,40 +380,117 @@ namespace MissingLinkPro.Models
                         break;
                     }
                 }
-
                 if (complete) break;
             }
+            if (temp.Count < top)
+            {
+                TopReference = TopReference - temp.Count;
+                pages = TopReference / 15;
+                if (TopReference % 15 > 0) pages++;
+            }
+            //} // while loop
+            foreach (SearchResult result in temp) ParsedResults.Add(result);
         } // processWeb
+
+        //private void processWeb(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
+        //{
+        //    int TopReference = top;
+        //    List<SearchResult> temp = new List<SearchResult>();
+
+        //    //while (temp.Count < top)
+        //    //{
+        //        int count = 0;
+        //        bool complete = false;
+        //        for (int i = 0; i < pages; i++)
+        //        {
+        //            var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
+        //            if (top < 50)
+        //                webQuery = webQuery.AddQueryOption("$top", top);
+        //            else
+        //                webQuery = webQuery.AddQueryOption("$top", 50);
+        //            webQuery = webQuery.AddQueryOption("$skip", skip);
+
+        //            var webResults = webQuery.Execute();
+
+        //            displayln("Page " + i);
+        //            displayln("top = " + top);
+        //            displayln("skip = " + skip);
+        //            //displayln("Number of results: " + webResults.Count() + "");
+
+        //            foreach (var result in webResults)
+        //            {
+        //                if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue;
+        //                ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
+        //                count++;
+        //                skip++;
+        //                if (count == top)
+        //                {
+        //                    complete = true;
+        //                    break;
+        //                }
+        //            }
+        //            if (complete) break;
+        //        }
+
+        //        TopReference = TopReference - temp.Count;
+        //        pages = TopReference / 15;
+        //        if (TopReference % 15 > 0) pages++;
+        //    //} // while loop
+        //    foreach (SearchResult result in temp) ParsedResults.Add(result);
+        //} // processWeb
 
         private void processNews(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
         {
-            int count = 0;
-            bool complete = false;
-            for (int i = 0; i < pages; i++)
-            {
-                var webQuery = bingContainer.News(query,null,market,null,null,null,null,null,null);
-                if (top < 15)
-                    webQuery = webQuery.AddQueryOption("$top", top);
-                else
-                    webQuery = webQuery.AddQueryOption("$top", 15);
-                webQuery = webQuery.AddQueryOption("$skip", skip);
+            int TopReference = top;
+            List<SearchResult> temp = new List<SearchResult>();
+            bool NoResults = false;
 
-                var webResults = webQuery.Execute();
-
-                foreach (var result in webResults)
+            //while (temp.Count < top)
+            //{
+                NoResults = true;
+                int count = 0;
+                bool complete = false;
+                for (int i = 0; i < pages; i++)
                 {
-                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
-                    count++;
-                    skip++;
-                    if (count == top)
+                    var webQuery = bingContainer.News(query, null, market, null, null, null, null, null, null);
+                    if (TopReference < 15)
+                        webQuery = webQuery.AddQueryOption("$top", TopReference);
+                    else
+                        webQuery = webQuery.AddQueryOption("$top", 15);
+                    webQuery = webQuery.AddQueryOption("$skip", skip);
+
+                    displayln(webQuery.ToString());
+
+                    var webResults = webQuery.Execute();
+
+                    foreach (var result in webResults)
                     {
-                        complete = true;
-                        break;
+                        NoResults = false;
+                        if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url))
+                        {
+                            NoResults = true;
+                            continue;
+                        }
+                        temp.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
+                        count++;
+                        skip++;
+                        if (count == TopReference)
+                        {
+                            complete = true;
+                            break;
+                        }
                     }
+                    //if (NoResults) break;
+
+                    if (complete) break;
                 }
 
-                if (complete) break;
-            }
+                TopReference = TopReference - temp.Count;
+                pages = TopReference / 15;
+                if (TopReference % 15 > 0) pages++;
+                //if (NoResults) break;
+            //} // while loop
+            foreach (SearchResult result in temp) ParsedResults.Add(result);
         } // processNews
 
         public Thread StartThread(int i)
@@ -432,7 +541,7 @@ namespace MissingLinkPro.Models
                     w.Method = WebRequestMethods.Http.Get;
                     CookieContainer cookieJar = new CookieContainer();
                     w.CookieContainer = cookieJar;
-                    w.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0";
+                    w.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/33.0";
                     response = (HttpWebResponse)w.GetResponse();
                     //displayln("Response " + response.StatusCode + ": " + response.StatusDescription);
                     if (response.StatusCode != HttpStatusCode.OK)
@@ -451,7 +560,11 @@ namespace MissingLinkPro.Models
                     pageData.Replace('"', '\"');
                     foreach (string s in ClientWebsiteParsed)
                     {
-                        if (pageData.Contains(s))
+
+                        bool containsLink = pageData.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                        //if (pageData.Contains(s))
+                        if (containsLink)
                         {
                             ParsedResults[i].LinksToClientWebsite = true;
                             if (ExcludeLinkbackResults)
@@ -461,8 +574,8 @@ namespace MissingLinkPro.Models
                             }
                         }
                     }
-                    bool contains = pageData.IndexOf(PhraseSearchString, StringComparison.OrdinalIgnoreCase) >= 0;
-                    if (contains)
+                    bool containsPhrase = pageData.IndexOf(PhraseSearchString, StringComparison.OrdinalIgnoreCase) >= 0;
+                    if (containsPhrase)
                     {
                         ParsedResults[i].ContainsSearchPhrase = true;
                     }
