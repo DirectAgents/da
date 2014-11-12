@@ -70,6 +70,7 @@
 
                     @if (Request.IsAuthenticated) {
                         <li>@Html.ActionLink("Application","Index","Application")</li>
+                        <li>@Html.ActionLink("Subscriptions", "Index", "Payments")</li>
                     }
 
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {

@@ -10,6 +10,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Stripe;
 
 namespace IdentitySample.Controllers
 {
@@ -93,7 +94,8 @@ namespace IdentitySample.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email, FirstName = userViewModel.FirstName, LastName = userViewModel.LastName, QueriesPerformed = 0, TotalQueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now };
+                Package freemium = db.Packages.Find(1);                    // We assume that "1" corresponds to the Freemium plan stored in database.
+                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email, EmailConfirmed = true, FirstName = userViewModel.FirstName, LastName = userViewModel.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = freemium.Id };
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 //Add User to the selected Roles 
@@ -109,6 +111,18 @@ namespace IdentitySample.Controllers
                             return View();
                         }
                     }
+                    /*Stripe: New Customer Code Begins Here*/
+                    var myCustomer = new StripeCustomerCreateOptions();
+                    myCustomer.Email = user.Email;
+                    myCustomer.PlanId = "1";                               // "1" currently assumes that Freemium plan on Stripe dashboard is set to Id = "1"
+                    myCustomer.Quantity = 1;                               // optional, defaults to 1
+                    var customerService = new StripeCustomerService();
+                    StripeCustomer stripeCustomer = customerService.Create(myCustomer);
+                    user.CustomerId = stripeCustomer.Id;
+                    user.SubscriptionId = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).Id;
+
+                    await UserManager.UpdateAsync(user);
+                    /*Stripe: New Customer Code Ends Here*/
                 }
                 else
                 {
@@ -179,7 +193,7 @@ namespace IdentitySample.Controllers
                 user.FirstName = editUser.FirstName;
                 user.LastName = editUser.LastName;
                 user.QueriesPerformed = editUser.QueriesPerformed;
-                user.PackageId = editUser.PackageId;
+                if (editUser.PackageId != null) user.PackageId = editUser.PackageId;
                 user.EmailConfirmed = editUser.EmailConfirmed;
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
@@ -243,12 +257,19 @@ namespace IdentitySample.Controllers
                 {
                     return HttpNotFound();
                 }
+
+                /*Stripe Code*/
+                var customerService = new StripeCustomerService();
+                customerService.Delete(user.CustomerId);
+                /*Stripe Code*/
+
                 var result = await UserManager.DeleteAsync(user);
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", result.Errors.First());
                     return View();
                 }
+
                 return RedirectToAction("Index");
             }
             return View();

@@ -1,19 +1,18 @@
 ﻿@model IEnumerable<IdentitySample.Models.Package>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Payments & Subscriptions";
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
+<h2>Package Plans</h2>
+<br />
+<p>The following package plans are currently available for subscription.<br />
+    You may choose to upgrade or downgrade your plan at a later time if desired.<br />
+    NOTE: Use 4242424242424242 with any CVC and expiry date.<br />
 </p>
+<br />
 <table class="table">
     <tr>
-                <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -21,7 +20,8 @@
             @Html.DisplayNameFor(model => model.SearchesPerMonth)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.MaxResults)
+            Results/Search
+            @*@Html.DisplayNameFor(model => model.MaxResults)*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CostPerMonth)
@@ -31,11 +31,8 @@
 
 @foreach (var item in Model) {
     <tr>
-                <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.ActionLink(item.Name,"Pay", new { id=item.Id })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SearchesPerMonth)
@@ -44,12 +41,7 @@
             @Html.DisplayFor(modelItem => item.MaxResults)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CostPerMonth)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            $@Html.DisplayFor(modelItem => item.CostPerMonth)
         </td>
     </tr>
 }

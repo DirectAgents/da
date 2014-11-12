@@ -12,6 +12,14 @@
         <p><br>
             <table style="margin-bottom:40px;">
                 <tr>
+                    <td><h8>Customer ID</h8></td>
+                    <td> @Model.CustomerId</td>
+                </tr>
+                   <tr>
+                    <td><h8>Subscription ID</h8></td>
+                    <td>@Model.SubscriptionId</td> 
+                </tr>
+                <tr>
                     <td><h8>Package Subscription</h8></td>
                     <td>@Model.Package.Name</td>
                 </tr>
@@ -65,7 +73,7 @@
             }
             ]
         </p>
-        <p>
+      @*  <p>
             External Logins: @Model.Logins.Count
             @Html.ActionLink("[Manage]", "ManageLogins")
         </p>
@@ -104,6 +112,6 @@
                     <input type="submit" value="Remember Browser" class="btn btn-default"/>
                 </p>
             </form>
-        }
+        } *@
     </div>
 </div>

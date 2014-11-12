@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using Stripe;
 
 namespace IdentitySample.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public AccountController()
         {
         }
@@ -150,7 +153,8 @@ namespace IdentitySample.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now };
+                Package freemium = db.Packages.Find(1);                    // We assume that "1" corresponds to the Freemium plan stored in database.
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = freemium.Id };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -180,6 +184,24 @@ namespace IdentitySample.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
+
+            var user = await UserManager.FindByIdAsync(userId);
+            user.DateTimeStamp = DateTime.Now;
+            user.Anniversary = DateTime.Now;
+
+            /*Stripe: New Customer Code Begins Here*/
+            var myCustomer = new StripeCustomerCreateOptions();
+            myCustomer.Email = user.Email;
+            myCustomer.PlanId = "1";                               // "1" currently assumes that Freemium plan on Stripe dashboard is set to Id = "1"
+            myCustomer.Quantity = 1;                               // optional, defaults to 1
+            var customerService = new StripeCustomerService();
+            StripeCustomer stripeCustomer = customerService.Create(myCustomer);
+            user.CustomerId = stripeCustomer.Id;
+            user.SubscriptionId = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).Id;
+
+            await UserManager.UpdateAsync(user);
+            /*Stripe: New Customer Code Ends Here*/
+
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 

@@ -29,6 +29,12 @@ namespace IdentitySample.Models
         [Display(Name = "Package")]
         public virtual Package Package { get; set; }
 
+        public bool IsActive { get; set; }
+        [Display(Name = "Customer ID")]
+        public string CustomerId { get; set; }
+        [Display(Name = "Subscription ID")]
+        public string SubscriptionId { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -59,6 +65,9 @@ namespace IdentitySample.Models
         public int MaxResults { get; set; }
         [Display(Name = "Cost/Month")]
         public decimal CostPerMonth { get; set; }
+        [Display(Name = "Statement Desc")]
+        [MaxLength(22)]
+        public string StatementDescription { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

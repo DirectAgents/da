@@ -143,10 +143,12 @@ namespace MissingLinkPro.Models
                 else
                 {
                     if ((websites[i].Substring(0, 5)).Equals("http:"))       // remove procotol prefix http
-                        websites[i] = websites[i].Substring(5, websites[i].Length - 5);
+                        websites[i] = websites[i].Substring(7, websites[i].Length - 7);
                     else if ((websites[i].Substring(0, 6)).Equals("https:")) // remove protocol prefix https
-                        websites[i] = websites[i].Substring(6, websites[i].Length - 6); 
+                        websites[i] = websites[i].Substring(8, websites[i].Length - 8);
 
+                    temp.Add("href=\"" + websites[i]);
+                    temp.Add("href='" + websites[i]);
 
                     if ((websites[i].Substring(0, 4)).Equals("www."))     // part link provided; must add protocol
                     {
@@ -326,7 +328,7 @@ namespace MissingLinkPro.Models
                 Thread t = StartThread(x,y);
             }
 
-            while (HubLock) { Thread.Sleep(100); }
+            while (HubLock) { Thread.Sleep(10); }
 
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));

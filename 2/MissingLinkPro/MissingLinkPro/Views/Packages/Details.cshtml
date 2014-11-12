@@ -10,6 +10,15 @@
     <h4>Package</h4>
 	<hr />
     <dl class="dl-horizontal">
+
+                <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -40,6 +49,13 @@
 
         <dd>
             @Html.DisplayFor(model => model.CostPerMonth)
+        </dd>
+                <dt>
+            @Html.DisplayNameFor(model => model.StatementDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StatementDescription)
         </dd>
 
     </dl>

@@ -24,6 +24,8 @@ namespace IdentitySample.Models
         public DateTime DateTimeStamp { get; set; }
         public int QueriesPerformed { get; set; }
         public int TotalQueriesPerformed { get; set; }
+        public string CustomerId { get; set; }
+        public string SubscriptionId { get; set; }
     }
 
     public class ManageLoginsViewModel

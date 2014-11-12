@@ -44,6 +44,9 @@
     <Reference Include="CsvHelper">
       <HintPath>..\packages\CsvHelper.2.7.1\lib\net40-client\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="DevDefined.OAuth">
+      <HintPath>..\packages\DevDefined.OAuth.0.1\lib\DevDefined.OAuth.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
@@ -101,11 +104,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.2.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(SolutionDir)\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>$(SolutionDir)\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net">
+      <HintPath>..\packages\Stripe.net.2.3.3\lib\net40\Stripe.net.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Net.Http" />
@@ -126,6 +133,7 @@
     <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -226,6 +234,7 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PackagesController.cs" />
+    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
@@ -269,11 +278,32 @@
     <Compile Include="Migrations\201410272102410_Anniversary.Designer.cs">
       <DependentUpon>201410272102410_Anniversary.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201411102245558_IsActive.cs" />
+    <Compile Include="Migrations\201411102245558_IsActive.Designer.cs">
+      <DependentUpon>201411102245558_IsActive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411111625341_PackageStatementDesc.cs" />
+    <Compile Include="Migrations\201411111625341_PackageStatementDesc.Designer.cs">
+      <DependentUpon>201411111625341_PackageStatementDesc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411112004155_CustomerId.cs" />
+    <Compile Include="Migrations\201411112004155_CustomerId.Designer.cs">
+      <DependentUpon>201411112004155_CustomerId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411121529080_PackageMaxLengthAnnotation.cs" />
+    <Compile Include="Migrations\201411121529080_PackageMaxLengthAnnotation.Designer.cs">
+      <DependentUpon>201411121529080_PackageMaxLengthAnnotation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201411121746249_SubscriptionId.cs" />
+    <Compile Include="Migrations\201411121746249_SubscriptionId.Designer.cs">
+      <DependentUpon>201411121746249_SubscriptionId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\BingSearchContainer.cs" />
     <Compile Include="Models\BingSearchContainerWebOnly.cs" />
+    <Compile Include="Models\PaymentsViewModels.cs" />
     <Compile Include="Models\Emailer.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -343,6 +373,11 @@
     <Content Include="Views\Packages\Index.cshtml" />
     <Content Include="Views\Application\EmailNotConfirmed.cshtml" />
     <Content Include="Views\Application\MonthlyMaxReached.cshtml" />
+    <Content Include="Views\Payments\Index.cshtml" />
+    <Content Include="Views\Payments\Confirm.cshtml" />
+    <Content Include="Views\Payments\Pay.cshtml" />
+    <Content Include="Views\Payments\SubscriptionSet.cshtml" />
+    <Content Include="Views\Payments\ProcessingError.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -383,6 +418,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410272102410_Anniversary.resx">
       <DependentUpon>201410272102410_Anniversary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411102245558_IsActive.resx">
+      <DependentUpon>201411102245558_IsActive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411111625341_PackageStatementDesc.resx">
+      <DependentUpon>201411111625341_PackageStatementDesc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411112004155_CustomerId.resx">
+      <DependentUpon>201411112004155_CustomerId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411121529080_PackageMaxLengthAnnotation.resx">
+      <DependentUpon>201411121529080_PackageMaxLengthAnnotation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201411121746249_SubscriptionId.resx">
+      <DependentUpon>201411121746249_SubscriptionId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

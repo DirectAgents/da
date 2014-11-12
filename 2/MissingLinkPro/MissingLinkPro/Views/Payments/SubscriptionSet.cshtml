@@ -1,0 +1,13 @@
+﻿@model IdentitySample.Models.Package
+@{
+    ViewBag.Title = "Subscription Activated";
+}
+
+<h2>Payment Confirmed</h2>
+<br /><br />
+<p>Thank you for subscribing to our @Model.Name package.<br />
+    You are now allowed @Model.MaxResults per search at a rate of @Model.SearchesPerMonth per month.<br />
+    At the beginning of each new cycle, your limit will reset, and your card will be charged accordingly.<br />
+    For further inquiries, please contact the Administrator.
+</p>
+
