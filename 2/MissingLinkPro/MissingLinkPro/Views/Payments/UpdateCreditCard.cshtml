@@ -1,7 +1,6 @@
-﻿@model IdentitySample.Models.PayViewModel
-
+﻿
 @{
-    ViewBag.Title = "Payment Form";
+    ViewBag.Title = "Payment Revision";
 }
 
 @section Scripts
@@ -44,69 +43,11 @@
 </script>
 }
 
-<h2>@Model.PackageName: $@Model.PackageCost/month</h2>
+<h2>Update Credit Card Information</h2>
 <br /><br />
-
-
-@if (Model.PackageId == 1) {
-    <p>The Freemium package allows you to try DirectLink at no cost.<br />
+    <p>Please fill out the payment information below.<br />
+        Please note that updating your credit card will reactivate a cancelled subscription.
     </p>
-    if (Model.SubscribedPackageId == Model.PackageId) { <p>You are currently subscribed to this plan.<br />You may upgrade to one of the available Premium plans.</p> }
-    else {
-        <p>You have the option of reducing your subscription to this plan.<br />
-            In doing so, any unused time from your current subscription will be credited to your user account.<br />
-            Please click the button below if you wish to do so.</p>
-    <form action="" method="post">
-                @Html.HiddenFor(m => m.PackageId)
-      <button type="submit">Downgrade</button>
-    </form>
-    }
-}
-
-else if (Model.PackageId == Model.SubscribedPackageId)
-{
-    <p>You are currently subscribed to this plan.<br />
-        To change your current subscription package, please select a different plan.<br />
-    </p>
-    <br />
-        <h2>@Html.ActionLink("Cancel Subscription", "Cancel", "Payments")</h2>
-    <br />
-    <p>Please click the above link if you wish to cancel your subscription.<br />
-        Your current subscription will remain active until the end of the month, at which point your subscription<br />
-        will not be renewed, and you will be downgraded to the Freemium package.
-    </p>
-}
-else if (Model.PackageId < Model.SubscribedPackageId)
-{
-    <p>Using your existing credit card, you have the option of upgrading to this plan.<br />
-        If you choose to do so, you will be charged the prorated amount on your next invoice.<br />
-        Please be advised that downgrading reduces your allowed number of searches per month.<br />
-        You may upgrade to a higher subscription plan at a later time.<br />
-        Click the button below if you wish to proceed.
-    </p>
-    <form action="" method="post">
-                @Html.HiddenFor(m => m.PackageId)
-      <button type="submit">Downgrade</button>
-    </form>
-}
-
-else if (Model.UserHasCreditCard) {
-    <p>Using your existing credit card, you have the option of upgrading to this plan.<br />
-        If you choose to do so, you will be charged the prorated amount on your next invoice.<br />
-        Upgrading your subscription increases your allowed number of searches per month,<br />
-        and allows you to see more results per search.<br />
-        You may downgrade to a lower subscription plan at a later time.<br />
-        Click the button below if you wish to proceed.
-    </p>
-    <form action="" method="post">
-                @Html.HiddenFor(m => m.PackageId)
-      <button type="submit">Upgrade</button>
-    </form>
-}
-else
-{
-    
-    <p>Please fill out the payment information below.</p>
     <br />
     <form action="" method="POST" id="payment-form">
                   <span class="payment-errors"></span>
@@ -149,9 +90,7 @@ else
                 <td><input type="text" size="2" data-stripe="exp-month"/> / <input type="text" size="4" data-stripe="exp-year"/></td>
             </tr>
         </table>
-        @Html.HiddenFor(m => m.PackageId)
       <button type="submit">Submit Payment</button>
     </form>
 
-}
 

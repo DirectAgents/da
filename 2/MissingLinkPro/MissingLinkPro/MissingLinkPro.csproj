@@ -242,6 +242,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\SettingsHelper.cs" />
+    <Compile Include="Helpers\StripeHelper.cs" />
     <Compile Include="Migrations\201409242002269_InitialCreate.cs" />
     <Compile Include="Migrations\201409242002269_InitialCreate.Designer.cs">
       <DependentUpon>201409242002269_InitialCreate.cs</DependentUpon>
@@ -378,6 +379,14 @@
     <Content Include="Views\Payments\Pay.cshtml" />
     <Content Include="Views\Payments\SubscriptionSet.cshtml" />
     <Content Include="Views\Payments\ProcessingError.cshtml" />
+    <Content Include="Views\Payments\History.cshtml" />
+    <Content Include="Views\Payments\Cancel.cshtml" />
+    <Content Include="Views\Payments\CancelConfirmed.cshtml" />
+    <Content Include="Views\Payments\Test.cshtml" />
+    <Content Include="Views\Payments\EmailNotConfirmed.cshtml" />
+    <Content Include="Views\Payments\UpdateCreditCard.cshtml" />
+    <Content Include="Views\Application\PaymentError.cshtml" />
+    <Content Include="Views\Payments\CardUpdated.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

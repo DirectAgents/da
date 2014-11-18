@@ -64,6 +64,7 @@ namespace IdentitySample.Controllers
                 HasPassword = HasPassword(),
                 CustomerId = user.CustomerId,
                 SubscriptionId = user.SubscriptionId,
+                IsActive = user.IsActive,
                 //PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId()),
                 Logins = await UserManager.GetLoginsAsync(User.Identity.GetUserId()),

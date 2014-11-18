@@ -10,14 +10,14 @@
 <div class="row">
     <div class="col-md-8">
         <p><br>
-            <table style="margin-bottom:40px;">
+            <table style="margin-bottom:40px; width:555px;">
                 <tr>
                     <td><h8>Customer ID</h8></td>
                     <td> @Model.CustomerId</td>
                 </tr>
                    <tr>
                     <td><h8>Subscription ID</h8></td>
-                    <td>@Model.SubscriptionId</td> 
+                    <td>@Model.SubscriptionId @if (!Model.IsActive) { <b>[Cancelled]</b> }</td>
                 </tr>
                 <tr>
                     <td><h8>Package Subscription</h8></td>

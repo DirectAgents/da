@@ -26,6 +26,7 @@ namespace IdentitySample.Models
         public int TotalQueriesPerformed { get; set; }
         public string CustomerId { get; set; }
         public string SubscriptionId { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public class ManageLoginsViewModel

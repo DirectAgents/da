@@ -18,6 +18,8 @@ namespace IdentitySample.Models
         public int PackageId;
         public string PackageName;
         public decimal PackageCost;
+
+        public bool UserHasCreditCard { get; set; }
     }
 
     public class PostPayViewModel
@@ -29,5 +31,10 @@ namespace IdentitySample.Models
     public class PayErrorModel
     {
         public string Error { get; set; }
+    }
+
+    public class PostCancelModel
+    {
+        public int PackageId { get; set; }
     }
 }

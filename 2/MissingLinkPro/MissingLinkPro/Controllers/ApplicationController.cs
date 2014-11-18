@@ -23,6 +23,8 @@ namespace MissingLinkPro.Controllers
     [Authorize]
     public class ApplicationController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public ApplicationController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
@@ -45,8 +47,15 @@ namespace MissingLinkPro.Controllers
             }
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            // Email not confirmed
+            if (!user.EmailConfirmed)
+            {
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+            }
+
             // If user is accessing Index page, any previous Session should be flushed.
             if ((ParameterKeeper)Session["Params"] != null)
                 Session["Params"] = null;
@@ -84,7 +93,6 @@ namespace MissingLinkPro.Controllers
 
             //if (param.top % 50 > 0) return View("Index",param);
 
-            // Initial verification; checks if user has exceeded daily limit.
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
             // Email not confirmed
@@ -98,29 +106,39 @@ namespace MissingLinkPro.Controllers
             // Reset number of queries performed for the month if current date is later than user's one-month-later date.
             if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
             {
-                user.QueriesPerformed = 0;
-                while ((user.Anniversary.AddMonths(1)).CompareTo(CurrentDate) < 0)      // Need to calculate new user end date.
-                    user.Anniversary = user.Anniversary.AddMonths(1);
+                bool ok = false;
+                if (!user.IsActive)
+                {   // the result of a cancelled subscription; reassign Freemium
+                    user = StripeHelper.AssignNewSubscription(user, 1);
+                    ok = true;
+                }
+                else {
+                    string status = "";
+                    try
+                    {
+                        status = StripeHelper.GetSubscriptionStatus(user);
+                    }
+                    catch (Stripe.StripeException) {
+                        status = "active";
+                        user = StripeHelper.AssignNewSubscription(user, 1);
+                    }
+                    if (status.Equals("active")) ok = true;
+                    else if (status.Equals("past_due")) return View("PaymentError");
+                    else if (status.Equals("unpaid")) return View("PaymentError");
+                    else if (status.Equals("canceled")) return View("PaymentError");
+                }
+
+                if (ok)
+                {
+                    user.QueriesPerformed = 0;
+                    user = StripeHelper.UpdateAnniversary(user);
+                }
+                //while ((user.Anniversary.AddMonths(1)).CompareTo(CurrentDate) < 0)      // Need to calculate new user end date.
+                //    user.Anniversary = user.Anniversary.AddMonths(1);
             }
 
-            if (user.QueriesPerformed >= user.Package.SearchesPerMonth) return View("MonthlyMaxReached", user);
-
-            //int? DailyCap = SettingsHelper.RetrieveDailyLimitSetting();
-            //if (user.QueriesPerformed >= DailyCap)
-            //{
-            //    DateTime EndTime = DateTime.Now.Date;
-            //    user.DateTimeStamp = user.DateTimeStamp.Date;
-            //    displayln("endTime = " + EndTime);
-            //    displayln("userDTS = " + user.DateTimeStamp);
-            //    if (EndTime <= user.DateTimeStamp)
-            //    {
-            //        return View("DailyMaxReached", new Setting { Value = DailyCap.ToString() });
-            //    }
-            //    else
-            //    {
-            //        user.QueriesPerformed = 0;
-            //    }
-            //}
+            Package userPackage = db.Packages.Find(user.PackageId);
+            if (user.QueriesPerformed >= userPackage.SearchesPerMonth) return View("MonthlyMaxReached", user);
 
             // If-statement will occur if the param is coming from the Application Index page, where newSession is always set to true.
             // If coming via click on Next Set of Results, this will always be false.
@@ -130,7 +148,7 @@ namespace MissingLinkPro.Controllers
             }
 
             ProcessHub ph = null;
-            if (param.top > user.Package.MaxResults) param.top = user.Package.MaxResults;
+            if (param.top > userPackage.MaxResults) param.top = userPackage.MaxResults;
 
             // If a session is continuing from the previous (user chooses to retrieve next set of results).
             if ((ParameterKeeper)Session["Params"] != null)

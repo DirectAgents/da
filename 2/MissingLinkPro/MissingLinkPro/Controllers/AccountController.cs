@@ -11,6 +11,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
 using Stripe;
+using System.Collections.Generic;
+using MissingLinkPro.Helpers;
 
 namespace IdentitySample.Controllers
 {
@@ -186,21 +188,10 @@ namespace IdentitySample.Controllers
             var result = await UserManager.ConfirmEmailAsync(userId, code);
 
             var user = await UserManager.FindByIdAsync(userId);
+            user = StripeHelper.AssignNewSubscription(user, 1);
             user.DateTimeStamp = DateTime.Now;
-            user.Anniversary = DateTime.Now;
-
-            /*Stripe: New Customer Code Begins Here*/
-            var myCustomer = new StripeCustomerCreateOptions();
-            myCustomer.Email = user.Email;
-            myCustomer.PlanId = "1";                               // "1" currently assumes that Freemium plan on Stripe dashboard is set to Id = "1"
-            myCustomer.Quantity = 1;                               // optional, defaults to 1
-            var customerService = new StripeCustomerService();
-            StripeCustomer stripeCustomer = customerService.Create(myCustomer);
-            user.CustomerId = stripeCustomer.Id;
-            user.SubscriptionId = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).Id;
-
+            user.IsActive = true;
             await UserManager.UpdateAsync(user);
-            /*Stripe: New Customer Code Ends Here*/
 
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using MissingLinkPro.Helpers;
 
 namespace MissingLinkPro.Controllers
 {
@@ -56,45 +57,129 @@ namespace MissingLinkPro.Controllers
             }
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            // Email not confirmed
+            if (!user.EmailConfirmed)
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+
             Package package = db.Packages.Find(id);
             if (package == null)
             {
                 return HttpNotFound();
             }
-            return View(new PayViewModel { SubscribedPackageId = user.Package.Id, PackageId = id ?? default(int), PackageName = package.Name, PackageCost = package.CostPerMonth });
+
+            bool cardCheck = StripeHelper.UserHasCreditCard(user);
+
+            return View(new PayViewModel { SubscribedPackageId = user.Package.Id, UserHasCreditCard = cardCheck, PackageId = id ?? default(int), PackageName = package.Name, PackageCost = package.CostPerMonth });
         } // Pay
 
+        /**
+         * The HttpPost version of Pay receives two variables: a string token via Stripe.js and the PackageId of the target package
+         * to be upgraded to.
+         **/
         [HttpPost]
         public async Task<ActionResult> Pay(PostPayViewModel form)
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            if (form.PackageId == 1) { }
-
-            /*This section updates data on Stripe's end*/
-            var myCustomer = new StripeCustomerUpdateOptions();
-            myCustomer.TokenId = form.stripeToken;
-            var customerService = new StripeCustomerService();
             try
             {
-            StripeCustomer stripeCustomer = customerService.Update(user.CustomerId, myCustomer);
-            var subscriptionService = new StripeSubscriptionService();
-            StripeSubscriptionUpdateOptions NewPlan = new StripeSubscriptionUpdateOptions();
-            NewPlan.PlanId = form.PackageId.ToString();
-            StripeSubscription stripeSubscription = subscriptionService.Update(stripeCustomer.Id, user.SubscriptionId, NewPlan);
+                if (StripeHelper.UserHasSubscription(user))
+                    user = StripeHelper.ChangePackagePlan(user, form.PackageId, form.stripeToken);
+                else
+                    user = StripeHelper.AssignNewSubscription(user, form.PackageId, form.stripeToken);
             }
             catch (StripeException s)
             {
                 string msg = s.StripeError.Message;
                 return View("ProcessingError", new PayErrorModel { Error = msg });
             }
-            user.PackageId = form.PackageId;
             await UserManager.UpdateAsync(user);
             return View("SubscriptionSet", user.Package);
         }
 
-        public ActionResult Test()
+        public async Task<ActionResult> UpdateCreditCard()
         {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateCreditCard(string stripeToken)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            //if (user.PackageId == 1) return View();
+
+            user = StripeHelper.UpdateCreditCard(user, stripeToken);
+            await UserManager.UpdateAsync(user);
+
+            return View("CardUpdated");
+        }
+
+        public async Task<ActionResult> History()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            // Email not confirmed
+            if (!user.EmailConfirmed)
+            {
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+            }
+
+            StripeInvoiceListOptions silo = new StripeInvoiceListOptions();
+            silo.CustomerId = user.CustomerId;
+            var invoiceService = new StripeInvoiceService();
+            IEnumerable<StripeInvoice> response = invoiceService.List(silo);
+
+            //foreach (StripeInvoice si in response)
+            //{
+            //    displayln("Customer ID: " + si.CustomerId);
+            //    displayln("Subscription ID:  " + si.SubscriptionId);
+            //    displayln("Invoice Date: " + si.Date);
+            //    displayln("Period: " + si.PeriodStart.ToString() + " " + si.PeriodEnd.ToString());
+            //    displayln("Receipt Number: " + si.ReceiptNumber);
+            //    displayln("Amount Due: " + si.AmountDue.ToString());
+            //}
+            return View(response);
+        }
+
+        public async Task<ActionResult> Cancel()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            return View(user);
+        } // Cancel
+
+        [HttpPost]
+        public async Task<ActionResult> Cancel(bool CancelSubscription)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            displayln(CancelSubscription.ToString());
+            if (CancelSubscription == true)
+            {
+                user = StripeHelper.CancelSubscription(user);
+                await UserManager.UpdateAsync(user);
+
+                return View("CancelConfirmed");
+            }
+            else return View("Index", db.Packages.ToList());
+        } // Cancel
+
+        public async Task<ActionResult> Test()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            
+
+            var cardService = new StripeCardService();
+            IEnumerable<StripeCard> response = cardService.List(user.CustomerId); // optional StripeListOptions
+
+            foreach (StripeCard card in response)
+            {
+                displayln(card.Last4);
+            }
+            string hey = "break";
+
             return View();
         }
 

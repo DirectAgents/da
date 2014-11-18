@@ -1,0 +1,41 @@
+﻿@model IdentitySample.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Cancellation";
+}
+
+@if (Model.PackageId == 1) {
+    <h2>Freemium User</h2>
+    <p>You are currently registered as a Freemium user, which has no monthly cost,<br />
+        and therefore cannot be cancelled.</p>
+}
+
+else if (!Model.IsActive)
+{
+    <h2>Subscription Already Cancelled</h2>
+    <br /><br />
+    <p>Your subscription had already been cancelled at a previous time.<br />
+        Once your subscription reaches the end of its pay period, your account<br />
+        will be assigned the Freemium package.
+    </p>
+}
+else {
+
+    <h2>Cancel Subscription Confirmation</h2>
+    <br /><br />
+    <p>You are about to cancel your subscription. Are you sure you wish to do so?</p>
+    
+    using (Html.BeginForm("Cancel", "Payments", FormMethod.Post, new { id = "form" }))
+            {
+            <table>
+                <tr>
+                    <td style=""><h4><input class="radio-btn" type="radio" name="CancelSubscription" value="true" /> Yes</h4></td>
+                    <td><h4><input class="radio-btn" type="radio" name="CancelSubscription" value="false" checked="checked" /> No</h4></td>
+                </tr>
+                <tr><td><br /></td></tr>
+                <tr>
+                    <td><button type="submit" value="Cancel">Cancel Subscription</button></td>
+                </tr>
+            </table>
+            }
+}

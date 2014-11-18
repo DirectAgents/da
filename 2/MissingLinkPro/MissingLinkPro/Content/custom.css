@@ -242,3 +242,15 @@ h8 {
     word-break: break-all;
     white-space: normal;
 }
+
+.invoice-header {
+    color: #ababab;
+}
+
+.invoice-table {
+    width:650px;
+}
+
+.invoice-item {
+    display:none;
+}

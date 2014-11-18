@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Stripe;
+using MissingLinkPro.Helpers;
 
 namespace IdentitySample.Controllers
 {
@@ -193,7 +194,11 @@ namespace IdentitySample.Controllers
                 user.FirstName = editUser.FirstName;
                 user.LastName = editUser.LastName;
                 user.QueriesPerformed = editUser.QueriesPerformed;
-                if (editUser.PackageId != null) user.PackageId = editUser.PackageId;
+                if (editUser.PackageId != null)
+                {
+                    if (user.PackageId != editUser.PackageId)
+                        user = StripeHelper.AdminChangePackagePlan(user, editUser.PackageId.Value);
+                }
                 user.EmailConfirmed = editUser.EmailConfirmed;
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
