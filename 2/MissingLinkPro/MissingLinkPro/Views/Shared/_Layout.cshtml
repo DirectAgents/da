@@ -72,6 +72,7 @@
                     @if (Request.IsAuthenticated) {
                         <li>@Html.ActionLink("Application","Index","Application")</li>
                         <li>@Html.ActionLink("Subscriptions", "Index", "Payments")</li>
+                        <li>@Html.ActionLink("Help", "Manual", "Home")</li>
                     }
 
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
@@ -92,7 +93,7 @@
             <div class="footer">
                 <table class="i-btn-table">
                     <tr>
-                        <td><a class="i-btn" href="@Url.Action("Manual", "Home")"><img src="@Url.Content("~/Images/btn_info.png")"/></a></td>
+                        <td><a class="i-btn" href="@Url.Action("Manual", "Home")" title="Help"><img src="@Url.Content("~/Images/btn_info.png")" /></a></td>
                         @*<td style="width:60px;">@Html.ActionLink(" ", "Manual", null, new { @class="i-btn" })</td>*@
                     </tr>
                 </table>

@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Payment Form";
+    bool showPaymentForm = false;
 }
 
 @section Scripts
@@ -44,20 +45,30 @@
 </script>
 }
 
-@if (Model.PackageId == 1) {
-    
-    <table class="content-space">
+<table class="content-space">
     <tr>
         <td><h2>@Model.PackageName: $@Model.PackageCost/month</h2></td>
     </tr>
     <tr>
-        <td><br /></td>
+        <td>&nbsp;</td>
     </tr>
     <tr>
-        <td><p>The Freemium package allows you to try DirectLink at no cost.</p><br />
+        <td>Searches/Month: @Model.SearchesPerMonth</td>
+    </tr>
+    <tr>
+        <td>Results/Search: @Model.MaxResults</td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+@if (Model.PackageId == 1)
+{
+    <tr>
+        <td><p>The Freemium package allows you to try DirectLink at no cost.</p>
                 @if (Model.SubscribedPackageId == Model.PackageId)
                 {
                     <p>You are currently subscribed to this plan.<br />You may upgrade to one of the available Premium plans.</p>
+                    <p><button class="btn btn-default" onclick="document.location.href='@Url.Action("Index")'">Upgrade</button></p>
                 }
                 else if (!Model.IsActive)
                 {
@@ -72,93 +83,66 @@
     }
         </td>
     </tr>
-    </table>
-   
 }
-
 else if (Model.PackageId == Model.SubscribedPackageId)
 {
-    <table class="content-space">
     <tr>
-        <td><h2>@Model.PackageName: $@Model.PackageCost/month</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>You are currently subscribed to this plan. To change your current subscription package, please select a different plan.</p><br />
+        <td><p>You are currently subscribed to this plan. To change your current subscription package, please @Html.ActionLink("select a different plan", "Index").</p><br />
     </td>
     </tr>
-            <tr>
+    <tr>
         <td><h2>@Html.ActionLink("Cancel Subscription", "Cancel", "Payments")</h2></td>
     </tr>
     <tr>
         <td><br /></td>
     </tr>
     <tr>
-        <td><p>Please click the above link if you wish to cancel your subscription. Your current subscription will remain active until the end of the month, at which point your subscription will not be renewed, and you will be downgraded to the Freemium package.
-    </p><br />
-    </td>
-    </table>
-    <br />
-
+        <td><p>Please click the above link if you wish to cancel your subscription. Your current subscription will remain active until the end of the month, at which point your subscription will not be renewed, and you will be downgraded to the Freemium package.</p><br /></td>
+    </tr>
 }
 else if (Model.PackageId < Model.SubscribedPackageId && Model.IsActive)
 {
-    
-    <table class="content-space">
-    <tr>
-        <td><h2>@Model.PackageName: $@Model.PackageCost/month</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
     <tr>
         <td><p>Using your existing credit card, you have the option of downgrading to this plan. If you choose to do so, you will be charged the prorated amount on your next invoice.</p>
             <p>Please be advised that downgrading reduces your allowed number of searches per month. However, you may upgrade to a higher subscription plan at a later time.</p>
             <p>Click the button below if you wish to proceed.</p><br />
-</td>
+        </td>
     </tr>
-        <tr>
-            <td>
-                <form action="" method="post">
+    <tr>
+        <td>
+            <form action="" method="post">
                 @Html.HiddenFor(m => m.PackageId)
-      <button type="submit">Downgrade</button>
-    </form>
-            </td>
-        </tr>
-    </table>
+                <button type="submit">Downgrade</button>
+            </form>
+        </td>
+    </tr>
 }
-
-else if (Model.UserHasCreditCard) {
-
-    <table class="content-space">
-    <tr>
-        <td><h2>@Model.PackageName: $@Model.PackageCost/month</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
+else if (Model.UserHasCreditCard)
+{
     <tr>
         <td><p>Using your existing credit card, you have the option of upgrading to this plan. If you choose to do so, you will be charged the prorated amount on your next invoice.</p>
         <p>Upgrading your subscription increases your allowed number of searches per month, and allows you to see more results per search. You may downgrade to a lower subscription plan at a later time.</p>
         <p>Click the button below if you wish to proceed.</p><br />
-</td>
+        </td>
     </tr>
-        <tr>
-            <td>
-                    <form action="" method="post">
+    <tr>
+        <td>
+            <form action="" method="post">
                 @Html.HiddenFor(m => m.PackageId)
-      <button type="submit">Upgrade</button>
-    </form>
-            </td>
-        </tr>
-    </table>
+                <button type="submit">Upgrade</button>
+            </form>
+        </td>
+    </tr>
 }
-else
+else {
+    showPaymentForm = true;
+}
+</table>
+
+
+@if (showPaymentForm)
 {
-    
-    <p>Please fill out the payment information below.</p>
+    <p>Please fill out the payment information below to subscribe to this plan.</p>
     <br />
     <form action="" method="POST" id="payment-form">
                   <span class="payment-errors"></span>
@@ -204,6 +188,5 @@ else
         @Html.HiddenFor(m => m.PackageId)
       <button type="submit">Submit Payment</button>
     </form>
-
 }
-
+<br /><br />

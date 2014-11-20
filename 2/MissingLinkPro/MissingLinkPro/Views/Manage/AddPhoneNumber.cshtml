@@ -3,8 +3,6 @@
     ViewBag.Title = "Add Phone Number";
 }
 
-@Styles.Render("~Content/css")
-
 <h2>Enter Your Phone Number Below</h2>
 
 @using (Html.BeginForm("AddPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

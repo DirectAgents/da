@@ -70,7 +70,17 @@ namespace MissingLinkPro.Controllers
 
             bool cardCheck = StripeHelper.UserHasCreditCard(user);
 
-            return View(new PayViewModel { SubscribedPackageId = user.Package.Id, UserHasCreditCard = cardCheck, PackageId = id ?? default(int), PackageName = package.Name, PackageCost = package.CostPerMonth, IsActive = user.IsActive });
+            var model = new PayViewModel {
+                SubscribedPackageId = user.Package.Id,
+                UserHasCreditCard = cardCheck,
+                PackageId = id ?? default(int),
+                PackageName = package.Name,
+                PackageCost = package.CostPerMonth,
+                SearchesPerMonth = package.SearchesPerMonth,
+                MaxResults = package.MaxResults,
+                IsActive = user.IsActive
+            };
+            return View(model);
         } // Pay
 
         /**

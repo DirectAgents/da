@@ -3,8 +3,6 @@
     ViewBag.Title = "Manage Your Account";
 }
 
-@Styles.Render("~Content/css")
-
 <h2>Your User Information</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
@@ -12,16 +10,8 @@
         <p><br>
             <table style="margin-bottom:40px; width:555px;">
                 <tr>
-                    <td><h8>Customer ID</h8></td>
-                    <td> @Model.CustomerId</td>
-                </tr>
-                   <tr>
-                    <td><h8>Subscription ID</h8></td>
-                    <td>@Model.SubscriptionId @if (!Model.IsActive) { <b>[Cancelled]</b> }</td>
-                </tr>
-                <tr>
                     <td><h8>Package Subscription</h8></td>
-                    <td>@Model.Package.Name</td>
+                    <td>@Model.Package.Name @if (!Model.IsActive) { <b>[Cancelled]</b> }</td>
                 </tr>
                 <tr>
                     <td><h8>Package Details</h8></td>

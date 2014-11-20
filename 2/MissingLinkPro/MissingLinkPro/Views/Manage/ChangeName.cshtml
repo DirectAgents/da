@@ -3,8 +3,6 @@
     ViewBag.Title = "Change Name";
 }
 
-@Styles.Render("~Content/css")
-
 <h2>Please Fill Out The Form Below</h2>
 
 @using (Html.BeginForm("ChangeName", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))

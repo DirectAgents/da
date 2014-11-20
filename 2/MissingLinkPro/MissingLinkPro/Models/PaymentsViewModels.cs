@@ -18,6 +18,8 @@ namespace IdentitySample.Models
         public int PackageId;
         public string PackageName;
         public decimal PackageCost;
+        public int SearchesPerMonth;
+        public int MaxResults;
 
         public bool UserHasCreditCard { get; set; }
         public bool IsActive { get; set; }

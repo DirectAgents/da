@@ -4,9 +4,6 @@
     ViewBag.Title = "Begin Your Search";
 }
 
-@Styles.Render("~Content/css")
-
-
 <!-- <form id="form" action="@Url.Action("Process")" method="post" novalidate> -->
 
 @using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form" }))
@@ -121,6 +118,8 @@
     </div>
 
 @*<p>Note: Results limited to the top 1000.</p>*@
+
+<br /><br />
 
 @section Scripts {
 <script>

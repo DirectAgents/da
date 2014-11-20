@@ -35,6 +35,7 @@ input[type="checkbox"].input-validation-error {
 
 .validation-summary-errors {
     color: #b94a48;
+    max-width: 600px;
 }
 
 .validation-summary-valid {
