@@ -17,14 +17,16 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Configuration;
 using MissingLinkPro.Helpers;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Owin;
 
 namespace MissingLinkPro.Controllers
 {
     [Authorize]
     public class ApplicationController : Controller
     {
+        /*User Application DB Settings*/
         private ApplicationDbContext db = new ApplicationDbContext();
-
         public ApplicationController(ApplicationUserManager userManager)
         {
             UserManager = userManager;
@@ -46,6 +48,7 @@ namespace MissingLinkPro.Controllers
                 _userManager = value;
             }
         }
+        /*END User Application DB Settings*/
 
         public async Task<ActionResult> Index()
         {
@@ -95,6 +98,9 @@ namespace MissingLinkPro.Controllers
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
+            bool isAdmin = false;
+
+
             // Email not confirmed
             if (!user.EmailConfirmed) {
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
@@ -108,7 +114,7 @@ namespace MissingLinkPro.Controllers
             {
                 bool ok = false;
                 if (!user.IsActive)
-                {   // the result of a cancelled subscription; reassign Freemium
+                {   // the result of a cancelled subscription past its time; reassign Freemium
                     user = StripeHelper.AssignNewSubscription(user, 1);
                     ok = true;
                 }

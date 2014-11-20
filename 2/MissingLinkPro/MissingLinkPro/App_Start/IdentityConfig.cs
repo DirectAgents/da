@@ -138,7 +138,7 @@ namespace IdentitySample.Models
 
             var user = userManager.FindByName(name);
             if (user == null) {
-                user = new ApplicationUser { UserName = name, Email = name, DateTimeStamp = DateTime.Now };
+                user = new ApplicationUser { UserName = name, Email = name, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, IsActive = false };
                 var result = userManager.Create(user, password);
                 result = userManager.SetLockoutEnabled(user.Id, false);
             }

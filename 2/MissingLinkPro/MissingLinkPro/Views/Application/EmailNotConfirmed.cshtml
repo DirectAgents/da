@@ -6,13 +6,18 @@
 
 @Styles.Render("~Content/css")
 
-<h2>Email Address Confirmation Required</h2>
-<br>
-
-<div style:"padding:20px;">
-    <p>
-Your email address at @Html.DisplayFor(model => model.Email) has not been confirmed in our systems.<br>
-Please check your email for a message from directlink@directagents.com and click on the given link to complete your registration.<br>
-If this problem persists, or you require assistance, please contact the administrator at admin@directagents.com.<br>
-        </p>
-</div>
+<table class="content-space">
+    <tr>
+        <td><h2>Email Address Confirmation Required</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>An error occurred while processing your request.</p>
+            <p>Your email address at @Html.DisplayFor(model => model.Email) has not been confirmed in our systems.
+Please check your email for a message from directlink@directagents.com and click on the given link to complete your registration.</p>
+            <p>If this problem persists, or you require assistance, please contact the administrator at directlink@directagents.com.<br></p><br />
+</td>
+    </tr>
+</table>

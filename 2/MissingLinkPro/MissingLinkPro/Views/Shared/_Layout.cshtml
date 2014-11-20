@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back. Try it free!" />
     <title>@ViewBag.Title - Direct Agents | DirectLink Backlink Search</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -89,9 +90,18 @@
                 </div>
             </div>   
             <div class="footer">
-                <p><a class="i-btn" href="http://missinglink.directagents.local/Application"><img src="/Images/btn_info.png" style="margin-top:7px;"></a></p>
+                <table class="i-btn-table">
+                    <tr>
+                        <td><a class="i-btn" href="@Url.Action("Manual", "Home")"><img src="@Url.Content("~/Images/btn_info.png")"/></a></td>
+                        @*<td style="width:60px;">@Html.ActionLink(" ", "Manual", null, new { @class="i-btn" })</td>*@
+                    </tr>
+                </table>
                 <p>&copy; @DateTime.Now.Year - Direct Agents | DirectLink Backlink Search Application</p>
             </div>
+            @*<div class="footer">
+                <p><a class="i-btn" href="http://missinglink.directagents.local/Application"><img src="/Images/btn_info.png" style="margin-top:7px;"></a></p>
+                <p>&copy; @DateTime.Now.Year - Direct Agents | DirectLink Backlink Search Application</p>
+            </div>*@
         </div>
 
     @Scripts.Render("~/bundles/jquery")

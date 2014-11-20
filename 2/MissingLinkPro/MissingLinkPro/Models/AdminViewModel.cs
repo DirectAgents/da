@@ -44,6 +44,12 @@ namespace IdentitySample.Models
         [Display(Name = "Email Confirmed")]
         public bool EmailConfirmed { get; set; }
 
+        [Display(Name = "Customer ID")]
+        public string CustomerId { get; set; }
+
+        [Display(Name = "Subscription ID")]
+        public string SubscriptionId { get; set; }
+
         public IEnumerable<SelectListItem> RolesList { get; set; }
     }
 }

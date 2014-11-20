@@ -115,6 +115,18 @@ namespace MissingLinkPro.Helpers
             return user;
         } // CancelSubscription
 
+        public static ApplicationUser RemoveCreditCard(ApplicationUser user)
+        {
+            var cardService = new StripeCardService();
+            IEnumerable<StripeCard> response = cardService.List(user.CustomerId); // optional StripeListOptions
+            foreach (StripeCard card in response)
+            {
+                var retrieveCard = new StripeCardService();
+                   retrieveCard.Delete(user.CustomerId, card.Id);
+            }
+            return user;
+        }
+
         public static string GetSubscriptionStatus(ApplicationUser user)
         {
             string status = "";
@@ -150,6 +162,10 @@ namespace MissingLinkPro.Helpers
             return b;
         } // UserHasSubscription
 
+        /**
+         * Updates the Anniversary of the user in the local database, using the information retrieved from the user's
+         * latest Stripe subscription.
+         **/
         public static ApplicationUser UpdateAnniversary(ApplicationUser user)
         {
             var subscriptionService = new StripeSubscriptionService();

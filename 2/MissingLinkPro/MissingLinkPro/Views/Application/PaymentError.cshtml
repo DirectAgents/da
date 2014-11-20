@@ -1,14 +1,23 @@
 ﻿
 @{
-    ViewBag.Title = "Credit Card Processing Error";
+    ViewBag.Title = "Payment Error";
 }
 
-<h2>Payment Error</h2>
-<br /><br />
-
-<p>An error was encountered while trying to renew your subscription<br />
-    with your current credit card. To proceed, please follow the link<br />
-    and re-enter your credit card information.
+<table class="content-space">
+    <tr>
+        <td><h2>Credit Card Processing Failed</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>We encountered an error while trying to renew your subscription with your current credit card, and will require you to re-enter your credit card information. To proceed, please follow the link and re-enter your credit card information.
 </p>
-<br />
-@Html.ActionLink("Credit Card Re-Entry","UpdateCreditCard", "Payments", null, null)
+<p>@Html.ActionLink("Credit Card Re-Entry","UpdateCreditCard", "Payments", null, null)</p>
+            <p>If further assistance is required, please contact us at directlink@directagents.com.</p><br />
+</td>
+    </tr>
+</table>
+
+
+<br /><br />

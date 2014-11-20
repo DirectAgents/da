@@ -101,11 +101,29 @@ table.results-table {
     /*background-image: url(../Images/whitepadding.png) repeating-linear-gradient(to right, RGB(0,255,255), RGB(255,255,255));*/
 }
 
-.i-btn {
+/*.i-btn {
     position: fixed;
     bottom: 100px;
     margin-left: -30px;
+}*/
+
+.i-btn-table {
+        margin-left:auto;
+    margin-right:auto;
+    width:60px;
 }
+
+a.i-btn {
+    background: url(../Images/btn_info.png) no-repeat top left;
+    position: fixed;
+    bottom: 100px;
+
+    display: block;
+     width: 60px;
+     height: 60px;
+     /*text-indent: -9999px; /* hides the link text */
+}
+
 
 .footer {
     background-color: #25579d;
@@ -123,6 +141,10 @@ table.results-table {
     color: white;
     text-align:center;
     margin: 65px 0px 50px;
+}
+
+table.content-space {
+    width: 575px;
 }
 
 table.table1 {

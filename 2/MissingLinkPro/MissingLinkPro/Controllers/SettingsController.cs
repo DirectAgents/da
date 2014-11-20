@@ -10,6 +10,7 @@ using IdentitySample.Models;
 
 namespace MissingLinkPro.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SettingsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

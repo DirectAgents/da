@@ -1,16 +1,23 @@
 ﻿@model IEnumerable<IdentitySample.Models.Package>
 
 @{
-    ViewBag.Title = "Payments & Subscriptions";
+    ViewBag.Title = "Subscription Management";
 }
 
-<h2>Package Plans</h2>
-<br />
-<p>The following package plans are currently available for subscription.<br />
-    You may choose to upgrade or downgrade your plan at a later time if desired.<br />
-    NOTE: Use 4242424242424242 with any CVC and expiry date.<br />
+<table class="content-space">
+    <tr>
+        <td><h2>Package Plans</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>The following package plans are currently available for subscription. To manage your subscription, click on the link that corresponds with your chosen package plan. You may choose to upgrade or downgrade your plan at a later time if desired.
+    NOTE: Use 4242424242424242 with any CVC and expiry date.
 </p>
-<br />
+</td>
+    </tr>
+</table>
 <table class="table">
     <tr>
         <th>
@@ -46,13 +53,28 @@
     </tr>
 }
 </table>
+<br />
 
-<div style="margin-top:40px;"><h2>@Html.ActionLink("Payment History", "History", "Payments")</h2>
-    <br />
-    The provided link above will retrieve your entire history of payments as dated invoices.<br />
-</div>
-
-<div style="margin-top:40px;"><h2>@Html.ActionLink("Revise Credit Card", "UpdateCreditCard", "Payments")</h2>
-    <br />
-    The provided link above will allow you to update your current credit card information.<br />
-</div>
+<table class="content-space">
+    <tr>
+        <td><h2>@Html.ActionLink("Payment History", "History", "Payments")</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>The provided link above will retrieve your entire history of payments as dated invoices.</p><br />
+</td>
+    </tr>
+        <tr>
+        <td><h2>@Html.ActionLink("Revise Credit Card", "UpdateCreditCard", "Payments")</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>The provided link above will allow you to update your current credit card information.</p><br />
+</td>
+    </tr>
+</table>
+<br /><br />

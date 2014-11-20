@@ -3,11 +3,21 @@
     ViewBag.Title = "Subscription Activated";
 }
 
-<h2>Payment Confirmed</h2>
+<table class="content-space">
+    <tr>
+        <td><h2>Payment Confirmed</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>Thank you for subscribing to our @Model.Name package.</p>
+            <p>You are now allowed @Model.MaxResults per search at a rate of @Model.SearchesPerMonth per month. At the beginning of each new cycle, your limit will reset, and your card will be charged accordingly. For further inquiries, please contact the Administrator.
+</p><br />
+</td>
+    </tr>
+</table>
+
+
 <br /><br />
-<p>Thank you for subscribing to our @Model.Name package.<br />
-    You are now allowed @Model.MaxResults per search at a rate of @Model.SearchesPerMonth per month.<br />
-    At the beginning of each new cycle, your limit will reset, and your card will be charged accordingly.<br />
-    For further inquiries, please contact the Administrator.
-</p>
 

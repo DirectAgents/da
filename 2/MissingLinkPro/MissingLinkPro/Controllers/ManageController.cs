@@ -2,6 +2,8 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using MissingLinkPro.Helpers;
+using Stripe;
 using System;
 using System.Configuration;
 using System.Linq;
@@ -51,6 +53,12 @@ namespace IdentitySample.Controllers
                 : "";
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            try
+            {
+                user = StripeHelper.UpdateAnniversary(user);
+                await UserManager.UpdateAsync(user);
+            }
+            catch (StripeException) { return View("Error"); }
 
             var model = new IndexViewModel
             {

@@ -20,6 +20,7 @@ namespace IdentitySample.Models
         public decimal PackageCost;
 
         public bool UserHasCreditCard { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public class PostPayViewModel

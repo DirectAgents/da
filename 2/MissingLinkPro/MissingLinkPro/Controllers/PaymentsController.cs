@@ -70,7 +70,7 @@ namespace MissingLinkPro.Controllers
 
             bool cardCheck = StripeHelper.UserHasCreditCard(user);
 
-            return View(new PayViewModel { SubscribedPackageId = user.Package.Id, UserHasCreditCard = cardCheck, PackageId = id ?? default(int), PackageName = package.Name, PackageCost = package.CostPerMonth });
+            return View(new PayViewModel { SubscribedPackageId = user.Package.Id, UserHasCreditCard = cardCheck, PackageId = id ?? default(int), PackageName = package.Name, PackageCost = package.CostPerMonth, IsActive = user.IsActive });
         } // Pay
 
         /**
@@ -111,7 +111,11 @@ namespace MissingLinkPro.Controllers
 
             //if (user.PackageId == 1) return View();
 
-            user = StripeHelper.UpdateCreditCard(user, stripeToken);
+            try
+            {
+                user = StripeHelper.UpdateCreditCard(user, stripeToken);
+            }
+            catch (StripeException) { return View("Error"); }
             await UserManager.UpdateAsync(user);
 
             return View("CardUpdated");
@@ -155,10 +159,18 @@ namespace MissingLinkPro.Controllers
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            displayln(CancelSubscription.ToString());
+            //displayln(CancelSubscription.ToString());
             if (CancelSubscription == true)
             {
-                user = StripeHelper.CancelSubscription(user);
+                try
+                {
+                    user = StripeHelper.CancelSubscription(user);
+                    user = StripeHelper.RemoveCreditCard(user);
+                }
+                catch (StripeException)
+                {
+                    return View("Error");
+                }
                 await UserManager.UpdateAsync(user);
 
                 return View("CancelConfirmed");
@@ -168,19 +180,7 @@ namespace MissingLinkPro.Controllers
 
         public async Task<ActionResult> Test()
         {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            
-
-            var cardService = new StripeCardService();
-            IEnumerable<StripeCard> response = cardService.List(user.CustomerId); // optional StripeListOptions
-
-            foreach (StripeCard card in response)
-            {
-                displayln(card.Last4);
-            }
-            string hey = "break";
-
-            return View();
+            return View("Error");
         }
 
         /**

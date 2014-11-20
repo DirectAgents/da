@@ -179,7 +179,7 @@ namespace IdentitySample.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,QueriesPerformed,PackageId,EmailConfirmed")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,QueriesPerformed,PackageId,EmailConfirmed,CustomerId,SubscriptionId")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
@@ -193,6 +193,8 @@ namespace IdentitySample.Controllers
                 user.Email = editUser.Email;
                 user.FirstName = editUser.FirstName;
                 user.LastName = editUser.LastName;
+                user.CustomerId = editUser.CustomerId;
+                user.SubscriptionId = editUser.SubscriptionId;
                 user.QueriesPerformed = editUser.QueriesPerformed;
                 if (editUser.PackageId != null)
                 {
