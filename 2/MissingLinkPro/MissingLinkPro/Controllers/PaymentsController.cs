@@ -44,9 +44,17 @@ namespace MissingLinkPro.Controllers
 
         //
         // GET: /Payments/
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View(db.Packages.ToList());
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            //if (!user.IsActive) {
+            //    if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
+            //    {
+            //        user = StripeHelper.AssignNewSubscription(user, 1);
+            //        await UserManager.UpdateAsync(user);
+            //    }
+            //}
+            return View(new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList() });
         }
 
         public async Task<ActionResult> Pay(int? id)
@@ -105,58 +113,10 @@ namespace MissingLinkPro.Controllers
                 return View("ProcessingError", new PayErrorModel { Error = msg });
             }
             await UserManager.UpdateAsync(user);
-            return View("SubscriptionSet", user.Package);
-        }
 
-        public async Task<ActionResult> UpdateCreditCard()
-        {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> UpdateCreditCard(string stripeToken)
-        {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
-            //if (user.PackageId == 1) return View();
-
-            try
-            {
-                user = StripeHelper.UpdateCreditCard(user, stripeToken);
-            }
-            catch (StripeException) { return View("Error"); }
-            await UserManager.UpdateAsync(user);
-
-            return View("CardUpdated");
-        }
-
-        public async Task<ActionResult> History()
-        {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-
-            // Email not confirmed
-            if (!user.EmailConfirmed)
-            {
-                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
-            }
-
-            StripeInvoiceListOptions silo = new StripeInvoiceListOptions();
-            silo.CustomerId = user.CustomerId;
-            var invoiceService = new StripeInvoiceService();
-            IEnumerable<StripeInvoice> response = invoiceService.List(silo);
-
-            //foreach (StripeInvoice si in response)
-            //{
-            //    displayln("Customer ID: " + si.CustomerId);
-            //    displayln("Subscription ID:  " + si.SubscriptionId);
-            //    displayln("Invoice Date: " + si.Date);
-            //    displayln("Period: " + si.PeriodStart.ToString() + " " + si.PeriodEnd.ToString());
-            //    displayln("Receipt Number: " + si.ReceiptNumber);
-            //    displayln("Amount Due: " + si.AmountDue.ToString());
-            //}
-            return View(response);
-        }
+            PayIndexViewModel model = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = true, Message = "Subscription successfully changed." };
+            return View("Index", model);
+        } // Pay[Post]
 
         public async Task<ActionResult> Cancel()
         {
@@ -168,8 +128,8 @@ namespace MissingLinkPro.Controllers
         public async Task<ActionResult> Cancel(bool CancelSubscription)
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            PayIndexViewModel model = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = false, Message = "" };
 
-            //displayln(CancelSubscription.ToString());
             if (CancelSubscription == true)
             {
                 try
@@ -182,10 +142,12 @@ namespace MissingLinkPro.Controllers
                     return View("Error");
                 }
                 await UserManager.UpdateAsync(user);
+                model.HasMessage = true;
+                model.Message = "Success: subscription has been canceled; your subscription will continue until the end of its cycle, at which point it will not be renewed.";
 
-                return View("CancelConfirmed");
+                return View("Index",model);
             }
-            else return View("Index", db.Packages.ToList());
+            else return View("Index", model);
         } // Cancel
 
         public async Task<ActionResult> Test()

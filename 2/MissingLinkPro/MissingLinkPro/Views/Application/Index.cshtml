@@ -6,14 +6,18 @@
 
 <!-- <form id="form" action="@Url.Action("Process")" method="post" novalidate> -->
 
-@using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form" }))
+@using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
 {
     @Html.ValidationSummary()
 
-    <table class="table1">
+    <table class="table1" id="app-body">
         <tr>
-            <td>Search Query</td>
-            <td>Target Site To Scan For</td>
+            <td>Search Query
+                <span style="cursor:Pointer;" title="Type in whatever it is you are looking for when using a search engine.">
+                    <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><img src="~/Images/question_blob.png" /></a>
+                    </span>
+            </td>
+            <td>Target Site To Scan For <span style="cursor:Pointer;" title="Type in the website that you are scanning your results for linkbacks to. Please include subdomain prefix if one exists."><img src="~/Images/question_blob.png" /></span></td>
             @*<td>Phrase Search</td>*@
         </tr>
         <tr>
@@ -22,7 +26,7 @@
             <td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>
         </tr>
         <tr>
-            <td>Exclude Terms</td>
+            <td>Exclude Terms <span style="cursor:Pointer;" title="Type in whatever terms you wish for the search engine to exclude from your search."><img src="~/Images/question_blob.png" /></span></td>
             @*<td>Target Site To Scan For</td>*@
         </tr>
         <tr>
@@ -35,7 +39,7 @@
         </tr>
             <tr>
             <td><input class="form-field" type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>
-            <td><input class="form-field" type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
+            <td><input class="form-field" type="number" value="@Model.skip" min="1" max="1001" name="skip" onchange="spinner.spin()"></td>
 
         </tr>
         <tr>
@@ -122,11 +126,13 @@
 <br /><br />
 
 @section Scripts {
+<script type="text/javascript" src="~/Scripts/spin.js"></script>
 <script>
-
     $(function () {
         calcETA();
+        //debugger;
     });
+
 
     function calcETA() {
         var t = 2.5;
@@ -139,6 +145,29 @@
         z = Math.round(z * 100) / 100;
         if (z < 0) z = 0;
         document.getElementById("eta").innerHTML = "Average Estimated Time to Completion: " + z + " sec.";
+    }
+
+    function go() {
+        var opts = {
+            lines: 13, // The number of lines to draw
+            length: 20, // The length of each line
+            width: 10, // The line thickness
+            radius: 30, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#000', // #rgb or #rrggbb or array of colors
+            speed: 1, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: '50%', // Top position relative to parent
+            left: '50%' // Left position relative to parent
+        };
+        var target = document.getElementById('app-body');
+        var spinner = new Spinner(opts).spin(target);
     }
 </script>
 }

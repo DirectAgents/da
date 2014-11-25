@@ -8,25 +8,45 @@
 <div class="row">
     <div class="col-md-8">
         <p><br>
-            <table style="margin-bottom:40px; width:555px;">
+            <table style="margin-bottom:40px; width:450px;">
+                <tr>
+                    <td><h8>Registered Name</h8></td>
+                    <td>@Model.FirstName @Model.LastName</td>
+                </tr>
+                <tr>
+                    <td><h8>Email</h8></td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td><h8>Phone Number</h8></td>
+                    <td>@Model.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <td><h8>Credit Card</h8></td>
+                    <td>@Model.CardSummary</td>
+                </tr>
                 <tr>
                     <td><h8>Package Subscription</h8></td>
                     <td>@Model.Package.Name @if (!Model.IsActive) { <b>[Cancelled]</b> }</td>
                 </tr>
                 <tr>
-                    <td><h8>Package Details</h8></td>
-                    <td>@Model.Package.SearchesPerMonth Searches/Month, @Model.Package.MaxResults Results/Search</td>
+                    <td><h8>Searches/Month</h8></td>
+                    <td>@Model.Package.SearchesPerMonth</td>
+                </tr>
+                                <tr>
+                    <td><h8>Results Per Search</h8></td>
+                    <td>@Model.Package.MaxResults</td>
                 </tr>
                 <tr>
                 <td><h8 style="margin-right:50px;">Searches Performed This Month</h8></td>
                 <td>@Model.QueriesPerformed</td>
                 </tr>
                 <tr>
-                <td><h8>Activation Date</h8></td>
+                <td><h8>Cycle Start Date</h8></td>
                 <td>@Model.Anniversary</td>
                 </tr>
                 <tr>
-                <td><h8>Next Reset Date</h8></td>
+                <td><h8>Cycle End Date</h8></td>
                 <td>@Model.Anniversary.AddMonths(1)</td>
                 </tr>
                 <tr>
@@ -35,7 +55,7 @@
                 </tr>
                 </table>
         </p>
-        <p>
+@*        <p>
             @if (Model.HasPassword)
             {
                 @Html.ActionLink("Change your password", "ChangePassword")
@@ -63,7 +83,7 @@
             }
             ]
         </p>
-      @*  <p>
+        <p>
             External Logins: @Model.Logins.Count
             @Html.ActionLink("[Manage]", "ManageLogins")
         </p>
@@ -105,3 +125,39 @@
         } *@
     </div>
 </div>
+
+@if (Model.HasMessage) {<div><p style="color:red">* @Model.Message</p></div>}
+
+<table class="content-space">
+    <tr>
+        <td><h2>@Html.ActionLink("Update User Information", "UpdateUser", "Manage")</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>Click on the provided link to update your name, phone number, and password.</p><br />
+</td>
+    </tr>
+    <tr>
+        <td><h2>@Html.ActionLink("Credit Card Management", "CreditCardManagement", "Manage")</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>Click on the provided link to manage your credit card information.</p><br />
+</td>
+    </tr>
+    <tr>
+        <td><h2>@Html.ActionLink("Payment History", "History", "Manage")</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>The provided link above will retrieve your entire history of payments as dated invoices.</p><br />
+</td>
+    </tr>
+</table>
+<br /><br />

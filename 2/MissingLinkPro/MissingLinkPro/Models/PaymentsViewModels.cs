@@ -25,6 +25,20 @@ namespace IdentitySample.Models
         public bool IsActive { get; set; }
     }
 
+    public class PayIndexViewModel
+    {
+        public int PackageId { get; set; }
+        public List<Package> ListofPackages { get; set; }
+
+        public bool HasMessage { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class PayHistoryViewModel
+    {
+        public List<Stripe.StripeInvoiceItem> InvoiceItems { get; set; }
+    }
+
     public class PostPayViewModel
     {
         public string stripeToken { get; set; }
@@ -39,5 +53,11 @@ namespace IdentitySample.Models
     public class PostCancelModel
     {
         public int PackageId { get; set; }
+    }
+
+    public class PayViewMessengerModel
+    {
+        public bool HasMessage { get; set; }
+        public string Message { get; set; }
     }
 }

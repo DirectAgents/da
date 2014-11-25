@@ -17,6 +17,7 @@ namespace IdentitySample.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
         public bool HasFirstName { get; set; }
         public bool HasLastName { get; set; }
         public DateTime Anniversary { get; set; }
@@ -27,6 +28,49 @@ namespace IdentitySample.Models
         public string CustomerId { get; set; }
         public string SubscriptionId { get; set; }
         public bool IsActive { get; set; }
+
+        public bool HasMessage { get; set; }
+        public string Message { get; set; }
+
+        public string CardSummary { get; set; }
+    }
+
+    public class PayUpdateCreditCardViewModel
+    {
+        public bool HasCreditCard { get; set; }
+        public Stripe.StripeCard Card { get; set; }
+
+        public bool HasMessage { get; set; }
+        public string Message { get; set; }
+    }
+
+    public class UpdateUserViewModel
+    {
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Phone]
+        [Display(Name = "Phone Number")]
+        public string Number { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Current password")]
+        public string OldPassword { get; set; }
+
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "New Password")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm New Password")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
+        public bool PasswordChanged { get; set; }
     }
 
     public class ManageLoginsViewModel

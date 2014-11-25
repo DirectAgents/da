@@ -39,5 +39,11 @@ namespace IdentitySample.Controllers
 
             return View();
         }
+
+        public ActionResult FAQ()
+        {
+            ViewBag.Mesage = "Frequently Asked Questions";
+            return View();
+        }
     }
 }

@@ -107,6 +107,19 @@ namespace MissingLinkPro.Helpers
             return user;
         }
 
+        public static StripeCard GetCreditCard(ApplicationUser user)
+        {
+            StripeCard retrieved = null;
+            try
+            {
+                var cardService = new StripeCardService();
+                IEnumerable<StripeCard> response = cardService.List(user.CustomerId);
+                retrieved = response.ElementAt(0);
+            }
+            catch (StripeException) { }
+            return retrieved;
+        } // GetCreditCard
+
         public static ApplicationUser CancelSubscription(ApplicationUser user)
         {
             var subscriptionService = new StripeSubscriptionService();

@@ -75,6 +75,8 @@
                         <li>@Html.ActionLink("Help", "Manual", "Home")</li>
                     }
 
+                    <li>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
+
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
                         <li>@Html.ActionLink("Users", "Index", "UsersAdmin")</li>

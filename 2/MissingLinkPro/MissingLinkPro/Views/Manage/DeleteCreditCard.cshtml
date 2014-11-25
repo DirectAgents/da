@@ -1,0 +1,52 @@
+﻿@model IdentitySample.Models.PayUpdateCreditCardViewModel
+@{
+    ViewBag.Title = "Delete Credit Card";
+}
+
+@if (Model.HasCreditCard) {
+    <table class="content-space">
+    <tr>
+        <td><h2>Confirmation</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>You are about to remove your credit card. Do you wish to proceed?</p>
+            <br />
+</td>
+    </tr>
+    </table>
+
+        using (Html.BeginForm("DeleteCreditCard", "Manage", FormMethod.Post, new { id = "form" }))
+            {
+            <table>
+                <tr>
+                    <td style=""><h4><input class="radio-btn" type="radio" name="DeleteCard" value="true" /> Yes</h4></td>
+                    <td><h4><input class="radio-btn" type="radio" name="DeleteCard" value="false" checked="checked" /> No</h4></td>
+                </tr>
+                <tr><td><br /></td></tr>
+                <tr>
+                    <td><button type="submit" value="Cancel">Delete Credit Card</button></td>
+                </tr>
+            </table>
+            }
+}
+
+else {
+        <table class="content-space">
+    <tr>
+        <td><h2>No Card Found</h2></td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td><p>You don't have a card registered under your account.</p>
+            <br />
+</td>
+    </tr>
+    </table>
+}
+    <br /><br />
+<br />

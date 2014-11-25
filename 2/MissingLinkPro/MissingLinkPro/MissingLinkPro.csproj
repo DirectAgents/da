@@ -197,6 +197,7 @@
     <Content Include="Images\linkback_no.png" />
     <Content Include="Images\linkback_yes.png" />
     <Content Include="Images\logo.png" />
+    <Content Include="Images\question_blob.png" />
     <Content Include="Images\shadow_L.png" />
     <Content Include="Images\shadow_R.png" />
     <Content Include="Images\tooltip1.png" />
@@ -223,6 +224,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\spin.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -235,6 +237,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -243,6 +246,7 @@
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\UpdateUserViewModel.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -385,15 +389,20 @@
     <Content Include="Views\Payments\Pay.cshtml" />
     <Content Include="Views\Payments\SubscriptionSet.cshtml" />
     <Content Include="Views\Payments\ProcessingError.cshtml" />
-    <Content Include="Views\Payments\History.cshtml" />
+    <Content Include="Views\Manage\History.cshtml" />
     <Content Include="Views\Payments\Cancel.cshtml" />
     <Content Include="Views\Payments\CancelConfirmed.cshtml" />
     <Content Include="Views\Payments\Test.cshtml" />
     <Content Include="Views\Payments\EmailNotConfirmed.cshtml" />
-    <Content Include="Views\Payments\UpdateCreditCard.cshtml" />
+    <Content Include="Views\Manage\UpdateCreditCard.cshtml" />
     <Content Include="Views\Application\PaymentError.cshtml" />
     <Content Include="Views\Payments\CardUpdated.cshtml" />
     <Content Include="Views\Home\Manual.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
+    <Content Include="Views\Manage\UpdateUser.cshtml" />
+    <Content Include="Views\Manage\UpdateUserConfirmed.cshtml" />
+    <Content Include="Views\Manage\CreditCardManagement.cshtml" />
+    <Content Include="Views\Manage\DeleteCreditCard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -403,6 +412,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Demo\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

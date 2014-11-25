@@ -5,6 +5,7 @@ using Microsoft.Owin.Security;
 using MissingLinkPro.Helpers;
 using Stripe;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,27 +59,191 @@ namespace IdentitySample.Controllers
                 user = StripeHelper.UpdateAnniversary(user);
                 await UserManager.UpdateAsync(user);
             }
+            catch (StripeException e)
+            {
+                displayln(e.ToString());
+                return View("Error");
+            }
+            IndexViewModel model = GenerateManageIndexModel(user);
+            return View(model);
+        }
+
+        public async Task<ActionResult> CreditCardManagement()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            bool HasExistingCard = StripeHelper.UserHasCreditCard(user);
+            PayUpdateCreditCardViewModel model = new PayUpdateCreditCardViewModel() { HasMessage = false };
+            if (HasExistingCard)
+            {
+                model.Card = StripeHelper.GetCreditCard(user);
+                model.HasCreditCard = true;
+                if (model.Card.AddressLine2 == null) model.Card.AddressLine2 = "";
+            }
+            else
+            {
+                model.HasMessage = true;
+                model.Message = "You currently don't have a card registered.";
+                return View("CreditCardManagement", model);
+            }
+            return View(model);
+        } // CreditCardManagement
+
+        private List<StripeInvoice> AdjustInvoiceItems(IEnumerable<StripeInvoice> list) {
+            List<StripeInvoice> StripeInvoiceList = list.ToList();
+            foreach (StripeInvoice si in StripeInvoiceList) {
+                StripeInvoiceItem[] ItemArray = si.StripeInvoiceLines.StripeInvoiceItems.ToArray();
+                for (int i = 0; i < ItemArray.Length; i++)
+                {
+                    if (ItemArray[i].Description == null)
+                    {
+                        int caseSwitch = ItemArray[i].Amount.Value;
+                        switch (caseSwitch)
+                        {
+                            case 0:
+                                ItemArray[i].Description = "Freemium Subscription";
+                                break;
+                            case 1999:
+                                ItemArray[i].Description = "Bronze Subscription";
+                                break;
+                            case 3999:
+                                ItemArray[i].Description = "Silver Subscription";
+                                break;
+                            case 5999:
+                                ItemArray[i].Description = "Gold Subscription";
+                                break;
+                            case 9999:
+                                ItemArray[i].Description = "Platinum Subscription";
+                                break;
+                            default:
+                                ItemArray[i].Description = "Other";
+                                break;
+                        }
+                    }
+                }
+            }
+            return StripeInvoiceList;
+        }
+
+        public async Task<ActionResult> History()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            // Email not confirmed
+            if (!user.EmailConfirmed)
+            {
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+            }
+
+            StripeInvoiceListOptions silo = new StripeInvoiceListOptions();
+            silo.CustomerId = user.CustomerId;
+            var invoiceService = new StripeInvoiceService();
+            IEnumerable<StripeInvoice> response = AdjustInvoiceItems(invoiceService.List(silo));
+            // IEnumerable<StripeInvoice> response = invoiceService.List(silo);
+
+            //foreach (stripeinvoice si in response)
+            //{
+            //    stripeinvoiceitem[] array = si.stripeinvoicelines.stripeinvoiceitems.toarray();
+            //    for (int i = 0; i < array.length; i++)
+            //    {
+            //        if (array[i].description == null) array[i].description = "empty";
+            //    }
+            //}
+
+            //foreach (StripeInvoice si in response)
+            //{
+            //    displayln("Customer ID: " + si.CustomerId);
+            //    displayln("Subscription ID:  " + si.SubscriptionId);
+            //    displayln("Invoice Date: " + si.Date);
+            //    displayln("Period: " + si.PeriodStart.ToString() + " " + si.PeriodEnd.ToString());
+            //    displayln("Receipt Number: " + si.ReceiptNumber);
+            //    displayln("Amount Due: " + si.AmountDue.ToString());
+            //}
+            return View(response);
+        } // History
+
+        public async Task<ActionResult> UpdateCreditCard()
+        {
+            //var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            //bool HasExistingCard = StripeHelper.UserHasCreditCard(user);
+            //PayUpdateCreditCardViewModel model = new PayUpdateCreditCardViewModel();
+            //if (HasExistingCard)
+            //{
+            //    model.Card = StripeHelper.GetCreditCard(user);
+            //    model.HasCreditCard = true;
+            //    if (model.Card.AddressLine2 == null) model.Card.AddressLine2 = "";
+            //}
+            //return View(model);
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            bool cardFound = StripeHelper.UserHasCreditCard(user);
+            PayUpdateCreditCardViewModel model = new PayUpdateCreditCardViewModel { HasMessage = false, HasCreditCard = cardFound };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateCreditCard(string stripeToken)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            try
+            {
+                user = StripeHelper.UpdateCreditCard(user, stripeToken);
+            }
             catch (StripeException) { return View("Error"); }
 
-            var model = new IndexViewModel
+            StripeCard card = StripeHelper.GetCreditCard(user);
+            IndexViewModel model = GenerateManageIndexModel(user, true, "UpdateCreditCard OK: Your credit card has been successfully updated.");
+
+            return View("Index", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreditCardManagement(string stripeToken)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            //if (user.PackageId == 1) return View();
+
+            try
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Package = user.Package,
-                PhoneNumber = user.PhoneNumber,
-                QueriesPerformed = user.QueriesPerformed,
-                DateTimeStamp = user.DateTimeStamp,
-                Anniversary = user.Anniversary,
-                HasPassword = HasPassword(),
-                CustomerId = user.CustomerId,
-                SubscriptionId = user.SubscriptionId,
-                IsActive = user.IsActive,
-                //PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId()),
-                Logins = await UserManager.GetLoginsAsync(User.Identity.GetUserId()),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
-            };
+                user = StripeHelper.UpdateCreditCard(user, stripeToken);
+            }
+            catch (StripeException) { return View("Error"); }
+            await UserManager.UpdateAsync(user);
+
+            IndexViewModel model = GenerateManageIndexModel(user);
+            model.HasMessage = true;
+            model.Message = "CreditCardManagement OK: Your credit card has been successfully updated.";
+            return View("Index",model);
+        }
+
+        public async Task<ActionResult> DeleteCreditCard()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            bool cardFound = StripeHelper.UserHasCreditCard(user);
+            PayUpdateCreditCardViewModel model = new PayUpdateCreditCardViewModel { HasCreditCard = cardFound};
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteCreditCard(bool DeleteCard)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            IndexViewModel model = GenerateManageIndexModel(user);
+            if (DeleteCard == true)
+            {
+                try
+                {
+                    user = StripeHelper.RemoveCreditCard(user);
+                }
+                catch (StripeException)
+                {
+                    return View("Error");
+                }
+                await UserManager.UpdateAsync(user);
+                model.HasMessage = true;
+                model.Message = "Credit card successfully removed from your account.";
+                model.CardSummary = "n/a";
+            }
+            return View("Index",model);
         }
 
         //
@@ -113,6 +278,88 @@ namespace IdentitySample.Controllers
             }
             return RedirectToAction("ManageLogins", new { Message = message });
         }
+
+        //
+        // GET: /Account/UpdateUser
+        public async Task<ActionResult> UpdateUser()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            UpdateUserViewModel model = new UpdateUserViewModel { FirstName = user.FirstName, LastName = user.LastName, Number = user.PhoneNumber };
+            return View(model);
+        }
+
+        //
+        // POST: /Account/UpdateUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpdateUser(UpdateUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null) 
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.PhoneNumber = model.Number;
+                var userSynced = await UserManager.UpdateAsync(user);
+                if (!userSynced.Succeeded) return View("Error");
+
+                string msg = "* User Information Updated.";
+
+                if (model.OldPassword != null && model.NewPassword != null && model.ConfirmPassword != null && (model.NewPassword.Equals(model.ConfirmPassword)))
+                {
+                    var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                    if (!result.Succeeded)
+                    {
+                        AddErrors(result);
+                        return View(model);
+                    }
+                    await SignInAsync(user, isPersistent: false);
+                    model.PasswordChanged = true;
+                    msg += "<br/> *Password successfully changed.";
+                }
+
+                IndexViewModel indexModel = GenerateManageIndexModel(user,true,msg);
+                return View("Index", indexModel);
+            }
+            return View(model);
+        }
+
+        private IndexViewModel GenerateManageIndexModel(ApplicationUser user, bool HasMessageArg = false, string MessageArg = "") {
+
+            string CardMessage = "";
+            if (StripeHelper.UserHasCreditCard(user))
+            {
+                StripeCard card = StripeHelper.GetCreditCard(user);
+                CardMessage = card.Brand + " ************" + card.Last4 + ", EXP " + card.ExpirationMonth + "/" + card.ExpirationYear;
+            }
+            else
+                CardMessage = "n/a";
+
+            var model = new IndexViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Package = user.Package,
+                PhoneNumber = user.PhoneNumber,
+                QueriesPerformed = user.QueriesPerformed,
+                DateTimeStamp = user.DateTimeStamp,
+                Anniversary = user.Anniversary,
+                HasPassword = HasPassword(),
+                CustomerId = user.CustomerId,
+                SubscriptionId = user.SubscriptionId,
+                IsActive = user.IsActive,
+                CardSummary = CardMessage,
+                HasMessage = HasMessageArg,
+                Message = MessageArg
+                //PhoneNumber = await UserManager.GetPhoneNumberAsync(User.Identity.GetUserId()),
+                //TwoFactor = await UserManager.GetTwoFactorEnabledAsync(User.Identity.GetUserId()),
+                //Logins = await UserManager.GetLoginsAsync(User.Identity.GetUserId()),
+                //BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(User.Identity.GetUserId())
+            };
+            return model;
+        } // GenerateManageIndexModel
 
         //
         // GET: /Account/AddPhoneNumber
@@ -394,6 +641,24 @@ namespace IdentitySample.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+        /**
+        * Quick shortcut method for printing to the diagnostic console, sans new line.
+        * @para string s:  the string to be printed
+        **/
+        private void display(string s)
+        {
+            System.Diagnostics.Debug.Write(s);
+        } // display
+
+        /**
+         * Quick shortcut method for printing to the diagnostic console, with new line.
+         * @para string s:  the string to be printed
+         **/
+        private void displayln(string s)
+        {
+            System.Diagnostics.Debug.WriteLine(s);
+        } // displayln
+
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
@@ -454,4 +719,6 @@ namespace IdentitySample.Controllers
 
         #endregion
     }
+
+
 }

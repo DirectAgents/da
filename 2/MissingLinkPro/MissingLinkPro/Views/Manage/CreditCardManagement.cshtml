@@ -1,0 +1,150 @@
+﻿@model IdentitySample.Models.PayUpdateCreditCardViewModel
+
+@{
+    ViewBag.Title = "Credit Card Management";
+}
+
+@section Scripts
+{
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+    Stripe.setPublishableKey('pk_test_bqotCuVYyt6dLMoMD4doOL6V');
+
+    var stripeResponseHandler = function (status, response) {
+        var $form = $('#payment-form');
+
+        if (response.error) {
+            // Show the errors on the form
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('button').prop('disabled', false);
+        } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+            // and re-submit
+            $form.get(0).submit();
+        }
+    };
+
+    jQuery(function ($) {
+        $('#payment-form').submit(function (event) {
+            var $form = $(this);
+            // Disable the submit button to prevent repeated clicks
+            $form.find('button').prop('disabled', true);
+
+            Stripe.card.createToken($form, stripeResponseHandler);
+
+            // Prevent the form from submitting with the default action
+            return false;
+        });
+    });
+
+</script>
+}
+
+@if (Model.HasCreditCard)
+{
+    <table class="content-space">
+        <tr>
+            <td><h2>Your Credit Card</h2></td>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>You currently have the following card registered under your account.</p><br />
+    </td>
+        </tr>
+    </table>
+    
+    <table style="width:300px;">
+       <tr>
+           <th>Card Type</th><td>@Model.Card.Brand</td>
+       </tr>
+       <tr>
+           <th>Card Number</th><td>************@Model.Card.Last4</td>
+       </tr>
+       <tr>
+           <th>Name</th><td>@Model.Card.Name</td>
+       </tr>
+       <tr>
+           <th>Expiry Date</th><td>@Model.Card.ExpirationMonth / @Model.Card.ExpirationYear</td>
+       </tr>
+       <tr>
+           <th>Address</th><td>@Model.Card.AddressLine1</td>
+       </tr>
+
+       @if (!Model.Card.AddressLine2.Equals("")) {       <tr><th> </th><td>@Model.Card.AddressLine2</td></tr> }
+       <tr>
+         <th> </th><td>@Model.Card.AddressCity, @Model.Card.AddressState @Model.Card.AddressZip</td>
+       </tr>
+    </table>
+    
+    @Html.ActionLink("Update Credit Card", "UpdateCreditCard", "Manage");<br />
+    @Html.ActionLink("Delete Credit Card", "DeleteCreditCard", "Manage");
+}
+else
+{
+    <table class="content-space">
+        <tr>
+            <td><h2>Update Credit Card Information</h2></td>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>    <p>You currently don't have a credit card registered under your account. Please fill out the credit card form fields below.</p>
+                        <p>Please be advised that if you are currently using a package plan that has been cancelled, updating your credit card will reactivate your subscription.</p><br />
+    </td>
+        </tr>
+    </table>
+
+        <br />
+        <form action="" method="POST" id="payment-form">
+                      <span class="payment-errors"></span>
+
+            <table>
+                <tr>
+                    <th>Name On Card</th>
+                    <td><input type="text" size="30" data-stripe="name" required/></td>
+                </tr>
+                <tr>
+                    <th>Address Line 1</th>
+                    <td><input type="text" size="30" data-stripe="address_line1" required/></td>
+                </tr>
+                <tr>
+                    <th>Address Line 2</th>
+                    <td><input type="text" size="30" data-stripe="address_line2"/></td>
+                </tr>
+                <tr>
+                    <th>City</th>
+                    <td><input type="text" size="25" data-stripe="address_city" required/></td>
+                </tr>
+                    <tr>
+                    <th>State, Postal Code </th>
+                    <td><input type="text" size="3" data-stripe="address_state"/> <input type="text" size="8" data-stripe="address_zip" required/></td>
+                </tr>
+                   @*<tr>
+                    <th>Country</th>
+                    <td><input type="text" size="5" data-stripe="address_country"/></td>
+                </tr>*@
+                   <tr>
+                    <th>Card Number</th>
+                    <td><input type="text" size="30" data-stripe="number"/></td>
+                </tr>
+                    <tr>
+                    <th>CVC</th>
+                    <td><input type="text" size="4" data-stripe="cvc"/></td>
+                </tr>
+                <tr>
+                    <th style="padding-right:4px;">Expiration (MM/YYYY) </th>
+                    <td><input type="text" size="2" data-stripe="exp-month"/> / <input type="text" size="4" data-stripe="exp-year"/></td>
+                </tr>
+            </table>
+          <button type="submit">Submit</button>
+        </form>
+
+}
+<br /><br />

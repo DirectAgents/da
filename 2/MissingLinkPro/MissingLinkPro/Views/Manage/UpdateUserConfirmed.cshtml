@@ -1,0 +1,31 @@
+﻿@model IdentitySample.Models.UpdateUserViewModel
+
+@{
+    ViewBag.Title = "Update Confirmed";
+}
+
+
+
+<table class="content-space">
+        <tr>
+        <td><h2>Success!</h2></td>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>Your information has been successful updated to the following:</p><br />
+    </td>
+        </tr>
+    <tr>
+        <th>Registered Name</th><td>@Model.FirstName @Model.LastName</td>
+    </tr>
+    <tr>
+        <th>Phone Number</th><td>@Model.Number</td>
+    </tr>
+    <tr>
+        <td><br />@if (Model.PasswordChanged) { <p>Your password has also been successfully changed.</p> }</td>
+    </tr>
+</table>
+
+<br /><br />
