@@ -1,4 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using IdentitySample.Models;
+using Microsoft.AspNet.Identity;
+using MissingLinkPro.Models;
+using System.Configuration;
+using System.Web.Mvc;
 
 namespace IdentitySample.Controllers
 {
@@ -28,9 +32,24 @@ namespace IdentitySample.Controllers
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ContactFormViewModel model = new ContactFormViewModel { ApplicationMsgAvailable = false };
+            return View(model);
+        }
 
-            return View();
+        [HttpPost]
+        public ActionResult Contact(ContactFormViewModel model)
+        {
+            Emailer emailer = new Emailer(new System.Net.NetworkCredential(ConfigurationManager.AppSettings["Emailer_Username"], ConfigurationManager.AppSettings["Emailer_Password"]));
+            IdentityMessage message = new IdentityMessage();
+            message.Destination = "directlink@directagents.com";
+            message.Subject = "Contact Form Msg: " + model.FirstName + " " + model.LastName + ", " + model.Company;
+            message.Body = model.FirstName + " " + model.LastName + "<br />Phone: " + model.PhoneNum + "<br />Email " + model.Email + "<br />Company: " + model.Company + "<br />Message: " + model.Message;
+            emailer.SendEmail(ConfigurationManager.AppSettings["Emailer_Username"], message.Destination, null, message.Subject, message.Body, true);
+
+            model.ApplicationMsgAvailable = true;
+            model.ApplicationMsg = "*Thank you. Your message has been sent. You will be contacted by a representative shortly.";
+
+            return View(model);
         }
 
         public ActionResult Manual()

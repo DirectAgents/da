@@ -1,4 +1,5 @@
-﻿
+﻿@model IdentitySample.Models.ContactFormViewModel
+
 @{
     ViewBag.Title = "Contact";
 }
@@ -19,6 +20,48 @@ New York, NY 10003<br />
 </td>
     </tr>
 </table>
+
+@if (Model.ApplicationMsgAvailable) { <p>@Model.ApplicationMsg</p> }
+
+@using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
+{
+    <table>
+        @*<tr>
+            <td><ul>
+                <li><input type="checkbox" name="LeadGeneration"> Lead Generation</li>
+                <li><input type="checkbox" name="AffiliateMarketing"> Affiliate Marketing</li>
+                <li><input type="checkbox" name="PaidSearchAndSEO"> Lead Generation</li>
+                <li><input type="checkbox" name="SocialMedia"> Affiliate Marketing</li>
+                <li><input type="checkbox" name="CreativeDesign"> Affiliate Marketing</li>
+                <li><input type="checkbox" name="MobileMarketing"> Lead Generation</li>
+                <li><input type="checkbox" name="ProgrammaticMediaBuying"> Programmatic Media Buying</li>
+                </ul>
+            </td>
+        </tr>*@
+        <tr>
+            <td>First Name</td><td><input class="form-field" type="text" size ="65" name="FirstName" required></td>
+        </tr>
+        <tr>
+            <td>Last Name</td><td><input class="form-field" type="text" size ="65" name="LastName" required></td>
+        </tr>
+         <tr>
+            <td>Phone Number</td><td><input class="form-field" type="tel" size ="65" name="PhoneNum" required></td>
+        </tr>
+        <tr>
+            <td>Email</td><td><input class="form-field" type="email" size ="65" name="Email" required></td>
+        </tr>
+            <tr>
+            <td>Company Name</td><td><input class="form-field" type="text" size ="65" name="Company" required></td>
+        </tr>
+                    <tr>
+            <td>Message</td><td><textarea class="form-field" name="Message" required></textarea></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Send Message"></td>
+        </tr>
+    </table>
+}
+
 @*<div>
     <address>
         One Microsoft Way<br />

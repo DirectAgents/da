@@ -53,14 +53,11 @@ namespace MissingLinkPro.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            // Email not confirmed
-            if (!user.EmailConfirmed)
-            {
-                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
-            }
 
-            // If user is accessing Index page, any previous Session should be flushed.
-            if ((ParameterKeeper)Session["Params"] != null)
+            if (!user.EmailConfirmed)               // Email not confirmed
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+
+            if ((ParameterKeeper)Session["Params"] != null)  // If user is accessing Index page, any previous Session should be flushed.
                 Session["Params"] = null;
 
             ParameterKeeper pk = new ParameterKeeper
@@ -94,8 +91,6 @@ namespace MissingLinkPro.Controllers
          **/
         public async Task<ActionResult> Process(ParameterKeeper param, bool NewSession = false)
         {
-            //if (param.top % 50 > 0) return View("Index",param);
-
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             Package userPackage = db.Packages.Find(user.PackageId);
 
@@ -124,8 +119,8 @@ namespace MissingLinkPro.Controllers
                 if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
                 {
                     bool ok = false;
-                    if (!user.IsActive)
-                    {   // the result of a cancelled subscription past its time; reassign Freemium
+                    if (!user.IsActive)  // the result of a cancelled subscription past its time; reassign Freemium
+                    {  
                         user = StripeHelper.AssignNewSubscription(user, 1);
                         userPackage = db.Packages.Find(user.PackageId);
                         ok = true;
@@ -146,9 +141,17 @@ namespace MissingLinkPro.Controllers
                         else {
                             // Space has been reserved here in the event that the decision is made to have a payment error return to the Index,
                             // rather than a separate page. In that case, a model would have to be generated.
-                        if (status.Equals("past_due")) return View("PaymentError");
-                        if (status.Equals("unpaid")) return View("PaymentError");
-                        if (status.Equals("canceled")) return View("PaymentError");
+                            if (!NewSession)
+                                param = (ParameterKeeper)Session["Params"];
+                            else
+                                param.ParsedResults = new List<ProcessHub.SearchResult>();
+                            ProcessHub model = new ProcessHub(param);
+                            model.ParsedResults = param.ParsedResults;
+                            model.SearchErrorEncountered = true;
+                            if (status.Equals("past_due")) model.SearchErrorMsg = "Subscription payment status: past due.";
+                            if (status.Equals("unpaid")) model.SearchErrorMsg = "Subscription payment status: unpaid.";
+                            if (status.Equals("canceled")) model.SearchErrorMsg = "Subscription payment status: canceled.";
+                            return View(model);
                         }
                     }
 
@@ -161,16 +164,26 @@ namespace MissingLinkPro.Controllers
                     //    user.Anniversary = user.Anniversary.AddMonths(1);
                 }
 
-                if (user.QueriesPerformed >= userPackage.SearchesPerMonth) return View("MonthlyMaxReached", user);
+                if (user.QueriesPerformed >= userPackage.SearchesPerMonth)
+                {
+                    if (!NewSession)
+                        param = (ParameterKeeper)Session["Params"];
+                    else
+                        param.ParsedResults = new List<ProcessHub.SearchResult>();
+                    ProcessHub model = new ProcessHub(param);
+                    model.ParsedResults = param.ParsedResults;
+                    model.SearchErrorEncountered = true;
+                    model.SearchErrorMsg = "You've reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
+                    return View(model);
+                    // return View("MonthlyMaxReached", user);
+                }
             }
             //End account checks.
 
             // If-statement will occur if the param is coming from the Application Index page, where newSession is always set to true.
             // If coming via click on Next Set of Results, this will always be false.
             if (NewSession == true)
-            {
                 Session["Params"] = null;
-            }
 
             ProcessHub ph = null;
             if (!isAdmin)
@@ -187,24 +200,10 @@ namespace MissingLinkPro.Controllers
             // Fresh run; should check validity of inputs.
             else if (ModelState.IsValid)
             {
-                // Tamper-checking
-                if ((param.top + param.skip) > 1001)
+                if ((param.top + param.skip) > 1001)    // Recalculating results based on skip value.
                 {
                     param.top = 1000 - (param.skip - 1);
                     if (param.top <= 0) param.top = 1;
-
-                    //if (param.skip >= param.top)
-                    //    param.top = 1000 - param.skip;
-                    //else if (param.top > param.skip)
-                    //{
-                    //    param.top = param.top - param.skip;
-                        //param.top = 1000;
-                        //param.skip = 1;
-                    //}
-                    //else if (param.top == param.skip)
-                    //{
-                    //    param.top = 1000 - param.top;
-                    //}
                 }
 
                 ph = new ProcessHub(param);
@@ -227,38 +226,14 @@ namespace MissingLinkPro.Controllers
         } // Process
 
         /**
-         * Depracated version of Next() that was used in previous versions of this application.
-         * CURRENTLY NOT IN USE; CODE REQUIRES COMPLETE UPDATE IF RE-IMPLEMENTING.
-         **/
-        public async Task<ActionResult> Next()
-        {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            int DailyCap = Convert.ToInt32(ConfigurationManager.AppSettings["MaxQueriesPerDay"]);
-            if (user.QueriesPerformed >= DailyCap) return View("DailyMaxReached");
-
-            ParameterKeeper param = (ParameterKeeper)Session["Params"];
-            ProcessHub p = new ProcessHub(param);
-            p.ParsedResults = param.ParsedResults;
-            p.run();
-            updateResults(p, param);
-
-            user.QueriesPerformed++;
-            await UserManager.UpdateAsync(user);
-
-            return View("Process",p);
-        }
-
-        /**
          * Performs updating of search results and potential error messages; saves to ParameterKeeper.
          * Para@    ProcessHub p
          *          ParameterKeeper param
          **/
         private void updateResults(ProcessHub p, ParameterKeeper param)
         {
-            param.MaxResultRange = 1000 - (param.skip - 1) - param.top; // TESTING
+            param.MaxResultRange = 1000 - (param.skip - 1) - param.top;
             param.skip += param.top;
-
-            //param.top += param.Increment;
             param.ParsedResults = p.ParsedResults;
             param.OmitCount = p.OmitCount;
             if (p.SearchErrorEncountered)

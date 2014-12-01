@@ -193,6 +193,11 @@ namespace MissingLinkPro.Models
             return b;
         } // containsBlankSpot
 
+        public ProcessHub()
+        {
+            // TODO: Complete member initialization
+        }
+
         /**
          * Main Constructor for ProcessHub.
          * @param   param_query: search query to be used via Google
@@ -378,23 +383,21 @@ namespace MissingLinkPro.Models
                     webQuery = webQuery.AddQueryOption("$top", top);
                 else
                     webQuery = webQuery.AddQueryOption("$top", 50);
-
                 webQuery = webQuery.AddQueryOption("$skip", skip);
+                var webResults = webQuery.Execute();
 
-                    var webResults = webQuery.Execute();
-
-                    foreach (var result in webResults)
+                foreach (var result in webResults)
+                {
+                    if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue; // checks for consecutive duplicates
+                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                    count++;
+                    skip++;
+                    if (count == top)
                     {
-                        if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue; // checks for consecutive duplicates
-                        ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
-                        count++;
-                        skip++;
-                        if (count == top)
-                        {
-                            complete = true;
-                            break;
-                        }
+                        complete = true;
+                        break;
                     }
+                }
                     if (complete) break;
             }
             //if (temp.Count < top)

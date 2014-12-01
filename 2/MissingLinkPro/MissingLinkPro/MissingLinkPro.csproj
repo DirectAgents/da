@@ -314,6 +314,7 @@
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\BingSearchContainer.cs" />
     <Compile Include="Models\BingSearchContainerWebOnly.cs" />
+    <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\PaymentsViewModels.cs" />
     <Compile Include="Models\Emailer.cs" />
     <Compile Include="Models\IdentityModels.cs" />

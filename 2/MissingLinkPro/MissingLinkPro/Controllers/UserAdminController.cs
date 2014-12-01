@@ -161,6 +161,8 @@ namespace IdentitySample.Controllers
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                CustomerId = user.CustomerId,
+                SubscriptionId = user.SubscriptionId,
                 QueriesPerformed = user.QueriesPerformed,
                 TotalQueriesPerformed = user.TotalQueriesPerformed,
                 LastQueryTime = user.DateTimeStamp,
