@@ -72,22 +72,15 @@ namespace MissingLinkPro.Controllers
             return View(pk);
         }
 
-        public ActionResult DailyMaxReached() {
-            Setting s = new Setting();
-            int? i = SettingsHelper.RetrieveDailyLimitSetting();
-            s.Value = i.ToString();
-            return View(s);
-        }
-
         public ActionResult EmailNotConfirmed(ApplicationUser a) {
             return View(a);
         }
 
         /**
-         * The first if-statement was added to circumvent the need for the Next ActionResult below.
-         * Should it ever need to be reverted back, simply remove this if-statement, and change the
-         * else-if that follows into if, and change the Next Set of Results link in Process.cshtml
-         * accordingly.
+         * Creates the ProcessHub that handles the Bing search and scraping. Method checks a non-admin user's account
+         * for a valid subscription, and proceeds if one exists. A Freemium account is automatically assigned if a user
+         * were to use the tool past a cancelled subscription's date. Also recalculates the form fields to stay within
+         * the set limit of 1000 max results.
          **/
         public async Task<ActionResult> Process(ParameterKeeper param, bool NewSession = false)
         {

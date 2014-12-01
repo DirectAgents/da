@@ -23,76 +23,19 @@
     </script>
 }
 
-<div><h2>Invoices</h2>
+<div><h2>Invoice Items</h2>
     <br />
-    <p>All invoices are sorted by date. To view an invoice, please click on the given date.</p>
+    <p>All items are sorted by date.</p>
     <br />
 </div>
 
-@foreach (Stripe.StripeInvoice si in @Model) {
-    <table class="invoice-table">
-        <tr class="header-tr" id="@si.Id">
-            <td class="invoice-header"><b>@si.Date</b></td>
-        </tr>
-        @*<tr class="invoice-item">
-            <th>Invoice ID</th><td>@si.Id</td>
-        </tr>
-           @*<tr>
-            <th>Invoice Date</th><td>@si.Date</td>
-        </tr>*@
-        <tr class="invoice-item">
-            <th>Subscription Period</th><td> @if (si.PeriodStart.ToString().Equals(si.PeriodEnd.ToString())) { @si.PeriodStart.ToString() } else { @si.PeriodStart.ToString()<text> - </text>@si.PeriodEnd.ToString() }</td>
-        </tr>
-        <tr class="invoice-item">
-            <th>Subtotal</th><td>$@(si.Subtotal*0.01)</td>
-        </tr>
-        <tr class="invoice-item">
-            <th>Total</th><td>$@(si.Total*0.01)</td>
-        </tr>
-        @*<tr class="invoice-item">
-            <th>Amount Due</th><td>$@(si.AmountDue*0.01)</td>
-        </tr>
-        <tr class="invoice-item">
-            <th>Paid</th> @if (si.Paid.Value) { <td>Yes</td> } else { <td>No</td> }
-        </tr>*@
-        <tr class="invoice-item">
-            <th>Ending Balance</th><td>$@(si.EndingBalance*0.01)</td>
-        </tr>
-        <tr class="invoice-item">
-            <th><br /></th>
-        </tr>
-        @foreach (Stripe.StripeInvoiceItem sii in @si.StripeInvoiceLines.StripeInvoiceItems) {
-        <tr class="invoice-item">
-            <td>@sii.Description
-                @*@if (sii.Description.Equals("empty")) {
-                    if (sii.Amount == 0)
-                    { <text>Freemium Subscription</text> }
-                    else if (sii.Amount == 1999)
-                    { <text>Bronze Subscription</text> }
-                    else if (sii.Amount == 3999)
-                    { <text>Silver Subscription</text> }
-                    else if (sii.Amount == 6999)
-                    { <text>Gold Subscription</text> }
-                    else if (sii.Amount == 9999)
-                    { <text>Platinum Subscription</text> }
-                    else
-                    { <text>Monthly Subscription Fee</text>}
-                }
-                else { @sii.Description }*@
-            </td>
-            <td>@sii.Period.Start.Value - @sii.Period.End.Value</td><td>$@(sii.Amount * 0.01)</td>
-        </tr>
-        @*<tr class="invoice-item">
-            <th>Subscription Plan</th><td>@sii.Plan.Name</td>
-        </tr>
-            <tr class="invoice-item">
-                <th>Subscription Cost</th><td>$@(sii.Plan.Amount*0.01)</td>
+<table class="invoice-table">
+    @foreach (Stripe.StripeInvoice Invoice in @Model) {
+        foreach (Stripe.StripeInvoiceItem Item in Invoice.StripeInvoiceLines.StripeInvoiceItems) {
+            <tr>
+                <td>@Invoice.Date</td><td>@Item.Description</td><td>$@(Item.Amount.Value*0.01)</td>
             </tr>
-            <tr class="invoice-item">
-                <th style="padding-right:20px;">Statement Description</th><td>@sii.Plan.StatementDescription</td>
-            </tr>*@
         }
-    </table>
-    <br />
-}
+    }
+</table>
 <br />

@@ -206,8 +206,7 @@ namespace MissingLinkPro.Models
          **/
         public ProcessHub (ParameterKeeper incoming)
         {
-            // Parsing list of websites to target
-            ClientWebsiteParsed = new List<string>();
+            ClientWebsiteParsed = new List<string>();                   // Parsing list of websites to target
             ClientWebsite = incoming.ClientWebsite;
             ParsedResults = new List<SearchResult>();
             if (incoming.ClientWebsite.Equals("") || incoming.ClientWebsite == null)
@@ -215,47 +214,36 @@ namespace MissingLinkPro.Models
             else
                 ClientWebsiteParsed = FormatLinks(incoming.ClientWebsite.Split(' '));
 
-            // Setting Google search query
-            BingSearchQuery = "";
+            BingSearchQuery = "";                                       // Setting Google search query
             if (incoming.BingSearchQuery != null) BingSearchQuery = incoming.BingSearchQuery;
 
-            // Setting phrase search query
-            PhraseSearchString = "";
+            PhraseSearchString = "";                                    // Setting phrase search query
             PhraseSearchEnabled = true;
             if (incoming.PhraseSearchString == null || incoming.PhraseSearchString == "")
                 PhraseSearchEnabled = false;
             else PhraseSearchString = incoming.PhraseSearchString;
 
-            // Setting exclude string
-            ExcludeString = "";
+            ExcludeString = "";                                         // Setting exclude string
             ExcludeEnabled = true;
             if (incoming.ExcludeString == null || incoming.ExcludeString == "")
                 ExcludeEnabled = false;
             else ExcludeString = incoming.ExcludeString;
 
-            // Setting result type.
-            ResultType = incoming.ResultType;
+            ResultType = incoming.ResultType;                           // Setting result type.
 
-            // Setting limit on number of results per query
-            top = 1;
+            top = 1;                                                    // Setting limit on number of results per query
             if (incoming.top > top) top = incoming.top;
 
-            // Setting config option on exclusion of positive results
-            ExcludeLinkbackResults = false;
+            ExcludeLinkbackResults = false;                             // Setting config option on exclusion of positive results
             if (incoming.ExcludeLinkbackResults == true) ExcludeLinkbackResults = true;
 
-            // Display settings
-            DisplayAllResults = false;
+            DisplayAllResults = false;                      // Display settings
             if (incoming.DisplayAllResults == true) DisplayAllResults = true;
 
-            // Setting jump point
-            skip = incoming.skip - 1;
-
-            MaxResultRange = incoming.MaxResultRange;
-
-            // Other important variables
-            OmitCount = 0;
-            HubLock = true;
+            skip = incoming.skip - 1;                       // Setting jump point
+            MaxResultRange = incoming.MaxResultRange;       // Setting maximum allowable results remaining
+            OmitCount = 0;                                  // Other important variables
+            HubLock = true;                                 // While-loop lock
         } // primary constructor
 
         /**
@@ -263,13 +251,11 @@ namespace MissingLinkPro.Models
          **/
         public void run()
         {
-
             Stopwatch watch = new Stopwatch();
             watch.Start();
             SearchErrorEncountered = false;
 
             string market = "en-us";
-
             string QueryAttachment = "";
             if (ExcludeEnabled)
             {
@@ -314,7 +300,6 @@ namespace MissingLinkPro.Models
                     processWeb(bingContainerWebOnly, pages, BingSearchQuery + QueryAttachment, market);
                 }
             }
-                // This IOException typically occurs when the Bing request comes back with problems.
             catch (System.Data.Services.Client.DataServiceQueryException e)
             {
                 SearchErrorEncountered = true;

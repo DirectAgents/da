@@ -43,7 +43,7 @@
 
 @foreach (var item in Model.ListofPackages) {
     <tr>
-        <td>@if (Model.PackageId == item.Id) { <text>[PLACEHOLDER]</text> }</td>
+        <td>@if (Model.PackageId == item.Id) { <img src="~/Images/linkback_no.png" /> }</td>
         <td>
             @Html.ActionLink(item.Name,"Pay", new { id=item.Id })
         </td>
