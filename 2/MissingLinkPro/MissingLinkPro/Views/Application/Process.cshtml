@@ -105,8 +105,7 @@
 
     <br>
     @if (Model.SearchErrorEncountered) {
-    <text>ERROR: Your search was halted due to a critical error encountered during your search. Please see error message below:</text><br>
-    @Model.SearchErrorMsg<br>
+    <p>ERROR: Your search was halted due to a critical error encountered during your search: @Model.SearchErrorMsg</p>
     <br><br>
     }
         <table class="results-table">

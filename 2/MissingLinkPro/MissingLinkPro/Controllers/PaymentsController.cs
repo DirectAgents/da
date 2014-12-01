@@ -121,6 +121,12 @@ namespace MissingLinkPro.Controllers
         public async Task<ActionResult> Cancel()
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (!user.IsActive) {
+                PayIndexViewModel model = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = true, Message = "Your subscription had already been cancelled at an earlier time." };
+                return View("Index", model);
+            }
+
             return View(user);
         } // Cancel
 

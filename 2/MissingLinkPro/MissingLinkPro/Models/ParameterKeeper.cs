@@ -34,7 +34,7 @@ namespace MissingLinkPro.Models
 
         public List<MissingLinkPro.Models.ProcessHub.SearchResult> ParsedResults { get; set; }
         public int OmitCount { get; set; }
-        public int MaxYRange { get; set; }
+        public int MaxResultRange { get; set; }
         public bool OmitLinkbackResultsEnabled { get; set; }
         public bool SearchErrorEncountered { get; set; }
         public string SearchErrorMsg { get; set; }

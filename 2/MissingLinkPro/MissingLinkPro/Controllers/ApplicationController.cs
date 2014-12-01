@@ -69,7 +69,8 @@ namespace MissingLinkPro.Controllers
                 skip = 1,
                 ExcludeLinkbackResults = true,
                 DisplayAllResults = true,
-                ResultType = "web"
+                ResultType = "web",
+                MaxResultRange = 1000
             };
             return View(pk);
         }
@@ -93,58 +94,76 @@ namespace MissingLinkPro.Controllers
          **/
         public async Task<ActionResult> Process(ParameterKeeper param, bool NewSession = false)
         {
-
             //if (param.top % 50 > 0) return View("Index",param);
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            Package userPackage = db.Packages.Find(user.PackageId);
 
             bool isAdmin = false;
-
+            ApplicationRoleManager _roleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            IList<string> roles = await UserManager.GetRolesAsync(user.Id);
+            foreach (string s in roles)
+                if (s.Equals("Admin"))
+                {
+                    isAdmin = true;
+                    break;
+                }
 
             // Email not confirmed
             if (!user.EmailConfirmed) {
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
             }
-
-            // Need to perform anniversary check; how will payment be integrated here?
-            DateTime CurrentDate = DateTime.Now;
-
-            // Reset number of queries performed for the month if current date is later than user's one-month-later date.
-            if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
+            
+            // Account checks begin here.
+            if (isAdmin == false)
             {
-                bool ok = false;
-                if (!user.IsActive)
-                {   // the result of a cancelled subscription past its time; reassign Freemium
-                    user = StripeHelper.AssignNewSubscription(user, 1);
-                    ok = true;
-                }
-                else {
-                    string status = "";
-                    try
-                    {
-                        status = StripeHelper.GetSubscriptionStatus(user);
-                    }
-                    catch (Stripe.StripeException) {
-                        status = "active";
-                        user = StripeHelper.AssignNewSubscription(user, 1);
-                    }
-                    if (status.Equals("active")) ok = true;
-                    else if (status.Equals("past_due")) return View("PaymentError");
-                    else if (status.Equals("unpaid")) return View("PaymentError");
-                    else if (status.Equals("canceled")) return View("PaymentError");
-                }
+                // Need to perform anniversary check.
+                DateTime CurrentDate = DateTime.Now;
 
-                if (ok)
+                // Reset number of queries performed for the month if current date is later than user's one-month-later date.
+                if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
                 {
-                    user.QueriesPerformed = 0;
-                    user = StripeHelper.UpdateAnniversary(user);
-                }
-                //while ((user.Anniversary.AddMonths(1)).CompareTo(CurrentDate) < 0)      // Need to calculate new user end date.
-                //    user.Anniversary = user.Anniversary.AddMonths(1);
-            }
+                    bool ok = false;
+                    if (!user.IsActive)
+                    {   // the result of a cancelled subscription past its time; reassign Freemium
+                        user = StripeHelper.AssignNewSubscription(user, 1);
+                        userPackage = db.Packages.Find(user.PackageId);
+                        ok = true;
+                    }
+                    else
+                    {
+                        string status = "";
+                        try
+                        {
+                            status = StripeHelper.GetSubscriptionStatus(user);
+                        }
+                        catch (Stripe.StripeException)
+                        {
+                            status = "active";
+                            user = StripeHelper.AssignNewSubscription(user, 1);
+                        }
+                        if (status.Equals("active")) ok = true;
+                        else {
+                            // Space has been reserved here in the event that the decision is made to have a payment error return to the Index,
+                            // rather than a separate page. In that case, a model would have to be generated.
+                        if (status.Equals("past_due")) return View("PaymentError");
+                        if (status.Equals("unpaid")) return View("PaymentError");
+                        if (status.Equals("canceled")) return View("PaymentError");
+                        }
+                    }
 
-            Package userPackage = db.Packages.Find(user.PackageId);
-            if (user.QueriesPerformed >= userPackage.SearchesPerMonth) return View("MonthlyMaxReached", user);
+                    if (ok)
+                    {
+                        user.QueriesPerformed = 0;
+                        user = StripeHelper.UpdateAnniversary(user);
+                    }
+                    //while ((user.Anniversary.AddMonths(1)).CompareTo(CurrentDate) < 0)      // Need to calculate new user end date.
+                    //    user.Anniversary = user.Anniversary.AddMonths(1);
+                }
+
+                if (user.QueriesPerformed >= userPackage.SearchesPerMonth) return View("MonthlyMaxReached", user);
+            }
+            //End account checks.
 
             // If-statement will occur if the param is coming from the Application Index page, where newSession is always set to true.
             // If coming via click on Next Set of Results, this will always be false.
@@ -154,7 +173,8 @@ namespace MissingLinkPro.Controllers
             }
 
             ProcessHub ph = null;
-            if (param.top > userPackage.MaxResults) param.top = userPackage.MaxResults;
+            if (!isAdmin)
+                if (param.top > userPackage.MaxResults) param.top = userPackage.MaxResults;
 
             // If a session is continuing from the previous (user chooses to retrieve next set of results).
             if ((ParameterKeeper)Session["Params"] != null)
@@ -168,19 +188,23 @@ namespace MissingLinkPro.Controllers
             else if (ModelState.IsValid)
             {
                 // Tamper-checking
-                if ((param.top + param.skip) > 1000)
+                if ((param.top + param.skip) > 1001)
                 {
-                    if (param.skip > param.top)
-                        param.top = 1000 - param.skip;
-                    else if (param.top > param.skip)
-                    {
-                        param.top = 1;
-                        param.skip = 1000;
-                    }
-                    else if (param.top == param.skip)
-                    {
-                        param.top = 1000 - param.top;
-                    }
+                    param.top = 1000 - (param.skip - 1);
+                    if (param.top <= 0) param.top = 1;
+
+                    //if (param.skip >= param.top)
+                    //    param.top = 1000 - param.skip;
+                    //else if (param.top > param.skip)
+                    //{
+                    //    param.top = param.top - param.skip;
+                        //param.top = 1000;
+                        //param.skip = 1;
+                    //}
+                    //else if (param.top == param.skip)
+                    //{
+                    //    param.top = 1000 - param.top;
+                    //}
                 }
 
                 ph = new ProcessHub(param);
@@ -231,7 +255,9 @@ namespace MissingLinkPro.Controllers
          **/
         private void updateResults(ProcessHub p, ParameterKeeper param)
         {
+            param.MaxResultRange = 1000 - (param.skip - 1) - param.top; // TESTING
             param.skip += param.top;
+
             //param.top += param.Increment;
             param.ParsedResults = p.ParsedResults;
             param.OmitCount = p.OmitCount;

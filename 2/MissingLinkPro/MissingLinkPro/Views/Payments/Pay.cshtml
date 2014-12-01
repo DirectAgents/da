@@ -90,15 +90,16 @@ else if (Model.PackageId == Model.SubscribedPackageId)
         <td><p>You are currently subscribed to this plan. To change your current subscription package, please @Html.ActionLink("select a different plan", "Index").</p><br />
     </td>
     </tr>
-    <tr>
+   if(Model.IsActive) { <tr>
         <td><h2>@Html.ActionLink("Cancel Subscription", "Cancel", "Payments")</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>Please click the above link if you wish to cancel your subscription. Your current subscription will remain active until the end of the month, at which point your subscription will not be renewed, and you will be downgraded to the Freemium package.</p><br /></td>
-    </tr>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>Please click the above link if you wish to cancel your subscription. Your current subscription will remain active until the end of the month, at which point your subscription will not be renewed, and you will be downgraded to the Freemium package.</p><br /></td>
+        </tr>
+   }
 }
 else if (Model.PackageId < Model.SubscribedPackageId && Model.IsActive)
 {

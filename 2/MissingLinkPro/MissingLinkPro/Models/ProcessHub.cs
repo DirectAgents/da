@@ -12,6 +12,7 @@ using System.Text;
 using System.IO;
 using System.Configuration;
 using System.Text.RegularExpressions;
+using BingWebOnly;
 
 namespace MissingLinkPro.Models
 {
@@ -89,7 +90,7 @@ namespace MissingLinkPro.Models
         public bool SearchErrorEncountered { get; set; }
         public string SearchErrorMsg { get; set; }
         public float TotalRunTime { get; set; }
-        public int MaxYRange { get; set; }
+        public int MaxResultRange { get; set; }
 
         // Form Field Parameters
         public string BingSearchQuery { get; set; }
@@ -176,8 +177,8 @@ namespace MissingLinkPro.Models
                     }
                 }
             }
-            for (int i = 0; i < temp.Count; i++)
-                displayln(temp[i]);
+            //for (int i = 0; i < temp.Count; i++)
+            //    displayln(temp[i]);
             return temp;
         } // FormatLink
 
@@ -245,6 +246,8 @@ namespace MissingLinkPro.Models
             // Setting jump point
             skip = incoming.skip - 1;
 
+            MaxResultRange = incoming.MaxResultRange;
+
             // Other important variables
             OmitCount = 0;
             HubLock = true;
@@ -271,6 +274,19 @@ namespace MissingLinkPro.Models
             }
             try
             {
+                if (skip >= 1000)   // Check to see if next set of results will go beyond 1000.
+                {
+                    if (MaxResultRange <= 0)    // Maxed out all possible results that Bing can retrieve.
+                    {
+                        SearchErrorEncountered = true;
+                        SearchErrorMsg = "You've retrieved all of the possible results that the search engine was able to produce.";
+                        return;
+                    }
+
+                    top = MaxResultRange;
+                    skip = 1000 - MaxResultRange;
+                }
+
                 if (ResultType.Equals("news"))
                 {
 
@@ -282,7 +298,7 @@ namespace MissingLinkPro.Models
                     if ((top % 15) > 0) pages++;
                     processNews(bingContainer, pages, BingSearchQuery + QueryAttachment, market);
                 }
-                else
+                else if (ResultType.Equals("web"))
                 {
                     string rootUrl = "https://api.datamarket.azure.com/Bing/SearchWeb/";
                     var bingContainerWebOnly = new BingWebOnly.BingSearchContainer(new Uri(rootUrl));
@@ -294,10 +310,11 @@ namespace MissingLinkPro.Models
                 }
             }
                 // This IOException typically occurs when the Bing request comes back with problems.
-                catch (IOException e) {
-                    SearchErrorEncountered = true;
-                    SearchErrorMsg = e.Message;
-                }
+            catch (System.Data.Services.Client.DataServiceQueryException e)
+            {
+                SearchErrorEncountered = true;
+                SearchErrorMsg = e.Message;
+            }
             /**NOTE: The beneath for-loop creates 1 thread per result, versus the 10 per result that is currently in place.**/
 
             //for (int i = 0; i < top; i++)
@@ -305,7 +322,7 @@ namespace MissingLinkPro.Models
             //    Thread t = StartThread(i);
             //}
 
-            int NumResultsPerThread = 5; // set number of threads here
+            int NumResultsPerThread = 10; // FELLOW DEVELOPERS: Set the number of results per thread here.
             ThreadsRunning = ParsedResults.Count/NumResultsPerThread;
             if (ParsedResults.Count % NumResultsPerThread > 0) ThreadsRunning++;
             ThreadsComplete = 0;
@@ -328,7 +345,7 @@ namespace MissingLinkPro.Models
                 Thread t = StartThread(x,y);
             }
 
-            while (HubLock) { Thread.Sleep(10); }
+            while (HubLock) { Thread.Sleep(1000); }
 
             watch.Stop();
             displayln(Convert.ToString(watch.ElapsedMilliseconds));
@@ -346,7 +363,7 @@ namespace MissingLinkPro.Models
 
         private void processWeb(BingWebOnly.BingSearchContainer bingContainer, int pages, string query, string market)
         {
-            int TopReference = top;
+            //int TopReference = top;
             List<SearchResult> temp = new List<SearchResult>();
 
             //while (temp.Count < top)
@@ -356,40 +373,36 @@ namespace MissingLinkPro.Models
             for (int i = 0; i < pages; i++)
             {
                 var webQuery = bingContainer.Web(query, market, null, null, null, null, null, null);
-                //var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
+                //var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);  // Old constructor for Bing's all-purpose web search API
                 if (top < 50)
                     webQuery = webQuery.AddQueryOption("$top", top);
                 else
                     webQuery = webQuery.AddQueryOption("$top", 50);
+
                 webQuery = webQuery.AddQueryOption("$skip", skip);
 
-                var webResults = webQuery.Execute();
+                    var webResults = webQuery.Execute();
 
-                displayln("Page " + i);
-                displayln("top = " + top);
-                displayln("skip = " + skip);
-                //displayln("Number of results: " + webResults.Count() + "");
-
-                foreach (var result in webResults)
-                {
-                    if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue;
-                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
-                    count++;
-                    skip++;
-                    if (count == top)
+                    foreach (var result in webResults)
                     {
-                        complete = true;
-                        break;
+                        if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue; // checks for consecutive duplicates
+                        ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                        count++;
+                        skip++;
+                        if (count == top)
+                        {
+                            complete = true;
+                            break;
+                        }
                     }
-                }
-                if (complete) break;
+                    if (complete) break;
             }
-            if (temp.Count < top)
-            {
-                TopReference = TopReference - temp.Count;
-                pages = TopReference / 15;
-                if (TopReference % 15 > 0) pages++;
-            }
+            //if (temp.Count < top)
+            //{
+            //    TopReference = TopReference - temp.Count;
+            //    pages = TopReference / 50;
+            //    if (TopReference % 50 > 0) pages++;
+            //}
             //} // while loop
             foreach (SearchResult result in temp) ParsedResults.Add(result);
         } // processWeb
@@ -445,11 +458,9 @@ namespace MissingLinkPro.Models
         {
             int TopReference = top;
             List<SearchResult> temp = new List<SearchResult>();
-            bool NoResults = false;
 
             //while (temp.Count < top)
             //{
-                NoResults = true;
                 int count = 0;
                 bool complete = false;
                 for (int i = 0; i < pages; i++)
@@ -463,33 +474,28 @@ namespace MissingLinkPro.Models
 
                     displayln(webQuery.ToString());
 
-                    var webResults = webQuery.Execute();
+                        var webResults = webQuery.Execute();
 
-                    foreach (var result in webResults)
-                    {
-                        NoResults = false;
-                        if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url))
+                        foreach (var result in webResults)
                         {
-                            NoResults = true;
-                            continue;
+                            if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue; // consecutive duplicate check
+                            temp.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
+                            count++;
+                            skip++;
+                            if (count == TopReference)
+                            {
+                                complete = true;
+                                break;
+                            }
                         }
-                        temp.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
-                        count++;
-                        skip++;
-                        if (count == TopReference)
-                        {
-                            complete = true;
-                            break;
-                        }
-                    }
-                    //if (NoResults) break;
+                        //if (NoResults) break;
 
-                    if (complete) break;
+                        if (complete) break;
                 }
 
-                TopReference = TopReference - temp.Count;
-                pages = TopReference / 15;
-                if (TopReference % 15 > 0) pages++;
+                //TopReference = TopReference - temp.Count;
+                //pages = TopReference / 15;
+                //if (TopReference % 15 > 0) pages++;
                 //if (NoResults) break;
             //} // while loop
             foreach (SearchResult result in temp) ParsedResults.Add(result);
