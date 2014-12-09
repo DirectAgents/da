@@ -13,6 +13,7 @@ using System.IO;
 using System.Configuration;
 using System.Text.RegularExpressions;
 using BingWebOnly;
+using HtmlAgilityPack;
 
 namespace MissingLinkPro.Models
 {
@@ -21,6 +22,30 @@ namespace MissingLinkPro.Models
      **/
     public class ProcessHub
     {
+
+        public class GZipWebClient : WebClient
+        {
+            protected override WebRequest GetWebRequest(Uri address)
+            {
+                HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                request.Timeout = 8000;
+                request.Proxy = null;
+                return request;
+            }
+        }
+
+        public class TimeoutWebClient : WebClient
+        {
+            protected override WebRequest GetWebRequest(Uri address)
+            {
+                HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
+                request.Proxy = null;
+                request.Timeout = 8000; // 8 sec timeout
+                return request;
+            }
+        }
+
         /**
          * Class established specifically to allow overriding of HTML request timeout duration.
          **/
@@ -193,10 +218,7 @@ namespace MissingLinkPro.Models
             return b;
         } // containsBlankSpot
 
-        public ProcessHub()
-        {
-            // TODO: Complete member initialization
-        }
+        public ProcessHub() {}  // Empty constructor
 
         /**
          * Main Constructor for ProcessHub.
@@ -251,13 +273,14 @@ namespace MissingLinkPro.Models
          **/
         public void run()
         {
+            displayln("Begin run");
             Stopwatch watch = new Stopwatch();
             watch.Start();
             SearchErrorEncountered = false;
 
             string market = "en-us";
             string QueryAttachment = "";
-            if (ExcludeEnabled)
+            if (ExcludeEnabled)     // if user chose to exclude search terms, add their terms to search query
             {
                 var ExcludeSplits = ExcludeString.Split(new string[] { "\" \"", "\"" }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var split in ExcludeSplits)
@@ -269,7 +292,7 @@ namespace MissingLinkPro.Models
                 {
                     if (MaxResultRange <= 0)    // Maxed out all possible results that Bing can retrieve.
                     {
-                        SearchErrorEncountered = true;
+                        SearchErrorEncountered = true;  // Flag prevents Process() from incrementing user's QueriesPerformed field.
                         SearchErrorMsg = "You've retrieved all of the possible results that the search engine was able to produce.";
                         return;
                     }
@@ -280,7 +303,6 @@ namespace MissingLinkPro.Models
 
                 if (ResultType.Equals("news"))
                 {
-
                     string rootUrl = "https://api.datamarket.azure.com/Bing/Search";
                     var bingContainer = new Bing.BingSearchContainer(new Uri(rootUrl));
                     bingContainer.Credentials = new NetworkCredential(AccountKey, AccountKey);
@@ -305,12 +327,9 @@ namespace MissingLinkPro.Models
                 SearchErrorEncountered = true;
                 SearchErrorMsg = e.Message;
             }
-            /**NOTE: The beneath for-loop creates 1 thread per result, versus the 10 per result that is currently in place.**/
 
-            //for (int i = 0; i < top; i++)
-            //{
+            //for (int i = 0; i < top; i++)             /**NOTE: This for-loop creates 1 thread per result.**/
             //    Thread t = StartThread(i);
-            //}
 
             int NumResultsPerThread = 10; // FELLOW DEVELOPERS: Set the number of results per thread here.
             ThreadsRunning = ParsedResults.Count/NumResultsPerThread;
@@ -353,140 +372,75 @@ namespace MissingLinkPro.Models
 
         private void processWeb(BingWebOnly.BingSearchContainer bingContainer, int pages, string query, string market)
         {
-            //int TopReference = top;
-            List<SearchResult> temp = new List<SearchResult>();
-
-            //while (temp.Count < top)
-            //{
-            int count = 0;
-            bool complete = false;
-            for (int i = 0; i < pages; i++)
+            try
             {
-                var webQuery = bingContainer.Web(query, market, null, null, null, null, null, null);
-                //var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);  // Old constructor for Bing's all-purpose web search API
-                if (top < 50)
-                    webQuery = webQuery.AddQueryOption("$top", top);
-                else
-                    webQuery = webQuery.AddQueryOption("$top", 50);
-                webQuery = webQuery.AddQueryOption("$skip", skip);
-                var webResults = webQuery.Execute();
-
-                foreach (var result in webResults)
+                int count = 0;
+                bool complete = false;
+                for (int i = 0; i < pages; i++)
                 {
-                    if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue; // checks for consecutive duplicates
-                    ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
-                    count++;
-                    skip++;
-                    if (count == top)
+                    var webQuery = bingContainer.Web(query, market, null, null, null, null, null, null);
+                    if (top < 50)
+                        webQuery = webQuery.AddQueryOption("$top", top);
+                    else
+                        webQuery = webQuery.AddQueryOption("$top", 50);
+                    webQuery = webQuery.AddQueryOption("$skip", skip);
+                    var webResults = webQuery.Execute();
+
+                    foreach (var result in webResults)
                     {
-                        complete = true;
-                        break;
+                        if (ParsedResults.Count > 0 && result.Url.Equals(ParsedResults[ParsedResults.Count - 1].Url)) continue; // checks for consecutive duplicates
+                        ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                        count++;
+                        skip++;
+                        if (count == top)
+                        {
+                            complete = true;
+                            break;
+                        }
                     }
-                }
                     if (complete) break;
+                }
+            } // try
+            catch (System.Data.Services.Client.DataServiceQueryException e) {
+                displayln(e.Message);
             }
-            //if (temp.Count < top)
-            //{
-            //    TopReference = TopReference - temp.Count;
-            //    pages = TopReference / 50;
-            //    if (TopReference % 50 > 0) pages++;
-            //}
-            //} // while loop
-            foreach (SearchResult result in temp) ParsedResults.Add(result);
         } // processWeb
-
-        //private void processWeb(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
-        //{
-        //    int TopReference = top;
-        //    List<SearchResult> temp = new List<SearchResult>();
-
-        //    //while (temp.Count < top)
-        //    //{
-        //        int count = 0;
-        //        bool complete = false;
-        //        for (int i = 0; i < pages; i++)
-        //        {
-        //            var webQuery = bingContainer.Web(query, null, null, market, null, null, null, null);
-        //            if (top < 50)
-        //                webQuery = webQuery.AddQueryOption("$top", top);
-        //            else
-        //                webQuery = webQuery.AddQueryOption("$top", 50);
-        //            webQuery = webQuery.AddQueryOption("$skip", skip);
-
-        //            var webResults = webQuery.Execute();
-
-        //            displayln("Page " + i);
-        //            displayln("top = " + top);
-        //            displayln("skip = " + skip);
-        //            //displayln("Number of results: " + webResults.Count() + "");
-
-        //            foreach (var result in webResults)
-        //            {
-        //                if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue;
-        //                ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
-        //                count++;
-        //                skip++;
-        //                if (count == top)
-        //                {
-        //                    complete = true;
-        //                    break;
-        //                }
-        //            }
-        //            if (complete) break;
-        //        }
-
-        //        TopReference = TopReference - temp.Count;
-        //        pages = TopReference / 15;
-        //        if (TopReference % 15 > 0) pages++;
-        //    //} // while loop
-        //    foreach (SearchResult result in temp) ParsedResults.Add(result);
-        //} // processWeb
 
         private void processNews(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
         {
-            int TopReference = top;
-            List<SearchResult> temp = new List<SearchResult>();
-
-            //while (temp.Count < top)
-            //{
+            try
+            {
                 int count = 0;
                 bool complete = false;
                 for (int i = 0; i < pages; i++)
                 {
                     var webQuery = bingContainer.News(query, null, market, null, null, null, null, null, null);
-                    if (TopReference < 15)
-                        webQuery = webQuery.AddQueryOption("$top", TopReference);
+                    if (top < 15)
+                        webQuery = webQuery.AddQueryOption("$top", top);
                     else
                         webQuery = webQuery.AddQueryOption("$top", 15);
                     webQuery = webQuery.AddQueryOption("$skip", skip);
-
-                    displayln(webQuery.ToString());
-
-                        var webResults = webQuery.Execute();
+                    var webResults = webQuery.Execute();
 
                         foreach (var result in webResults)
                         {
-                            if (temp.Count > 0 && result.Url.Equals(temp[temp.Count - 1].Url)) continue; // consecutive duplicate check
-                            temp.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
+                            if (ParsedResults.Count > 0 && result.Url.Equals(ParsedResults[ParsedResults.Count - 1].Url)) continue; // checks for consecutive duplicates
+                            ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
                             count++;
                             skip++;
-                            if (count == TopReference)
+                            if (count == top)
                             {
                                 complete = true;
                                 break;
                             }
                         }
-                        //if (NoResults) break;
-
                         if (complete) break;
                 }
-
-                //TopReference = TopReference - temp.Count;
-                //pages = TopReference / 15;
-                //if (TopReference % 15 > 0) pages++;
-                //if (NoResults) break;
-            //} // while loop
-            foreach (SearchResult result in temp) ParsedResults.Add(result);
+            } // try
+            catch (System.Data.Services.Client.DataServiceQueryException e)
+            {
+                displayln(e.Message);
+            }
         } // processNews
 
         public Thread StartThread(int i)
@@ -503,16 +457,23 @@ namespace MissingLinkPro.Models
                 return t;
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
+        private readonly object SyncLock = new object();
+
         private void incrementOmitCount() {
-            OmitCount++;
+            lock (SyncLock)
+            {
+                OmitCount++;
+            }
         } // incrementOmitCount
 
-        [MethodImpl(MethodImplOptions.Synchronized)]
         private void checkLock() {
-            ThreadsComplete++;
-            if (ThreadsComplete >= ThreadsRunning) { HubLock = false; }
-        }
+            lock (SyncLock)
+            {
+                ThreadsComplete++;
+                displayln(ThreadsComplete + " / " + ThreadsRunning);
+                if (ThreadsComplete >= ThreadsRunning) { HubLock = false; }
+            }
+        } // checkLock
 
         /**
          * Scrapes websites in multiple batches, as opposed to single pages.
@@ -532,25 +493,55 @@ namespace MissingLinkPro.Models
                     int status = 0;
                     HttpWebResponse response = null;
                     HttpWebRequest w = (HttpWebRequest)WebRequest.Create(ParsedResults[i].Url);
+                    w.Proxy = null;
                     w.Timeout = 8000;
                     w.ContentLength = 0;
                     w.Method = WebRequestMethods.Http.Get;
                     CookieContainer cookieJar = new CookieContainer();
                     w.CookieContainer = cookieJar;
+                    w.Accept = "text/html, image/png, image/jpeg, image/gif, */*;q=0.1";
                     w.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/33.0";
-                    response = (HttpWebResponse)w.GetResponse();
-                    //displayln("Response " + response.StatusCode + ": " + response.StatusDescription);
+                    w.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
+                    w.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+                    response = (HttpWebResponse)w.GetResponse();    // Test the site for an OK response before proceeding
                     if (response.StatusCode != HttpStatusCode.OK)
                     {
                         ParsedResults[i].ExceptionFound = true;
                         ParsedResults[i].ErrorMsg = response.StatusDescription;
                         continue;
                     }
-                    //Encoding responseEncoding = Encoding.GetEncoding(response.CharacterSet);
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default))
+                    HtmlWeb web = new HtmlWeb();
+                    web.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/33.0";
+                    web.UseCookies = true;
+                    try
                     {
-                        pageData = reader.ReadToEnd();
+                        HtmlDocument doc = web.Load(ParsedResults[i].Url);
+                        pageData = doc.DocumentNode.OuterHtml;
                     }
+                    catch (ArgumentException) { // Catching GZIP encoding issue
+                        string html;
+                        using (var wc = new GZipWebClient())
+                        {
+                            html = wc.DownloadString(ParsedResults[i].Url);
+                        }
+                        var htmldocObject = new HtmlDocument();
+                        htmldocObject.LoadHtml(html);
+                        pageData = htmldocObject.DocumentNode.OuterHtml;
+                    }
+                    //pageData = doc.DocumentNode.WriteTo();
+
+                    //using (var client = new MyWebClient())    // Reading Technique #1
+                    //{
+                    //    pageData = client.DownloadString(ParsedResults[i].Url);
+                    //}
+
+                    //using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default))    // Reading Technique #2
+                    //{
+                    //    pageData = reader.ReadToEnd();
+                    //}
+
+                    //pageData = new TimeoutWebClient() { Proxy = null }.DownloadString(ParsedResults[i].Url);    // Reading Technique #3
+
                     status = (int)response.StatusCode;
 
                     pageData.Replace('"', '\"');
@@ -576,9 +567,17 @@ namespace MissingLinkPro.Models
                         ParsedResults[i].ContainsSearchPhrase = true;
                     }
                 }
-                catch (System.IO.IOException e) {
+                catch (NullReferenceException e)      // This will happen as the result of program trying to load a non-HTML page
+                {
+                    ParsedResults[i].ExceptionFound = true;
+                    ParsedResults[i].ErrorMsg = "NullRef Exception: " + e.Message;
+                    displayln("[" + i + "] NullRef Exception: " + ParsedResults[i].Url);
+                }
+                catch (System.IO.IOException e)
+                {
                     ParsedResults[i].ExceptionFound = true;
                     ParsedResults[i].ErrorMsg = "IO Exception: " + e.Message;
+                    displayln("[" + i + "] IO Exception: " + ParsedResults[i].Url);
                 }
                 catch (System.Net.ProtocolViolationException e)
                 {
@@ -587,6 +586,7 @@ namespace MissingLinkPro.Models
                 }
                 catch (System.Net.WebException e)
                 {
+                    displayln("[" + i + "] Web Exception: " + ParsedResults[i].Url + " >> " + e.Message);
                     HttpWebResponse res = (HttpWebResponse)e.Response;
                     ParsedResults[i].ExceptionFound = true;
                     if (res == null) ParsedResults[i].ErrorMsg = e.Message;
@@ -595,48 +595,16 @@ namespace MissingLinkPro.Models
                 }
                 ParsedResults[i].Scraped = true;
             }
+            display("Index Range: [" + x + ", " + y + "], ");
             checkLock();
         } // ScrapeBatch
 
         /**
-         * Retrieves the page data from a given webpage in string form, and prepares it for computing
-         * by escaping specific chars. The string is then examined for links that lead back to the target
-         * website(s), and instances of the given phrase string.
-         * NOTE: This method is outdated; it uses the old MyWebClient class to grab data; see the code used in ScrapeBatch().
+         * A shortcut method for scraping a single index as opposed to batches.
          **/
         private void scrapeURL(int i)
         {
-            try
-            {
-                MyWebClient w = new MyWebClient();
-                w.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0");
-                string pageData = w.DownloadString(ParsedResults[i].Url);
-                pageData.Replace('"', '\"');
-                foreach (string s in ClientWebsiteParsed)
-                {
-                    if (pageData.Contains(s))
-                    {
-                        ParsedResults[i].LinksToClientWebsite = true;
-                        if (ExcludeLinkbackResults)
-                        {
-                            ParsedResults[i].SkipThisResult = true;
-                            incrementOmitCount();
-                        }
-                    }
-                }
-                bool contains = pageData.IndexOf(PhraseSearchString, StringComparison.OrdinalIgnoreCase) >= 0;
-                if (contains)
-                    ParsedResults[i].ContainsSearchPhrase = true;
-            }
-            catch (System.Net.WebException e)
-            {
-                HttpWebResponse res = (HttpWebResponse)e.Response;
-                ParsedResults[i].ExceptionFound = true;
-                if (res == null) ParsedResults[i].ErrorMsg = e.Message;
-                else
-                    ParsedResults[i].ErrorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
-            }
-            checkLock();
+            ScrapeBatch(i, i);
         } // scrapeURL
 
         /**

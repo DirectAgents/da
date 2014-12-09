@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using MissingLinkPro.Controllers;
 
 namespace IdentitySample.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class RolesAdminController : Controller
+    public class RolesAdminController : HttpsBaseController
     {
         public RolesAdminController()
         {

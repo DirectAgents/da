@@ -1,16 +1,47 @@
 ﻿@{
-    ViewBag.Title = "Direct Agents";
+    ViewBag.Title = "DirectLink Search Application Portal";
 }
 
 <table class="content-space">
         <tr>
-        <td><h2>Introducing: DirectLink</h2></td>
+        <td><h2>Welcome</h2></td>
         </tr>
         <tr>
             <td><br /></td>
         </tr>
         <tr>
-            <td><p>Made for marketing professionals by marketing professionals, DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back!</p><br />
+            <td><p>Please selection from the following.</p><br />
+    </td>
+        </tr>
+        <tr>
+        <td><h2>@Html.ActionLink("Run Search Tool","Index","Application")</h2></td>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>Takes you to the application's main form page.</p><br />
+    </td>
+        </tr>
+        <tr>
+        <td><h2>@Html.ActionLink("Tutorial","Manual","Home") / @Html.ActionLink("FAQ","FAQ","Home")</h2></td>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>Provides an extensive explanation of the tool's features.</p><br />
+    </td>
+        </tr>
+        </tr>
+        <tr>
+        <td><h2>@Html.ActionLink("Account Management","Index","Manage")</h2></td>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>Manage your user information, subscription, credit card.</p><br />
     </td>
         </tr>
 </table>

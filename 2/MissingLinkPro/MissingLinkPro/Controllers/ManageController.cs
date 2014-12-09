@@ -2,12 +2,14 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using MissingLinkPro.Controllers;
 using MissingLinkPro.Helpers;
 using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -15,7 +17,7 @@ using System.Web.Mvc;
 namespace IdentitySample.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : HttpsBaseController
     {
         public ManageController()
         {
@@ -26,6 +28,7 @@ namespace IdentitySample.Controllers
             UserManager = userManager;
         }
 
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
@@ -54,9 +57,13 @@ namespace IdentitySample.Controllers
                 : "";
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (!user.EmailConfirmed) { return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email }); }
+
             try
             {
-                user = StripeHelper.UpdateAnniversary(user);
+                if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
+                    user = StripeHelper.UpdateAnniversary(user);
                 await UserManager.UpdateAsync(user);
             }
             catch (StripeException e)
@@ -66,7 +73,7 @@ namespace IdentitySample.Controllers
             }
             IndexViewModel model = GenerateManageIndexModel(user);
             return View(model);
-        }
+        } // Index
 
         public async Task<ActionResult> CreditCardManagement()
         {
@@ -163,16 +170,6 @@ namespace IdentitySample.Controllers
 
         public async Task<ActionResult> UpdateCreditCard()
         {
-            //var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            //bool HasExistingCard = StripeHelper.UserHasCreditCard(user);
-            //PayUpdateCreditCardViewModel model = new PayUpdateCreditCardViewModel();
-            //if (HasExistingCard)
-            //{
-            //    model.Card = StripeHelper.GetCreditCard(user);
-            //    model.HasCreditCard = true;
-            //    if (model.Card.AddressLine2 == null) model.Card.AddressLine2 = "";
-            //}
-            //return View(model);
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             bool cardFound = StripeHelper.UserHasCreditCard(user);
             PayUpdateCreditCardViewModel model = new PayUpdateCreditCardViewModel { HasMessage = false, HasCreditCard = cardFound };
@@ -247,6 +244,114 @@ namespace IdentitySample.Controllers
         }
 
         //
+        // GET: /Subscriptions/
+        public async Task<ActionResult> Subscriptions()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            return View(new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList() });
+        } // Subscriptions
+
+        public async Task<ActionResult> PaySubscription(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (!user.EmailConfirmed)             // Email not confirmed
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+
+            Package package = db.Packages.Find(id);
+            if (package == null)
+            {
+                return HttpNotFound();
+            }
+
+            bool cardCheck = StripeHelper.UserHasCreditCard(user);
+
+            var model = new PayViewModel
+            {
+                SubscribedPackageId = user.Package.Id,
+                UserHasCreditCard = cardCheck,
+                PackageId = id ?? default(int),
+                PackageName = package.Name,
+                PackageCost = package.CostPerMonth,
+                SearchesPerMonth = package.SearchesPerMonth,
+                MaxResults = package.MaxResults,
+                IsActive = user.IsActive
+            };
+            return View(model);
+        } // Pay
+
+        /**
+         * The HttpPost version of Pay receives two variables: a string token via Stripe.js and the PackageId of the target package
+         * to be upgraded to.
+         **/
+        [HttpPost]
+        public async Task<ActionResult> PaySubscription(PostPayViewModel form)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            try
+            {
+                if (StripeHelper.UserHasSubscription(user))
+                    user = StripeHelper.ChangePackagePlan(user, form.PackageId, form.stripeToken);
+                else
+                    user = StripeHelper.AssignNewSubscription(user, form.PackageId, form.stripeToken);
+            }
+            catch (StripeException s)
+            {
+                string msg = s.StripeError.Message;
+                PayIndexViewModel ErrorModel = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = true, Message = msg };
+                return View("Subscriptions", ErrorModel);
+            }
+            await UserManager.UpdateAsync(user);
+
+            PayIndexViewModel model = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = true, Message = "Subscription successfully changed." };
+            return View("Subscriptions", model);
+        } // Pay[Post]
+
+        public async Task<ActionResult> CancelSubscription()
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (!user.IsActive)
+            {
+                PayIndexViewModel model = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = true, Message = "Your subscription had already been cancelled at an earlier time." };
+                return View("Subscriptions", model);
+            }
+            return View(user);
+        } // Cancel
+
+        [HttpPost]
+        public async Task<ActionResult> CancelSubscription(bool CancelSubscription)
+        {
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            PayIndexViewModel model = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = false, Message = "" };
+
+            if (CancelSubscription == true)
+            {
+                try
+                {
+                    user = StripeHelper.CancelSubscription(user);
+                    user = StripeHelper.RemoveCreditCard(user);
+                }
+                catch (StripeException e)
+                {
+                    model.HasMessage = true;
+                    model.Message = e.Message;
+                    return View("Subscriptions",model);
+                }
+                await UserManager.UpdateAsync(user);
+                model.HasMessage = true;
+                model.Message = "Success: subscription has been canceled; your subscription will continue until the end of its cycle, at which point it will not be renewed.";
+            }
+            return View("Subscriptions", model);
+        } // Cancel
+
+        //
         // GET: /Account/RemoveLogin
         public ActionResult RemoveLogin()
         {
@@ -316,7 +421,7 @@ namespace IdentitySample.Controllers
                     }
                     await SignInAsync(user, isPersistent: false);
                     model.PasswordChanged = true;
-                    msg += "<br/> *Password successfully changed.";
+                    msg += " *Password successfully changed.";
                 }
 
                 IndexViewModel indexModel = GenerateManageIndexModel(user,true,msg);

@@ -12,7 +12,7 @@ using Stripe;
 namespace MissingLinkPro.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class PackagesController : Controller
+    public class PackagesController : HttpsBaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

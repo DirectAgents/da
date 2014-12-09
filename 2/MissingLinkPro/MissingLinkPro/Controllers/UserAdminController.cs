@@ -12,11 +12,12 @@ using System.Web;
 using System.Web.Mvc;
 using Stripe;
 using MissingLinkPro.Helpers;
+using MissingLinkPro.Controllers;
 
 namespace IdentitySample.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class UsersAdminController : Controller
+    public class UsersAdminController : HttpsBaseController
     {
 
         private ApplicationDbContext db = new ApplicationDbContext();

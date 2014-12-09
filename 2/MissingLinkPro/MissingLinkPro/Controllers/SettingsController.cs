@@ -11,7 +11,7 @@ using IdentitySample.Models;
 namespace MissingLinkPro.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class SettingsController : Controller
+    public class SettingsController : HttpsBaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

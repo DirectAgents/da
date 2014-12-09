@@ -1,0 +1,193 @@
+﻿@model IdentitySample.Models.PayViewModel
+
+@{
+    ViewBag.Title = "Payment Form";
+    bool showPaymentForm = false;
+}
+
+@section Scripts
+{
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+    Stripe.setPublishableKey('pk_test_bqotCuVYyt6dLMoMD4doOL6V');
+
+    var stripeResponseHandler = function (status, response) {
+        var $form = $('#payment-form');
+
+        if (response.error) {
+            // Show the errors on the form
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('button').prop('disabled', false);
+        } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+            // and re-submit
+            $form.get(0).submit();
+        }
+    };
+
+    jQuery(function ($) {
+        $('#payment-form').submit(function (event) {
+            var $form = $(this);
+            // Disable the submit button to prevent repeated clicks
+            $form.find('button').prop('disabled', true);
+
+            Stripe.card.createToken($form, stripeResponseHandler);
+
+            // Prevent the form from submitting with the default action
+            return false;
+        });
+    });
+
+</script>
+}
+
+<table class="content-space">
+    <tr>
+        <td><h2>@Model.PackageName: $@Model.PackageCost/month</h2></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>Searches/Month: @Model.SearchesPerMonth</td>
+    </tr>
+    <tr>
+        <td>Results/Search: @Model.MaxResults</td>
+    </tr>
+    <tr>
+        <td><br /></td>
+    </tr>
+@if (Model.PackageId == 1)
+{
+    <tr>
+        <td><p>The Freemium package allows you to try DirectLink at no cost.</p>
+                @if (Model.SubscribedPackageId == Model.PackageId)
+                {
+                    <p>You are currently subscribed to this plan.<br />You may upgrade to one of the available Premium plans.</p>
+                    <p><button class="btn btn-default" onclick="document.location.href='@Url.Action("Subscriptions")'">Upgrade</button></p>
+                }
+                else if (!Model.IsActive)
+                {
+                    <p>You are currently under a cancelled subscription that will not be renewed at the end of your payment period. You will automatically be assigned a Freemium subscription if you elect to continue using the application after that time.</p>
+                }
+                else {
+                    <p>You have the option of reducing your subscription to this plan. Please click the button below if you wish to do so.</p>
+                <form action="" method="post">
+                            @Html.HiddenFor(m => m.PackageId)
+                  <button type="submit">Downgrade</button>
+                </form>
+    }
+        </td>
+    </tr>
+}
+else if (Model.PackageId == Model.SubscribedPackageId)
+{
+    <tr>
+        <td><p>You are currently subscribed to this plan. To change your current subscription package, please @Html.ActionLink("select a different plan", "Subscriptions").</p><br />
+    </td>
+    </tr>
+   if(Model.IsActive) { <tr>
+        <td><h2>@Html.ActionLink("Cancel Subscription", "CancelSubscription", "Manage")</h2></td>
+        </tr>
+        <tr>
+            <td><br /></td>
+        </tr>
+        <tr>
+            <td><p>Please click the above link if you wish to cancel your subscription. Your current subscription will remain active until the end of the month, at which point your subscription will not be renewed, and you will be downgraded to the Freemium package.</p><br /></td>
+        </tr>
+   }
+}
+else if (Model.PackageId < Model.SubscribedPackageId && Model.IsActive)
+{
+    <tr>
+        <td><p>Using your existing credit card, you have the option of downgrading to this plan. If you choose to do so, you will be charged the prorated amount on your next invoice.</p>
+            <p>Please be advised that downgrading reduces your allowed number of searches per month. However, you may upgrade to a higher subscription plan at a later time.</p>
+            <p>Click the button below if you wish to proceed.</p><br />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form action="" method="post">
+                @Html.HiddenFor(m => m.PackageId)
+                <button type="submit">Downgrade</button>
+            </form>
+        </td>
+    </tr>
+}
+else if (Model.UserHasCreditCard)
+{
+    <tr>
+        <td><p>Using your existing credit card, you have the option of upgrading to this plan. If you choose to do so, you will be charged the prorated amount on your next invoice.</p>
+        <p>Upgrading your subscription increases your allowed number of searches per month, and allows you to see more results per search. You may downgrade to a lower subscription plan at a later time.</p>
+        <p>Click the button below if you wish to proceed.</p><br />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <form action="" method="post">
+                @Html.HiddenFor(m => m.PackageId)
+                <button type="submit">Upgrade</button>
+            </form>
+        </td>
+    </tr>
+}
+else {
+    showPaymentForm = true;
+}
+</table>
+
+
+@if (showPaymentForm)
+{
+    <p>Please fill out the payment information below to subscribe to this plan.</p>
+    <br />
+    <form action="" method="POST" id="payment-form">
+                  <span class="payment-errors"></span>
+
+        <table>
+            <tr>
+                <th>Name On Card</th>
+                <td><input type="text" size="30" data-stripe="name" required/></td>
+            </tr>
+            <tr>
+                <th>Address Line 1</th>
+                <td><input type="text" size="30" data-stripe="address_line1" required/></td>
+            </tr>
+            <tr>
+                <th>Address Line 2</th>
+                <td><input type="text" size="30" data-stripe="address_line2"/></td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td><input type="text" size="25" data-stripe="address_city" required/></td>
+            </tr>
+                <tr>
+                <th>State, Postal Code </th>
+                <td><input type="text" size="3" data-stripe="address_state"/> <input type="text" size="8" data-stripe="address_zip" required/></td>
+            </tr>
+               @*<tr>
+                <th>Country</th>
+                <td><input type="text" size="5" data-stripe="address_country"/></td>
+            </tr>*@
+               <tr>
+                <th>Card Number</th>
+                <td><input type="text" size="30" data-stripe="number"/></td>
+            </tr>
+                <tr>
+                <th>CVC</th>
+                <td><input type="text" size="4" data-stripe="cvc"/></td>
+            </tr>
+            <tr>
+                <th style="padding-right:4px;">Expiration (MM/YYYY) </th>
+                <td><input type="text" size="2" data-stripe="exp-month"/> / <input type="text" size="4" data-stripe="exp-year"/></td>
+            </tr>
+        </table>
+        @Html.HiddenFor(m => m.PackageId)
+      <button type="submit">Submit Payment</button>
+    </form>
+}
+<br /><br />

@@ -1,12 +1,15 @@
 ﻿using IdentitySample.Models;
 using Microsoft.AspNet.Identity;
+using MissingLinkPro.Controllers;
 using MissingLinkPro.Models;
 using System.Configuration;
 using System.Web.Mvc;
 
 namespace IdentitySample.Controllers
 {
-    public class HomeController : Controller
+    // public class HomeController : Controller
+    [Authorize]
+    public class HomeController : HttpsBaseController
     {
         public ActionResult Index()
         {
@@ -21,14 +24,14 @@ namespace IdentitySample.Controllers
             return Redirect("http://www.directagents.com/");
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "DirectAgents";
-            ViewBag.Title = "About DirectLink";
-            ViewBag.MetaDescription = "DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back. Try it free!";
+        //public ActionResult About()
+        //{
+        //    ViewBag.Message = "DirectAgents";
+        //    ViewBag.Title = "About DirectLink";
+        //    ViewBag.MetaDescription = "DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back. Try it free!";
 
-            return View();
-        }
+        //    return View();
+        //}
 
         public ActionResult Contact()
         {
@@ -47,7 +50,7 @@ namespace IdentitySample.Controllers
             emailer.SendEmail(ConfigurationManager.AppSettings["Emailer_Username"], message.Destination, null, message.Subject, message.Body, true);
 
             model.ApplicationMsgAvailable = true;
-            model.ApplicationMsg = "*Thank you. Your message has been sent. You will be contacted by a representative shortly.";
+            model.ApplicationMsg = "*Thank you. Your message has been sent. You will be contacted by a representative during operating hours.";
 
             return View(model);
         }
@@ -55,7 +58,6 @@ namespace IdentitySample.Controllers
         public ActionResult Manual()
         {
             ViewBag.Message = "User Manual";
-
             return View();
         }
 
@@ -64,5 +66,5 @@ namespace IdentitySample.Controllers
             ViewBag.Mesage = "Frequently Asked Questions";
             return View();
         }
-    }
-}
+    } // HomeController class
+} // EOF

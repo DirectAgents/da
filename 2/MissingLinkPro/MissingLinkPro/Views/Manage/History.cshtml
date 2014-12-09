@@ -33,7 +33,9 @@
     @foreach (Stripe.StripeInvoice Invoice in @Model) {
         foreach (Stripe.StripeInvoiceItem Item in Invoice.StripeInvoiceLines.StripeInvoiceItems) {
             <tr>
-                <td>@Invoice.Date</td><td>@Item.Description</td><td>$@(Item.Amount.Value*0.01)</td>
+                <td>@Invoice.Date</td>
+                <td>@Item.Description</td>
+                <td>$@(Item.Amount.Value/100).@if (Item.Amount.Value%100 < 0) {@((Item.Amount.Value%100) * -1)} else {@(Item.Amount.Value%100)}</td>
             </tr>
         }
     }

@@ -23,7 +23,7 @@ using Microsoft.Owin;
 namespace MissingLinkPro.Controllers
 {
     [Authorize]
-    public class ApplicationController : Controller
+    public class ApplicationController : HttpsBaseController
     {
         /*User Application DB Settings*/
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -82,7 +82,7 @@ namespace MissingLinkPro.Controllers
          * were to use the tool past a cancelled subscription's date. Also recalculates the form fields to stay within
          * the set limit of 1000 max results.
          **/
-        public async Task<ActionResult> Process(ParameterKeeper param, bool NewSession = false)
+        public async Task<ActionResult> Process(ParameterKeeper Parameters, bool NewSession = false)
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             Package userPackage = db.Packages.Find(user.PackageId);
@@ -97,125 +97,109 @@ namespace MissingLinkPro.Controllers
                     break;
                 }
 
-            // Email not confirmed
-            if (!user.EmailConfirmed) {
+            if (!user.EmailConfirmed)                   // Email not confirmed
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
-            }
-            
-            // Account checks begin here.
-            if (isAdmin == false)
-            {
-                // Need to perform anniversary check.
-                DateTime CurrentDate = DateTime.Now;
 
-                // Reset number of queries performed for the month if current date is later than user's one-month-later date.
-                if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
+            if (!isAdmin)                   // If not an Admin, Account checkpoint begins here.
+            {
+                DateTime CurrentDate = DateTime.Now;                                // Need to perform anniversary check.
+                if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)   // Reset number of queries performed for the month if current date is later than user's one-month-later date.
                 {
                     bool ok = false;
-                    if (!user.IsActive)  // the result of a cancelled subscription past its time; reassign Freemium
+                    if (!user.IsActive)  // the result of a cancelled subscription past its time; need to reassign Freemium subscription.
                     {  
                         user = StripeHelper.AssignNewSubscription(user, 1);
                         userPackage = db.Packages.Find(user.PackageId);
                         ok = true;
                     }
-                    else
+                    else                // Date is still within user's subscription cycle.
                     {
                         string status = "";
                         try
                         {
-                            status = StripeHelper.GetSubscriptionStatus(user);
+                            status = StripeHelper.GetSubscriptionStatus(user);      // Check on user's subscription status.
                         }
-                        catch (Stripe.StripeException)
+                        catch (Stripe.StripeException)      // Could not find the user's subscription; assign new Freemium subscription.
                         {
                             status = "active";
                             user = StripeHelper.AssignNewSubscription(user, 1);
                         }
-                        if (status.Equals("active")) ok = true;
-                        else {
-                            // Space has been reserved here in the event that the decision is made to have a payment error return to the Index,
-                            // rather than a separate page. In that case, a model would have to be generated.
-                            if (!NewSession)
-                                param = (ParameterKeeper)Session["Params"];
+                        if (status.Equals("active")) ok = true;             // Subscription is fine; proceed.
+                        else {                                              // Not okay; redirect to Process page with error message.
+                            if (!NewSession)                                // Subscription dies while in the middle of a search.
+                                Parameters = (ParameterKeeper)Session["Params"];
                             else
-                                param.ParsedResults = new List<ProcessHub.SearchResult>();
-                            ProcessHub model = new ProcessHub(param);
-                            model.ParsedResults = param.ParsedResults;
+                                Parameters.ParsedResults = new List<ProcessHub.SearchResult>();  // Prepare new List for model
+                            ProcessHub model = new ProcessHub(Parameters);
+                            model.ParsedResults = Parameters.ParsedResults;
                             model.SearchErrorEncountered = true;
                             if (status.Equals("past_due")) model.SearchErrorMsg = "Subscription payment status: past due.";
-                            if (status.Equals("unpaid")) model.SearchErrorMsg = "Subscription payment status: unpaid.";
-                            if (status.Equals("canceled")) model.SearchErrorMsg = "Subscription payment status: canceled.";
+                            else if (status.Equals("unpaid")) model.SearchErrorMsg = "Subscription payment status: unpaid.";
+                            else if (status.Equals("canceled")) model.SearchErrorMsg = "Subscription payment status: canceled.";
+                            else model.SearchErrorMsg = "Subscription payment status: indeterminate.";
                             return View(model);
                         }
                     }
 
-                    if (ok)
+                    if (ok)     // If okay, reset queries and update anniversary date.
                     {
                         user.QueriesPerformed = 0;
                         user = StripeHelper.UpdateAnniversary(user);
                     }
-                    //while ((user.Anniversary.AddMonths(1)).CompareTo(CurrentDate) < 0)      // Need to calculate new user end date.
-                    //    user.Anniversary = user.Anniversary.AddMonths(1);
                 }
 
-                if (user.QueriesPerformed >= userPackage.SearchesPerMonth)
+                if (user.QueriesPerformed >= userPackage.SearchesPerMonth)      // Used up all available queries.
                 {
                     if (!NewSession)
-                        param = (ParameterKeeper)Session["Params"];
+                        Parameters = (ParameterKeeper)Session["Params"];
                     else
-                        param.ParsedResults = new List<ProcessHub.SearchResult>();
-                    ProcessHub model = new ProcessHub(param);
-                    model.ParsedResults = param.ParsedResults;
+                        Parameters.ParsedResults = new List<ProcessHub.SearchResult>();
+                    ProcessHub model = new ProcessHub(Parameters);
+                    model.ParsedResults = Parameters.ParsedResults;
                     model.SearchErrorEncountered = true;
                     model.SearchErrorMsg = "You've reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
                     return View(model);
-                    // return View("MonthlyMaxReached", user);
                 }
-            }
-            //End account checks.
+                if (Parameters.top > userPackage.MaxResults) Parameters.top = userPackage.MaxResults;   // User's requested Results/Search is limited to Package settings.
+            }             // End of User account checkpoint.
 
-            // If-statement will occur if the param is coming from the Application Index page, where newSession is always set to true.
-            // If coming via click on Next Set of Results, this will always be false.
-            if (NewSession == true)
+            ProcessHub Engine = null;
+
+            if (NewSession == true)     // NewSession is set to true if coming from Application page; wipe old session.
                 Session["Params"] = null;
 
-            ProcessHub ph = null;
-            if (!isAdmin)
-                if (param.top > userPackage.MaxResults) param.top = userPackage.MaxResults;
-
-            // If a session is continuing from the previous (user chooses to retrieve next set of results).
-            if ((ParameterKeeper)Session["Params"] != null)
+            if ((ParameterKeeper)Session["Params"] != null)    // If a session is continuing from the previous (user chooses to retrieve next set of results).
             {
-                param = (ParameterKeeper)Session["Params"];
-                ph = new ProcessHub(param);
-                ph.ParsedResults = param.ParsedResults;
+                Parameters = (ParameterKeeper)Session["Params"];
+                Engine = new ProcessHub(Parameters);
+                Engine.ParsedResults = Parameters.ParsedResults;
             }
 
             // Fresh run; should check validity of inputs.
             else if (ModelState.IsValid)
             {
-                if ((param.top + param.skip) > 1001)    // Recalculating results based on skip value.
+                if ((Parameters.top + Parameters.skip) > 1001)    // Recalculating results based on skip value.
                 {
-                    param.top = 1000 - (param.skip - 1);
-                    if (param.top <= 0) param.top = 1;
+                    Parameters.top = 1000 - (Parameters.skip - 1);
+                    if (Parameters.top <= 0) Parameters.top = 1;
                 }
 
-                ph = new ProcessHub(param);
+                Engine = new ProcessHub(Parameters);
             }
             else
-                return View("Index", param);
+                return View("Index", Parameters);
 
-            ph.run();
-            updateResults(ph, param);
-            Session["Params"] = param;
-            if (!ph.SearchErrorEncountered)     // If no search error returned from Bing API.
+            Engine.run();
+            updateResults(Engine, Parameters);
+            Session["Params"] = Parameters;
+            if (!Engine.SearchErrorEncountered)     // If no search error returned from Bing API, or user has maxed out results for given search.
             {
                 user.QueriesPerformed++;
                 user.TotalQueriesPerformed++;
                 user.DateTimeStamp = DateTime.Now;
-                //user.DateTimeStamp = DateTime.Now.Date;       // Use this line if you care only about the specific date and not exact time.
                 await UserManager.UpdateAsync(user);
             }
-            return View(ph);
+            return View(Engine);
         } // Process
 
         /**
@@ -223,27 +207,40 @@ namespace MissingLinkPro.Controllers
          * Para@    ProcessHub p
          *          ParameterKeeper param
          **/
-        private void updateResults(ProcessHub p, ParameterKeeper param)
+        private void updateResults(ProcessHub Engine, ParameterKeeper Parameters)
         {
-            param.MaxResultRange = 1000 - (param.skip - 1) - param.top;
-            param.skip += param.top;
-            param.ParsedResults = p.ParsedResults;
-            param.OmitCount = p.OmitCount;
-            if (p.SearchErrorEncountered)
+            Parameters.MaxResultRange = 1000 - (Parameters.skip - 1) - Parameters.top;  // Adjust maximum number possible results remaining
+            Parameters.skip += Parameters.top;                                          // Adjust offset
+            Parameters.ParsedResults = Engine.ParsedResults;                            // Save search results to parameters, which saves to Session
+            Parameters.OmitCount = Engine.OmitCount;                                    // Update number of omitted results
+            if (Engine.SearchErrorEncountered)
             {
-                param.SearchErrorEncountered = p.SearchErrorEncountered;
-                param.SearchErrorMsg = p.SearchErrorMsg;
+                Parameters.SearchErrorEncountered = Engine.SearchErrorEncountered;
+                Parameters.SearchErrorMsg = Engine.SearchErrorMsg;
             }
         } // updateResults
 
+        /**
+         * Allows CSV Export of search results; called from webpage.
+         **/
         public FileResult ExportResults() {
-
-            ParameterKeeper param = (ParameterKeeper)Session["Params"];
-            FileResult complete_file = WriteFile(param.ParsedResults, param);
+            ParameterKeeper Parameters;
+            if ((ParameterKeeper)Session["Params"] != null)
+                Parameters = (ParameterKeeper)Session["Params"];
+            else
+            {
+                Parameters = new ParameterKeeper();
+                Parameters.ParsedResults = new List<ProcessHub.SearchResult>();
+                Parameters.ResultType = "web";
+            }
+            FileResult complete_file = WriteFile(Parameters.ParsedResults, Parameters);
             return complete_file;
-        }
+        } // ExportResults
 
-        private FileResult WriteFile(List<MissingLinkPro.Models.ProcessHub.SearchResult> list, ParameterKeeper param) {
+        /**
+         * Writes and returns a CSV file with given search results and user search parameters.
+         **/
+        private FileResult WriteFile(List<MissingLinkPro.Models.ProcessHub.SearchResult> Results, ParameterKeeper Parameters) {
 
             var output = new MemoryStream();
             var writer = new StreamWriter(output);
@@ -253,28 +250,28 @@ namespace MissingLinkPro.Controllers
             writer.WriteLine(DateTime.Now.ToString() + "\n");
 
             csv.WriteField("Search Query");
-            csv.WriteField(param.BingSearchQuery);
+            csv.WriteField(Parameters.BingSearchQuery);
             //csv.NextRecord();
             //csv.WriteField("Phrase Search");
             //csv.WriteField(param.PhraseSearchString);
             csv.NextRecord();
             csv.WriteField("Target Website To Link To");
-            csv.WriteField(param.ClientWebsite);
+            csv.WriteField(Parameters.ClientWebsite);
             csv.NextRecord();
             csv.WriteField("Result Type");
-            csv.WriteField(param.ResultType);
+            csv.WriteField(Parameters.ResultType);
             csv.NextRecord();
             csv.WriteField("Number of Results Found");
-            csv.WriteField(param.ParsedResults.Count);
+            csv.WriteField(Parameters.ParsedResults.Count);
             csv.NextRecord();
             csv.WriteField("Results Omitted");
-            csv.WriteField(param.OmitCount);
+            csv.WriteField(Parameters.OmitCount);
             csv.NextRecord();
 
-            if (param.SearchErrorEncountered)
+            if (Parameters.SearchErrorEncountered)
             {
                 csv.WriteField("Search Error Encountered");
-                csv.WriteField(param.SearchErrorMsg);
+                csv.WriteField(Parameters.SearchErrorMsg);
                 csv.NextRecord();
             }
 
@@ -285,34 +282,34 @@ namespace MissingLinkPro.Controllers
             csv.WriteField("URL");
             csv.WriteField("Links To Target");
             //csv.WriteField("Contains Phrase");
-            if (param.ResultType.Equals("news")){
+            if (Parameters.ResultType.Equals("news")){
                 csv.WriteField("Source");
                 csv.WriteField("Indexed On");
             }
             csv.WriteField("Errors");
             csv.NextRecord();
 
-            foreach (MissingLinkPro.Models.ProcessHub.SearchResult sr in list) {
+            foreach (MissingLinkPro.Models.ProcessHub.SearchResult result in Results) {
 
-                if (sr.SkipThisResult) continue;
+                if (result.SkipThisResult) continue;
 
-                csv.WriteField(sr.Id);
-                csv.WriteField(sr.Title);
-                csv.WriteField(sr.Url);
-                if (sr.LinksToClientWebsite) csv.WriteField("yes");
-                else if (sr.ExceptionFound) csv.WriteField("n/a");
+                csv.WriteField(result.Id);
+                csv.WriteField(result.Title);
+                csv.WriteField(result.Url);
+                if (result.LinksToClientWebsite) csv.WriteField("yes");
+                else if (result.ExceptionFound) csv.WriteField("n/a");
                 else csv.WriteField("no");
 
                 //if (sr.ExceptionFound || param.PhraseSearchString == null || param.PhraseSearchString.Equals("")) csv.WriteField("n/a");
                 //else if (sr.ContainsSearchPhrase) csv.WriteField("yes");
                 //else csv.WriteField("no");
 
-                if (param.ResultType.Equals("news")) {
-                    csv.WriteField(sr.Source);
-                    csv.WriteField(sr.Date);
+                if (Parameters.ResultType.Equals("news")) {     // Additional columns for news results
+                    csv.WriteField(result.Source);
+                    csv.WriteField(result.Date);
                 }
 
-                if (sr.ExceptionFound) csv.WriteField(sr.ErrorMsg);
+                if (result.ExceptionFound) csv.WriteField(result.ErrorMsg);
                 else csv.WriteField("none");
                 csv.NextRecord();
             }

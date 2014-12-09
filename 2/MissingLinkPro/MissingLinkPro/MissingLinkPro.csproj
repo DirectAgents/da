@@ -15,7 +15,7 @@
     <AssemblyName>MissingLinkPro</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -54,6 +54,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -237,7 +240,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\DemoController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -246,7 +249,6 @@
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Controllers\UpdateUserViewModel.cs" />
     <Compile Include="Controllers\UserAdminController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -372,7 +374,6 @@
     <Content Include="Views\Application\Index.cshtml" />
     <Content Include="Views\Application\Process.cshtml" />
     <Content Include="Views\Manage\ChangeName.cshtml" />
-    <Content Include="Views\Application\DailyMaxReached.cshtml" />
     <Content Include="Views\Settings\Create.cshtml" />
     <Content Include="Views\Settings\Delete.cshtml" />
     <Content Include="Views\Settings\Details.cshtml" />
@@ -384,26 +385,24 @@
     <Content Include="Views\Packages\Edit.cshtml" />
     <Content Include="Views\Packages\Index.cshtml" />
     <Content Include="Views\Application\EmailNotConfirmed.cshtml" />
-    <Content Include="Views\Application\MonthlyMaxReached.cshtml" />
     <Content Include="Views\Payments\Index.cshtml" />
-    <Content Include="Views\Payments\Confirm.cshtml" />
     <Content Include="Views\Payments\Pay.cshtml" />
-    <Content Include="Views\Payments\SubscriptionSet.cshtml" />
-    <Content Include="Views\Payments\ProcessingError.cshtml" />
     <Content Include="Views\Manage\History.cshtml" />
     <Content Include="Views\Payments\Cancel.cshtml" />
-    <Content Include="Views\Payments\CancelConfirmed.cshtml" />
     <Content Include="Views\Payments\Test.cshtml" />
     <Content Include="Views\Payments\EmailNotConfirmed.cshtml" />
     <Content Include="Views\Manage\UpdateCreditCard.cshtml" />
-    <Content Include="Views\Application\PaymentError.cshtml" />
-    <Content Include="Views\Payments\CardUpdated.cshtml" />
     <Content Include="Views\Home\Manual.cshtml" />
     <Content Include="Views\Home\FAQ.cshtml" />
     <Content Include="Views\Manage\UpdateUser.cshtml" />
     <Content Include="Views\Manage\UpdateUserConfirmed.cshtml" />
     <Content Include="Views\Manage\CreditCardManagement.cshtml" />
     <Content Include="Views\Manage\DeleteCreditCard.cshtml" />
+    <Content Include="Views\Home\EmailNotConfirmed.cshtml" />
+    <Content Include="Views\Manage\EmailNotConfirmed.cshtml" />
+    <Content Include="Views\Manage\Subscriptions.cshtml" />
+    <Content Include="Views\Manage\CancelSubscription.cshtml" />
+    <Content Include="Views\Manage\PaySubscription.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -413,7 +412,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Demo\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

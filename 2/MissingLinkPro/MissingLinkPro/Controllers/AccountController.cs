@@ -13,17 +13,15 @@ using System.Configuration;
 using Stripe;
 using System.Collections.Generic;
 using MissingLinkPro.Helpers;
+using MissingLinkPro.Controllers;
 
 namespace IdentitySample.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
-        public AccountController()
-        {
-        }
+        public AccountController() { }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
@@ -71,6 +69,7 @@ namespace IdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            if (returnUrl == null) returnUrl = "/Home/Index";
             if (!ModelState.IsValid)
             {
                 return View(model);

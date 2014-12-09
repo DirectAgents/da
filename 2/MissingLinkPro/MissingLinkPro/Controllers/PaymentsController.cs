@@ -15,7 +15,7 @@ using MissingLinkPro.Helpers;
 namespace MissingLinkPro.Controllers
 {
     [Authorize]
-    public class PaymentsController : Controller
+    public class PaymentsController : HttpsBaseController
     {
 
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -47,13 +47,6 @@ namespace MissingLinkPro.Controllers
         public async Task<ActionResult> Index()
         {
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            //if (!user.IsActive) {
-            //    if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
-            //    {
-            //        user = StripeHelper.AssignNewSubscription(user, 1);
-            //        await UserManager.UpdateAsync(user);
-            //    }
-            //}
             return View(new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList() });
         }
 
@@ -66,8 +59,7 @@ namespace MissingLinkPro.Controllers
 
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
 
-            // Email not confirmed
-            if (!user.EmailConfirmed)
+            if (!user.EmailConfirmed)             // Email not confirmed
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
 
             Package package = db.Packages.Find(id);
@@ -126,7 +118,6 @@ namespace MissingLinkPro.Controllers
                 PayIndexViewModel model = new PayIndexViewModel { PackageId = user.PackageId.Value, ListofPackages = db.Packages.ToList(), HasMessage = true, Message = "Your subscription had already been cancelled at an earlier time." };
                 return View("Index", model);
             }
-
             return View(user);
         } // Cancel
 
@@ -150,18 +141,11 @@ namespace MissingLinkPro.Controllers
                 await UserManager.UpdateAsync(user);
                 model.HasMessage = true;
                 model.Message = "Success: subscription has been canceled; your subscription will continue until the end of its cycle, at which point it will not be renewed.";
-
-                return View("Index",model);
             }
-            else return View("Index", model);
+            return View("Index", model);
         } // Cancel
 
-        public async Task<ActionResult> Test()
-        {
-            return View("Error");
-        }
-
-        /**
+/**
 * Quick shortcut method for printing to the diagnostic console, sans new line.
 * @para string s:  the string to be printed
 **/

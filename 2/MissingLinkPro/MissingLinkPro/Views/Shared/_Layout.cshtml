@@ -65,17 +65,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (!Request.IsAuthenticated) {
+                    <li><a href="http://www.directagents.com/directlink">Home</a></li>
+                    <li><a href="http://www.directagents.com/directlink/about.html">About</a></li>
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-
-                    @if (Request.IsAuthenticated) {
-                        <li>@Html.ActionLink("Application","Index","Application")</li>
-                        <li>@Html.ActionLink("Subscriptions", "Index", "Payments")</li>
-                        <li>@Html.ActionLink("Help", "Manual", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                     }
 
-                    <li>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
+                    @if (Request.IsAuthenticated) {
+                        <li>@Html.ActionLink("Welcome","Index","Home")</li>
+                        <li>@Html.ActionLink("Application","Index","Application")</li>
+                        @*<li>@Html.ActionLink("Subscriptions", "Index", "Payments")</li>*@
+                        <li>@Html.ActionLink("Help", "Manual", "Home")</li>
+                        <li>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    }
 
                     @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
                         <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
