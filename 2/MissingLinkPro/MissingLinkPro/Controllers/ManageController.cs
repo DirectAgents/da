@@ -102,15 +102,15 @@ namespace IdentitySample.Controllers
             return View(model);
         } // CreditCardManagement
 
-        [HttpPost]
-        public async Task<ActionResult> CreditCardManagement(string stripeToken)
-        {
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            try { user = StripeHelper.UpdateCreditCard(user, stripeToken); }
-            catch (StripeException) { return View("Error"); }
-            await UserManager.UpdateAsync(user);
-            return RedirectToAction("Index", new { Message = ManageMessageId.CreditCardUpdateSuccess });
-        } // CreditCardManagement POST
+        //[HttpPost]
+        //public async Task<ActionResult> CreditCardManagement(string stripeToken)
+        //{
+        //    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+        //    try { user = StripeHelper.UpdateCreditCard(user, stripeToken); }
+        //    catch (StripeException) { return View("Error"); }
+        //    await UserManager.UpdateAsync(user);
+        //    return RedirectToAction("Index", new { Message = ManageMessageId.CreditCardUpdateSuccess });
+        //} // CreditCardManagement POST
 
         private List<StripeInvoice> AdjustInvoiceItems(IEnumerable<StripeInvoice> list) {
             List<StripeInvoice> StripeInvoiceList = list.ToList();
@@ -306,9 +306,9 @@ namespace IdentitySample.Controllers
                 user = StripeHelper.UpdateCreditCard(user, form.stripeToken);
 
                 if (StripeHelper.UserHasSubscription(user))
-                    user = StripeHelper.ChangePackagePlan(user, form.PackageId, form.stripeToken);
+                    user = StripeHelper.ChangePackagePlan(user, form.PackageId);
                 else
-                    user = StripeHelper.AssignNewSubscription(user, form.PackageId, form.stripeToken);
+                    user = StripeHelper.AssignNewSubscription(user, form.PackageId);
             }
             catch (StripeException e)
             {
