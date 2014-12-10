@@ -24,8 +24,6 @@ namespace MissingLinkPro.Helpers
          **/
         public static ApplicationUser AssignNewSubscription(ApplicationUser user, int NewPlanId, string stripeToken = null)
         {
-            try
-            {
                 if (user.CustomerId == null)    // brand-new user; must create Customer account.
                 {
                     var myCustomer = new StripeCustomerCreateOptions();
@@ -52,8 +50,6 @@ namespace MissingLinkPro.Helpers
                     user.SubscriptionId = stripeSubscription.Id;
                     user.PackageId = NewPlanId;
                 }
-            }
-            catch (StripeException) { }
             user.IsActive = true;
             return user;
         } // AssignPackagePlan
@@ -68,8 +64,7 @@ namespace MissingLinkPro.Helpers
             if (stripeToken != null)
                 myCustomer.TokenId = stripeToken;
             var customerService = new StripeCustomerService();
-            try
-            {
+
                 StripeCustomer stripeCustomer = customerService.Update(user.CustomerId, myCustomer);
                 var subscriptionService = new StripeSubscriptionService();
                 StripeSubscriptionUpdateOptions NewPlan = new StripeSubscriptionUpdateOptions();
@@ -78,8 +73,7 @@ namespace MissingLinkPro.Helpers
                 user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
                 user.PackageId = NewPlanId;
                 user.IsActive = true;
-            }
-            catch (StripeException) { }
+
             return user;
         } // UpgradePackagePlan
 
@@ -92,8 +86,7 @@ namespace MissingLinkPro.Helpers
         {
             var myCustomer = new StripeCustomerUpdateOptions();
             var customerService = new StripeCustomerService();
-            try
-            {
+
                 StripeCustomer stripeCustomer = customerService.Update(user.CustomerId, myCustomer);
                 var subscriptionService = new StripeSubscriptionService();
                 StripeSubscriptionUpdateOptions NewPlan = new StripeSubscriptionUpdateOptions();
@@ -102,21 +95,18 @@ namespace MissingLinkPro.Helpers
                 user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
                 user.PackageId = NewPlanId;
                 user.IsActive = true;
-            }
-            catch (StripeException) { }
+
             return user;
         }
 
         public static StripeCard GetCreditCard(ApplicationUser user)
         {
             StripeCard retrieved = null;
-            try
-            {
+
                 var cardService = new StripeCardService();
                 IEnumerable<StripeCard> response = cardService.List(user.CustomerId);
                 retrieved = response.ElementAt(0);
-            }
-            catch (StripeException) { }
+
             return retrieved;
         } // GetCreditCard
 
@@ -152,25 +142,22 @@ namespace MissingLinkPro.Helpers
         public static bool UserHasCreditCard(ApplicationUser user)
         {
             bool b = true;
-            try
-            {
+
                 var cardService = new StripeCardService();
                 IEnumerable<StripeCard> response = cardService.List(user.CustomerId); // optional StripeListOptions
                 if (response.Count() <= 0) b = false;
-            }
-            catch (StripeException) { }
+
             return b;
         } // UserHasCreditCard
 
         public static bool UserHasSubscription(ApplicationUser user)
         {
             bool b = true;
-            try {
+
                 var subscriptionService = new StripeSubscriptionService();
                 IEnumerable<StripeSubscription> response = subscriptionService.List(user.CustomerId);
                 if (response.Count() <= 0) b = false;
-            }
-            catch (StripeException) { }
+
             return b;
         } // UserHasSubscription
 
@@ -182,7 +169,7 @@ namespace MissingLinkPro.Helpers
         {
             var subscriptionService = new StripeSubscriptionService();
             StripeSubscription stripeSubscription = subscriptionService.Get(user.CustomerId, user.SubscriptionId);
-            user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5,0,0));
+            user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
             return user;
         } // UpdateAnniversary
 
@@ -191,9 +178,11 @@ namespace MissingLinkPro.Helpers
             var subscriptionService = new StripeSubscriptionService();
             StripeSubscriptionUpdateOptions ssuo = new StripeSubscriptionUpdateOptions();
             ssuo.TokenId = stripeToken;
-            StripeSubscription stripeSubscription = subscriptionService.Update(user.CustomerId, user.SubscriptionId, ssuo);
-            user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
-            user.IsActive = true;
+
+                StripeSubscription stripeSubscription = subscriptionService.Update(user.CustomerId, user.SubscriptionId, ssuo);
+                user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
+                user.IsActive = true;
+
             return user;
         } // UpdateCreditCard
 

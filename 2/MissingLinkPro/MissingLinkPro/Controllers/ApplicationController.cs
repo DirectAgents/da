@@ -157,7 +157,7 @@ namespace MissingLinkPro.Controllers
                     ProcessHub model = new ProcessHub(Parameters);
                     model.ParsedResults = Parameters.ParsedResults;
                     model.SearchErrorEncountered = true;
-                    model.SearchErrorMsg = "You've reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
+                    model.SearchErrorMsg = "You have reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
                     return View(model);
                 }
                 if (Parameters.top > userPackage.MaxResults) Parameters.top = userPackage.MaxResults;   // User's requested Results/Search is limited to Package settings.
@@ -175,8 +175,7 @@ namespace MissingLinkPro.Controllers
                 Engine.ParsedResults = Parameters.ParsedResults;
             }
 
-            // Fresh run; should check validity of inputs.
-            else if (ModelState.IsValid)
+            else if (ModelState.IsValid)             // Fresh run; should check validity of inputs.
             {
                 if ((Parameters.top + Parameters.skip) > 1001)    // Recalculating results based on skip value.
                 {

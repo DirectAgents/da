@@ -23,6 +23,9 @@ namespace IdentitySample.Models
 
         public bool UserHasCreditCard { get; set; }
         public bool IsActive { get; set; }
+
+        public bool HasMessage { get; set; }
+        public string Message { get; set; }
     }
 
     public class PayIndexViewModel
@@ -43,6 +46,11 @@ namespace IdentitySample.Models
     {
         public string stripeToken { get; set; }
         public int PackageId { get; set; }
+        public bool NewCard { get; set; }
+
+        public bool HasMessage { get; set; }
+
+        public string Message { get; set; }
     }
 
     public class PayErrorModel

@@ -102,6 +102,10 @@ namespace MissingLinkPro.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                if (package.StatementDescription.Length > 15)   // Stripe restricts Statement description length to 15; temporary measure until hosting DB table is updated.
+                    package.StatementDescription = package.StatementDescription.Substring(0, 15);
+
                 /*Stripe Code begins here*/
                 var myPlan = new StripePlanUpdateOptions();
                 myPlan.Name = package.Name;
@@ -139,11 +143,10 @@ namespace MissingLinkPro.Controllers
         {
             Package package = db.Packages.Find(id);
 
-            var planService = new StripePlanService();
-            planService.Delete(package.Id.ToString());
-
             db.Packages.Remove(package);
             db.SaveChanges();
+            var planService = new StripePlanService();
+            planService.Delete(package.Id.ToString());
             return RedirectToAction("Index");
         }
 

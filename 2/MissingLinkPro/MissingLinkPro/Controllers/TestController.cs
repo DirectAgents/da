@@ -15,6 +15,7 @@ namespace MissingLinkPro.Controllers
             return Content("okay");
         }
 
+        [AllowAnonymous]
         public ActionResult IDKFA()
         {
             return Content("ALL WEAPONS, KEYS, AMMO UNLOCKED");

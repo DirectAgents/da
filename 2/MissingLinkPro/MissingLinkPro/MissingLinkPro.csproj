@@ -245,7 +245,6 @@
     <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PackagesController.cs" />
-    <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\RolesAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TestController.cs" />
@@ -385,12 +384,7 @@
     <Content Include="Views\Packages\Edit.cshtml" />
     <Content Include="Views\Packages\Index.cshtml" />
     <Content Include="Views\Application\EmailNotConfirmed.cshtml" />
-    <Content Include="Views\Payments\Index.cshtml" />
-    <Content Include="Views\Payments\Pay.cshtml" />
     <Content Include="Views\Manage\History.cshtml" />
-    <Content Include="Views\Payments\Cancel.cshtml" />
-    <Content Include="Views\Payments\Test.cshtml" />
-    <Content Include="Views\Payments\EmailNotConfirmed.cshtml" />
     <Content Include="Views\Manage\UpdateCreditCard.cshtml" />
     <Content Include="Views\Home\Manual.cshtml" />
     <Content Include="Views\Home\FAQ.cshtml" />

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Stripe.StripeInvoice>
+﻿@model List<Stripe.StripeInvoice>
 
 @{
     ViewBag.Title = "Account Payment History";
@@ -30,6 +30,15 @@
 </div>
 
 <table class="invoice-table">
+    @if (Model.Count > 0) {
+        <tr>
+            <td>@DateTime.Now</td>
+            <td>Current Amount Due</td>
+            <td>$@(Model[0].AmountDue/100).@if (Model[0].AmountDue/100 < 0) {@((Model[0].AmountDue%100) * -1)} else {@(Model[0].AmountDue%100)}</td></tr>
+    }
+    <tr>
+        <td><p> </p><br /></td>
+    </tr>
     @foreach (Stripe.StripeInvoice Invoice in @Model) {
         foreach (Stripe.StripeInvoiceItem Item in Invoice.StripeInvoiceLines.StripeInvoiceItems) {
             <tr>

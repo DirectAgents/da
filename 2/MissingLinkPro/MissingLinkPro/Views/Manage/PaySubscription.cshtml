@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Payment Form";
     bool showPaymentForm = false;
+    bool newCard = false;
 }
 
 @section Scripts
@@ -44,6 +45,8 @@
 
 </script>
 }
+
+<p class="text-success">@ViewBag.StatusMessage</p>
 
 <table class="content-space">
     <tr>
@@ -101,7 +104,7 @@ else if (Model.PackageId == Model.SubscribedPackageId)
         </tr>
    }
 }
-else if (Model.PackageId < Model.SubscribedPackageId && Model.IsActive)
+else if (Model.PackageId < Model.SubscribedPackageId && Model.IsActive && Model.UserHasCreditCard)
 {
     <tr>
         <td><p>Using your existing credit card, you have the option of downgrading to this plan. If you choose to do so, you will be charged the prorated amount on your next invoice.</p>
