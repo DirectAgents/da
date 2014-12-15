@@ -119,10 +119,10 @@ namespace MissingLinkPro.Controllers
                         {
                             status = StripeHelper.GetSubscriptionStatus(user);      // Check on user's subscription status.
                         }
-                        catch (Stripe.StripeException)      // Could not find the user's subscription; assign new Freemium subscription.
+                        catch (Stripe.StripeException)      // Could not find the user's subscription; may have fizzled due to cancellation.
                         {
                             status = "active";
-                            user = StripeHelper.AssignNewSubscription(user, 1);
+                            user = StripeHelper.AssignNewSubscription(user, 1); // Assign new Freemium subscription.
                         }
                         if (status.Equals("active")) ok = true;             // Subscription is fine; proceed.
                         else {                                              // Not okay; redirect to Process page with error message.
@@ -133,6 +133,7 @@ namespace MissingLinkPro.Controllers
                             ProcessHub model = new ProcessHub(Parameters);
                             model.ParsedResults = Parameters.ParsedResults;
                             model.SearchErrorEncountered = true;
+                            ViewBag.StatusMessage = "";
                             if (status.Equals("past_due")) model.SearchErrorMsg = "Subscription payment status: past due.";
                             else if (status.Equals("unpaid")) model.SearchErrorMsg = "Subscription payment status: unpaid.";
                             else if (status.Equals("canceled")) model.SearchErrorMsg = "Subscription payment status: canceled.";
