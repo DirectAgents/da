@@ -1,0 +1,458 @@
+.gradient {
+	background:#009ee1;
+	background:-webkit-linear-gradient(-45deg, #009ee1 40%, #5bc1ed 100%);
+	background:-moz-linear-gradient(-45deg, #009ee1 40%, #5bc1ed 100%);
+	background:-ms-linear-gradient(-45deg, #009ee1 40%, #5bc1ed 100%);
+	background:-o-linear-gradient(-45deg, #009ee1 40%, #5bc1ed 100%);
+	background:linear-gradient(-45deg, #009ee1 40%, #5bc1ed 100%)
+}
+html {
+	font-size:112.5%
+}
+.container {
+	width:960px
+}
+.column, .row {
+	margin-bottom:27px
+}
+.row {
+	margin-bottom:45px
+}
+.row:last-of-type {
+	margin-bottom:0
+}
+.column {
+	float:left;
+	margin:0;
+	padding-left:18px;
+	padding-right:18px
+}
+.column.full {
+	width:100%
+}
+.column.two-thirds {
+	width:66.7%
+}
+.column.half {
+	width:50%
+}
+.column.third {
+	width:33.3%
+}
+.column.fourth {
+	width:25%
+}
+.column.fifth {
+	width:20%
+}
+.column.three-fourths {
+	width:75%
+}
+section .column.full {
+	text-align:center
+}
+.column.flow-opposite {
+	float:right
+}
+header {
+	padding:81px 0
+}
+section {
+	padding:63px 0
+}
+article {
+	padding:81px 0
+}
+article .container {
+	max-width:720px
+}
+article h2 {
+	font-size:27px
+}
+article img {
+	padding:0 0 27px 0
+}
+article ul {
+	margin-bottom:28px
+}
+h1 {
+	margin-bottom:18px
+}
+h2 {
+	font-size:36px;
+	margin-bottom:9px
+}
+h3 {
+	font-size:22px;
+	margin-bottom:9px
+}
+h4 {
+	font-size:22px;
+	margin-bottom:9px
+}
+p {
+	width:auto;
+	margin:0 auto;
+	padding:0
+}
+code {
+	padding:1px 5px;
+	font-size:14px;
+	top:-1px
+}
+pre {
+	font-size:14px;
+	padding:1px 5px;
+	border-radius:3px
+}
+ol {
+	margin:0 0 18px 0;
+	padding:0 0 0 36px
+}
+ol li {
+	margin-top:18px
+}
+hr {
+	margin:45px auto;
+	width:54px
+}
+hr.small {
+	margin:27px auto
+}
+nav#top {
+	height:70px;
+	border-bottom:1px solid #e5e6e9;
+	min-width:960px
+}
+nav#top img#logo {
+	width:64px;
+	top:20px
+}
+nav#top ul.menu {
+	position:absolute;
+	display:block;
+	top:0;
+	left:0;
+	right:0;
+	width:100%;
+	margin:0;
+	padding:0;
+	border:none;
+	background:none
+}
+nav#top ul.menu>li {
+	position:relative;
+	display:block;
+	font-size:14px;
+	float:left;
+	border-bottom:none;
+	cursor:pointer
+}
+nav#top ul.menu>li>a {
+	display:block;
+	padding:0 9px;
+	min-height:70px;
+	line-height:70px;
+	text-decoration:none
+}
+nav#top ul.menu>li>a:hover {
+	background:none
+}
+nav#top ul.menu>li ul.submenu {
+	padding:0;
+	position:absolute;
+	z-index:98;
+	top:70px;
+	left:0;
+	opacity:0;
+	visibility:hidden;
+	background:#ffffff;
+	width:216px
+}
+nav#top ul.menu>li ul.submenu li {
+	display:block;
+	float:none;
+	border-bottom:none
+}
+nav#top ul.menu>li ul.submenu li a {
+	display:block;
+	padding:9px;
+	line-height:27px;
+	margin:0;
+	min-height:auto
+}
+nav#top ul.menu>li:first-child {
+	margin-left:12px
+}
+nav#top ul.menu li.login {
+	position:absolute;
+	top:15px;
+	right:20px;
+	display:block;
+	overflow:visible
+}
+nav#top ul.menu li.login .signin, nav#top ul.menu li.login .signup {
+	display:inline-block;
+	float:left;
+	text-transform:uppercase;
+	font-size:14px;
+	line-height:18px;
+	min-height:auto;
+	padding:10px
+}
+nav#top ul.menu li.login .signin {
+	margin:0;
+	color:#fff;
+	background:#009ee1
+}
+nav#top ul.menu li.login .signin:hover {
+	background:#5bc1ed
+}
+nav#top ul.menu li.login .signup {
+	color:#909BA9;
+	font-weight:bold;
+	margin-right:9px
+}
+nav#top ul.menu li.login .signup:hover {
+	color:#009ee1
+}
+nav#top ul.menu li.dropdown>a {
+	display:block;
+	padding:0 62px 0 9px;
+	min-height:70px
+}
+nav#top ul.menu li.dropdown>a span {
+	display:block;
+	float:left;
+	width:4px;
+	height:4px;
+	margin:32px 4px 0 0;
+	border-radius:3px;
+	background:#364A61
+}
+nav#top ul.menu li.dropdown ul.submenu.show {
+	opacity:1;
+	visibility:visible
+}
+nav#top ul.menu li.dropdown:hover>a span {
+	background:#009ee1
+}
+nav#top .burger {
+	display:none
+}
+footer#bottom {
+	padding:18px 0
+}
+footer#bottom nav.legal ul li {
+	display:inline-block;
+	padding:0 9px 0 0
+}
+footer#bottom nav.social ul li {
+	padding:0 9px 0 0
+}
+#main {
+	padding-bottom:70px
+}
+footer#bottom {
+	margin-top:-70px;
+	min-height:70px
+}
+footer#bottom nav {
+	position:absolute;
+	top:24px
+}
+footer#bottom nav.legal {
+	right:20px
+}
+footer#bottom nav.social {
+	left:0;
+	right:0;
+	margin:0 auto
+}
+footer#bottom nav.credits {
+	left:20px
+}
+.hockeyapp {
+	width:440px;
+	height:105px
+}
+h2.topic {
+	font-size:20px
+}
+a.button {
+	padding:14px 18px;
+	font-size:14px
+}
+.feature .icon {
+	margin-bottom:9px
+}
+.feature img {
+	margin-bottom:9px
+}
+.platform {
+	margin:18px 27px 0 0
+}
+.platform:last-child {
+	margin:18px 54px 0 0
+}
+.number {
+	margin-bottom:9px
+}
+.feature-nav p {
+	margin:18px auto 27px auto
+}
+.features .icon {
+	display:block;
+	float:left
+}
+.features .box {
+	margin:0 0 0 108px
+}
+.services a.button {
+	margin:27px auto 0
+}
+ul.segmentation {
+	width:auto
+}
+ul.segmentation li {
+	padding:9px 0;
+	width:180px
+}
+.plans {
+	margin-bottom:9px
+}
+.plans>ul>li.plan {
+	margin-bottom:18px;
+	width:33.3%;
+	padding:0 10px
+}
+.plans>ul>li.plan h3 {
+	padding:18px 0;
+	font-size:18px
+}
+.plans>ul>li.plan>ul.details {
+	display:block
+}
+.plans>ul>li.plan>ul.details li {
+	padding-top:21px
+}
+.plans>ul>li.plan>ul.details li.price {
+	font-size:36px;
+	margin:21px 0 0;
+	padding:9px 0
+}
+.plans>ul>li.plan>ul.details li.price sup {
+	font-size:14px
+}
+.plans>ul>li.plan>ul.details li.price .extra {
+	font-size:18px
+}
+.plans>ul>li.plan.info ul.details {
+	padding:36px 18px
+}
+.discount {
+	font-size:18px
+}
+.switch {
+	margin:18px auto
+}
+.switch label:before {
+	padding:9px 9px 0 0
+}
+.switch label:after {
+	padding:9px 0 0 9px
+}
+.pagination ul li a {
+	padding:9px 18px
+}
+article.odd {
+	background:#ffffff
+}
+article img.screenshot, article img.contents {
+	margin:18px 15% 36px 15%;
+	max-width:70%
+}
+article .row img.screenshot, article .row img.contents {
+	margin:18px 2% 36px 2%;
+	max-width:96%
+}
+article img.right {
+	margin:0 0 36px 36px
+}
+.apps .download .button {
+	min-width:216px
+}
+.apps .download .sub {
+	font-size:14px
+}
+.rules .column.full {
+	text-align:left
+}
+.rules .number {
+	float:left;
+	margin-top:1px
+}
+.rules .box {
+	margin:0 0 0 54px
+}
+.hockeyapp {
+	display:inline-block;
+	width:384px;
+	height:94px;
+	background:url(/images/ie8/hockeyapp.png) no-repeat
+}
+.features .icon.distribution {
+	background:url(/images/ie8/icon-distribution.png) no-repeat
+}
+.features .icon.crashreports {
+	background:url(/images/ie8/icon-crashreports.png) no-repeat
+}
+.features .icon.feedback {
+	background:url(/images/ie8/icon-feedback.png) no-repeat
+}
+.features .icon.analytics {
+	background:url(/images/ie8/icon-analytics.png) no-repeat
+}
+.features .icon.teams {
+	background:url(/images/ie8/icon-teams.png) no-repeat
+}
+.features .icon.enterprise {
+	background:url(/images/ie8/icon-enterprise.png) no-repeat
+}
+.feature .icon.distribution {
+	background:url(/images/ie8/icon-distribution@2x.png) #fff no-repeat
+}
+.feature .icon.crashreports {
+	background:url(/images/ie8/icon-crashreports@2x.png) #fff no-repeat
+}
+.feature .icon.feedback {
+	background:url(/images/ie8/icon-feedback@2x.png) #fff no-repeat
+}
+.feature .icon.analytics {
+	background:url(/images/ie8/icon-analytics@2x.png) #fff no-repeat
+}
+.feature .icon.teams {
+	background:url(/images/ie8/icon-teams@2x.png) #fff no-repeat
+}
+.feature .icon.enterprise {
+	background:url(/images/ie8/icon-enterprise@2x.png) #fff no-repeat
+}
+.apps .device.mac {
+	background:url(/images/ie8/icon-device-mac.png) #fff no-repeat
+}
+.apps .device.win {
+	background:url(/images/ie8/icon-device-win.png) #fff no-repeat
+}
+.apps .device.android {
+	background:url(/images/ie8/icon-device-android.png) #fff no-repeat
+}
+.apps .device.wp {
+	background:url(/images/ie8/icon-device-wp.png) #fff no-repeat
+}
+.platform-icons {
+	display:inline-block;
+	margin-top:18px;
+	width:304px;
+	height:64px;
+	background:url(/images/ie8/platforms.png) no-repeat
+}

@@ -1,0 +1,76 @@
+﻿using MissingLinkPro.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace MissingLinkPro.Controllers
+{
+    [AllowAnonymous]
+    public class DemoController : HttpsBaseController
+    {
+        public ActionResult Index()
+        {
+            ParameterKeeper pk = new ParameterKeeper
+            {
+                top = 15,
+                skip = 1,
+                ExcludeLinkbackResults = true,
+                DisplayAllResults = true,
+                ResultType = "web",
+                MaxResultRange = 1000
+            };
+            return View(pk);
+        }
+
+        [HttpPost]
+        public ActionResult Index(ParameterKeeper Parameters)
+        {
+            ViewBag.StatusMessage = "";
+            Parameters.top = 15;     // Cap at 15 results.
+            if ((Parameters.top + Parameters.skip) > 1001)    // Recalculating results based on skip value.
+            {
+                Parameters.top = 1000 - (Parameters.skip - 1);
+                if (Parameters.top <= 0) Parameters.top = 1;
+            }
+            ProcessHub Engine = new ProcessHub(Parameters);
+            Integer Limit;
+            if ((Integer)Session["Limit"] != null)
+            {
+                Limit = (Integer)Session["Limit"];
+                if (Limit.Value <= 0)
+                {
+                    displayln("Limit = " + Limit.Value);
+                    ViewBag.StatusMessage = "You cannot use the demo more than three times in quick succession. Please try again later.";
+                    return View("Results", Engine);
+                }
+            }
+            else
+                Limit = new Integer { Value = 3 };
+
+            Engine.run();
+            Limit.Value = Limit.Value - 1;
+            Session["Limit"] = Limit;
+            return View("Results", Engine);
+        }
+
+        /**
+         * Quick shortcut method for printing to the diagnostic console, sans new line.
+         * @para string s:  the string to be printed
+         **/
+        private void display(string s)
+        {
+            System.Diagnostics.Debug.Write(s);
+        } // display
+
+        /**
+         * Quick shortcut method for printing to the diagnostic console, with new line.
+         * @para string s:  the string to be printed
+         **/
+        private void displayln(string s)
+        {
+            System.Diagnostics.Debug.WriteLine(s);
+        } // displayln
+	}
+}

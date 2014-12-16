@@ -10,110 +10,120 @@
     
 
 </head>
+
+      <nav id='top'>
+    <div class='clearfix'>
+      <a class='burger' href='index.html#'>
+        <span></span>
+        <span></span>
+        <span></span>
+      </a>
+      <img alt='Direct Link logo' id='logo' src="~/Images/logo.png"></img>
+        <ul class='menu clearfix'>
+         @if (!Request.IsAuthenticated) {
+          <li class=''>
+            <a href='http://www.directagents.com/directlink'>Home</a>
+          </li>
+          <li class=''>
+            <a href='http://www.directagents.com/how-it-works'>How it works</a>
+          </li>
+          <li class=''>
+            <a href='http://www.directagents.com/about'>About Us</a>
+          </li>
+          <li class=''>
+            <a href='http://www.directagents.com/packages'>Packages</a>
+          </li>
+         }
+
+        @if (Request.IsAuthenticated) {
+            <li class=''>@Html.ActionLink("Search","Index","Application")</li>
+            <li class=''>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
+            <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            
+            
+/*TEMPORARY*/
+
+                <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
+                <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
+                <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
+                <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li>
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"  })) {
+        @Html.AntiForgeryToken()
+
+
+                <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+    }
+    /*TEMPORARY*/
+            
+        }
+
+        @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+            <li class=''>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
+            <li class=''>@Html.ActionLink("Users", "Index", "UsersAdmin")</li>
+            <li class=''>@Html.ActionLink("Packages", "Index", "Packages")</li>
+            <li class=''>@Html.ActionLink("Settings", "Index", "Settings")</li>
+        }
+          @Html.Partial("_LoginPartial")
+        </ul>
+      </div>
+  </nav>
+
+
 <body>
-        <header>
-            <div class="header-graphics">
-            <a href="@Url.Action("Index", "Home")"><img src="@Url.Content("~/Images/logo.png")"/></a>
-            <img src="~/Images/top_msg.png" alt="Direct Agents" style="margin-left:393px;">
-                </div>
-        </header>
-
-
-   
-
-
-    @* <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Direct Agents", "DirectAgents", "Home", null, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-
-                    @if (Request.IsAuthenticated) {
-                        <li>@Html.ActionLink("Application","Index","Application")</li>
-                    }
-
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
-                        <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                        <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
-                        <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div> *@
-
-        <div class="container">
-            <div class="image-overlay">
-                <div class="title-bar"><p>@ViewBag.Title</p>
-                                <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @if (!Request.IsAuthenticated) {
-                    <li><a href="http://www.directagents.com/directlink">Home</a></li>
-                    <li><a href="http://www.directagents.com/directlink/about.html">About</a></li>
-                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                    }
-
-                    @if (Request.IsAuthenticated) {
-                        <li>@Html.ActionLink("Welcome","Index","Home")</li>
-                        <li>@Html.ActionLink("Application","Index","Application")</li>
-                        @*<li>@Html.ActionLink("Subscriptions", "Index", "Payments")</li>*@
-                        <li>@Html.ActionLink("Help", "Manual", "Home")</li>
-                        <li>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    }
-
-                    @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
-                        <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
-                        <li>@Html.ActionLink("Users", "Index", "UsersAdmin")</li>
-                        <li>@Html.ActionLink("Packages", "Index", "Packages")</li>
-                        <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
-                    }
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-
-                </div>
-                <div class="body-content" style="">
-                     @RenderBody()
-                </div>
-            </div>   
-            <div class="footer">
-                <table class="i-btn-table">
-                    <tr>
-                        <td><a class="i-btn" href="@Url.Action("Manual", "Home")" title="Help"><img src="@Url.Content("~/Images/btn_info.png")" /></a></td>
-                        @*<td style="width:60px;">@Html.ActionLink(" ", "Manual", null, new { @class="i-btn" })</td>*@
-                    </tr>
-                </table>
-                <p>&copy; @DateTime.Now.Year - <a href="http://www.directagents.com"> Direct Agents </a> | DirectLink Backlink Search Application</p>
-            </div>
-            @*<div class="footer">
-                <p><a class="i-btn" href="http://missinglink.directagents.local/Application"><img src="/Images/btn_info.png" style="margin-top:7px;"></a></p>
-                <p>&copy; @DateTime.Now.Year - Direct Agents | DirectLink Backlink Search Application</p>
-            </div>*@
-        </div>
-
+<div>@RenderBody()</div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+ <footer id='bottom'>
+      <div class='clearfix'>
+        <nav class='social'>
+          <ul>
+            <li>
+              <a href='https://www.facebook.com/directagentsinc' target='_blank'>
+                <svg height='24px' viewBox='0 0 24 24' width='24px'>
+                  <path d='M8.49781053,8.19229126 L6,8.19229126 L6,11.9529029 L8.49781053,11.9529029 L8.49781053,23 L13.3010474,23 L13.3010474,11.9059126 L16.6521105,11.9059126 L17.0088579,8.19229126 L13.3010474,8.19229126 L13.3010474,6.07692718 C13.3010474,5.20130583 13.4922158,4.85464563 14.4095579,4.85464563 L17.0088,4.85464563 L17.0088,1 L13.6832684,1 C10.1091947,1 8.49781053,2.45130583 8.49781053,5.23078155 L8.49781053,8.19229126 L8.49781053,8.19229126 Z'></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href='https://plus.google.com/111591398674658560556/' target='_blank'>
+                <svg height='24px' viewBox='0 0 24 24' width='24px'>
+                  <path d='M23.5,5.75907921 L20.4507694,5.75907921 L20.4507694,8.73354455 L18.9261262,8.73354455 L18.9261262,5.75907921 L15.8768398,5.75907921 L15.8768398,4.27184653 L18.9261262,4.27184653 L18.9261262,1.2974901 L20.4507694,1.2974901 L20.4507694,4.27190099 L23.5,4.27190099 L23.5,5.75907921 L23.5,5.75907921 Z M14.8796335,18.0612723 C14.8796335,20.2908416 12.7926626,23.0051188 7.54229854,23.0051188 C3.70241505,23.0051188 0.5,21.3895347 0.5,18.6721535 C0.5,16.5748564 1.86118689,13.8522475 8.22191505,13.8522475 C7.27724029,13.101198 7.04539806,12.0510248 7.62274272,10.9138861 C3.89841748,10.9138861 1.99114806,8.77803465 1.99114806,6.06609901 C1.99114806,3.41243069 4.0143665,1 8.14029854,1 L14.7498956,1 L13.2729272,2.51222772 L11.5379345,2.51222772 C12.7619029,3.19629703 13.4128811,4.60511386 13.4128811,6.15796535 C13.4128811,7.58333663 12.6082718,8.73779208 11.4599466,9.60385149 C9.42215777,11.1406931 9.94384466,11.998802 12.0788811,13.5176733 C14.1839393,15.0560941 14.8796335,16.2436584 14.8796335,18.0612723 L14.8796335,18.0612723 Z M10.7572184,6.2549505 C10.4498447,3.97299505 8.92581553,2.10087129 7.14510194,2.04864851 C5.36377427,1.9969703 4.16911408,3.74324752 4.47676699,6.02580198 C4.78430825,8.30775743 6.47720874,9.90183168 8.25887136,9.95416337 C10.0395291,10.0058416 11.0644806,8.53717822 10.7572184,6.2549505 L10.7572184,6.2549505 Z M12.5934782,18.2901485 C12.5934782,16.4132871 10.8382767,14.6243713 7.89343932,14.6243713 C5.23939563,14.5958911 2.9901966,16.2603218 2.9901966,18.1896238 C2.9901966,20.1584059 4.90695631,21.797297 7.56111165,21.797297 C10.9542257,21.7972426 12.5934782,20.2589307 12.5934782,18.2901485 L12.5934782,18.2901485 Z'></path>
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href='https://twitter.com/DirectAgents' target='_blank'>
+                <svg height='24px' viewBox='0 0 24 24' width='24px'>
+                  <path d='M24,4.36620896 C23.1170097,4.76764179 22.1680194,5.03898507 21.1720194,5.16083582 C22.188466,4.53629851 22.9693398,3.54740299 23.3369126,2.36895522 C22.3854757,2.94728358 21.3317476,3.36722388 20.2101553,3.59349254 C19.3120194,2.61271642 18.0323301,2 16.6160971,2 C13.4378447,2 11.1014563,5.03976119 11.819767,8.19623881 C7.72753398,7.98585075 4.09933981,5.97671642 1.67085437,2.92376119 C0.381029126,5.19140299 1.00182524,8.15904478 3.19462136,9.66107463 C2.38759223,9.63492537 1.62815534,9.4078806 0.964427184,9.02979104 C0.911009709,11.3678209 2.54574757,13.5540299 4.91365049,14.0416716 C4.22067961,14.2349254 3.46165049,14.2791642 2.69015534,14.1280597 C3.31660194,16.1328358 5.13512621,17.5918209 7.28976699,17.6324776 C5.21965049,19.2951045 2.61238835,20.0377313 0,19.722209 C2.17899029,21.1539701 4.76720388,21.9894925 7.54782524,21.9894925 C16.6894951,21.9894925 21.8543301,14.076 21.5430291,6.97844776 C22.5051845,6.26698507 23.3398835,5.37820896 24,4.36620896 L24,4.36620896 Z'></path>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <nav class='legal'>
+          <ul>
+            <li>
+              <a href='http://www.directagents.com/directlink'>Home</a>
+            </li>
+            <li>
+              <a href='http://www.directagents.com/directlink/how-it-works'>How it works</a>
+            </li>
+            <li>
+              <a href='http://www.directagents.com/directlink/about'>About Us</a>
+            </li>
+            <li>
+              <a href='http://www.directagents.com/directlink/packages'>Packages</a>
+            </li>
+          </ul>
+        </nav>
+        <nav class='credits'>
+          <span>Copyright</span>
+          <span>2014</span>
+          <span>© Direct Link</span>
+        </nav>
+      </div>
+    </footer>

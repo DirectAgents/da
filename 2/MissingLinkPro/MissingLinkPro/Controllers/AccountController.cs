@@ -68,7 +68,7 @@ namespace IdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            if (returnUrl == null) returnUrl = "/Home/Index";
+            if (returnUrl == null) returnUrl = "/Application/Index";
             if (!ModelState.IsValid)
             {
                 return View(model);

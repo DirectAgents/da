@@ -1,20 +1,37 @@
 ﻿@using Microsoft.AspNet.Identity
+
 @if (Request.IsAuthenticated) {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
+    @*using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "signin"  })) {
         @Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Account", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                @*@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })*@
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
+                <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
+                <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
+                <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li>
+                <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+
+        <ul>
+        <li>
+        <nav>
+        <div class="dropdown">
+            <button class="btn" data-toggle="dropdown">User Options</button>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("My Profile", "Index", "Manage")</li>
+                <li>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
+                <li>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
+                <li>@Html.ActionLink("Help", "FAQ", "Home")</li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+            </ul>
+        </div>
+        </nav>
+        </li>
         </ul>
-    }
+    }*@
 }
-else {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+else
+{
+    <li class='login'>
+        @Html.ActionLink("Sign Up", "Register", "Account" @*, new {@class = "signup"} *@ )
+        @Html.ActionLink("Log In", "Login", "Account" @*, new {@class = "signup"} *@ )
+    </li>
 }

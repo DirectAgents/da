@@ -1,0 +1,65 @@
+﻿@model MissingLinkPro.Models.ParameterKeeper
+
+@{
+    ViewBag.Title = "Demo Search";
+}
+
+<h2>Demo</h2>
+
+@using (Html.BeginForm("Index", "Demo", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
+{
+    @Html.ValidationSummary()
+
+    <table class="table1" id="app-body">
+        <tr>
+            <td>Search Query
+                <span style="cursor:Pointer;" title="Type in whatever it is you are looking for when using a search engine.">
+                    <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><img src="~/Images/question_blob.png" /></a>
+                    </span>
+            </td>
+            <td>Target Site To Scan For <span style="cursor:Pointer;" title="Type in the website that you are scanning your results for linkbacks to. Please include subdomain prefix if one exists."><img src="~/Images/question_blob.png" /></span></td>
+            @*<td>Phrase Search</td>*@
+        </tr>
+        <tr>
+            <td><input class="form-field" type="text" size ="65" name="BingSearchQuery" required></td>
+            @*<td><input class="form-field" type="text" size = "65" name="PhraseSearchString"></td>*@
+            <td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>
+        </tr>
+        <tr>
+            <td>Exclude Terms <span style="cursor:Pointer;" title="Type in whatever terms you wish for the search engine to exclude from your search."><img src="~/Images/question_blob.png" /></span></td>
+            @*<td>Target Site To Scan For</td>*@
+        </tr>
+        <tr>
+            <td><input class="form-field" type="text" size = "65" name="ExcludeString"></td>
+            @*<td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>*@
+        </tr>
+        <tr>
+            @*<td style="line-height:20px;">Number of Results to Scan<br><h6>(Max: 1000 Results)</h6></td>*@
+            <td style="line-height:20px;">Start At Rank ID#<br><h6>(Max: Rank 1001)</h6></td>
+        </tr>
+            <tr>
+            @*<td><input class="form-field" type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>*@
+            <td><input class="form-field" type="number" value="@Model.skip" min="1" max="1001" name="skip" onchange="spinner.spin()"></td>
+
+        </tr>
+        <tr>
+             <td>Type of Results</td>
+             <td class="radio-btn-position"><input class="radio-btn" type="radio" name="ResultType" value = "web" checked="checked"> Web <h7 style="padding-left:36px;"><input class="radio-btn" type="radio" name="ResultType" value = "news"> News</h7></td>
+        <tr>
+            <td>Exclude Results With Links to Target</td>
+            <td class="radio-btn-position"><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "true" checked="checked"> Yes <h7><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "false"> No</h7></td>
+        </tr>
+        <tr>
+            <td>Display Search Results</td>
+            <td class="radio-btn-position"><input class="radio-btn" type="radio" name="DisplayAllResults" value = "true" checked="checked"> Yes <h7><input class="radio-btn" type="radio" name="DisplayAllResults" value = "false"> No</h7></td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+          @*<input type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search" style="align-content:center"> *@
+        </tr>
+    </table>
+    <div class="big-orange-btn-location">
+    <input type="hidden" name="NewSession" value="true">
+                <input type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search"></div>
+}

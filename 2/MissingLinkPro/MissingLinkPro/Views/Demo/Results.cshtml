@@ -1,26 +1,10 @@
-﻿@{
-    ViewBag.Title = "Search Results";
+﻿@model MissingLinkPro.Models.ProcessHub
+
+@{
+    ViewBag.Title = "DemoResults";
 }
 
-@model MissingLinkPro.Models.ProcessHub
-
-@*  *@
-<br>
-@*<p><h2>Results For This Run:</h2><br></p>
-<br>
-    <p>
-    Search Query: @Model.BingSearchQuery <br>
-    Text Search Within Results: @if (Model.PhraseSearchEnabled == true) { @Model.PhraseSearchString }
-                                else { <text><i>(No Entry)</i></text>} <br>
-    Excluding Phrase: @if (Model.ExcludeEnabled == true) { @Model.ExcludeString }
-                                else { <text><i>(No Entry)</i></text>} <br>
-    Target Website To Link To: @Model.ClientWebsite<br>
-    Number of Results to Scan: @Model.top <br>
-    Type of Results: @Model.ResultType <br>
-    Exclude Results With Links to Target(s):
-        @if (Model.ExcludeLinkbackResults == true) { <text>yes</text> }
-        else { <text>no</text> }<br>
-    </p> *@
+<h2>DemoResults</h2>
 
 <div style="padding-left: 30px;">
     <table style="float:left; margin-right: -125px;">
@@ -93,14 +77,14 @@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 
-<div class="process-buttons" style="padding-top:30px; display:table;">
+@*<div class="process-buttons" style="padding-top:30px; display:table;">
     <table>
         <tr>
-    <td><a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
-    <td><a href="@Url.Action("Process", "Application")" style="padding:5px;" onclick="go();"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
+    <td><a href="#" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
+    <td><a href="#" style="padding:5px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
             </tr>
         </table>
-</div>
+</div>*@
 
     @* @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
     @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Process") *@
@@ -162,32 +146,3 @@
         }
         </table>
     <br><br><br><br>
-
-@section Scripts {
-<script type="text/javascript" src="~/Scripts/spin.js"></script>
-<script>
-    function go() {
-        debugger;
-            var opts = {
-                lines: 13, // The number of lines to draw
-                length: 20, // The length of each line
-                width: 10, // The line thickness
-                radius: 30, // The radius of the inner circle
-                corners: 1, // Corner roundness (0..1)
-                rotate: 0, // The rotation offset
-                direction: 1, // 1: clockwise, -1: counterclockwise
-                color: '#000', // #rgb or #rrggbb or array of colors
-                speed: 1, // Rounds per second
-                trail: 60, // Afterglow percentage
-                shadow: false, // Whether to render a shadow
-                hwaccel: false, // Whether to use hardware acceleration
-                className: 'spinner', // The CSS class to assign to the spinner
-                zIndex: 2e9, // The z-index (defaults to 2000000000)
-                top: '50%', // Top position relative to parent
-                left: '50%' // Left position relative to parent
-            };
-            var target = document.getElementById('stats-table');
-            var spinner = new Spinner(opts).spin(target);
-        }
-</script>
-}

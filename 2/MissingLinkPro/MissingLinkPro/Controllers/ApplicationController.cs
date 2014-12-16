@@ -84,6 +84,7 @@ namespace MissingLinkPro.Controllers
          **/
         public async Task<ActionResult> Process(ParameterKeeper Parameters, bool NewSession = false)
         {
+            ViewBag.StatusMessage = "";
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             Package userPackage = db.Packages.Find(user.PackageId);
 
@@ -133,11 +134,14 @@ namespace MissingLinkPro.Controllers
                             ProcessHub model = new ProcessHub(Parameters);
                             model.ParsedResults = Parameters.ParsedResults;
                             model.SearchErrorEncountered = true;
-                            ViewBag.StatusMessage = "";
-                            if (status.Equals("past_due")) model.SearchErrorMsg = "Subscription payment status: past due.";
-                            else if (status.Equals("unpaid")) model.SearchErrorMsg = "Subscription payment status: unpaid.";
-                            else if (status.Equals("canceled")) model.SearchErrorMsg = "Subscription payment status: canceled.";
-                            else model.SearchErrorMsg = "Subscription payment status: indeterminate.";
+                            //if (status.Equals("past_due")) model.SearchErrorMsg = "Subscription payment status: past due.";
+                            //else if (status.Equals("unpaid")) model.SearchErrorMsg = "Subscription payment status: unpaid.";
+                            //else if (status.Equals("canceled")) model.SearchErrorMsg = "Subscription payment status: canceled.";
+                            //else model.SearchErrorMsg = "Subscription payment status: indeterminate.";
+                            if (status.Equals("past_due")) ViewBag.StatusMessage = "Subscription payment status: past due.";
+                            else if (status.Equals("unpaid")) ViewBag.StatusMessage = "Subscription payment status: unpaid.";
+                            else if (status.Equals("canceled")) ViewBag.StatusMessage = "Subscription payment status: canceled.";
+                            else ViewBag.StatusMessage = "Subscription payment status: indeterminate.";
                             return View(model);
                         }
                     }
@@ -158,7 +162,8 @@ namespace MissingLinkPro.Controllers
                     ProcessHub model = new ProcessHub(Parameters);
                     model.ParsedResults = Parameters.ParsedResults;
                     model.SearchErrorEncountered = true;
-                    model.SearchErrorMsg = "You have reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
+                    ViewBag.StatusMessage = "You have reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
+                    //model.SearchErrorMsg = "You have reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
                     return View(model);
                 }
                 if (Parameters.top > userPackage.MaxResults) Parameters.top = userPackage.MaxResults;   // User's requested Results/Search is limited to Package settings.
@@ -190,7 +195,7 @@ namespace MissingLinkPro.Controllers
                 return View("Index", Parameters);
 
             Engine.run();
-            updateResults(Engine, Parameters);
+            updateResults(Engine, Parameters);      // Update results, save to session on next line.
             Session["Params"] = Parameters;
             if (!Engine.SearchErrorEncountered)     // If no search error returned from Bing API, or user has maxed out results for given search.
             {
