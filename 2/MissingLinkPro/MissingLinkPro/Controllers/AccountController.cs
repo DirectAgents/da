@@ -42,6 +42,11 @@ namespace IdentitySample.Controllers
             }
         }
 
+        [AllowAnonymous]
+        public ActionResult LogoutCmd() {
+            return View();
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -400,7 +405,7 @@ namespace IdentitySample.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Application");
         }
 
         //

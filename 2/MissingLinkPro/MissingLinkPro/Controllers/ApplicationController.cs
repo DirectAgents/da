@@ -324,23 +324,5 @@ namespace MissingLinkPro.Controllers
             return File(output, "application/CSV", "ExportResults.csv");
         } // WriteFile
 
-        /**
-         * Quick shortcut method for printing to the diagnostic console, sans new line.
-         * @para string s:  the string to be printed
-         **/
-        private void display(string s)
-        {
-            System.Diagnostics.Debug.Write(s);
-        } // display
-
-        /**
-         * Quick shortcut method for printing to the diagnostic console, with new line.
-         * @para string s:  the string to be printed
-         **/
-        private void displayln(string s)
-        {
-            System.Diagnostics.Debug.WriteLine(s);
-        } // displayln
-
     } // class MainController
 } // EOF

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Logout";
+}
+
+
+@if (Request.IsAuthenticated)
+{
+  using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"  })) {
+        @Html.AntiForgeryToken()
+    }
+}
+
+else {
+    <script>$(location).attr('href', 'http://www.directagents.com/directlink');</script>
+}
+
+
+@section Scripts {
+    
+    <script>
+    $(document).ready(function() {
+            debugger;
+
+        $("#logoutForm").submit();
+    })
+    </script>
+}

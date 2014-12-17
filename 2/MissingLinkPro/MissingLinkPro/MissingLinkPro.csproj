@@ -176,7 +176,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\custom.css" />
     <Content Include="Content\ie.css" />
     <Content Include="Content\public.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -209,6 +208,7 @@
     <None Include="Properties\PublishProfiles\biz.pubxml" />
     <None Include="Properties\PublishProfiles\gogrid - prod.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\ie.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -218,6 +218,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\public.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\spin.js" />
@@ -246,6 +247,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DebugHelper.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\StripeHelper.cs" />
     <Compile Include="Migrations\201409242002269_InitialCreate.cs" />
@@ -394,6 +396,7 @@
     <Content Include="Views\Manage\PaySubscription.cshtml" />
     <Content Include="Views\Demo\Index.cshtml" />
     <Content Include="Views\Demo\Results.cshtml" />
+    <Content Include="Views\Account\LogoutCmd.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

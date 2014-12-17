@@ -14,6 +14,7 @@ using System.Configuration;
 using System.Text.RegularExpressions;
 using BingWebOnly;
 using HtmlAgilityPack;
+using MissingLinkPro.Helpers;
 
 namespace MissingLinkPro.Models
 {
@@ -203,7 +204,7 @@ namespace MissingLinkPro.Models
                 }
             }
             //for (int i = 0; i < temp.Count; i++)
-            //    displayln(temp[i]);
+            //    DebugHelper.displayln(temp[i]);
             return temp;
         } // FormatLink
 
@@ -273,7 +274,7 @@ namespace MissingLinkPro.Models
          **/
         public void run()
         {
-            displayln("Begin run");
+            DebugHelper.displayln("Begin run");
             Stopwatch watch = new Stopwatch();
             watch.Start();
             SearchErrorEncountered = false;
@@ -357,7 +358,7 @@ namespace MissingLinkPro.Models
             while (HubLock) { Thread.Sleep(1000); }
 
             watch.Stop();
-            displayln(Convert.ToString(watch.ElapsedMilliseconds));
+            DebugHelper.displayln(Convert.ToString(watch.ElapsedMilliseconds));
             TotalRunTime = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
         }
@@ -402,7 +403,7 @@ namespace MissingLinkPro.Models
                 }
             } // try
             catch (System.Data.Services.Client.DataServiceQueryException e) {
-                displayln(e.Message);
+                DebugHelper.displayln(e.Message);
             }
         } // processWeb
 
@@ -439,7 +440,7 @@ namespace MissingLinkPro.Models
             } // try
             catch (System.Data.Services.Client.DataServiceQueryException e)
             {
-                displayln(e.Message);
+                DebugHelper.displayln(e.Message);
             }
         } // processNews
 
@@ -470,7 +471,7 @@ namespace MissingLinkPro.Models
             lock (SyncLock)
             {
                 ThreadsComplete++;
-                displayln(ThreadsComplete + " / " + ThreadsRunning);
+                DebugHelper.displayln(ThreadsComplete + " / " + ThreadsRunning);
                 if (ThreadsComplete >= ThreadsRunning) { HubLock = false; }
             }
         } // checkLock
@@ -571,13 +572,13 @@ namespace MissingLinkPro.Models
                 {
                     ParsedResults[i].ExceptionFound = true;
                     ParsedResults[i].ErrorMsg = "NullRef Exception: " + e.Message;
-                    displayln("[" + i + "] NullRef Exception: " + ParsedResults[i].Url);
+                    DebugHelper.displayln("[" + i + "] NullRef Exception: " + ParsedResults[i].Url);
                 }
                 catch (System.IO.IOException e)
                 {
                     ParsedResults[i].ExceptionFound = true;
                     ParsedResults[i].ErrorMsg = "IO Exception: " + e.Message;
-                    displayln("[" + i + "] IO Exception: " + ParsedResults[i].Url);
+                    DebugHelper.displayln("[" + i + "] IO Exception: " + ParsedResults[i].Url);
                 }
                 catch (System.Net.ProtocolViolationException e)
                 {
@@ -586,7 +587,7 @@ namespace MissingLinkPro.Models
                 }
                 catch (System.Net.WebException e)
                 {
-                    displayln("[" + i + "] Web Exception: " + ParsedResults[i].Url + " >> " + e.Message);
+                    DebugHelper.displayln("[" + i + "] Web Exception: " + ParsedResults[i].Url + " >> " + e.Message);
                     HttpWebResponse res = (HttpWebResponse)e.Response;
                     ParsedResults[i].ExceptionFound = true;
                     if (res == null) ParsedResults[i].ErrorMsg = e.Message;
@@ -595,7 +596,7 @@ namespace MissingLinkPro.Models
                 }
                 ParsedResults[i].Scraped = true;
             }
-            display("Index Range: [" + x + ", " + y + "], ");
+            DebugHelper.display("Index Range: [" + x + ", " + y + "], ");
             checkLock();
         } // ScrapeBatch
 
@@ -619,39 +620,21 @@ namespace MissingLinkPro.Models
 
                 if (sr.SkipThisResult) continue;
 
-                displayln(sr.Url);
+                DebugHelper.displayln(sr.Url);
                 if (sr.ExceptionFound)
                 {
-                    displayln(sr.ErrorMsg);
+                    DebugHelper.displayln(sr.ErrorMsg);
                     continue;
                 }
-                if (sr.LinksToClientWebsite) displayln("OKAY: Site features links that point to target(s).");
-                else displayln("NOT: No links to target(s) found.");
+                if (sr.LinksToClientWebsite) DebugHelper.displayln("OKAY: Site features links that point to target(s).");
+                else DebugHelper.displayln("NOT: No links to target(s) found.");
 
-                if (sr.ContainsSearchPhrase) displayln("OKAY: Site contains instances of " + PhraseSearchString);
-                else displayln("NOT: No instances of " + PhraseSearchString + " found.");
+                if (sr.ContainsSearchPhrase) DebugHelper.displayln("OKAY: Site contains instances of " + PhraseSearchString);
+                else DebugHelper.displayln("NOT: No instances of " + PhraseSearchString + " found.");
 
-                displayln("");
+                DebugHelper.displayln("");
             }
         } // DiagnosticPrint
-
-        /**
-         * Quick shortcut method for printing to the diagnostic console, sans new line.
-         * @para string s:  the string to be printed
-         **/
-        private void display(string s)
-        {
-            System.Diagnostics.Debug.Write(s);
-        } // display
-
-        /**
-         * Quick shortcut method for printing to the diagnostic console, with new line.
-         * @para string s:  the string to be printed
-         **/
-        private void displayln(string s)
-        {
-            System.Diagnostics.Debug.WriteLine(s);
-        } // displayln
 
     } // public class ProcessHub
 

@@ -5,9 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back. Try it free!" />
     <title>@ViewBag.Title - Direct Agents | DirectLink Backlink Search</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+    <script src="~/Scripts/public.js" type="text/javascript"></script>
+    <!--[if lt IE 9]>
+        <script src="~/Scripts/ie.js"></script>
+    <![endif]-->
+    <!--[if (gte IE 9) | (!IE)]><!-->
+        <script src="~/Scripts/public.js"></script>
+    <!--<![endif]-->
+    <link href="~/Content/public.css" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 9]>
+      <link href="~/Content/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
     
+            <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
 
 </head>
 
@@ -106,6 +119,21 @@
         </nav>
         <nav class='legal'>
           <ul>
+            @if (Request.IsAuthenticated) {
+            <li>
+              <a href='http://www.directagents.com/directlink/?Active=1'>Home</a>
+            </li>
+            <li>
+              <a href='http://www.directagents.com/directlink/how-it-works/?Active=1'>How it works</a>
+            </li>
+            <li>
+              <a href='http://www.directagents.com/directlink/about/?Active=1'>About Us</a>
+            </li>
+            <li>
+              <a href='http://www.directagents.com/directlink/packages/?Active=1'>Packages</a>
+            </li>
+            }
+              else {
             <li>
               <a href='http://www.directagents.com/directlink'>Home</a>
             </li>
@@ -118,6 +146,7 @@
             <li>
               <a href='http://www.directagents.com/directlink/packages'>Packages</a>
             </li>
+            }
           </ul>
         </nav>
         <nav class='credits'>

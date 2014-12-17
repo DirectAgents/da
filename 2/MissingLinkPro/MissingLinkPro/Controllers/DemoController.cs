@@ -7,6 +7,10 @@ using System.Web.Mvc;
 
 namespace MissingLinkPro.Controllers
 {
+    /**
+     * Controller class for the Demo; contains mostly the same code logic as ApplicationController
+     * without any of the authentication restrictions and account checks.
+     **/
     [AllowAnonymous]
     public class DemoController : HttpsBaseController
     {
@@ -22,7 +26,7 @@ namespace MissingLinkPro.Controllers
                 MaxResultRange = 1000
             };
             return View(pk);
-        }
+        } // Index
 
         [HttpPost]
         public ActionResult Index(ParameterKeeper Parameters)
@@ -36,41 +40,22 @@ namespace MissingLinkPro.Controllers
             }
             ProcessHub Engine = new ProcessHub(Parameters);
             Integer Limit;
-            if ((Integer)Session["Limit"] != null)
+            if ((Integer)Session["Limit"] != null)          // If fresh user, create a new session.
             {
                 Limit = (Integer)Session["Limit"];
                 if (Limit.Value <= 0)
                 {
-                    displayln("Limit = " + Limit.Value);
                     ViewBag.StatusMessage = "You cannot use the demo more than three times in quick succession. Please try again later.";
                     return View("Results", Engine);
                 }
             }
             else
-                Limit = new Integer { Value = 3 };
+                Limit = new Integer { Value = 3 };      // Set the number of allowed runs per session here.
 
             Engine.run();
             Limit.Value = Limit.Value - 1;
             Session["Limit"] = Limit;
             return View("Results", Engine);
-        }
-
-        /**
-         * Quick shortcut method for printing to the diagnostic console, sans new line.
-         * @para string s:  the string to be printed
-         **/
-        private void display(string s)
-        {
-            System.Diagnostics.Debug.Write(s);
-        } // display
-
-        /**
-         * Quick shortcut method for printing to the diagnostic console, with new line.
-         * @para string s:  the string to be printed
-         **/
-        private void displayln(string s)
-        {
-            System.Diagnostics.Debug.WriteLine(s);
-        } // displayln
-	}
-}
+        } // Index [Post]
+	} // class DemoController
+} // EOF
