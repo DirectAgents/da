@@ -21,8 +21,5 @@ namespace IdentitySample.Models
         public string Email { get; set; }
         public string Company { get; set; }
         public string Message { get; set; }
-
-        public bool ApplicationMsgAvailable { get; set; }
-        public string ApplicationMsg { get; set; }
     }
 }

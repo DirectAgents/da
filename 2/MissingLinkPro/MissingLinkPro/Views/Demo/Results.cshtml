@@ -1,24 +1,25 @@
-﻿@model MissingLinkPro.Models.ProcessHub
-
-@{
-    ViewBag.Title = "DemoResults";
+﻿@{
+    ViewBag.Title = "Search Results";
 }
 
-<h2>DemoResults</h2>
+@model MissingLinkPro.Models.ProcessHub
+
+@*  *@
+<br>
 
 <div style="padding-left: 30px;">
-    <table style="float:left; margin-right: -125px;">
+    <table style="float:left; margin-right: -190px;">
         <tr>
             <th>Legend</th><th> </th>
         </tr>
         <tr>
-            <td><img src="~/Images/linkback_yes.png" alt="Links Back" /></td><td>Links Back</td>
+            <td><img src="~/Images/linkback_yes.png" alt="Links Back" /></td><td><p class="small">Links Back</p></td>
         </tr>
         <tr>
-            <td><img src="~/Images/linkback_no.png" alt="No Linkback" /></td><td>No Linkback</td>
+            <td><img src="~/Images/linkback_no.png" alt="No Linkback" /></td><td><p class="small">No Linkback</p></td>
         </tr>
         <tr>
-            <td><img src="~/Images/linkback_err.png" alt="Error" /></td><td>Error</td>
+            <td><img src="~/Images/linkback_err.png" alt="Error" /></td><td><p class="small">Error</p></td>
         </tr>
     </table>
 </div>
@@ -26,65 +27,70 @@
 <table class="table2" id="stats-table" style="margin: 0px auto;">
 
     <tr>
-    <td class="a">Search Query: </td>
-        <td class="b">@Model.BingSearchQuery</td>
+    <td class="results-a"><p class="small">Search Query:</p></td>
+        <td class="results-b"><p class="small">@Model.BingSearchQuery</p></td>
     </tr>
     @*<tr>
     <td class="a">Text Search Within Results: </td>
         <td class="b">@if (Model.PhraseSearchEnabled == true) { @Model.PhraseSearchString }
                                 else { <text><h8>No Entry</h8></text>}
         </td>
-    </tr>
-    <tr> *@
-    <td class="a">Excluding Phrase: </td>
-        <td class="b">@if (Model.ExcludeEnabled == true) { @Model.ExcludeString }
-                                else { <text><h8>No Entry</h8></text>}
+    </tr>*@
+    <tr>
+    <td class="results-a"><p class="small">Excluding Phrase:</p></td>
+        <td class="results-b">@if (Model.ExcludeEnabled == true)
+                              { <p class="small">@Model.ExcludeString</p> }
+                              else
+                              { <p class="small" style="color:lightgray">No Entry</p> }
         </td>
     </tr>
     <tr>
-    <td class="a">Target Website To Link To: </td>
-        <td class="b">@Model.ClientWebsite</td>
+    <td class="results-a"><p class="small">Target Website To Link To:</p></td>
+        <td class="results-b"><p class="small">@Model.ClientWebsite</p></td>
     </tr>
     <tr>
-    <td class="a">Number of Results to Scan: </td>
-        <td class="b">@Model.top</td>
+    <td class="results-a"><p class="small">Number of Results to Scan:</p></td>
+        <td class="results-b"><p class="small">@Model.top</p></td>
     </tr>
     <tr>
-    <td class="a">Type of Results: </td>
-        <td class="b">@Model.ResultType </td>
+    <td class="results-a"><p class="small">Type of Results:</p></td>
+        <td class="results-b"><p class="small">@Model.ResultType</p></td>
     </tr>
     <tr>
-    <td class="a">Exclude Results With Links to Target(s): </td>
-        <td class="b">@if (Model.ExcludeLinkbackResults == true) { <text>yes</text> }
-        else { <text>no</text> }</td>
+    <td class="results-a"><p class="small">Exclude Results With Links to Target(s):</p></td>
+        <td class="results-b">@if (Model.ExcludeLinkbackResults == true)
+                              { <p class="small">Yes</p> }
+                              else
+                              { <p class="small">No</p> }</td>
     </tr>
     <tr>
-    <td class="a">Number of Results Found: </td>
-        <td class="b">@Model.ParsedResults.Count()</td>
+    <td class="results-a"><p class="small">Number of Results Found:</p></td>
+        <td class="results-b"<p class="small">@Model.ParsedResults.Count()</p></td>
     </tr>
     <tr>
-        <td class="a">Results Omitted: </td>
-        <td class="b">@Model.OmitCount</td>
+        <td class="results-a"><p class="small">Results Omitted:</p></td>
+        <td class="results-b"><p class="small">@Model.OmitCount</p></td>
     </tr>
     <tr>
-        <td class="a">Total Time: </td>
-        <td class="b">@Model.TotalRunTime sec</td>
+        <td class="results-a"><p class="small">Total Time:</p></td>
+        <td class="results-b"><p class="small">@Model.TotalRunTime sec</p></td>
     </tr>
     <tr>
 
     </tr>
 </table>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
+<div style="text-align:center;">
+<p class="small">@ViewBag.StatusMessage</p></div>
 
-@*<div class="process-buttons" style="padding-top:30px; display:table;">
-    <table>
+<div class="process-buttons" style="padding-top:30px;">
+    <table style="margin-left:auto; margin-right:auto;">
         <tr>
     <td><a href="#" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
-    <td><a href="#" style="padding:5px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
+    <td><a href="#" style="padding:5px;" onclick="go();"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
             </tr>
         </table>
-</div>*@
+</div>
 
     @* @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
     @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Process") *@
@@ -95,25 +101,30 @@
     <br><br>
     }*@
         <table class="results-table">
-        @if (Model.DisplayAllResults) {
+        @if (Model.DisplayAllResults)
+        {
           <tr>
-          <th style="padding-right:30px;">Rank</th>
+          <th style="padding-right:30px; padding-bottom:15px;">Rank</th>
           <th>Result</th>
-          <th style="padding-right:15px;">Linkback</th>
-          @if (Model.ResultType.Equals("news")) { <th>Source</th> <th>Indexed</th> }
+          <th style="padding-right:15px;">Status</th>
+          @if (Model.ResultType.Equals("news"))
+          { <th>Source</th> <th>Indexed</th> }
           </tr>
             <tr><td> </td></tr>
-            foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.ParsedResults) {
-                if (s.SkipThisResult) { continue; }
+          foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.ParsedResults)
+          {
+              if (s.SkipThisResult) { continue; }
                 <tr>
                     <td style="vertical-align:top; width:75px;"><b class="result-heading">@s.Id</b></td>
-                    <td style="width:800px;">
-                        <a href="@s.Url">@s.Title</a><br>
-                        @s.Url<br>
-                @if (s.ExceptionFound) {
-                    @Html.Raw(" - ERROR: ") @s.ErrorMsg<br>
+                    <td style="width:800px; max-width:800px; padding-right:10px;">
+                        <p class="small"><a href="@s.Url">@s.Title</a><br>
+                        @s.Url
+                @if (s.ExceptionFound)
+                {
+                    <br />@Html.Raw("ERROR: ") @s.ErrorMsg
                     @*continue;*@
                 }
+                </p>
 
                 @*@if (Model.PhraseSearchEnabled) {
                     if (s.ContainsSearchPhrase) {
@@ -126,23 +137,27 @@
                         <br>
                     </td>
                     <td class="linkback-graphic">
-                        @if (s.LinksToClientWebsite) {
+                        @if (s.LinksToClientWebsite)
+                        {
                             <img src="~/Images/linkback_yes.png" />
                         }
-                        else if (s.ExceptionFound) {
+                        else if (s.ExceptionFound)
+                        {
                             <img src="~/Images/linkback_err.png"/>
                         }
-                        else {
+                        else
+                        {
                             <img src="~/Images/linkback_no.png"/>
                         }
                     </td>
-                    @if (Model.ResultType.Equals("news")) {
-                    <td style="vertical-align:top; padding-right:10px;">@s.Source</td>
-                    <td style="vertical-align:top;">@s.Date</td>
+                    @if (Model.ResultType.Equals("news"))
+                    {
+                    <td style="vertical-align:top; padding-right:10px; text-align:center;"><p class="small">@s.Source</p></td>
+                    <td style="vertical-align:top; text-align:center;"><p class="small">@s.Date</p></td>
                     }
                 </tr>
 
-            }
+          }
         }
         </table>
     <br><br><br><br>

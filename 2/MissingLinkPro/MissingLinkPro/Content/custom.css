@@ -1,25 +1,104 @@
-﻿/*@charset "utf-8";
-.custom.css {
+﻿/**Application Index**/
+
+table.application {
+    margin-left:auto;
+    margin-right: auto;
+    margin-top:120px;
+    margin-bottom:50px;
 }
 
-
-li {
-	display: inline;
+div.big-orange-btn-location {
+    text-align:center;
+    padding-bottom:40px;
 }
 
-.nav-bar {
-	
+input.form-field {
+    padding-right:10px;
 }
 
-.nav-bar-button {
-
+td.app-column {
+    padding-bottom:15px;
+    padding-right: 60px;
 }
 
-a.dropdown-item:hover {
-    text-decoration:none;
+td.app-radio-btn {
+    width:130px;
 }
 
-ul.dropdown-list {
-    font-size:0.7rem;
-    list-style-type: none;
-}*/
+/**For Results Page**/
+
+td.results-a {
+    width:375px;
+    color: lightgrey;
+}
+
+td.results-b {
+    width:100px;
+}
+
+table.results-table {
+    margin-left:auto;
+    margin-right: auto;
+}
+
+td.linkback-graphic {
+    vertical-align: top;
+}
+
+table.content-space {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+/**Profile**/
+
+td.profile-left-col {
+    width:180px;
+}
+
+/**Register**/
+
+td.register-left-col {
+    text-align: left;
+    padding-right: 15px;
+    padding-bottom:10px;
+}
+
+/**Manage Subscription**/
+
+table.package-plans {
+    margin-left:auto;
+    margin-right:auto;
+    text-align:left;
+}
+
+th.package-plans, td.package-plans {
+    width:175px;
+}
+
+/**CreditCardManagement**/
+
+th.subscription-left-col, td.subscription-left-col {
+    text-align:left;
+    width:200px;
+}
+
+/**PaymentHistory**/
+
+table.invoice {
+    margin-left:auto;
+    margin-right:auto;
+    width:auto;
+}
+
+/**UpdateUser**/
+
+table.update-user {
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 100px;
+}
+
+td.update-user {
+    margin-bottom: 7px;
+}

@@ -45,46 +45,50 @@
 }
 
 <p class="text-success">@ViewBag.StatusMessage</p>
+
 @if (Model.HasCreditCard)
 {
-    <table class="content-space">
-        <tr>
-            <td><h2>Your Credit Card</h2></td>
-        </tr>
-        <tr>
-            <td><br /></td>
-        </tr>
-        <tr>
-            <td><p>You currently have the following card registered under your account.</p><br />
-    </td>
-        </tr>
-    </table>
-    
-    <table style="width:300px;">
+    <div id="main">
+
+    <header>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="column full" style="padding-bottom:30px;">
+                    <h2 class="topic">Your Credit Card</h2>
+                    <p class="small">You currently have the following card registered under your account. You may change your credit card information or delete it entirely at any time you wish.</p>
+                </div>
+            </div>
+                <table style="width:300px; margin-left:auto; margin-right:auto; margin-bottom:40px;">
        <tr>
-           <th>Card Type</th><td>@Model.Card.Brand</td>
+           <th class="subscription-left-col">Card Type</th><td class="subscription-left-col">@Model.Card.Brand</td>
        </tr>
        <tr>
-           <th>Card Number</th><td>************@Model.Card.Last4</td>
+           <th class="subscription-left-col">Card Number</th><td class="subscription-left-col">************@Model.Card.Last4</td>
        </tr>
        <tr>
-           <th>Name</th><td>@Model.Card.Name</td>
+           <th class="subscription-left-col">Name</th><td class="subscription-left-col">@Model.Card.Name</td>
        </tr>
        <tr>
-           <th>Expiry Date</th><td>@Model.Card.ExpirationMonth / @Model.Card.ExpirationYear</td>
+           <th class="subscription-left-col">Expiry Date</th><td class="subscription-left-col">@Model.Card.ExpirationMonth / @Model.Card.ExpirationYear</td>
        </tr>
        <tr>
-           <th>Address</th><td>@Model.Card.AddressLine1</td>
+           <th class="subscription-left-col">Address</th><td class="subscription-left-col">@Model.Card.AddressLine1</td>
        </tr>
 
-       @if (!Model.Card.AddressLine2.Equals("")) {       <tr><th> </th><td>@Model.Card.AddressLine2</td></tr> }
+       @if (!Model.Card.AddressLine2.Equals("")) {       <tr><th> </th><td class="subscription-left-col">@Model.Card.AddressLine2</td></tr> }
        <tr>
-         <th> </th><td>@Model.Card.AddressCity, @Model.Card.AddressState @Model.Card.AddressZip</td>
+         <th> </th><td class="subscription-left-col">@Model.Card.AddressCity, @Model.Card.AddressState @Model.Card.AddressZip</td>
        </tr>
     </table>
     
-    @Html.ActionLink("Update Credit Card", "UpdateCreditCard", "Manage");<br />
-    @Html.ActionLink("Delete Credit Card", "DeleteCreditCard", "Manage");
+    <p>@Html.ActionLink("Update Credit Card", "UpdateCreditCard", "Manage")</p>
+    <p>@Html.ActionLink("Delete Credit Card", "DeleteCreditCard", "Manage")</p>
+            <p class="small">Note that if you have currently have a canceled subscription under your account, updating your credit card will automatically renew it.</p>
+        </div>
+    </header>
+    </div>
+    
+
 }
 else
 {

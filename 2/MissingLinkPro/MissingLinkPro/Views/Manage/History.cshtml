@@ -23,37 +23,43 @@
     </script>
 }
 
-<div><h2>Invoice Items</h2>
-    <br />
-    <p>All items are sorted by date.</p>
-    <br />
-</div>
+<header>
 
-<table class="invoice-table">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="column full">
+                <h2 class="topic">Invoice Items</h2>
+                   <p>Below is a list of your invoice items. All items are sorted by date.</p>
+                <p class="small">Current Status As Of @DateTime.Now<br />
+                    @if (Model.Count > 0) {
+                    <text>Current Amount Due: $@(Model[0].AmountDue/100).@if (Model[0].AmountDue/100 < 0) {@((Model[0].AmountDue%100) * -1)} else {@(Model[0].AmountDue%100)}<br />
+                    Status: @if (Model[0].Paid.Value) { <text>Paid</text> } else { <text>Unpaid</text> } </text>
+                    }
+                    else { <text>No existing items have been found under your account.</text> }
+                </p>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<section>
+<div class="container">
+
+
+<table class="invoice">
     @if (Model.Count > 0) {
-        <tr>
-            <td>@DateTime.Now</td>
-        </tr>
-        <tr>
-            <td>Current Amount Due</td>
-            <td>$@(Model[0].AmountDue/100).@if (Model[0].AmountDue/100 < 0) {@((Model[0].AmountDue%100) * -1)} else {@(Model[0].AmountDue%100)}</td>
-        </tr>
-        <tr>
-            <td>Paid Status</td>
-            <td>@Model[0].Paid</td>
-        </tr>
-    }
-    <tr>
-        <td><p> </p><br /></td>
-    </tr>
-    @foreach (Stripe.StripeInvoice Invoice in @Model) {
+    foreach (Stripe.StripeInvoice Invoice in @Model) {
         foreach (Stripe.StripeInvoiceItem Item in Invoice.StripeInvoiceLines.StripeInvoiceItems) {
             <tr>
-                <td>@Invoice.Date</td>
-                <td>@Item.Description</td>
-                <td>$@(Item.Amount.Value/100).@if (Item.Amount.Value%100 < 0) {@((Item.Amount.Value%100) * -1)} else {@(Item.Amount.Value%100)}</td>
+                <td style="padding-right:30px;"><p class="small">@Invoice.Date</p></td>
+                <td style="padding-right:30px;"><p class="small">@Item.Description</p></td>
+                <td><p class="small">$@(Item.Amount.Value/100).@if (Item.Amount.Value%100 < 0) {@((Item.Amount.Value%100) * -1)} else {@(Item.Amount.Value%100)}</p></td>
             </tr>
+            }
         }
     }
 </table>
+    </div>
+    </section>
 <br />

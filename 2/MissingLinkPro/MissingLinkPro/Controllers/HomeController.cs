@@ -35,7 +35,8 @@ namespace IdentitySample.Controllers
 
         public ActionResult Contact()
         {
-            ContactFormViewModel model = new ContactFormViewModel { ApplicationMsgAvailable = false };
+            ContactFormViewModel model = new ContactFormViewModel {};
+            ViewBag.StatusMessage = "";
             return View(model);
         }
 
@@ -49,8 +50,7 @@ namespace IdentitySample.Controllers
             message.Body = model.FirstName + " " + model.LastName + "<br />Phone: " + model.PhoneNum + "<br />Email " + model.Email + "<br />Company: " + model.Company + "<br />Message: " + model.Message;
             emailer.SendEmail(ConfigurationManager.AppSettings["Emailer_Username"], message.Destination, null, message.Subject, message.Body, true);
 
-            model.ApplicationMsgAvailable = true;
-            model.ApplicationMsg = "*Thank you. Your message has been sent. You will be contacted by a representative during operating hours.";
+            ViewBag.StatusMessage = "Thank you. Your message has been sent. You will be contacted by a representative during operating hours.";
 
             return View(model);
         }

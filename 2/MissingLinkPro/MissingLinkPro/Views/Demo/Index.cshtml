@@ -1,65 +1,120 @@
-﻿@model MissingLinkPro.Models.ParameterKeeper
-
-@{
-    ViewBag.Title = "Demo Search";
-}
-
-<h2>Demo</h2>
-
-@using (Html.BeginForm("Index", "Demo", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
+﻿@using (Html.BeginForm("Index", "Demo", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
 {
     @Html.ValidationSummary()
-
-    <table class="table1" id="app-body">
-        <tr>
-            <td>Search Query
+    <table class="application" id="app-body">
+        <tr class="app-row">
+            <td class="app-column">Search Query
                 <span style="cursor:Pointer;" title="Type in whatever it is you are looking for when using a search engine.">
                     <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><img src="~/Images/question_blob.png" /></a>
                     </span>
             </td>
-            <td>Target Site To Scan For <span style="cursor:Pointer;" title="Type in the website that you are scanning your results for linkbacks to. Please include subdomain prefix if one exists."><img src="~/Images/question_blob.png" /></span></td>
+            <td class="app-column">Target Site To Scan For <span style="cursor:Pointer;" title="Type in the website that you are scanning your results for linkbacks to. Please include subdomain prefix if one exists."><img src="~/Images/question_blob.png" /></span></td>
             @*<td>Phrase Search</td>*@
         </tr>
-        <tr>
-            <td><input class="form-field" type="text" size ="65" name="BingSearchQuery" required></td>
+        <tr class="app-row">
+            <td class="app-column"><input class="form-field" type="text" size ="45" name="BingSearchQuery" required></td>
             @*<td><input class="form-field" type="text" size = "65" name="PhraseSearchString"></td>*@
-            <td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>
+            <td class="app-column"><input class="form-field" type="text" size="45" name="ClientWebsite" required></td>
         </tr>
-        <tr>
-            <td>Exclude Terms <span style="cursor:Pointer;" title="Type in whatever terms you wish for the search engine to exclude from your search."><img src="~/Images/question_blob.png" /></span></td>
+        <tr class="app-row">
+            <td class="app-column">Exclude Terms <span style="cursor:Pointer;" title="Type in whatever terms you wish for the search engine to exclude from your search."><img src="~/Images/question_blob.png" /></span></td>
             @*<td>Target Site To Scan For</td>*@
         </tr>
-        <tr>
-            <td><input class="form-field" type="text" size = "65" name="ExcludeString"></td>
+        <tr class="app-row">
+            <td class="app-column"><input class="form-field" type="text" size = "45" name="ExcludeString"></td>
             @*<td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>*@
         </tr>
         <tr>
-            @*<td style="line-height:20px;">Number of Results to Scan<br><h6>(Max: 1000 Results)</h6></td>*@
-            <td style="line-height:20px;">Start At Rank ID#<br><h6>(Max: Rank 1001)</h6></td>
+            <td style="line-height:20px; padding-top:10px;">Start At Rank ID#<br><p style="font-size:small; padding-bottom:12px;"><b>(Max: Rank 1001)</b></p></td>
         </tr>
             <tr>
-            @*<td><input class="form-field" type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>*@
-            <td><input class="form-field" type="number" value="@Model.skip" min="1" max="1001" name="skip" onchange="spinner.spin()"></td>
+            <td class="app-column"><input type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
 
         </tr>
         <tr>
-             <td>Type of Results</td>
-             <td class="radio-btn-position"><input class="radio-btn" type="radio" name="ResultType" value = "web" checked="checked"> Web <h7 style="padding-left:36px;"><input class="radio-btn" type="radio" name="ResultType" value = "news"> News</h7></td>
+             <td class="app-column">Type of Results</td>
+             <td>
+                 <table>
+                     <tr>
+                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "web" checked="checked"> Web</td>
+                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "news"> News</td>
+                     </tr>
+                 </table>
+             </td>
         <tr>
-            <td>Exclude Results With Links to Target</td>
-            <td class="radio-btn-position"><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "true" checked="checked"> Yes <h7><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "false"> No</h7></td>
+            <td class="app-column">Exclude Results With Links to Target</td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "true" checked="checked"> Yes</td>
+                        <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ExcludeLinkbackResults" value = "false"> No</td>
+                   </tr>
+                </table>
+            </td>
         </tr>
-        <tr>
-            <td>Display Search Results</td>
-            <td class="radio-btn-position"><input class="radio-btn" type="radio" name="DisplayAllResults" value = "true" checked="checked"> Yes <h7><input class="radio-btn" type="radio" name="DisplayAllResults" value = "false"> No</h7></td>
+                <tr>
+            <td class="app-column">Display Search Results</td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="app-radio-btn"><input class="radio-btn" type="radio" name="DisplayAllResults" value = "true" checked="checked"> Yes </td>
+                        <td class="app-radio-btn"><input class="radio-btn" type="radio" name="DisplayAllResults" value = "false"> No</td>
+                   </tr>
+                </table>
+            </td>
         </tr>
-        <tr>
-        </tr>
+
         <tr>
           @*<input type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search" style="align-content:center"> *@
         </tr>
     </table>
+    
     <div class="big-orange-btn-location">
-    <input type="hidden" name="NewSession" value="true">
-                <input type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search"></div>
+    <table style="margin-left:auto; margin-right:auto;">
+        <tr>
+    <td><input type="hidden" name="NewSession" value="true">
+        <input type="hidden" name="top" value=15>
+                <input style="margin-bottom:30px;" class="big-orange-btn" type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search"></td>
+    </tr>
+        <tr>
+            <td><div class="eta-indicator">
+<p id="eta">Average Estimated Time to Completion: 15 sec.</p>
+    </div></td>
+        </tr>
+    </table>
+        </div>
+
+}
+<br />
+<br />
+
+<br /><br />
+
+@section Scripts {
+<script type="text/javascript" src="~/Scripts/spin.js"></script>
+<script>
+
+    function go() {
+        var opts = {
+            lines: 13, // The number of lines to draw
+            length: 20, // The length of each line
+            width: 10, // The line thickness
+            radius: 30, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#000', // #rgb or #rrggbb or array of colors
+            speed: 1, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: '50%', // Top position relative to parent
+            left: '50%' // Left position relative to parent
+        };
+        var target = document.getElementById('app-body');
+        var spinner = new Spinner(opts).spin(target);
+    }
+</script>
 }

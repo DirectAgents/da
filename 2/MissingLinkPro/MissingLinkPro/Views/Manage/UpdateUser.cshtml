@@ -3,41 +3,32 @@
     ViewBag.Title = "Update User Information";
 }
 
-<table class="content-space">
-        <tr>
-        <td><h2>Update Your Profile</h2></td>
-        </tr>
-        <tr>
-            <td><br /></td>
-        </tr>
-        <tr>
-            <td><p>Please fill out the form below.</p><br />@Html.ValidationSummary("", new { @class = "text-danger" })
-    </td>
-        </tr>
+<section><h2 class="topic">Update Your Profile</h2>
+    <p>Filling out the form below will allow you to change your first name, last name, phone number, and password. Leave the Password fields alone if you choose not to change your password.</p>
+</section>
+<section>
+<table class="update-user">
 
     @using (Html.BeginForm("UpdateUser", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
     @Html.AntiForgeryToken()
     <tr>
-        <td>New First Name</td><td>@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })</td>
+        <td class="update-user"><p class="small">New First Name</p></td><td>@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td>New First Name</td><td>@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</td>
+        <td class="update-user"><p class="small">New First Name</p></td><td>@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td>Phone Number</td><td>@Html.TextBoxFor(m => m.Number, new { @class = "form-control" })</td>
+        <td class="update-user"><p class="small">Phone Number</p></td><td>@Html.TextBoxFor(m => m.Number, new { @class = "form-control" })</td>
     </tr>
      <tr>
-         <td><br />The following fields below are if you wish to change your password. Please leave them blank if you choose not to do so.<br /></td>
-     </tr>
-     <tr>
-        <td>Old Password</td><td>@Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })</td>
+        <td class="update-user"><p class="small">Old Password</p></td><td>@Html.PasswordFor(m => m.OldPassword, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td>New Password</td><td>@Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })</td>
+        <td class="update-user"><p class="small">New Password</p></td><td>@Html.PasswordFor(m => m.NewPassword, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td>Confirm Password</td><td>@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })</td>
+        <td class="update-user"><p class="small">Confirm Password</p></td><td>@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })</td>
     </tr>
         <tr>
             <td>@Html.HiddenFor(model => model.PasswordChanged, false)</td>
@@ -47,5 +38,6 @@
         </tr>
     }
 </table>
+    </section>
 
 <br /><br />

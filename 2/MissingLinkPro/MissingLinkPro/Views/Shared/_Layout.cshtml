@@ -20,7 +20,8 @@
       <link href="~/Content/ie.css" rel="stylesheet" type="text/css" />
     <![endif]-->
     
-            <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+    <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -60,10 +61,8 @@
                 <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
                 <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
                 <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li>
-                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"  })) {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
         @Html.AntiForgeryToken()
-
-
                 <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
     }
     /*TEMPORARY*/

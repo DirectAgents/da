@@ -3,58 +3,57 @@
     ViewBag.Title = "Manage Your Account";
 }
 
-<h2>Your User Information</h2>
+<section class="announcement">
+<h2 class="topic">Your User Information</h2>
 <p class="text-success">@ViewBag.StatusMessage</p>
-<div class="row">
-    <div class="col-md-8">
-        <p><br>
-            <table style="margin-bottom:40px; width:450px;">
+<div>
+    <div><br>
+            <table style="margin-left:auto; margin-right: auto; margin-bottom:40px; width:450px;">
                 <tr>
-                    <td><h8>Registered Name</h8></td>
-                    <td>@Model.FirstName @Model.LastName</td>
+                    <td><p class="small">Registered Name</p></td>
+                    <td><p class="small">@Model.FirstName @Model.LastName</p></td>
                 </tr>
                 <tr>
-                    <td><h8>Email</h8></td>
-                    <td>@Model.Email</td>
+                    <td><p class="small">Email</p></td>
+                    <td><p class="small">@Model.Email</p></td>
                 </tr>
                 <tr>
-                    <td><h8>Phone Number</h8></td>
-                    <td>@Model.PhoneNumber</td>
+                    <td><p class="small">Phone Number</p></td>
+                    <td><p class="small">@Model.PhoneNumber</p></td>
                 </tr>
                 <tr>
-                    <td><h8>Credit Card</h8></td>
-                    <td>@Model.CardSummary</td>
+                    <td><p class="small">Credit Card</p></td>
+                    <td><p class="small">@Model.CardSummary</p></td>
                 </tr>
                 <tr>
-                    <td><h8>Package Subscription</h8></td>
-                    <td>@Model.Package.Name @if (!Model.IsActive) { <b>[Cancelled]</b> }</td>
+                    <td><p class="small">Subscription</p></td>
+                    <td><p class="small">@Model.Package.Name @if (!Model.IsActive) { <b>[Cancelled]</b> } </p></td>
                 </tr>
                 <tr>
-                    <td><h8>Searches/Month</h8></td>
-                    <td>@Model.Package.SearchesPerMonth</td>
+                    <td><p class="small">Searches/Month</p></td>
+                    <td><p class="small">@Model.Package.SearchesPerMonth</p></td>
                 </tr>
-                                <tr>
-                    <td><h8>Results Per Search</h8></td>
-                    <td>@Model.Package.MaxResults</td>
-                </tr>
-                <tr>
-                <td><h8 style="margin-right:50px;">Searches Performed This Month</h8></td>
-                <td>@Model.QueriesPerformed</td>
+                 <tr>
+                    <td><p class="small">Results/Search</p></td>
+                    <td><p class="small">@Model.Package.MaxResults</p></td>
                 </tr>
                 <tr>
-                <td><h8>Cycle Start Date</h8></td>
-                <td>@Model.Anniversary</td>
+                <td class="profile-left-col"><p class="small">Searches Performed This Month</p></td>
+                <td><p class="small">@Model.QueriesPerformed</p></td>
                 </tr>
                 <tr>
-                <td><h8>Cycle End Date</h8></td>
-                <td>@Model.Anniversary.AddMonths(1)</td>
+                <td><p class="small">Cycle Start Date</p></td>
+                <td><p class="small">@Model.Anniversary</p></td>
                 </tr>
                 <tr>
-                <td><h8>Time of Last Run</h8></td>
-                <td>@Model.DateTimeStamp</td>
+                <td><p class="small">Cycle End Date</p></td>
+                <td><p class="small">@Model.Anniversary.AddMonths(1)</p></td>
+                </tr>
+                <tr>
+                <td><p class="small">Time of Last Run</p></td>
+                <td><p class="small">@Model.DateTimeStamp</p></td>
                 </tr>
                 </table>
-        </p>
 @*        <p>
             @if (Model.HasPassword)
             {
@@ -125,49 +124,48 @@
         } *@
     </div>
 </div>
+    </section>
 
 @if (Model.HasMessage) {<div><p style="color:red">* @Model.Message</p></div>}
 
-<table class="content-space">
-    <tr>
-        <td><h2>@Html.ActionLink("Update User Information", "UpdateUser", "Manage")</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>Click on the provided link to update your name, phone number, and password.</p><br />
-</td>
-    </tr>
-        <tr>
-        <td><h2>@Html.ActionLink("Subscriptions Management", "Subscriptions", "Manage")</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>Click on the provided link to manage your current subscription.</p><br />
-</td>
-    </tr>
-    <tr>
-        <td><h2>@Html.ActionLink("Credit Card Management", "CreditCardManagement", "Manage")</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>Click on the provided link to manage your credit card information.</p><br />
-</td>
-    </tr>
-    <tr>
-        <td><h2>@Html.ActionLink("Payment History", "History", "Manage")</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>The provided link above will retrieve your entire history of payments as dated invoices.</p><br />
-</td>
-    </tr>
-</table>
-<br /><br />
+<section class="features">
+    <div class="container">
+
+    <div class="row clearfix">
+        <div class="column half">
+            <div class="box">
+                <h3>@Html.ActionLink("Update User Information", "UpdateUser", "Manage")</h3>
+                <p class="small">Click on the provided link to update your name, phone number, and password.
+                    <br /><br />
+                </p>
+            </div>
+        </div>
+                <div class="column half">
+            <div class="box">
+                <h3>@Html.ActionLink("Subscriptions Management", "Subscriptions", "Manage")</h3>
+                <p class="small">Click on the provided link to manage your current subscription.
+                    <br /><br />
+                </p>
+            </div>
+        </div>
+        </div>
+    <div class="row clearfix">
+        <div class="column half">
+            <div class="box">
+                <h3>@Html.ActionLink("Credit Card Management", "CreditCardManagement", "Manage")</h3>
+                <p class="small">Click on the provided link to manage your credit card information.
+                    <br /><br />
+                </p>
+            </div>
+        </div>
+                <div class="column half">
+            <div class="box">
+                <h3>@Html.ActionLink("Payment History", "History", "Manage")</h3>
+                <p class="small">The provided link above will retrieve your entire history of payments as dated invoices.
+                    <br /><br />
+                </p>
+            </div>
+        </div>
+        </div>
+        </div>
+</section>

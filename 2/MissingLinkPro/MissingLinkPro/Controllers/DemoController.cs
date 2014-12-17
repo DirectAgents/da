@@ -31,7 +31,7 @@ namespace MissingLinkPro.Controllers
         [HttpPost]
         public ActionResult Index(ParameterKeeper Parameters)
         {
-            ViewBag.StatusMessage = "";
+            ViewBag.StatusMessage = "To get more results and features, sign up for a Freemium account at no cost!";
             Parameters.top = 15;     // Cap at 15 results.
             if ((Parameters.top + Parameters.skip) > 1001)    // Recalculating results based on skip value.
             {

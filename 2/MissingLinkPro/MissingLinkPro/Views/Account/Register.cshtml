@@ -3,34 +3,37 @@
     ViewBag.Title = "Register New Account";
 }
 
-<div class="main" style="margin-top:50px; margin-left:auto; margin-right:auto;">
-<table style="margin-top:100px; margin-bottom:560px; margin-left:auto; margin-right:auto;">
-<tr>
-    <td><h3>Create Your Account</h3>
-</td>
-</tr>
+<header class="gradient">
+<div class="container">
+<section>
+    <h2 class="topic">Create Your Account</h2>
+
+    <p class="small" style="max-width:400px;">Fill out the fields below to get started.
+        You will be automatically assigned a Freemium subscription once your email address is confirmed.<br /><br />
+    </p>
+<table style="margin-top:10px; margin-bottom:98px; margin-left:auto; margin-right:auto;">
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <tr>
-        <td><p class="small">@Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })</p></td>
+        <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td><p class="small">@Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })</p></td>
+        <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td><p class="small">@Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })</p></td>
+        <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td><p class="small">@Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })</p></td>
+        <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.PasswordFor(m => m.Password, new { @class = "form-control" })</td>
     </tr>
     <tr>
-        <td><p class="small">@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })</p></td>
+        <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })</td>
     </tr>
     <tr>
@@ -41,8 +44,11 @@
     </tr>
 }
 </table>
+    </section>
     </div>
 
+
+    </header>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

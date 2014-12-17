@@ -6,37 +6,37 @@
 }
 
 <p class="text-success">@ViewBag.StatusMessage</p>
-<table class="content-space">
-    <tr>
-        <td><h2>Package Plans</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>The following package plans are currently available for subscription. To manage your subscription, click on the link that corresponds with your chosen package plan. You may choose to upgrade or downgrade your plan at a later time if desired.
-    NOTE: Use 4242424242424242 with any CVC and expiry date.
+@if (Model.HasMessage) {<div><p style="color:red">* @Model.Message</p></div>}
+
+<div id="main">
+
+    <header>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="column full"><h1 class="topic">Package Plans</h1></div>
+                <p>The following package plans are currently available for subscription. To manage your subscription, click on the link that corresponds with your chosen package plan. You may choose to upgrade or downgrade your plan at a later time if desired.
+    <br />NOTE: For testing purposes, use 4242424242424242 with any CVC and expiry date.
 </p>
-    @if (Model.HasMessage) {<div><p style="color:red">* @Model.Message</p></div>}
-</td>
-    </tr>
-</table>
-<table class="table">
+            </div>
+        </div>
+    </header>
+    <section class="feature">
+        <table class="package-plans">
     <tr>
-        <th>
+        <th class="package-plans">
             Current Plan
         </th>
-        <th>
+        <th class="package-plans">
             Package
         </th>
-        <th>
+        <th class="package-plans">
             Searches/Month
         </th>
-        <th>
+        <th class="package-plans">
             Results/Search
             @*@Html.DisplayNameFor(model => model.MaxResults)*@
         </th>
-        <th>
+        <th class="package-plans">
             Cost/Month
         </th>
         <th></th>
@@ -44,20 +44,23 @@
 
 @foreach (var item in Model.ListofPackages) {
     <tr>
-        <td>@if (Model.PackageId == item.Id) { <img src="~/Images/linkback_no.png" /> }</td>
-        <td>
+        <td class="package-plans">@if (Model.PackageId == item.Id) { <img src="~/Images/linkback_no.png" /> }</td>
+        <td class="package-plans">
             @Html.ActionLink(item.Name,"PaySubscription", new { id=item.Id })
         </td>
-        <td>
+        <td class="package-plans">
             @Html.DisplayFor(modelItem => item.SearchesPerMonth)
         </td>
-        <td>
+        <td class="package-plans">
             @Html.DisplayFor(modelItem => item.MaxResults)
         </td>
-        <td>
+        <td class="package-plans">
             $@Html.DisplayFor(modelItem => item.CostPerMonth)
         </td>
     </tr>
 }
-</table>
-<br /><br />
+</table></section>
+    </div>
+
+
+<br />

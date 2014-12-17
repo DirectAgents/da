@@ -3,32 +3,36 @@
 @{
     ViewBag.Title = "Contact";
 }
-<table class="content-space">
-    <tr>
-        <td><h2>Reach Out To Us</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>Please contact us at directlink(at)directagents.com or 800.900.0763 with any questions.<br />
+
+<header>
+<div class="container">
+    <div class ="row clearfix">
+<div class="column full">
+<h2 class="topic">Reach Out To Us</h2>
+<p class="small">Please contact us at directlink(at)directagents.com or 800.900.0763 with any questions.<br />
 Our hours are 9:30AM to 6:00PM EST.</p>
-Direct Agents<br />
+<p>Direct Agents<br />
 740 Broadway, Suite 701<br />
 New York, NY 10003<br />
 1 (800) 900-0763<br />
-</td>
-    </tr>
-    <tr>
-        <td><p>Interested in link-building services? At Direct Agents, high-level link building for modern SEO is our specialty. Contact us at info@directagents.com or 800.900.0763 for more information on how Direct Agents can use link building to grow your business.</p></td>
-    </tr>
-</table>
+    </p>
+<p class="small">Interested in link-building services? At Direct Agents, high-level link building for modern SEO is our specialty. Contact us at info@directagents.com or give us a call for more information on how Direct Agents can use link building to grow your business.</p>
 
-@if (Model.ApplicationMsgAvailable) { <p>@Model.ApplicationMsg</p> }
+    </div>
+    </div>
+    </div>
+    </header>
+<p class="text-success">@ViewBag.StatusMessage</p>
+
+<section>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="column full">
+                <h3 class="topic">Send Us A Message</h3>
 
 @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
 {
-    <table>
+    <table style="margin-left:auto; margin-right:auto;">
         @*<tr>
             <td><ul>
                 <li><input type="checkbox" name="LeadGeneration"> Lead Generation</li>
@@ -42,28 +46,37 @@ New York, NY 10003<br />
             </td>
         </tr>*@
         <tr>
-            <td>First Name</td><td><input class="form-field" type="text" size ="65" name="FirstName" required></td>
+            <td><p class="small">First Name</p></td><td><input class="form-field" type="text" size ="35" name="FirstName" required></td>
         </tr>
         <tr>
-            <td>Last Name</td><td><input class="form-field" type="text" size ="65" name="LastName" required></td>
+            <td><p class="small">Last Name</p></td><td><input class="form-field" type="text" size ="35" name="LastName" required></td>
         </tr>
          <tr>
-            <td>Phone Number</td><td><input class="form-field" type="tel" size ="65" name="PhoneNum" required></td>
+            <td><p class="small">Phone Number</p></td><td><input class="form-field" type="tel" size ="35" name="PhoneNum" required></td>
         </tr>
         <tr>
-            <td>Email</td><td><input class="form-field" type="email" size ="65" name="Email" required></td>
+            <td><p class="small">Email</p></td><td><input class="form-field" type="email" size ="30" name="Email" required></td>
         </tr>
             <tr>
-            <td>Company Name</td><td><input class="form-field" type="text" size ="65" name="Company" required></td>
+            <td><p class="small">Company Name</p></td><td><input class="form-field" type="text" size ="30" name="Company" required></td>
         </tr>
                     <tr>
-            <td>Message</td><td><textarea class="form-field" name="Message" required></textarea></td>
+            <td><p class="small">Message</p></td><td><textarea class="form-field" name="Message" required></textarea></td>
         </tr>
         <tr>
-            <td><input type="submit" value="Send Message"></td>
+            <td></td><td><p class="small"><input type="submit" value="Send Message"></p></td>
         </tr>
     </table>
 }
+
+            </div>
+        </div>
+        <div class="row clearfix"></div>
+    </div>
+
+</section>
+
+
 
 @*<div>
     <address>
