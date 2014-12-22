@@ -48,7 +48,7 @@ namespace IdentitySample.Controllers
             message.Destination = "directlink@directagents.com";
             message.Subject = "Contact Form Msg: " + model.FirstName + " " + model.LastName + ", " + model.Company;
             message.Body = model.FirstName + " " + model.LastName + "<br />Phone: " + model.PhoneNum + "<br />Email " + model.Email + "<br />Company: " + model.Company + "<br />Message: " + model.Message;
-            emailer.SendEmail(ConfigurationManager.AppSettings["Emailer_Username"], message.Destination, null, message.Subject, message.Body, true);
+            emailer.SendEmail(ConfigurationManager.AppSettings["Emailer_Username"], message.Destination, new string[2] { "dinesh@directagents.com","ricardo@directagents.com" }, message.Subject, message.Body, true);
 
             ViewBag.StatusMessage = "Thank you. Your message has been sent. You will be contacted by a representative during operating hours.";
 

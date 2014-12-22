@@ -29,7 +29,7 @@
         .ui-menu {
             width: 200px;
             position: absolute;
-            top: 0;
+            top: 21px;
             right: 0;
             display: block;
             overflow: visible;
@@ -67,20 +67,23 @@
             <a href='http://www.directagents.com/directlink'>Home</a>
           </li>
           <li class=''>
-            <a href='http://www.directagents.com/how-it-works'>How it works</a>
+            <a href='http://www.directagents.com/directlink/how-it-works'>How it works</a>
           </li>
           <li class=''>
-            <a href='http://www.directagents.com/about'>About Us</a>
+            <a href='http://www.directagents.com/directlink/about'>About Us</a>
           </li>
           <li class=''>
-            <a href='http://www.directagents.com/packages'>Packages</a>
+            <a href='http://www.directagents.com/directlink/packages'>Packages</a>
           </li>
          }
 
         @if (Request.IsAuthenticated) {
-            <li class=''>@Html.ActionLink("Search","Index","Application")</li>
-            <li class=''>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
-            <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            if (ViewBag.Title == "Begin Your Search") { <li class='active'>@Html.ActionLink("Search","Index","Application")</li> }
+            else { <li class=''>@Html.ActionLink("Search","Index","Application")</li> }
+            if (ViewBag.Title == "Frequently Asked Questions") { <li class='active'>@Html.ActionLink("FAQ", "FAQ", "Home")</li>  }
+            else{ <li class=''>@Html.ActionLink("FAQ", "FAQ", "Home")</li> }
+            if (ViewBag.Title == "Contact") { <li class='active'>@Html.ActionLink("Contact", "Contact", "Home")</li> }
+            else { <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li> }
             
             
         /*TEMPORARY
@@ -98,15 +101,17 @@
         /*drop down*/
     
         <ul id="menu" class='clearfix'>
-            <li>Menu
+            <li><p style="margin-bottom:20px;">User Options</p>
                 <ul id="menu">
                     <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
-                    <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
+                    <li class=''>@Html.ActionLink("Billing Info", "History", "Manage")</li>
                     <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
-                    <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li> 
-                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-                    @Html.AntiForgeryToken()
+                    <li class=''>@Html.ActionLink("Help/FAQ", "FAQ", "Home")</li> 
+                    <li class=''>@Html.ActionLink("Log Out", "LogoutCmd", "Account")</li>
+                    @*@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
                     <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+                                            @Html.AntiForgeryToken()
+                    }*@
                 </ul>
             </li>
         </ul>

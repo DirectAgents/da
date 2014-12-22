@@ -1,4 +1,9 @@
-﻿@using (Html.BeginForm("Index", "Demo", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
+﻿<div style="margin-top:55px;">
+    <p class="small">Enter your company or brand name under “Search Query” and your website under “Target Site to Scan for,” then click “Perform Search” to find your linkless mentions!</p>
+</div>
+
+
+@using (Html.BeginForm("Index", "Demo", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
 {
     @Html.ValidationSummary()
     <table class="application" id="app-body">

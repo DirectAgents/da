@@ -13,43 +13,50 @@
                 <div class="column full" style="padding-bottom:30px;">
                     <h2 class="topic">Confirm Credit Card Deletion</h2>
                     <p class="text-success">@ViewBag.StatusMessage</p>
-                    <p class="small">Please note that removing your credit card does not cancel your subscription.</p>
+                    <p class="small">Please note that removing your credit card does not automatically cancel a paid subscription.</p>
                     <p class="small">You are about to remove your credit card from your account. Do you wish to proceed?
                      </p>
                 </div>
             </div>
             @using (Html.BeginForm("DeleteCreditCard", "Manage", FormMethod.Post, new { id = "form" }))
             {
-            <table>
+            <table class="credit-card-form">
                 <tr>
-                    <td style="credit-card-form"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="true" /> Yes</h4></td>
-                    <td style="credit-card-form"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="false" checked="checked" /> No</h4></td>
+                    <td class="credit-card-form" style="padding-right:30px;"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="true" /> Yes</h4></td>
+                    <td class="credit-card-form"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="false" checked="checked" /> No</h4></td>
                 </tr>
                 <tr><td><br /></td></tr>
                 <tr>
-                    <td><button type="submit" value="Cancel">Delete Credit Card</button></td>
+                    <td></td>
                 </tr>
             </table>
+                <button type="submit" value="Cancel">Delete Credit Card</button>
             }
             </div>
         </header>
             </div>
+    <br /><br /><br /><br /><br /><br /><br /><br />
 }
 
 else {
-        <table class="content-space">
-    <tr>
-        <td><h2>No Card Found</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>You don't have a card registered under your account.</p>
-            <br />
-</td>
-    </tr>
-    </table>
+        <div id="main">
+
+    <header>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="column full" style="padding-bottom:30px;">
+                    <h2 class="topic">Credit Card Not Found</h2>
+                    <p class="text-success">@ViewBag.StatusMessage</p>
+                    <p class="small">According to our systems, you do not currently have a credit card registered to your account.</p>
+                     <p class="small">If you believe that this is an error, refreshing the page may retrieve your credit card.
+                         If you continue to encounter this page and believe that this is incorrect, please contact an administrator for further assistance.
+                     </p>
+                </div>
+            </div>
+            </div>
+        </header>
+            </div>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 }
     <br /><br />
 <br />

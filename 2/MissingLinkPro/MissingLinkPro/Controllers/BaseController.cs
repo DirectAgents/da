@@ -34,6 +34,6 @@ namespace MissingLinkPro.Controllers
     //[ExitHttpsIfNotRequired]
     public abstract class BaseController : Controller { }
 
-    //[RequireHttps]
+    [RequireHttps]
     public abstract class HttpsBaseController : Controller { }
 }

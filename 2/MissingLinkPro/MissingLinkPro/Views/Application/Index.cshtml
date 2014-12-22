@@ -7,6 +7,8 @@
 <!-- <form id="form" action="@Url.Action("Process")" method="post" novalidate> -->
 
 
+<div style="margin-top:55px;"><p class="small">Enter your company or brand name under “Search Query” and your website under “Target Site to Scan for,” then click “Perform Search” to find your linkless mentions!</p></div>
+
 @using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
 {
     @Html.ValidationSummary()

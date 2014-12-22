@@ -28,7 +28,11 @@
     <div class="container">
         <div class="row clearfix">
             <div class="column full">
-                <h2 class="topic">Invoice Items</h2>
+
+                   <h2 class="topic">@Html.ActionLink("Credit Card Management", "CreditCardManagement", "Manage")</h2>
+                   <p>Click the above link to manage your credit card information.</p>
+                <br />
+                <h2 class="topic">Billing History</h2>
                    <p>Below is a list of your invoice items. All items are sorted by date.</p>
                 <p class="small">Current Status As Of @DateTime.Now<br />
                     @if (Model.Count > 0) {
