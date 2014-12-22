@@ -23,6 +23,34 @@
     <script src="~/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
     <link href="~/Content/custom.css" rel="stylesheet" type="text/css" />
 
+    <script src="~/Scripts/jquery-ui.js" type="text/javascript"></script>
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <style>
+        .ui-menu {
+            width: 200px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: block;
+            overflow: visible;
+            padding: 0 0.5rem;
+        }
+        .ui-widget {
+            font-family: Sans-Serif;
+            font-size: 0.7rem;
+        }
+        .ui-widget-content {
+            border: 0;
+            background: transparent;
+            color: #364A61; 
+        }
+        .ul {
+            text-align:center;
+        }
+    </style>
+
+
+
 </head>
 
       <nav id='top'>
@@ -55,21 +83,43 @@
             <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li>
             
             
-/*TEMPORARY*/
+        /*TEMPORARY
 
-                <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
-                <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
-                <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
-                <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li>
-                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-        @Html.AntiForgeryToken()
-                <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
-    }
-    /*TEMPORARY*/
-            
+            <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
+            <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
+            <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
+            <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li>
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+            @Html.AntiForgeryToken()
+            <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+        }
+        TEMPORARY*/
+        
+        /*drop down*/
+    
+        <ul id="menu" class='clearfix'>
+            <li>Menu
+                <ul id="menu">
+                    <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
+                    <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
+                    <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
+                    <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li> 
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+                    @Html.AntiForgeryToken()
+                    <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
+                </ul>
+            </li>
+        </ul>
+ 
+        <script>
+            $("#menu").menu();
+        </script>
+    
+        /*drop down*/
         }
 
-        @if (Request.IsAuthenticated && User.IsInRole("Admin")) {
+        @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+        {
             <li class=''>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
             <li class=''>@Html.ActionLink("Users", "Index", "UsersAdmin")</li>
             <li class=''>@Html.ActionLink("Packages", "Index", "Packages")</li>
@@ -118,7 +168,8 @@
         </nav>
         <nav class='legal'>
           <ul>
-            @if (Request.IsAuthenticated) {
+            @if (Request.IsAuthenticated)
+            {
             <li>
               <a href='http://www.directagents.com/directlink/?Active=1'>Home</a>
             </li>
@@ -132,7 +183,8 @@
               <a href='http://www.directagents.com/directlink/packages/?Active=1'>Packages</a>
             </li>
             }
-              else {
+            else
+            {
             <li>
               <a href='http://www.directagents.com/directlink'>Home</a>
             </li>

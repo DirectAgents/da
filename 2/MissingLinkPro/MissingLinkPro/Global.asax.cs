@@ -18,14 +18,14 @@ namespace IdentitySample
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 
-        /**
-         * Redirects away from application if a non-HTTPS connection is detected.
-         **/
-        protected void Application_BeginRequest()
-        {
-            if (!Context.Request.IsSecureConnection)
-                Response.Redirect("http://www.directagents.com/directlink");
-        }
+        ///**
+        // * Redirects away from application if a non-HTTPS connection is detected.
+        // **/
+        //protected void Application_BeginRequest()
+        //{
+        //    if (!Context.Request.IsSecureConnection)
+        //        Response.Redirect("http://www.directagents.com/directlink");
+        //}
 
         /**
          * For testing purposes, use this method to redirect from HTTP to HTTPS.

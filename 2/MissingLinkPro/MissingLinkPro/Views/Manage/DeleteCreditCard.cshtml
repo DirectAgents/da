@@ -4,26 +4,26 @@
 }
 
 @if (Model.HasCreditCard) {
-    <table class="content-space">
-    <tr>
-        <td><h2>Confirmation</h2></td>
-    </tr>
-    <tr>
-        <td><br /></td>
-    </tr>
-    <tr>
-        <td><p>You are about to remove your credit card. Do you wish to proceed?</p>
-            <br />
-</td>
-    </tr>
-    </table>
+    
+        <div id="main">
 
-        using (Html.BeginForm("DeleteCreditCard", "Manage", FormMethod.Post, new { id = "form" }))
+    <header>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="column full" style="padding-bottom:30px;">
+                    <h2 class="topic">Confirm Credit Card Deletion</h2>
+                    <p class="text-success">@ViewBag.StatusMessage</p>
+                    <p class="small">Please note that removing your credit card does not cancel your subscription.</p>
+                    <p class="small">You are about to remove your credit card from your account. Do you wish to proceed?
+                     </p>
+                </div>
+            </div>
+            @using (Html.BeginForm("DeleteCreditCard", "Manage", FormMethod.Post, new { id = "form" }))
             {
             <table>
                 <tr>
-                    <td style=""><h4><input class="radio-btn" type="radio" name="DeleteCard" value="true" /> Yes</h4></td>
-                    <td><h4><input class="radio-btn" type="radio" name="DeleteCard" value="false" checked="checked" /> No</h4></td>
+                    <td style="credit-card-form"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="true" /> Yes</h4></td>
+                    <td style="credit-card-form"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="false" checked="checked" /> No</h4></td>
                 </tr>
                 <tr><td><br /></td></tr>
                 <tr>
@@ -31,6 +31,9 @@
                 </tr>
             </table>
             }
+            </div>
+        </header>
+            </div>
 }
 
 else {
