@@ -80,8 +80,8 @@
         @if (Request.IsAuthenticated) {
             if (ViewBag.Title == "Begin Your Search") { <li class='active'>@Html.ActionLink("Search","Index","Application")</li> }
             else { <li class=''>@Html.ActionLink("Search","Index","Application")</li> }
-            if (ViewBag.Title == "Frequently Asked Questions") { <li class='active'>@Html.ActionLink("FAQ", "FAQ", "Home")</li>  }
-            else{ <li class=''>@Html.ActionLink("FAQ", "FAQ", "Home")</li> }
+            if (ViewBag.Title == "Help/FAQ") { <li class='active'>@Html.ActionLink("Help/FAQ", "FAQ", "Home")</li>  }
+            else{ <li class=''>@Html.ActionLink("Help/FAQ", "FAQ", "Home")</li> }
             if (ViewBag.Title == "Contact") { <li class='active'>@Html.ActionLink("Contact", "Contact", "Home")</li> }
             else { <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li> }
             
@@ -106,7 +106,6 @@
                     <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
                     <li class=''>@Html.ActionLink("Billing Info", "History", "Manage")</li>
                     <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
-                    <li class=''>@Html.ActionLink("Help/FAQ", "FAQ", "Home")</li> 
                     <li class=''>@Html.ActionLink("Log Out", "LogoutCmd", "Account")</li>
                     @*@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
                     <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>

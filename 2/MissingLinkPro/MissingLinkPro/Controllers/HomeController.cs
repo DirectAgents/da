@@ -13,7 +13,7 @@ namespace IdentitySample.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "DirectAgents";
+            //ViewBag.Message = "DirectAgents";
             ViewBag.Title = "DirectLink | Linkless Mention Finder";
             ViewBag.MetaDescription = "DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back. Try it free!";
             return View();
@@ -57,13 +57,13 @@ namespace IdentitySample.Controllers
 
         public ActionResult Manual()
         {
-            ViewBag.Message = "User Manual";
+            //ViewBag.Message = "User Manual";
             return View();
         }
 
         public ActionResult FAQ()
         {
-            ViewBag.Mesage = "Frequently Asked Questions";
+            //ViewBag.Mesage = "Frequently Asked Questions";
             return View();
         }
     } // HomeController class
