@@ -144,8 +144,9 @@ namespace IdentitySample.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(string subid)
         {
+            ViewBag.SubId = subid;
             return View();
         }
 
@@ -154,15 +155,19 @@ namespace IdentitySample.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, string stripeToken = null)
         {
             if (ModelState.IsValid)
             {
-                Package freemium = db.Packages.Find(1);                    // We assume that "1" corresponds to the Freemium plan stored in database.
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = freemium.Id };
+                Package AssignThis = db.Packages.Find(model.ChosenSubscriptionId);                    // We assume that "1" corresponds to the Freemium plan stored in database.
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = AssignThis.Id };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+
+                    user = StripeHelper.CreateNewCustomer(user, stripeToken);        // Method creates a new customer; returning user object contains new CustomerId value
+                    await UserManager.UpdateAsync(user);                             // Update database with new CustomerId
+
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 
@@ -191,9 +196,7 @@ namespace IdentitySample.Controllers
             var result = await UserManager.ConfirmEmailAsync(userId, code);
 
             var user = await UserManager.FindByIdAsync(userId);
-            user = StripeHelper.AssignNewSubscription(user, 1);
-            user.DateTimeStamp = DateTime.Now;
-            user.IsActive = true;
+            user = StripeHelper.AssignNewSubscription(user, user.PackageId.Value);
             await UserManager.UpdateAsync(user);
 
             return View(result.Succeeded ? "ConfirmEmail" : "Error");

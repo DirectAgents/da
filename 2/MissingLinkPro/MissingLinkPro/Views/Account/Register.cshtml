@@ -1,6 +1,82 @@
 ﻿@model IdentitySample.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register New Account";
+    string subid = ViewBag.SubId;
+}
+
+@section Scripts
+{
+@Scripts.Render("~/bundles/jqueryval")
+
+
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+    Stripe.setPublishableKey('pk_test_bqotCuVYyt6dLMoMD4doOL6V');
+
+    var stripeResponseHandler = function (status, response) {
+        var $form = $('#payment-form');
+
+        if (response.error) {
+            // Show the errors on the form
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('button').prop('disabled', false);
+        } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+            // and re-submit
+            $form.get(0).submit();
+        }
+    };
+
+    jQuery(function ($) {
+        $('#payment-form').submit(function (event) {
+            var $form = $(this);
+            // Disable the submit button to prevent repeated clicks
+            $form.find('button').prop('disabled', true);
+
+            if ($('#1').is(':checked')) { debugger; $form.get(0).submit();  }
+
+            Stripe.card.createToken($form, stripeResponseHandler);
+
+            // Prevent the form from submitting with the default action
+            return false;
+        });
+    });
+</script>
+<script type="text/javascript">
+    function yesnoCheck() {
+        if (document.getElementById('2').checked) {
+            document.getElementById('credit-card').style.display = 'block';
+        }
+        else if (document.getElementById('3').checked) {
+            document.getElementById('credit-card').style.display = 'block';
+        }
+        else if (document.getElementById('4').checked) {
+            document.getElementById('credit-card').style.display = 'block';
+        }
+        else if (document.getElementById('5').checked) {
+            document.getElementById('credit-card').style.display = 'block';
+        }
+        else document.getElementById('credit-card').style.display = 'none';
+
+    }
+
+
+    $(function () {
+        var $radios = $('input:radio[name=ChosenSubscriptionId]');
+        if ($radios.is(':checked') === false) {
+            $radios.filter('[value=1]').prop('checked', true);
+        }
+    });
+
+</script>
+}
+
+@{
+    string PackageId = Request.QueryString["Package"];
 }
 
 <header class="gradient">
@@ -9,13 +85,26 @@
     <h2 class="topic">Create Your Account</h2>
 
     <p class="small" style="max-width:400px;">Fill out the fields below to get started.
-        You will be automatically assigned a Freemium subscription once your email address is confirmed.<br /><br />
+        Registering for a paid subscriptions requires a credit card.<br /><br />
     </p>
-<table style="margin-top:10px; margin-bottom:98px; margin-left:auto; margin-right:auto;">
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", @id = "payment-form", role = "form" }))
 {
+    
+    <table class="credit-card-form" style="width:500px;">
+        <tr>
+            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="1" value="1" @(subid == "1" ? "checked" : "")> Freemium</td>
+            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="2" value="2" @(subid == "2" ? "checked" : "")> Bronze</td>
+            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="3" value="3" @(subid == "3" ? "checked" : "")> Silver</td>
+            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="4" value="4" @(subid == "4" ? "checked" : "")> Gold</td>
+            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="5" value="5" @(subid == "5" ? "checked" : "")> Platinum</td>
+        </tr>
+    </table>
+    
+    <table style="margin-top:10px; margin-bottom:20px; margin-left:auto; margin-right:auto;">
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <tr>
+        <td><p class="small">@Html.ValidationSummary("", new { @class = "text-danger" })</p></td>
+    </tr>
     <tr>
         <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })</td>
@@ -36,20 +125,56 @@
         <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })</td>
     </tr>
-    <tr>
-        <td><p><br /></p></td>
-    </tr>
-    <tr>
-        <td><p class="small"><input type="submit" class="btn btn-default" value="Register" /></p></td>
-    </tr>
+        </table>
+    
+    <div id="credit-card" style="display:none;">
+            <table class="credit-card-form">
+                <tr>
+                    <td class="credit-card-form"><p class="small">Name On Card</p></td>
+                    <td class="credit-card-form"><input type="text" size="30" data-stripe="name" required/></td>
+                </tr>
+                <tr>
+                    <td class="credit-card-form"><p class="small">Address Line 1</p></td>
+                    <td class="credit-card-form"><input type="text" size="30" data-stripe="address_line1" required/></td>
+                </tr>
+                <tr>
+                    <td class="credit-card-form"><p class="small">Address Line 2</p></td>
+                    <td class="credit-card-form"><input type="text" size="30" data-stripe="address_line2"/></td>
+                </tr>
+                <tr>
+                    <td class="credit-card-form"><p class="small">City</p></td>
+                    <td class="credit-card-form"><input type="text" size="25" data-stripe="address_city" required/></td>
+                </tr>
+                    <tr>
+                    <td class="credit-card-form"><p class="small">State, Postal Code</p></td>
+                    <td class="credit-card-form"><input type="text" size="3" data-stripe="address_state"/> <input type="text" size="8" data-stripe="address_zip" required/></td>
+                </tr>
+                   @*<tr>
+                    <th>Country</th>
+                    <td><input type="text" size="5" data-stripe="address_country"/></td>
+                </tr>*@
+                   <tr>
+                    <td class="credit-card-form"><p class="small">Card Number</p></td>
+                    <td class="credit-card-form"><input type="text" size="30" data-stripe="number"/></td>
+                </tr>
+                    <tr>
+                    <td class="credit-card-form"><p class="small">CVC</p></td>
+                    <td class="credit-card-form"><input type="text" size="4" data-stripe="cvc"/></td>
+                </tr>
+                <tr>
+                    <td class="credit-card-form" style="padding-right:4px;"><p class="small">Expiration (MM/YYYY)</p></td>
+                    <td class="credit-card-form"><input type="text" size="2" data-stripe="exp-month"/> / <input type="text" size="4" data-stripe="exp-year"/></td>
+                </tr>
+            </table>
+        </div>
+    
+    <div style="padding:30px;">
+<p class="small"><input type="submit" class="btn btn-default" value="Create Account" /></p>
+        </div>
 }
-</table>
+
     </section>
     </div>
 
 
     </header>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

@@ -245,7 +245,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\DebugController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
@@ -419,7 +418,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Debug\" />
     <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>

@@ -37,6 +37,7 @@ namespace MissingLinkPro.Helpers
                 }
                 else // pre-existing customer with existing CustomerID.
                 {
+
                     var subscriptionService = new StripeSubscriptionService();
                     StripeSubscription stripeSubscription = subscriptionService.Create(user.CustomerId, NewPlanId.ToString()); // optional StripeSubscriptionCreateOptions
 
@@ -50,6 +51,11 @@ namespace MissingLinkPro.Helpers
                     user.SubscriptionId = stripeSubscription.Id;
                     user.PackageId = NewPlanId;
                 }
+
+            var invoiceService = new StripeInvoiceService();
+            StripeInvoice response = invoiceService.Create(user.CustomerId);
+
+            user.DateTimeStamp = DateTime.Now;
             user.IsActive = true;
             return user;
         } // AssignPackagePlan
@@ -186,5 +192,17 @@ namespace MissingLinkPro.Helpers
             return user;
         } // UpdateCreditCard
 
+
+        public static ApplicationUser CreateNewCustomer(ApplicationUser user, string stripeToken)
+        {
+            var myCustomer = new StripeCustomerCreateOptions();
+            myCustomer.Email = user.Email;                         // Attach email to account
+            myCustomer.TokenId = stripeToken;                      // Attach token representing credit card
+            myCustomer.Quantity = 1;                               // optional, defaults to 1 (Stripe.Net note)
+            var customerService = new StripeCustomerService();
+            StripeCustomer stripeCustomer = customerService.Create(myCustomer);
+            user.CustomerId = stripeCustomer.Id;
+            return user;
+        }
     } // StripeHelper
 } // namespace

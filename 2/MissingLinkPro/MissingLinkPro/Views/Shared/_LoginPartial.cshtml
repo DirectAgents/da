@@ -31,7 +31,7 @@
 else
 {
     <li class='login'>
-        @Html.ActionLink("Sign Up", "Register", "Account" @*, new {@class = "signup"} *@ )
+        @Html.ActionLink("Sign Up", "Register", "Account", new { SubId=1 }, null )
         @Html.ActionLink("Log In", "Login", "Account" @*, new {@class = "signup"} *@ )
     </li>
 }
