@@ -2,10 +2,28 @@
     ViewBag.Title = "Email Confirmation";
 }
 
-<h2>Email Address Confirmed</h2>
+<h2></h2>
 <br />
 <div>
     <p>
-        Success! Thank you for confirming your email address. Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+        
     </p>
 </div>
+
+<header class="">
+<section class="features" style="padding-bottom:460px;">
+    <div class="container">
+    <div class="row clearfix">
+        <div class="column full">
+            <div class="box">
+                <h3 class="topic">Email Address Confirmed</h3>
+                <p class="small" style="text-align:center;">Success!</p>
+                <p class="small" style="text-align:center;">
+Thank you for confirming your email address. Your account has been activated and is ready for use.<br />Please @Html.ActionLink("Click here to Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+                </p>
+            </div>
+        </div>     
+        </div>
+        </div>
+</section>
+    </header>

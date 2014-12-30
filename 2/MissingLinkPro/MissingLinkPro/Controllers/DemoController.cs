@@ -44,10 +44,7 @@ namespace MissingLinkPro.Controllers
             {
                 Limit = (Integer)Session["Limit"];
                 if (Limit.Value <= 0)
-                {
-                    ViewBag.StatusMessage = "You cannot use the demo more than three times in quick succession. Please try again later.";
-                    return View("Results", Engine);
-                }
+                    return View("LimitReached");
             }
             else
                 Limit = new Integer { Value = 3 };      // Set the number of allowed runs per session here.

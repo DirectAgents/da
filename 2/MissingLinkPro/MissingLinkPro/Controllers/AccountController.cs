@@ -225,7 +225,9 @@ namespace IdentitySample.Controllers
 
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+                string msg = "We successfully received your Forgotten Password inquiry and you may now proceed to the next step. Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>";
+
+                await UserManager.SendEmailAsync(user.Id, "DirectLink | Password Reset Instructions", msg);
                 ViewBag.Link = callbackUrl;
                 return View("ForgotPasswordConfirmation");
             }
