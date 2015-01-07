@@ -52,9 +52,6 @@ namespace MissingLinkPro.Helpers
                     user.PackageId = NewPlanId;
                 }
 
-            var invoiceService = new StripeInvoiceService();
-            StripeInvoice response = invoiceService.Create(user.CustomerId);
-
             user.DateTimeStamp = DateTime.Now;
             user.IsActive = true;
             return user;
@@ -198,7 +195,7 @@ namespace MissingLinkPro.Helpers
             var myCustomer = new StripeCustomerCreateOptions();
             myCustomer.Email = user.Email;                         // Attach email to account
             myCustomer.TokenId = stripeToken;                      // Attach token representing credit card
-            myCustomer.Quantity = 1;                               // optional, defaults to 1 (Stripe.Net note)
+            //myCustomer.Quantity = 1;                               // optional, defaults to 1 (Stripe.Net note)
             var customerService = new StripeCustomerService();
             StripeCustomer stripeCustomer = customerService.Create(myCustomer);
             user.CustomerId = stripeCustomer.Id;

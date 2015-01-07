@@ -269,8 +269,15 @@ namespace IdentitySample.Controllers
                 }
 
                 /*Stripe Code*/
-                var customerService = new StripeCustomerService();
-                customerService.Delete(user.CustomerId);
+                try
+                {
+                    var customerService = new StripeCustomerService();
+                    customerService.Delete(user.CustomerId);
+                }
+                catch (StripeException)     // This exception will occur in cases where a local account is created in DB but not on Stripe's end.
+                {
+                    
+                }
                 /*Stripe Code*/
 
                 var result = await UserManager.DeleteAsync(user);

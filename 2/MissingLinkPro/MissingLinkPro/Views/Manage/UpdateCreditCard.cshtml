@@ -54,30 +54,32 @@
                     <p class="text-success">@ViewBag.StatusMessage</p>
                     <p class="small">Please fill out the form fields below and click on Register New Card to update your credit card information.
                         Note that if you are currently using a package plan that has been cancelled, updating your credit card will reactivate your subscription.</p>
+                    <p class="small">Most major credit cards in the US are accepted, including MasterCard, Visa, Discover, American Express, JCB, and Diner's Club.</p>
                 </div>
             </div>
                     <form action="" method="POST" id="payment-form">
                       <span class="payment-errors"></span>
 
+            <div class="form-box" style="max-width:700px; padding:35px;">
             <table class="credit-card-form">
                 <tr>
-                    <th class="credit-card-form">Name On Card</th>
+                    <td class="credit-card-form">Name On Card</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="name" required/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form">Address Line 1</th>
+                    <td class="credit-card-form">Address Line 1</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="address_line1" required/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form">Address Line 2</th>
+                    <td class="credit-card-form">Address Line 2</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="address_line2"/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form">City</th>
+                    <td class="credit-card-form">City</td>
                     <td class="credit-card-form"><input type="text" size="25" data-stripe="address_city" required/></td>
                 </tr>
                     <tr>
-                    <th class="credit-card-form">State, Postal Code </th>
+                    <td class="credit-card-form">State, Postal Code </td>
                     <td class="credit-card-form"><input type="text" size="3" data-stripe="address_state"/> <input type="text" size="8" data-stripe="address_zip" required/></td>
                 </tr>
                    @*<tr>
@@ -85,22 +87,23 @@
                     <td><input type="text" size="5" data-stripe="address_country"/></td>
                 </tr>*@
                    <tr>
-                    <th class="credit-card-form">Card Number</th>
+                    <td class="credit-card-form">Card Number</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="number"/></td>
                 </tr>
                     <tr>
-                    <th class="credit-card-form">CVC</th>
+                    <td class="credit-card-form">CVC</td>
                     <td class="credit-card-form"><input type="text" size="4" data-stripe="cvc"/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form" style="padding-right:4px;">Expiration (MM/YYYY) </th>
+                    <td class="credit-card-form" style="padding-right:4px;">Expiration (MM/YYYY) </td>
                     <td class="credit-card-form"><input type="text" size="2" data-stripe="exp-month"/> / <input type="text" size="4" data-stripe="exp-year"/></td>
                 </tr>
             </table>
-          <div style="margin:40px;"><button type="submit">Register New Card</button></div>
-        </form>
-            </div>
-        </header>
+          <div style="margin:35px;"><button type="submit">Register New Card</button></div>
         </div>
 
-<br /><br /><br />
+        </form>
+            </div>
+                </header>
+
+        </div>

@@ -3,29 +3,29 @@
 @{
     ViewBag.Title = "Users Admin";
 }
-
+<div class="" style="padding:150px;">
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table" style="margin-left:auto; margin-right:auto; width: 950px;">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
+        <th style="text-align:left;">
+            <p class="small">@Html.DisplayNameFor(model => model.UserName)</p>
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+        <th style="text-align:left;">
+            <p class="small">@Html.DisplayNameFor(model => model.FirstName)</p>
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
+        <th style="text-align:left;">
+            <p class="small">@Html.DisplayNameFor(model => model.LastName)</p>
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PackageId)
+        <th style="text-align:left;">
+            <p class="small">@Html.DisplayNameFor(model => model.PackageId)</p>
         </th>
-                <th>
-            @Html.DisplayNameFor(model => model.EmailConfirmed)
+        <th style="text-align:left;">
+            <p class="small">@Html.DisplayNameFor(model => model.EmailConfirmed)</p>
         </th>
-        <th>
-            Options
+        <th style="text-align:left;">
+            <p class="small">Options</p>
         </th>
     </tr>
 
@@ -33,26 +33,28 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                <p class="small">@Html.DisplayFor(modelItem => item.UserName)</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                <p class="small">@Html.DisplayFor(modelItem => item.FirstName)</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                <p class="small">@Html.DisplayFor(modelItem => item.LastName)</p>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Package.Name)
+                <p class="small">@Html.DisplayFor(modelItem => item.Package.Name)</p>
             </td>
                         <td>
-                @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                <p class="small">@Html.DisplayFor(modelItem => item.EmailConfirmed)</p>
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                <p class="small">@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })</p>
             </td>
         </tr>
     }
 
 </table>
+
+    </div>

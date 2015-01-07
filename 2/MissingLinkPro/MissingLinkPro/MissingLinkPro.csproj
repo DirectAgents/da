@@ -213,6 +213,10 @@
     <Content Include="Images\ProximaNova-Light.otf" />
     <Content Include="Images\ProximaNova-Regular.otf" />
     <Content Include="Images\ProximaNova-Semibold 2.otf" />
+    <Content Include="fonts\ProximaNova-Bold.ttf" />
+    <Content Include="fonts\ProximaNova-Bold.woff" />
+    <Content Include="fonts\ProximaNova-Regular.ttf" />
+    <Content Include="fonts\ProximaNova-Regular.woff" />
     <None Include="Properties\PublishProfiles\biz.pubxml" />
     <None Include="Properties\PublishProfiles\gogrid - prod.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -245,6 +249,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\DebugController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
@@ -393,7 +398,7 @@
     <Content Include="Views\Application\EmailNotConfirmed.cshtml" />
     <Content Include="Views\Manage\History.cshtml" />
     <Content Include="Views\Manage\UpdateCreditCard.cshtml" />
-    <Content Include="Views\Home\Manual.cshtml" />
+    <Content Include="Views\Home\Help.cshtml" />
     <Content Include="Views\Home\FAQ.cshtml" />
     <Content Include="Views\Manage\UpdateUser.cshtml" />
     <Content Include="Views\Manage\UpdateUserConfirmed.cshtml" />
@@ -408,6 +413,7 @@
     <Content Include="Views\Demo\Results.cshtml" />
     <Content Include="Views\Account\LogoutCmd.cshtml" />
     <Content Include="Views\Demo\LimitReached.cshtml" />
+    <Content Include="Views\Debug\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

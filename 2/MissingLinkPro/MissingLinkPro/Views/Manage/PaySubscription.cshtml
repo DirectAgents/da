@@ -144,27 +144,28 @@ else
 {
     <p>Please fill out the payment information below to subscribe to this plan.</p>
     <br />
+    <div class="form-box" style="max-width:650px; padding:15px;">
     <form action="" method="POST" id="payment-form">
     <span class="payment-errors"></span>
     <table class="credit-card-form">
                 <tr>
-                    <th class="credit-card-form">Name On Card</th>
+                    <td class="credit-card-form">Name On Card</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="name" required/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form">Address Line 1</th>
+                    <td class="credit-card-form">Address Line 1</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="address_line1" required/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form">Address Line 2</th>
+                    <td class="credit-card-form">Address Line 2</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="address_line2"/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form">City</th>
+                    <td class="credit-card-form">City</td>
                     <td class="credit-card-form"><input type="text" size="25" data-stripe="address_city" required/></td>
                 </tr>
                     <tr>
-                    <th class="credit-card-form">State, Postal Code </th>
+                    <td class="credit-card-form">State, Postal Code </td>
                     <td class="credit-card-form"><input type="text" size="3" data-stripe="address_state"/> <input type="text" size="8" data-stripe="address_zip" required/></td>
                 </tr>
                    @*<tr>
@@ -172,20 +173,21 @@ else
                     <td><input type="text" size="5" data-stripe="address_country"/></td>
                 </tr>*@
                    <tr>
-                    <th class="credit-card-form">Card Number</th>
+                    <td class="credit-card-form">Card Number</td>
                     <td class="credit-card-form"><input type="text" size="30" data-stripe="number"/></td>
                 </tr>
                     <tr>
-                    <th class="credit-card-form">CVC</th>
+                    <td class="credit-card-form">CVC</td>
                     <td class="credit-card-form"><input type="text" size="4" data-stripe="cvc"/></td>
                 </tr>
                 <tr>
-                    <th class="credit-card-form" style="padding-right:4px;">Expiration (MM/YYYY) </th>
+                    <td class="credit-card-form" style="padding-right:4px;">Expiration (MM/YYYY) </td>
                     <td class="credit-card-form"><input type="text" size="2" data-stripe="exp-month"/> / <input type="text" size="4" data-stripe="exp-year"/></td>
                 </tr>
             </table>
           <div style="margin:40px;"><button type="submit">Register New Card</button></div>
         </form>
+        </div>
     <br /><br />
 }
               </div>

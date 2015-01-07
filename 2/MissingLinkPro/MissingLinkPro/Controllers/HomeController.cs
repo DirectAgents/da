@@ -55,7 +55,7 @@ namespace IdentitySample.Controllers
             return View(model);
         }
 
-        public ActionResult Manual()
+        public ActionResult Help()
         {
             //ViewBag.Message = "User Manual";
             return View();

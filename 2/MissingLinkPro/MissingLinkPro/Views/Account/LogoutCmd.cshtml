@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "Logout";
 }
-
-<div style="text-align:center;"><h2 class="topic">Logging off...</h2></div>
+<br /><br /><br /><br /><br /><br />
+<div style="text-align:center;" style="padding:200px;"><h2 class="topic">Logging off...</h2></div>
 
 @if (Request.IsAuthenticated)
 {
@@ -15,6 +15,8 @@
 else {
     <script>$(location).attr('href', 'http://www.directagents.com/directlink');</script>
 }
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
 
 @section Scripts {

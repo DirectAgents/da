@@ -147,5 +147,25 @@
 
           }
         }
+        @for (int i = 0; i < 25; i++)
+        {
+          <tr>
+                    <td style="vertical-align:top; width:75px;"><b class="result-heading">??</b></td>
+                    <td style="width:800px; max-width:800px; padding-right:10px;">
+                        <p class="small"><a href="https://directlink.directagents.com/Account/Register/?subid=1" title="Sign up for an account today to unlock more features!">[Locked]</a><br>
+                        [Locked]
+                </p>
+                        <br>
+                    </td>
+                    <td class="linkback-graphic" style="text-align:left;">
+                        <h2 class="topic">?</h2>
+                    </td>
+                    @if (Model.ResultType.Equals("news"))
+                    {
+                    <td style="vertical-align:top; padding-right:10px; text-align:center;"><p class="small">??</p></td>
+                    <td style="vertical-align:top; text-align:center;"><p class="small">??/??/???? ?:??:?? ??</p></td>
+                    }
+                </tr>
+        }
         </table>
     <br><br><br><br>

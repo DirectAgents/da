@@ -60,7 +60,7 @@
         <span></span>
         <span></span>
       </a>
-      <img alt='Direct Link logo' id='logo' src="~/Images/logo.png"></img>
+      <img alt='Direct Link logo' id='logo' src="~/Images/logo.png"/>
         <ul class='menu clearfix'>
          @if (!Request.IsAuthenticated) {
           <li class=''>
@@ -70,7 +70,7 @@
             <a href='http://www.directagents.com/directlink/how-it-works'>How it works</a>
           </li>
           <li class=''>
-            <a href='http://www.directagents.com/directlink/about'>About Us</a>
+            <a href='http://www.directagents.com/directlink/about'>About</a>
           </li>
           <li class=''>
             <a href='http://www.directagents.com/directlink/packages'>Packages</a>
@@ -78,10 +78,12 @@
          }
 
         @if (Request.IsAuthenticated) {
-            if (ViewBag.Title == "Begin Your Search") { <li class='active'>@Html.ActionLink("Search","Index","Application")</li> }
-            else { <li class=''>@Html.ActionLink("Search","Index","Application")</li> }
-            if (ViewBag.Title == "Help/FAQ") { <li class='active'>@Html.ActionLink("Help/FAQ", "FAQ", "Home")</li>  }
-            else{ <li class=''>@Html.ActionLink("Help/FAQ", "FAQ", "Home")</li> }
+            if (ViewBag.Title == "Begin Your Search") { <li class='active'>@Html.ActionLink("DirectLink App","Index","Application")</li> }
+            else { <li class=''>@Html.ActionLink("DirectLink App","Index","Application")</li> }
+            if (ViewBag.Title == "Help") { <li class='active'>@Html.ActionLink("Help", "Help", "Home")</li>  }
+            else{ <li class=''>@Html.ActionLink("Help", "Help", "Home")</li> }
+            if (ViewBag.Title == "FAQ") { <li class='active'>@Html.ActionLink("FAQ", "FAQ", "Home")</li>  }
+            else{ <li class=''>@Html.ActionLink("FAQ", "FAQ", "Home")</li> }
             if (ViewBag.Title == "Contact") { <li class='active'>@Html.ActionLink("Contact", "Contact", "Home")</li> }
             else { <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li> }
             
@@ -101,7 +103,7 @@
         /*drop down*/
     
         <ul id="menu" class='clearfix'>
-            <li><p style="margin-bottom:20px;">User Options</p>
+            <li><p style="margin-bottom:20px;">My Account</p>
                 <ul id="menu">
                     <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
                     <li class=''>@Html.ActionLink("Billing Info", "History", "Manage")</li>
@@ -135,7 +137,7 @@
   </nav>
 
 
-<body>
+<body style="background-color:white;">
 <div>@RenderBody()</div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

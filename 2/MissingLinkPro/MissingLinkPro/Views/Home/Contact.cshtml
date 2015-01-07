@@ -4,24 +4,23 @@
     ViewBag.Title = "Contact";
 }
 
-<header>
+<section class="feature">
 <div class="container">
     <div class ="row clearfix">
 <div class="column full">
 <h2 class="topic">Reach Out To Us</h2>
-<p class="small">Please contact us at <a href="mailto:directlink@directagents.com">directlink(at)directagents.com</a> or 1-212-419-4688 with any questions.<br />
+<p class="small">Please email us at <a href="mailto:directlink@directagents.com"><b style="color:black;">directlink(at)directagents.com</b></a> or call us at 1-212-419-4688 with any questions.<br />
 Our hours are 9:30AM to 6:00PM EST.</p>
-<p>Direct Agents<br />
+<p class="small">Direct Agents<br />
 740 Broadway, Suite 701<br />
 New York, NY 10003<br />
 1-212-419-4688<br />
     </p>
-<p class="small">Interested in link-building services? At Direct Agents, high-level link building for modern SEO is our specialty. Use the contact form below or give us a call for more information on how Direct Agents can use link building to grow your business.</p>
 
     </div>
     </div>
     </div>
-    </header>
+    </section>
 <p class="text-success">@ViewBag.StatusMessage</p>
 
 <section>
@@ -30,6 +29,11 @@ New York, NY 10003<br />
             <div class="column full">
                 <h3 class="topic">Send Us A Message</h3>
 
+                <p class="small">Interested in link-building services? At Direct Agents, high-level link building for modern SEO is our specialty.
+                    Use the contact form below or give us a call for more information on how Direct Agents can use link building to grow your business.</p>
+                <br /><br />
+
+<div class="form-box" style="max-width:650px; padding:25px;">
 @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { id = "form", onsubmit = "go()" }))
 {
     <table style="margin-left:auto; margin-right:auto;">
@@ -58,7 +62,7 @@ New York, NY 10003<br />
             <td><p class="small">Email</p></td><td><input class="form-field" type="email" size ="30" name="Email" required></td>
         </tr>
             <tr>
-            <td><p class="small">Company Name</p></td><td><input class="form-field" type="text" size ="30" name="Company" required></td>
+            <td style="padding-right:15px;"><p class="small">Company Name</p></td><td><input class="form-field" type="text" size ="30" name="Company" required></td>
         </tr>
                     <tr>
             <td><p class="small">Message</p></td><td><textarea class="form-field" name="Message" required></textarea></td>
@@ -68,7 +72,7 @@ New York, NY 10003<br />
         </tr>
     </table>
 }
-
+</div>
             </div>
         </div>
         <div class="row clearfix"></div>

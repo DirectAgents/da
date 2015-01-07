@@ -171,7 +171,7 @@ namespace IdentitySample.Controllers
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 
-                    string msg = "Thank you for registering a search account with Direct Agents.<br>Please click on the following <a href=\"" + callbackUrl + "\">link</a> to complete your registration.";
+                    string msg = "<p>Thank you for registering a search account with Direct Agents.<br>Please click on the following <a href=\"" + callbackUrl + "\">link</a> to complete your registration.</p><p>You are receiving this message because your email address was recently used to register with DirectLink at http://www.directagents.com/directlink</p>";
 
                     await UserManager.SendEmailAsync(user.Id, ConfigurationManager.AppSettings["Emailer_Subject"], msg);
                     ViewBag.Link = callbackUrl;

@@ -23,17 +23,13 @@
     </script>
 }
 
-<header>
+<section>
 
     <div class="container">
         <div class="row clearfix">
-            <div class="column full">
-
-                   <h2 class="topic">@Html.ActionLink("Credit Card Management", "CreditCardManagement", "Manage")</h2>
-                   <p>Click the above link to manage your credit card information.</p>
-                <br />
-                <h2 class="topic">Billing History</h2>
-                   <p>Below is a list of your invoice items. All items are sorted by date.</p>
+            <div class="column full" style="text-align:center;">
+                    <h2 class="topic">Billing History</h2>
+                   <p class="small">Below is a list of your invoice items.<br />All items are sorted by date.</p>
                 <p class="small">Current Status As Of @DateTime.Now<br />
                     @if (Model.Count > 0) {
                     <text>Current Amount Due: $@(Model[0].AmountDue/100).@if (Model[0].AmountDue/100 < 0) {@((Model[0].AmountDue%100) * -1)} else {@(Model[0].AmountDue%100)}<br />
@@ -41,24 +37,32 @@
                     }
                     else { <text>No existing items have been found under your account.</text> }
                 </p>
+                   <p class="small" style="">Click <b>@Html.ActionLink("here", "CreditCardManagement", "Manage", null, new { @style="color:black;" })</b> to manage your credit card information.</p>
             </div>
         </div>
     </div>
 
-</header>
+</section>
 
 <section>
 <div class="container">
 
-
 <table class="invoice">
     @if (Model.Count > 0) {
+    <tr>
+        <th style="text-align:left;">Item Date</th>
+        <th style="text-align:left;">Description</th>
+        <th style="text-align:left;">Amount</th>
+    </tr>
     foreach (Stripe.StripeInvoice Invoice in @Model) {
         foreach (Stripe.StripeInvoiceItem Item in Invoice.StripeInvoiceLines.StripeInvoiceItems) {
             <tr>
                 <td style="padding-right:30px;"><p class="small">@Invoice.Date</p></td>
                 <td style="padding-right:30px;"><p class="small">@Item.Description</p></td>
+                @if (Item.Amount.Value == 0.0) { <td><p class="small">$0.00</p></td> }
+                else {
                 <td><p class="small">$@(Item.Amount.Value/100).@if (Item.Amount.Value%100 < 0) {@((Item.Amount.Value%100) * -1)} else {@(Item.Amount.Value%100)}</p></td>
+                }
             </tr>
             }
         }
@@ -66,4 +70,4 @@
 </table>
     </div>
     </section>
-<br />
+<br /><br />

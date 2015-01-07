@@ -5,6 +5,7 @@
 
 <div style="margin-top:55px;">
     <p class="small">Enter your company or brand name under “Search Query” and your website under “Target Site to Scan for,” then click “Perform Search” to find your linkless mentions!</p>
+    <p class="small">As this is a demo, certain features will not be available. Please sign up for an account to unlock them.</p>
 </div>
 
 
@@ -22,9 +23,9 @@
             @*<td>Phrase Search</td>*@
         </tr>
         <tr class="app-row">
-            <td class="app-column"><input class="form-field" type="text" size ="45" name="BingSearchQuery" required></td>
+            <td class="app-column"><input class="form-field" type="text" size ="45" name="BingSearchQuery" placeholder="e.g. Nike" required></td>
             @*<td><input class="form-field" type="text" size = "65" name="PhraseSearchString"></td>*@
-            <td class="app-column"><input class="form-field" type="text" size="45" name="ClientWebsite" required></td>
+            <td class="app-column"><input class="form-field" type="text" size="45" name="ClientWebsite" placeholder="e.g. www.nike.com" required></td>
         </tr>
         <tr class="app-row">
             <td class="app-column">Exclude Terms <span style="cursor:Pointer;" title="Type in whatever terms you wish for the search engine to exclude from your search."><img src="~/Images/question_blob.png" /></span></td>
@@ -46,8 +47,8 @@
              <td>
                  <table>
                      <tr>
-                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "web" checked="checked"> Web</td>
-                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "news"> News</td>
+                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "news"checked="checked"> News</td>
+                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "web"> Web</td>
                      </tr>
                  </table>
              </td>
@@ -61,21 +62,6 @@
                    </tr>
                 </table>
             </td>
-        </tr>
-                <tr>
-            <td class="app-column">Display Search Results</td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="app-radio-btn"><input class="radio-btn" type="radio" name="DisplayAllResults" value = "true" checked="checked"> Yes </td>
-                        <td class="app-radio-btn"><input class="radio-btn" type="radio" name="DisplayAllResults" value = "false"> No</td>
-                   </tr>
-                </table>
-            </td>
-        </tr>
-
-        <tr>
-          @*<input type="image" name="SubmitBtn" src="~/Images/btn_search.gif" value ="Perform Search" style="align-content:center"> *@
         </tr>
     </table>
     
@@ -93,7 +79,7 @@
         </tr>
     </table>
         </div>
-
+    @Html.Hidden("DisplayAllResults", "true");
 }
 <br />
 <br />
