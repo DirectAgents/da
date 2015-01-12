@@ -20,6 +20,8 @@ Thumbs.db
 *.log
 [Bb]in
 [Dd]ebug*/
+_backup/
+2/MissingLinkPro/MissingLinkPro/_backup
 *.lib
 *.sbr
 obj/

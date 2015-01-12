@@ -102,6 +102,20 @@ namespace MissingLinkPro.Helpers
             return user;
         }
 
+        public static bool CheckForExistingSubscription(ApplicationUser user)
+        {
+            bool b = true;
+            var customerService = new StripeCustomerService();
+            var subscriptionService = new StripeSubscriptionService();
+            IEnumerable<StripeSubscription> response = subscriptionService.List(user.CustomerId);
+            List<StripeSubscription> list = response.ToList();
+            if (list.Count > 0)
+            {
+                b = false;
+            }
+            return b;
+        }
+
         public static StripeCard GetCreditCard(ApplicationUser user)
         {
             StripeCard retrieved = null;

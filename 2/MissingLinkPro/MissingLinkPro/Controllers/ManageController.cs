@@ -70,7 +70,15 @@ namespace IdentitySample.Controllers
 
             try
             {
-                if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0)
+
+                bool subscriptionExists = StripeHelper.CheckForExistingSubscription(user);
+                if (!subscriptionExists)
+                {
+                    user.IsActive = false;
+                    StripeHelper.AssignNewSubscription(user, 1);
+                }
+
+                if ((DateTime.Now).CompareTo(user.Anniversary.AddMonths(1)) >= 0 && user.IsActive)
                     user = StripeHelper.UpdateAnniversary(user);
                 await UserManager.UpdateAsync(user);
             }
