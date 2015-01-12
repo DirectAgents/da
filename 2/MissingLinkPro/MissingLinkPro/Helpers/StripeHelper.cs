@@ -104,14 +104,14 @@ namespace MissingLinkPro.Helpers
 
         public static bool CheckForExistingSubscription(ApplicationUser user)
         {
-            bool b = true;
+            bool b = false;
             var customerService = new StripeCustomerService();
             var subscriptionService = new StripeSubscriptionService();
             IEnumerable<StripeSubscription> response = subscriptionService.List(user.CustomerId);
             List<StripeSubscription> list = response.ToList();
             if (list.Count > 0)
             {
-                b = false;
+                b = true;
             }
             return b;
         }
