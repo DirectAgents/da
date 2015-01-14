@@ -132,7 +132,8 @@ namespace IdentitySample.Models
             //Create Settings DailyLimit if it does not exist
             var settings = db.Settings.ToList();
             if (settings == null) {
-                db.Settings.Add(new Setting { SettingName = "Daily Limit", Value = "10" });
+                db.Settings.Add(new Setting { SettingName = "PingTime", Value = "8000" });
+                db.Settings.Add(new Setting { SettingName = "LoadTime", Value = "15000" });
                 db.SaveChanges();
             }
 

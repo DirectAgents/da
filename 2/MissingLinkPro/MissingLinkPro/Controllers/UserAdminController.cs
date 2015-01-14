@@ -204,6 +204,13 @@ namespace IdentitySample.Controllers
                     if (user.PackageId != editUser.PackageId)
                         user = StripeHelper.AdminChangePackagePlan(user, editUser.PackageId.Value);
                 }
+
+                if (editUser.EmailConfirmed && !user.EmailConfirmed)    // Should only occur if user's email failed to confirm.
+                {
+                    user.EmailConfirmed = true;
+                    user = StripeHelper.AssignNewSubscription(user, user.PackageId.Value);
+                }
+
                 user.EmailConfirmed = editUser.EmailConfirmed;
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);

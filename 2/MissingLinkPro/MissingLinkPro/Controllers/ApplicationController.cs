@@ -141,7 +141,7 @@ namespace MissingLinkPro.Controllers
                             if (status.Equals("past_due")) ViewBag.StatusMessage = "Subscription payment status: past due.";
                             else if (status.Equals("unpaid")) ViewBag.StatusMessage = "Subscription payment status: unpaid.";
                             else if (status.Equals("canceled")) ViewBag.StatusMessage = "Subscription payment status: canceled.";
-                            else ViewBag.StatusMessage = "Subscription payment status: indeterminate.";
+                            else ViewBag.StatusMessage = "Subscription payment status: indeterminate. Requires assistance.";
                             return View(model);
                         }
                     }
@@ -193,7 +193,18 @@ namespace MissingLinkPro.Controllers
             }
             else
                 return View("Index", Parameters);
-
+            Setting PingTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "PingTime");
+            Setting LoadTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "LoadTime");
+            if (PingTime == null || LoadTime == null)
+            {
+                Engine.PingTime = 8000;
+                Engine.LoadTime = 15000;
+            }
+            else
+            {
+                Engine.PingTime = Convert.ToInt32(PingTime.Value);
+                Engine.LoadTime = Convert.ToInt32(LoadTime.Value);
+            }
             Engine.run();
             updateResults(Engine, Parameters);      // Update results, save to session on next line.
             Session["Params"] = Parameters;

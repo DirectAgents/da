@@ -130,6 +130,9 @@ namespace MissingLinkPro.Models
         // Multi-threading vars
         private int ThreadsComplete, ThreadsRunning;
         private bool HubLock;
+        // Systematic vars
+        public int PingTime { get; set; }
+        public int LoadTime { get; set; }
         /**
         * Formats website entries as provided by the user. Method automatically
         * attaches protocols, prefixes, and suffixes where needed.
@@ -456,7 +459,7 @@ namespace MissingLinkPro.Models
                     HttpWebResponse response = null;
                     HttpWebRequest w = (HttpWebRequest)WebRequest.Create(ParsedResults[i].Url);
                     w.Proxy = null;
-                    w.Timeout = 8000;
+                    w.Timeout = PingTime;
                     w.ContentLength = 0;
                     w.Method = WebRequestMethods.Http.Get;
                     CookieContainer cookieJar = new CookieContainer();
@@ -479,15 +482,23 @@ namespace MissingLinkPro.Models
                     try
                     {
                         bool Done = false;
-                        CancellationTokenSource tokenSource = new CancellationTokenSource(15000);       // Set your timeout for token here.
-                        Task t = new Task(() => LoadToStringAsync(ParsedResults[i].Url, ref pageData, ref Done, tokenSource));
-                        t.Start();
+                        CancellationTokenSource tokenSource = new CancellationTokenSource(LoadTime);       // Set your timeout for token here.
+
+                        Task.Factory.StartNew(() => {LoadToStringAsync(ParsedResults[i].Url, ref pageData, i, ref Done, tokenSource); }, tokenSource.Token);
+
+                        //Task t = new Task(() => LoadToStringAsync(ParsedResults[i].Url, ref pageData, i, ref Done, tokenSource));
+                        //t.Start();
 
                         while (!tokenSource.IsCancellationRequested && !Done)       // while token is valid && not done scraping
                         {
                             Thread.Sleep(150);
                             if (Done) break;
-                            if (tokenSource.IsCancellationRequested) throw new TaskCanceledException();
+                            if (tokenSource.IsCancellationRequested)
+                            {
+                                tokenSource.Dispose();
+                                if (Done) break;                                    // Last-ditch effort to check for (Done == true).
+                                throw new TaskCanceledException();
+                            }
                         }
                     }
                     catch (TaskCanceledException e)
@@ -508,43 +519,36 @@ namespace MissingLinkPro.Models
                     //}
                     //pageData = new TimeoutWebClient() { Proxy = null }.DownloadString(ParsedResults[i].Url); // Reading Technique #3
                     status = (int)response.StatusCode;
-                    pageData.Replace('"', '\"');
-                    foreach (string s in ClientWebsiteParsed)
+                    if (!ParsedResults[i].ExceptionFound)
                     {
-                        bool containsLink = pageData.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0;
-                        //if (pageData.Contains(s))
-                        if (containsLink)
+                        pageData.Replace('"', '\"');
+                        foreach (string s in ClientWebsiteParsed)
                         {
-                            ParsedResults[i].LinksToClientWebsite = true;
-                            if (ExcludeLinkbackResults)
+                            bool containsLink = pageData.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0;
+                            //if (pageData.Contains(s))
+                            if (containsLink)
                             {
-                                ParsedResults[i].SkipThisResult = true;
-                                incrementOmitCount();
+                                ParsedResults[i].LinksToClientWebsite = true;
+                                if (ExcludeLinkbackResults)
+                                {
+                                    ParsedResults[i].SkipThisResult = true;
+                                    incrementOmitCount();
+                                }
                             }
                         }
+                        bool containsPhrase = pageData.IndexOf(PhraseSearchString, StringComparison.OrdinalIgnoreCase) >= 0;
+                        if (containsPhrase)
+                        {
+                            ParsedResults[i].ContainsSearchPhrase = true;
+                        }
                     }
-                    bool containsPhrase = pageData.IndexOf(PhraseSearchString, StringComparison.OrdinalIgnoreCase) >= 0;
-                    if (containsPhrase)
-                    {
-                        ParsedResults[i].ContainsSearchPhrase = true;
-                    }
                 }
-                catch (NullReferenceException e) // This will happen as the result of program trying to load a non-HTML page
+                catch (TaskCanceledException e)
                 {
                     ParsedResults[i].ExceptionFound = true;
-                    ParsedResults[i].ErrorMsg = "NullRef Exception: " + e.Message;
-                    DebugHelper.displayln("[" + i + "] NullRef Exception: " + ParsedResults[i].Url);
-                }
-                catch (System.IO.IOException e)
-                {
-                    ParsedResults[i].ExceptionFound = true;
-                    ParsedResults[i].ErrorMsg = "IO Exception: " + e.Message;
-                    DebugHelper.displayln("[" + i + "] IO Exception: " + ParsedResults[i].Url);
-                }
-                catch (System.Net.ProtocolViolationException e)
-                {
-                    ParsedResults[i].ExceptionFound = true;
-                    ParsedResults[i].ErrorMsg = "Protocol Violation: " + e.Message;
+                    ParsedResults[i].ErrorMsg = "TimeOut Exception: " + e.Message;
+                    DebugHelper.displayln("[" + i + "] TimeOut Exception: " + ParsedResults[i].Url);
+                    continue;
                 }
                 catch (System.Net.WebException e)
                 {
@@ -555,13 +559,18 @@ namespace MissingLinkPro.Models
                     else
                         ParsedResults[i].ErrorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
                 }
+                catch (InvalidOperationException e)
+                {
+                    DebugHelper.displayln("[" + i + "] Invalid Operation Exception: " + ParsedResults[i].Url + " >> " + e.Message);
+                }
+
                 ParsedResults[i].Scraped = true;
             }
             DebugHelper.display("Index Range: [" + x + ", " + y + "], ");
             checkLock();
         } // ScrapeBatch
 
-        public void LoadToStringAsync(string Url, ref string pageData, ref bool Done, CancellationTokenSource tokenSource)
+        public void LoadToStringAsync(string Url, ref string pageData, int i, ref bool Done, CancellationTokenSource tokenSource)
         {
             HtmlWeb web = new HtmlWeb();
             web.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/33.0";
@@ -570,11 +579,6 @@ namespace MissingLinkPro.Models
             {
                 HtmlDocument doc = web.Load(Url);
                 pageData = doc.DocumentNode.OuterHtml;
-            }
-            catch (NullReferenceException e)    // Probably not in HTML format.
-            {
-                DebugHelper.displayln(e.Message);
-                tokenSource.Cancel();
             }
             catch (ArgumentException)
             { // Catching GZIP encoding issue
@@ -587,7 +591,34 @@ namespace MissingLinkPro.Models
                 htmldocObject.LoadHtml(html);
                 pageData = htmldocObject.DocumentNode.OuterHtml;
             }
+            catch (NullReferenceException e) // This will happen as the result of program trying to load a non-HTML page
+            {
+                ParsedResults[i].ExceptionFound = true;
+                ParsedResults[i].ErrorMsg = "NullRef Exception: " + e.Message;
+                DebugHelper.displayln("[" + i + "] NullRef Exception: " + ParsedResults[i].Url);
+            }
+            catch (System.IO.IOException e)
+            {
+                ParsedResults[i].ExceptionFound = true;
+                ParsedResults[i].ErrorMsg = "IO Exception: " + e.Message;
+                DebugHelper.displayln("[" + i + "] IO Exception: " + ParsedResults[i].Url);
+            }
+            catch (System.Net.ProtocolViolationException e)
+            {
+                ParsedResults[i].ExceptionFound = true;
+                ParsedResults[i].ErrorMsg = "Protocol Violation: " + e.Message;
+            }
+            catch (System.Net.WebException e)
+            {
+                DebugHelper.displayln("[" + i + "] Web Exception: " + ParsedResults[i].Url + " >> " + e.Message);
+                HttpWebResponse res = (HttpWebResponse)e.Response;
+                ParsedResults[i].ExceptionFound = true;
+                if (res == null) ParsedResults[i].ErrorMsg = e.Message;
+                else
+                    ParsedResults[i].ErrorMsg = "HTTP Status Code " + (int)res.StatusCode + ": " + res.StatusDescription;
+            }
             Done = true;
+            DebugHelper.displayln("Task complete.");
         }
 
         /**
