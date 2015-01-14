@@ -4,89 +4,66 @@
     ViewBag.Title = "User Details";
 }
 
-<h2>Details Below</h2>
+<section>
+<h2 class="topic">Details Below</h2>
 
 <div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CustomerId)
-        </dd>
-                <dt>
-            @Html.DisplayNameFor(model => model.SubscriptionId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SubscriptionId)
-        </dd>
-         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-                <dt>
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.QueriesPerformed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.QueriesPerformed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalQueriesPerformed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TotalQueriesPerformed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.DateTimeStamp)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.DateTimeStamp)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Anniversary)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Anniversary)
-        </dd>
-        <dt>
-            Next Reset Date
-        </dt>
-        <dd>
-            @Model.Anniversary.AddMonths(1)
-        </dd>
-         <dt>
-            @Html.DisplayNameFor(model => model.PackageId)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Package.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.EmailConfirmed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.EmailConfirmed)
-        </dd>
-    </dl>
+
+    <table style="margin-left:auto; margin-right:auto;">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.UserName)</th>
+            <td>@Html.DisplayFor(model => model.UserName)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.CustomerId)</th>
+            <td>@Html.DisplayFor(model => model.CustomerId)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.SubscriptionId)</th>
+            <td>@Html.DisplayFor(model => model.SubscriptionId)</td>
+        </tr>
+         <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <td>@Html.DisplayFor(model => model.FirstName)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <td>@Html.DisplayFor(model => model.LastName)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.QueriesPerformed)</th>
+            <td>@Html.DisplayFor(model => model.QueriesPerformed)</td>
+        </tr>
+        <tr>
+            <th style="padding-right:10px;">@Html.DisplayNameFor(model => model.TotalQueriesPerformed)</th>
+            <td>@Html.DisplayFor(model => model.TotalQueriesPerformed)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.DateTimeStamp)</th>
+            <td>@Html.DisplayFor(model => model.DateTimeStamp)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Anniversary)</th>
+            <td>@Html.DisplayFor(model => model.Anniversary)</td>
+        </tr>
+        <tr>
+            <th>Next Reset Date</th>
+            <td>@Model.Anniversary.AddMonths(1)</td>
+        </tr>
+         <tr>
+            <th>@Html.DisplayNameFor(model => model.PackageId)</th>
+             <td>@Html.DisplayFor(model => model.Package.Name)</td>
+        </tr>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.EmailConfirmed)</th>
+            <td>@Html.DisplayFor(model => model.EmailConfirmed)</td>
+        </tr>
+    </table>
 </div>
-<h4>List of roles for this user</h4>
+    <br /><br />
+<h2 class="topic">List of roles for this user</h2>
 @if (ViewBag.RoleNames.Count == 0)
 {
-    <hr />
     <p>No roles found for this user.</p>
 }
 
@@ -105,6 +82,5 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
-
-
-
+</section>
+<br /><br /><br /><br />

@@ -3,7 +3,16 @@
 @{
     ViewBag.Title = "Users Admin";
 }
-<div class="" style="padding:150px;">
+
+<section>
+    <h2 class="topic">Users Admin</h2>
+    <p>You may manually enable EmailConfirmed for any users that do not receive a confirmation email.
+        You may also manually change their Package setting, even when there isn't a credit card present.
+    </p>
+    <p>500 Internal Server Errors typically occur if a CustomerId or SubscriptionId doesn't match what it sees on Stripe's end.
+        You may manually edit your user's IDs if needed.
+    </p>
+<div class="" style="padding:50px;">
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -58,3 +67,5 @@
 </table>
 
     </div>
+    </section>
+<br /><br /><br />

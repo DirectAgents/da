@@ -4,15 +4,23 @@
     ViewBag.Title = "Edit User";
 }
 
-<h2>Edit User Form</h2>
+<section>
+<h2 class="topic">Edit User Form</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
+
+<style>
+    div.form-group {
+        margin-left:auto;
+        margin-right:auto;
+        text-align:center;
+    }
+</style>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
@@ -20,6 +28,7 @@
                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
                @Html.ValidationMessageFor(model => model.Email)
             </div>
+            <br />
         </div>
                 <div class="form-group">
             @Html.LabelFor(model => model.CustomerId, new { @class = "control-label col-md-2" })
@@ -28,7 +37,7 @@
                @Html.ValidationMessageFor(model => model.CustomerId)
             </div>
         </div>
-
+        <br />
                 <div class="form-group">
             @Html.LabelFor(model => model.SubscriptionId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -36,13 +45,14 @@
                @Html.ValidationMessageFor(model => model.SubscriptionId)
             </div>
         </div>
-
+        <br />
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
                @Html.ValidationMessageFor(model => model.FirstName)
             </div>
+            <br />
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.LastName, new { @class = "control-label col-md-2" })
@@ -50,14 +60,16 @@
                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
                @Html.ValidationMessageFor(model => model.LastName)
             </div>
+            <br />
         </div>
-                <div class="form-group">
+        <div class="form-group">
             @Html.LabelFor(model => model.QueriesPerformed, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                @Html.TextBoxFor(m => m.QueriesPerformed, new { @class = "form-control" })
                @Html.ValidationMessageFor(model => model.QueriesPerformed)
             </div>
         </div>
+        <br />
         <div class="form-group">
             @Html.Label("Roles", new { @class = "control-label col-md-2" })
             <span class=" col-md-10">
@@ -68,6 +80,7 @@
                 }
             </span>
         </div>
+        <br />
         <div class="form-group">
             @Html.LabelFor(model => model.EmailConfirmed, "Email Confirmed", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -75,6 +88,7 @@
                 @Html.ValidationMessageFor(model => model.EmailConfirmed)
             </div>
         </div>
+        <br />
         <div class="form-group">
             @Html.LabelFor(model => model.PackageId, "Package", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -82,7 +96,7 @@
                 @Html.ValidationMessageFor(model => model.PackageId)
             </div>
         </div>
-
+        <br />
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -94,6 +108,7 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+    </section>
 <br/><br/><br/>
 
 @section Scripts {

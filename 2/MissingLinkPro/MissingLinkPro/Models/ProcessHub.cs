@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using BingWebOnly;
 using HtmlAgilityPack;
 using MissingLinkPro.Helpers;
+using System.Threading.Tasks;
 namespace MissingLinkPro.Models
 {
     /**
@@ -33,6 +34,7 @@ namespace MissingLinkPro.Models
                 return request;
             }
         }
+
         public class TimeoutWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri address)
@@ -319,6 +321,7 @@ namespace MissingLinkPro.Models
             TotalRunTime = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
         }
+
         private Uri AttachUriParameter(Uri link, string parameter)
         {
             UriBuilder builder = new UriBuilder(link);
@@ -326,6 +329,10 @@ namespace MissingLinkPro.Models
             Uri result = builder.Uri;
             return result;
         } // AttachUriParameter
+
+        /**
+         * Driver method designed specifically with Web Search parameters in mind.
+         **/
         private void processWeb(BingWebOnly.BingSearchContainer bingContainer, int pages, string query, string market)
         {
             try
@@ -361,6 +368,10 @@ namespace MissingLinkPro.Models
                 DebugHelper.displayln(e.Message);
             }
         } // processWeb
+
+        /**
+         * Driver method designed specifically with News Search in mind.
+         **/
         private void processNews(Bing.BingSearchContainer bingContainer, int pages, string query, string market)
         {
             try
@@ -454,31 +465,37 @@ namespace MissingLinkPro.Models
                     w.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/33.0";
                     w.Headers[HttpRequestHeader.AcceptEncoding] = "gzip, deflate";
                     w.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                    response = (HttpWebResponse)w.GetResponse(); // Test the site for an OK response before proceeding
-                    if (response.StatusCode != HttpStatusCode.OK)
+                    response = (HttpWebResponse)w.GetResponse();    // Test the site for an OK response before proceeding
+                    if (response.StatusCode != HttpStatusCode.OK)   // If not OK
                     {
                         ParsedResults[i].ExceptionFound = true;
                         ParsedResults[i].ErrorMsg = response.StatusDescription;
                         continue;
                     }
+
                     HtmlWeb web = new HtmlWeb();
                     web.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/33.0";
                     web.UseCookies = true;
                     try
                     {
-                        HtmlDocument doc = web.Load(ParsedResults[i].Url);
-                        pageData = doc.DocumentNode.OuterHtml;
-                    }
-                    catch (ArgumentException)
-                    { // Catching GZIP encoding issue
-                        string html;
-                        using (var wc = new GZipWebClient())
+                        bool Done = false;
+                        CancellationTokenSource tokenSource = new CancellationTokenSource(15000);       // Set your timeout for token here.
+                        Task t = new Task(() => LoadToStringAsync(ParsedResults[i].Url, ref pageData, ref Done, tokenSource));
+                        t.Start();
+
+                        while (!tokenSource.IsCancellationRequested && !Done)       // while token is valid && not done scraping
                         {
-                            html = wc.DownloadString(ParsedResults[i].Url);
+                            Thread.Sleep(150);
+                            if (Done) break;
+                            if (tokenSource.IsCancellationRequested) throw new TaskCanceledException();
                         }
-                        var htmldocObject = new HtmlDocument();
-                        htmldocObject.LoadHtml(html);
-                        pageData = htmldocObject.DocumentNode.OuterHtml;
+                    }
+                    catch (TaskCanceledException e)
+                    {
+                        ParsedResults[i].ExceptionFound = true;
+                        ParsedResults[i].ErrorMsg = "TimeOut Exception: " + e.Message;
+                        DebugHelper.displayln("[" + i + "] TimeOut Exception: " + ParsedResults[i].Url);
+                        continue;
                     }
                     //pageData = doc.DocumentNode.WriteTo();
                     //using (var client = new MyWebClient()) // Reading Technique #1
@@ -543,6 +560,36 @@ namespace MissingLinkPro.Models
             DebugHelper.display("Index Range: [" + x + ", " + y + "], ");
             checkLock();
         } // ScrapeBatch
+
+        public void LoadToStringAsync(string Url, ref string pageData, ref bool Done, CancellationTokenSource tokenSource)
+        {
+            HtmlWeb web = new HtmlWeb();
+            web.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/33.0";
+            web.UseCookies = true;
+            try
+            {
+                HtmlDocument doc = web.Load(Url);
+                pageData = doc.DocumentNode.OuterHtml;
+            }
+            catch (NullReferenceException e)    // Probably not in HTML format.
+            {
+                DebugHelper.displayln(e.Message);
+                tokenSource.Cancel();
+            }
+            catch (ArgumentException)
+            { // Catching GZIP encoding issue
+                string html;
+                using (var wc = new GZipWebClient())
+                {
+                    html = wc.DownloadString(Url);
+                }
+                var htmldocObject = new HtmlDocument();
+                htmldocObject.LoadHtml(html);
+                pageData = htmldocObject.DocumentNode.OuterHtml;
+            }
+            Done = true;
+        }
+
         /**
         * A shortcut method for scraping a single index as opposed to batches.
         **/

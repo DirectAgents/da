@@ -146,7 +146,8 @@ else
     <br />
     <div class="form-box" style="max-width:650px; padding:15px;">
     <form action="" method="POST" id="payment-form">
-    <span class="payment-errors"></span>
+    <span class="payment-errors" ></span>
+        <input type="hidden" name="PackageId" value="@Model.PackageId" />
     <table class="credit-card-form">
                 <tr>
                     <td class="credit-card-form">Name On Card</td>

@@ -177,7 +177,22 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\custom.css" />
+    <Content Include="Content\external\jquery\jquery.js" />
     <Content Include="Content\ie.css" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery-ui.structure.css" />
@@ -185,6 +200,7 @@
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\jquery-ui.theme.min.css" />
     <Content Include="Content\public.css" />
+    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -195,6 +211,7 @@
     <Content Include="Images\btn_info.png" />
     <Content Include="Images\btn_next.gif" />
     <Content Include="Images\btn_search.gif" />
+    <Content Include="Images\favicon.ico" />
     <Content Include="Images\linkback_err.png" />
     <Content Include="Images\linkback_no.png" />
     <Content Include="Images\linkback_yes.png" />
@@ -249,7 +266,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\DebugController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ApplicationController.cs" />
@@ -413,7 +429,7 @@
     <Content Include="Views\Demo\Results.cshtml" />
     <Content Include="Views\Account\LogoutCmd.cshtml" />
     <Content Include="Views\Demo\LimitReached.cshtml" />
-    <Content Include="Views\Debug\Index.cshtml" />
+    <Content Include="Views\Test\Cards.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -424,7 +440,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Base\" />
-    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

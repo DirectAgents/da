@@ -20,5 +20,11 @@ namespace MissingLinkPro.Controllers
         {
             return Content("ALL WEAPONS, KEYS, AMMO UNLOCKED");
         }
+
+        [AllowAnonymous]
+        public ActionResult Cards()
+        {
+            return View();
+        }
 	}
 }
