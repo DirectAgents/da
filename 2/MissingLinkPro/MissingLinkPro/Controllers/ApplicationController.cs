@@ -57,8 +57,8 @@ namespace MissingLinkPro.Controllers
             if (!user.EmailConfirmed)               // Email not confirmed
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
 
-            if ((ParameterKeeper)Session["Params"] != null)  // If user is accessing Index page, any previous Session should be flushed.
-                Session["Params"] = null;
+            //if ((ParameterKeeper)Session["Params"] != null)  // If user is accessing Index page, any previous Session should be flushed.
+            //    Session["Params"] = null;
 
             ParameterKeeper pk = new ParameterKeeper
             {
@@ -70,6 +70,19 @@ namespace MissingLinkPro.Controllers
                 MaxResultRange = 1000
             };
             return View(pk);
+        }
+
+        public ActionResult ViewResults()
+        {
+            List<MissingLinkPro.Models.ProcessHub.SearchResult> Results;
+
+            if ((ParameterKeeper)Session["Params"] == null)
+                return View(new ParameterKeeper { BingSearchQuery = "none", ClientWebsite = "none", OmitCount = 0, top = 0, ResultType = "none", ParsedResults = new List<ProcessHub.SearchResult>()});
+            else
+            {
+                ParameterKeeper p = (ParameterKeeper)Session["Params"];
+                return View(p);
+            }
         }
 
         public ActionResult EmailNotConfirmed(ApplicationUser a) {
@@ -88,6 +101,12 @@ namespace MissingLinkPro.Controllers
             var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             Package userPackage = db.Packages.Find(user.PackageId);
 
+            if (!user.EmailConfirmed)                   // Email not confirmed
+                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
+
+            if (NewSession == true)     // NewSession is set to true if coming from Application page; wipe old session.
+                Session["Params"] = null;
+
             bool isAdmin = false;
             ApplicationRoleManager _roleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
             IList<string> roles = await UserManager.GetRolesAsync(user.Id);
@@ -97,9 +116,6 @@ namespace MissingLinkPro.Controllers
                     isAdmin = true;
                     break;
                 }
-
-            if (!user.EmailConfirmed)                   // Email not confirmed
-                return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
 
             if (!isAdmin)                   // If not an Admin, Account checkpoint begins here.
             {
@@ -170,9 +186,6 @@ namespace MissingLinkPro.Controllers
             }             // End of User account checkpoint.
 
             ProcessHub Engine = null;
-
-            if (NewSession == true)     // NewSession is set to true if coming from Application page; wipe old session.
-                Session["Params"] = null;
 
             if ((ParameterKeeper)Session["Params"] != null)    // If a session is continuing from the previous (user chooses to retrieve next set of results).
             {

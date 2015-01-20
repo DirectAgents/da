@@ -207,11 +207,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Images\blue_bg.gif" />
+    <Content Include="Images\btn_assist.gif" />
     <Content Include="Images\btn_back.gif" />
     <Content Include="Images\btn_export.gif" />
     <Content Include="Images\btn_info.png" />
     <Content Include="Images\btn_next.gif" />
+    <Content Include="Images\btn_previous_results.gif" />
     <Content Include="Images\btn_search.gif" />
+    <Content Include="Images\btn_view_prev_results.gif" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\linkback_err.png" />
     <Content Include="Images\linkback_no.png" />
@@ -431,6 +434,7 @@
     <Content Include="Views\Account\LogoutCmd.cshtml" />
     <Content Include="Views\Demo\LimitReached.cshtml" />
     <Content Include="Views\Test\Cards.cshtml" />
+    <Content Include="Views\Application\ViewResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
