@@ -61,7 +61,6 @@
             document.getElementById('credit-card').style.display = 'block';
         }
         else document.getElementById('credit-card').style.display = 'none';
-
     }
 
 
@@ -86,16 +85,13 @@
 <div class="container">
 <section>
     <h2 class="topic">Create Your Account</h2>
-
     <p class="small" style="max-width:400px;">Fill out the fields below to get started.
         If you are registering for a paid subscription, please have a credit card ready.
     </p>
     <br /><br /><br />
-
     <div class="form-box" style="max-width:750px; padding-top:15px;">
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", @id = "payment-form", role = "form" }))
 {
-    
     <table class="credit-card-form" style="width:500px;">
         <tr>
             <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="1" value="1" @(subid == "1" ? "checked" : "")> Freemium</td>
@@ -105,11 +101,10 @@
             <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="5" value="5" @(subid == "5" ? "checked" : "")> Platinum</td>
         </tr>
     </table>
-
     <table style="margin-top:10px; margin-bottom:20px; margin-left:auto; margin-right:auto;">
     @Html.AntiForgeryToken()
     <tr>
-        <td><p class="small">@Html.ValidationSummary("", new { @class = "text-danger" })</p></td>
+        <td style="margin-left:auto; margin-right:auto; text-align:center; color:red;"><p>@Html.ValidationSummary("", new { @class = "text-danger" })</p></td>
     </tr>
     <tr>
         <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })</p></td>

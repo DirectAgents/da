@@ -9,7 +9,11 @@
 <div style="margin:20px;">
     <h2 class="topic">Directlink Backlink Search</h2>
     <p class="small">Enter your company or brand name under “Search Query” and your website under “Target Site to Scan for,” then click “Perform Search” to find your linkless mentions!</p>
-    <p><a href="http://www.directagents.com/directlink/assist.php" onclick="javascript:void window.open('http://www.directagents.com/directlink/assist.php','1420493156079','width=725,height=800,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');return false;">[Quick Help]</a></p>
+    <p><a href="http://www.directagents.com/directlink/assist.php" onclick="javascript:void window.open('http://www.directagents.com/directlink/assist.php','1420493156079','width=725,height=800,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');return false;">[Quick Help]</a>
+    </p>
+    <p>
+        @Html.ActionLink("[Export Previous Results]", "ExportResults", "Application")
+    </p>
 </div>
 
 <div class="form-box" style="padding-top:1px; max-width:1200px;">
@@ -180,7 +184,7 @@
         var z = (BingPages * t) + ((x / 10) * t);
         z = Math.round(z * 100) / 100;
         if (z < 0) z = 0;
-        document.getElementById("eta").innerHTML = "Average Estimated Time to Completion: " + z + " sec.";
+        document.getElementById("eta").innerHTML = "Estimated Time to Completion: " + z + " sec.";
     }
 
     function go() {

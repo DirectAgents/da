@@ -207,6 +207,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Images\blue_bg.gif" />
+    <Content Include="Images\btn_back.gif" />
     <Content Include="Images\btn_export.gif" />
     <Content Include="Images\btn_info.png" />
     <Content Include="Images\btn_next.gif" />
