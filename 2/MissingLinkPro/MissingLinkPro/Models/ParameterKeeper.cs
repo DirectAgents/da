@@ -32,6 +32,8 @@ namespace MissingLinkPro.Models
         [Range(1, 1001, ErrorMessage = "Can only jump between Rank IDs 1 and 1001.")]
         public int skip { get; set; }
 
+        public int InitialSkip { get; set; }
+
         public List<MissingLinkPro.Models.ProcessHub.SearchResult> ParsedResults { get; set; }
         public int OmitCount { get; set; }
         public int MaxResultRange { get; set; }

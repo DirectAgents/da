@@ -67,15 +67,14 @@ namespace MissingLinkPro.Controllers
                 ExcludeLinkbackResults = true,
                 DisplayAllResults = true,
                 ResultType = "web",
-                MaxResultRange = 1000
+                MaxResultRange = 1000,
+                InitialSkip = 1
             };
             return View(pk);
         }
 
         public ActionResult ViewResults()
         {
-            List<MissingLinkPro.Models.ProcessHub.SearchResult> Results;
-
             if ((ParameterKeeper)Session["Params"] == null)
                 return View(new ParameterKeeper { BingSearchQuery = "none", ClientWebsite = "none", OmitCount = 0, top = 0, ResultType = "none", ParsedResults = new List<ProcessHub.SearchResult>()});
             else
@@ -104,8 +103,11 @@ namespace MissingLinkPro.Controllers
             if (!user.EmailConfirmed)                   // Email not confirmed
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
 
-            if (NewSession == true)     // NewSession is set to true if coming from Application page; wipe old session.
+            if (NewSession == true)
+            {     // NewSession is set to true if coming from Application page; wipe old session.
                 Session["Params"] = null;
+                Parameters.InitialSkip = Parameters.skip;
+            }
 
             bool isAdmin = false;
             ApplicationRoleManager _roleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
@@ -228,6 +230,7 @@ namespace MissingLinkPro.Controllers
                 user.DateTimeStamp = DateTime.Now;
                 await UserManager.UpdateAsync(user);
             }
+            ViewBag.StatusMessage = Engine.SearchErrorMsg;
             return View(Engine);
         } // Process
 

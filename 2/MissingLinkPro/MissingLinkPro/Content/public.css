@@ -614,6 +614,13 @@ nav#top ul.menu>li ul.submenu li a {
 nav#top ul.menu>li:first-child {
 	margin-left:0.611rem
 }
+nav#top ul.menu li.signup {
+	position:absolute;
+	top:0;
+	right:66px;
+	display:block;
+	overflow:visible
+}
 nav#top ul.menu li.login {
 	position:absolute;
 	top:0;

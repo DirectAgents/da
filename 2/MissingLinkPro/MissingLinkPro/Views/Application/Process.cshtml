@@ -71,21 +71,21 @@
     <td class="results-a"><p class="small">Type of Results:</p></td>
         <td class="results-b"><p class="small">@Model.ResultType</p></td>
     </tr>
-    <tr>
+    @*<tr>
     <td class="results-a"><p class="small">Exclude Results With Links to Target(s):</p></td>
         <td class="results-b">@if (Model.ExcludeLinkbackResults == true)
                               { <p class="small">Yes</p> }
                               else
                               { <p class="small">No</p> }</td>
-    </tr>
+    </tr>*@
     <tr>
     <td class="results-a"><p class="small">Number of Results Found:</p></td>
-        <td class="results-b"<p class="small">@Model.ParsedResults.Count()</p></td>
+        <td class="results-b"><p class="small">@Model.ParsedResults.Count()</p></td>
     </tr>
-    <tr>
+    @*<tr>
         <td class="results-a"><p class="small">Results Omitted:</p></td>
         <td class="results-b"><p class="small">@Model.OmitCount</p></td>
-    </tr>
+    </tr>*@
     <tr>
         <td class="results-a"><p class="small">Total Time:</p></td>
         <td class="results-b"><p class="small">@Model.TotalRunTime sec</p></td>
@@ -95,7 +95,7 @@
     </tr>
 </table>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
+<p style="color:red;">@ViewBag.StatusMessage</p>
 
 <div class="process-buttons" style="padding-top:30px;">
     <table style="margin-left:auto; margin-right:auto;">
@@ -126,6 +126,7 @@
           { <th>Source</th> <th>Indexed</th> }
           </tr>
             <tr><td> </td></tr>
+          
           foreach (MissingLinkPro.Models.ProcessHub.SearchResult s in Model.ParsedResults)
           {
               if (s.SkipThisResult) { continue; }

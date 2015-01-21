@@ -24,12 +24,12 @@ namespace MissingLinkPro.Helpers
          **/
         public static ApplicationUser AssignNewSubscription(ApplicationUser user, int NewPlanId, string stripeToken = null)
         {
-                if (user.CustomerId == null)    // brand-new user; must create Customer account.
+                if (user.CustomerId == null || user.CustomerId == "")    // brand-new user; must create Customer account.
                 {
                     var myCustomer = new StripeCustomerCreateOptions();
                     myCustomer.Email = user.Email;
                     myCustomer.PlanId = NewPlanId.ToString();
-                    myCustomer.Quantity = 1;                               // optional, defaults to 1 (Stripe.Net note)
+                    //myCustomer.Quantity = 1;                               // optional, defaults to 1 (Stripe.Net note)
                     var customerService = new StripeCustomerService();
                     StripeCustomer stripeCustomer = customerService.Create(myCustomer);
                     user.CustomerId = stripeCustomer.Id;

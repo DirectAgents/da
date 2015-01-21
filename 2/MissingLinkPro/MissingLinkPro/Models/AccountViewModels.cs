@@ -85,6 +85,9 @@ namespace IdentitySample.Models
         public string ConfirmPassword { get; set; }
 
         public int ChosenSubscriptionId { get; set; }
+
+        [Range(typeof(bool), "true","true", ErrorMessage = "You must agree to the Terms of Service.")]
+        public bool TOS { get; set; }
     }
 
     public class ResetPasswordViewModel

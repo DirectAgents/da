@@ -76,32 +76,37 @@
           <li class=''>
             <a href='http://www.directagents.com/directlink/packages'>Packages</a>
           </li>
+			  <li class='signup'>
+			  <a class="signup" href="https://directlink.directagents.com/Account/Register?SubId=1" target="_top">Sign up</a>
+              </li>
+               <li class='login'>
+			  <a class="signin" href="https://directlink.directagents.com/Account/Login" target="_top">Log In</a>
+			  </li>
+            
          }
 
-        @if (Request.IsAuthenticated) {
-            if (ViewBag.Title == "Begin Your Search") { <li class='active'>@Html.ActionLink("DirectLink App","Index","Application")</li> }
-            else { <li class=''>@Html.ActionLink("DirectLink App","Index","Application")</li> }
-            if (ViewBag.Title == "Help") { <li class='active'>@Html.ActionLink("Help", "Help", "Home")</li>  }
-            else{ <li class=''>@Html.ActionLink("Help", "Help", "Home")</li> }
-            if (ViewBag.Title == "FAQ") { <li class='active'>@Html.ActionLink("FAQ", "FAQ", "Home")</li>  }
-            else{ <li class=''>@Html.ActionLink("FAQ", "FAQ", "Home")</li> }
-            if (ViewBag.Title == "Contact") { <li class='active'>@Html.ActionLink("Contact", "Contact", "Home")</li> }
-            else { <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li> }
-            
-            
-        /*TEMPORARY
+        @if (Request.IsAuthenticated)
+        {
 
-            <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
-            <li class=''>@Html.ActionLink("Billing Info", "CreditCardManagement", "Manage")</li>
-            <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
-            <li class=''>@Html.ActionLink("Help", "FAQ", "Home")</li>
-            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-            @Html.AntiForgeryToken()
-            <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
-        }
-        TEMPORARY*/
-        
-        /*drop down*/
+            if (ViewBag.Title == "Begin Your Search")
+            { <li class='active'>@Html.ActionLink("DirectLink App", "Index", "Application")</li> }
+            else
+            { <li class=''>@Html.ActionLink("DirectLink App", "Index", "Application")</li> }
+            if (ViewBag.Title == "Help")
+            { <li class='active'>@Html.ActionLink("Help", "Help", "Home")</li>  }
+            else
+            { <li class=''>@Html.ActionLink("Help", "Help", "Home")</li> }
+            if (ViewBag.Title == "FAQ")
+            { <li class='active'>@Html.ActionLink("FAQ", "FAQ", "Home")</li>  }
+            else
+            { <li class=''>@Html.ActionLink("FAQ", "FAQ", "Home")</li> }
+            if (ViewBag.Title == "Contact")
+            { <li class='active'>@Html.ActionLink("Contact", "Contact", "Home")</li> }
+            else
+            { <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li> }
+
+         
+            /*drop down*/
     
         <ul id="menu" class='clearfix'>
             <li><p style="margin-bottom:20px;">My Account</p>
@@ -110,10 +115,6 @@
                     <li class=''>@Html.ActionLink("Billing Info", "History", "Manage")</li>
                     <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>
                     <li class=''>@Html.ActionLink("Log Out", "LogoutCmd", "Account")</li>
-                    @*@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
-                    <li class=''><a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a></li>
-                                            @Html.AntiForgeryToken()
-                    }*@
                 </ul>
             </li>
         </ul>
@@ -122,7 +123,7 @@
             $("#menu").menu();
         </script>
     
-        /*drop down*/
+            /*drop down*/
         }
 
         @if (Request.IsAuthenticated && User.IsInRole("Admin"))
@@ -132,7 +133,7 @@
             <li class=''>@Html.ActionLink("Packages", "Index", "Packages")</li>
             <li class=''>@Html.ActionLink("Settings", "Index", "Settings")</li>
         }
-          @Html.Partial("_LoginPartial")
+          @*@Html.Partial("_LoginPartial")*@
         </ul>
       </div>
   </nav>

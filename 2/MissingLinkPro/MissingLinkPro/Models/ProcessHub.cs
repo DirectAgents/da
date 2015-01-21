@@ -119,6 +119,7 @@ namespace MissingLinkPro.Models
         public string ResultType { get; set; }
         public int top { get; set; }
         public int skip { get; set; }
+        public int InitialSkip { get; set; }
         // Parsed informational variables
         public List<string> ClientWebsiteParsed { get; set; }
         public bool PhraseSearchEnabled { get; set; }
@@ -239,6 +240,7 @@ namespace MissingLinkPro.Models
             skip = incoming.skip - 1; // Setting jump point
             MaxResultRange = incoming.MaxResultRange; // Setting maximum allowable results remaining
             OmitCount = 0; // Other important variables
+            InitialSkip = incoming.InitialSkip - 1;
             HubLock = true; // While-loop lock
         } // primary constructor
         /**
@@ -354,7 +356,7 @@ namespace MissingLinkPro.Models
                     foreach (var result in webResults)
                     {
                         if (ParsedResults.Count > 0 && result.Url.Equals(ParsedResults[ParsedResults.Count - 1].Url)) continue; // checks for consecutive duplicates
-                        ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url));
+                        ParsedResults.Add(new SearchResult(ParsedResults.Count + 1 + InitialSkip, result.Title, result.Url));
                         count++;
                         skip++;
                         if (count == top)
@@ -393,7 +395,7 @@ namespace MissingLinkPro.Models
                     foreach (var result in webResults)
                     {
                         if (ParsedResults.Count > 0 && result.Url.Equals(ParsedResults[ParsedResults.Count - 1].Url)) continue; // checks for consecutive duplicates
-                        ParsedResults.Add(new SearchResult(skip + 1, result.Title, result.Url, result.Source, result.Date));
+                        ParsedResults.Add(new SearchResult(ParsedResults.Count + 1 + InitialSkip, result.Title, result.Url, result.Source, result.Date));
                         count++;
                         skip++;
                         if (count == top)

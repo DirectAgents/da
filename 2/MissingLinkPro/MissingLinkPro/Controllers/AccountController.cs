@@ -157,6 +157,7 @@ namespace IdentitySample.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, string stripeToken = null)
         {
+            
             if (ModelState.IsValid)
             {
                 Package AssignThis = db.Packages.Find(model.ChosenSubscriptionId);                    // We assume that "1" corresponds to the Freemium plan stored in database.

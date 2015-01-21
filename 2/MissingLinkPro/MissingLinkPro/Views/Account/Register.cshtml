@@ -9,6 +9,24 @@
 @Scripts.Render("~/bundles/jqueryval")
 
 
+<style>
+    div.terms {
+        margin-left:auto;
+        margin-right:auto;
+	width:600px;
+	height:200px;
+	border:1px solid #ccc;
+	background:#f2f2f2;
+	padding:6px;
+	overflow:auto;
+}
+div.terms p,
+div.terms li {font:normal 12px/16px arial;color:#333;}
+div.terms h3 {font:bold 14px/19px arial;color:#000;}
+div.terms h4 {font:bold 12px/17px arial;color:#000;}
+div.terms strong {color:#000;}
+</style>
+
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
   // This identifies your website in the createToken call below
@@ -37,7 +55,7 @@
             // Disable the submit button to prevent repeated clicks
             $form.find('button').prop('disabled', true);
 
-            if ($('#1').is(':checked')) { debugger; $form.get(0).submit();  }
+            if ($('#1').is(':checked')) { $form.get(0).submit();  }
 
             Stripe.card.createToken($form, stripeResponseHandler);
 
@@ -127,7 +145,7 @@
         <td>@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })</td>
     </tr>
         </table>
-    <div id="credit-card" style="display:none; text-align:center;">
+    <div id="credit-card" style="display:none; text-align:center; padding-bottom:1em;">
             <span style="margin-left:auto; margin-right:auto; text-align:center; color:red;" class="payment-errors"></span>
             <table class="credit-card-form">
                 <tr>
@@ -168,7 +186,29 @@
                 </tr>
             </table>
         </div>
-    
+    <div class="terms">
+            <p><b>DirectLink Terms of Service</b></p>
+            <p>By using the DirectLink site (“Service”), a service of Direct Agents, Inc., (“Direct Agents”), you agree to be bound by the following Terms and Conditions (“Terms of Service”).  If you are entering into this agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity, its affiliates and all users who access our services through your account to these Terms of Service, in such case “You” and “Your” shall refer to such entity, its affiliates and users associated with it.</p>
+            <p>Direct Agents reserves the right to update and change the Terms of Service from time to time without notice.  Any new features that augment or enhance the current Service, including the release of new tools and resources, shall be subject to the Terms of Service. Continued use of the Service after any such changes shall constitute your consent to such changes. The most current version of the Terms of Service is available is reviewable at any time at:<a href="http://wwww.directagents.com/directlink/tos.php"></a>http://wwww.directagents.com/directlink/tos.php.</p>
+            <p><b>General Conditions:</b></p>    
+            <p>1.	Use of the Service described herein is at your sole risk, and is provided on an “as is” and “as available” basis.</p>
+            <p>2.	Acceptance of Agreement: by registering and/or utilizing the Service you represent that you agree to be bound by the Terms of Service.  If you do not agree to the Terms of Service contained herein, do not use the Service.  Your electronic acceptance on our website, your registration or use of the Service constitutes your acceptance of the Terms of Service. Your electronic acceptance of these Terms shall have the same force and effect as if you had actually signed the Agreement.</p>
+            <p>3.	Direct Agents shall in no case be liable for any actions or decisions made based on the information provided by the Service, and does not guarantee the quality or accuracy of the information provided by the Service.</p>
+            <p>4.	You understand that DirectLink utilizes a third party API to provide necessary software, networking, and related technology required to run the Service.</p>
+            <p>5.	You must not modify, adapt or hack the Service or modify another website so as to falsely imply that it is associated with the Service, Direct Agents, or any other Direct Agents service.</p>  
+            <p>6.	Direct Agents reserves the right to utilize your trade name, trademarks, and logos in Direct Agents’ advertising, publicity campaigns and public announcements in promotion of and in association with the Service.</p>
+            <p>7.	You agree not to use any automated method, program, or device to read or gather data from or access the Service in any way or to gather data from the Service without the direct action of a live person.</p>
+            <p>8.	You expressly agree not to attempt to reproduce, redistribute, duplicate, copy, sell, resell, or exploit any portion of the Service or the information obtained from it, use of the Service, or access to the Service without the express prior written permission of Direct Agents.</p>
+            <p>9.	Direct Agents in no way warrants the following: (i) the Service will meet your specific or desired requirements, (ii) the Service will be uninterrupted, timely, secure, or error-free, (iii) the results that may be obtained from the use of the Service will be accurate or reliable, (iv) the quality of any products, services, information, or other material purchased or obtained by you through the Service will meet your expectations, and (v) any errors in the Service will be corrected.</p>
+            <p>10.	DIRECT AGENTS SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES (EVEN IF DIRECT AGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES), RESULTING FROM: (I) THE USE OR THE INABILITY TO USE THE SERVICE, (II) THE COST OF PROCUREMENT OF SUBSTITUTE GOODS AND SERVICES RESULTING FROM ANY GOODS, DATA, INFORMATION OR SERVICES PURCHASED OR OBTAINED OR MESSAGES RECEIVED OR TRANSACTIONS ENTERED INTO THROUGH OR FROM THE SERVICE, (III) UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR TRANSMISSIONS OR DATA, (IV) STATEMENTS OR CONDUCT OF ANY THIRD PARTY ON THE SERVICE, (V) OR ANY OTHER MATTER RELATING TO THE SERVICES CONTEMPLATED HEREIN.</p>
+            <p>11.	The look and feel of the Service is copyright © 2014 Direct Agents, Inc.  All rights reserved. You may not duplicate, copy, or reuse any portion of the CSS or visual design elements without express written permission from Direct Agents.</p>
+            <p>12.	The failure of Direct Agents to exercise or enforce any right or provision of the Terms of Service shall in no way constitute a waiver of such right or provision.  The Terms of Service constitutes the entire agreement between you and Direct Agents and govern use of the Service.  These Terms of Service supersede any prior agreements between you and Direct Agents (including, but not limited to, any prior versions of the Terms of Service).</p>
+            <p>13.	Indemnification: You agree to defend, indemnify, and hold Direct Agents and any affiliates harmless from and against any and all claims, demands, actions, liabilities, costs, or damages arising out of your use of the Service or your violation of the Terms of Service.  You further agree to pay attorneys fees and costs arising from any actions or claims hereunder and those incurred in establishing the applicability of this section.</p>
+        <br />
+    </div>
+    <div style="padding-left:5em; padding-top:5px;">
+    <input type="checkbox" name="TOS" value="true" required/> I agree to abide by the terms of service listed above.
+    </div>
     <div style="padding:30px; text-align:center;">
 <p class="small"><input type="submit" class="btn btn-default" value="Create Account" /></p>
         </div>
