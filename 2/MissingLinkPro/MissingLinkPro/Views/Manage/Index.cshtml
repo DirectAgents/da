@@ -5,6 +5,7 @@
 
 <section class="announcement" style="background-color:#FFF;">
 <h2 class="topic">Your User Information</h2>
+<div style="text-align:center;">[@Html.ActionLink("update", "UpdateUser", "Manage")]</div>
 <div style="text-align:center;"><p class="text-success" style="color:red;">@ViewBag.StatusMessage</p></div>
 <div>
     <div><br>
@@ -128,7 +129,8 @@
 
 @if (Model.HasMessage) {<div><p style="color:red">* @Model.Message</p></div>}
 
-<section class="features">
+&nbsp;&nbsp;
+@*<section class="features">
     <div class="container">
 
     <div class="row clearfix">
@@ -168,4 +170,4 @@
         </div>
         </div>
         </div>
-</section>
+</section>*@
