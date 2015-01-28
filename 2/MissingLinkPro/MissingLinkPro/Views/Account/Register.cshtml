@@ -66,19 +66,19 @@ div.terms strong {color:#000;}
 </script>
 <script type="text/javascript">
     function yesnoCheck() {
-        if (document.getElementById('2').checked) {
-            document.getElementById('credit-card').style.display = 'block';
-        }
-        else if (document.getElementById('3').checked) {
-            document.getElementById('credit-card').style.display = 'block';
-        }
-        else if (document.getElementById('4').checked) {
-            document.getElementById('credit-card').style.display = 'block';
-        }
-        else if (document.getElementById('5').checked) {
-            document.getElementById('credit-card').style.display = 'block';
-        }
-        else document.getElementById('credit-card').style.display = 'none';
+        //if (document.getElementById('2').checked) {
+        //    document.getElementById('credit-card').style.display = 'block';
+        //}
+        //else if (document.getElementById('3').checked) {
+        //    document.getElementById('credit-card').style.display = 'block';
+        //}
+        //else if (document.getElementById('4').checked) {
+        //    document.getElementById('credit-card').style.display = 'block';
+        //}
+        //else if (document.getElementById('5').checked) {
+        //    document.getElementById('credit-card').style.display = 'block';
+        //}
+        //else document.getElementById('credit-card').style.display = 'none';
     }
 
 
@@ -104,19 +104,21 @@ div.terms strong {color:#000;}
 <section>
     <h2 class="topic">Create Your Account</h2>
     <p class="small" style="max-width:400px;">Fill out the fields below to get started.
-        If you are registering for a paid subscription, please have a credit card ready.
+        A free account allows you to perform 25 searches per month.
+        Please @Html.ActionLink("contact us", "Contact", "Home") for pricing on premium accounts.
+@*        If you are registering for a paid subscription, please have a credit card ready.*@
     </p>
-    <br /><br /><br />
     <div class="form-box" style="max-width:750px; padding-top:15px;">
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", @id = "payment-form", role = "form" }))
 {
     <table class="credit-card-form" style="width:500px;">
         <tr>
-            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="1" value="1" @(subid == "1" ? "checked" : "")> Freemium</td>
-            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="2" value="2" @(subid == "2" ? "checked" : "")> Bronze</td>
+            <td style="text-align:center"><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="1" value="1" @(subid == "1" ? "checked" : "")> Freemium</td>
+@*            <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="2" value="2" @(subid == "2" ? "checked" : "")> Bronze</td>
             <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="3" value="3" @(subid == "3" ? "checked" : "")> Silver</td>
             <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="4" value="4" @(subid == "4" ? "checked" : "")> Gold</td>
             <td><input type="radio" onclick="yesnoCheck();" name="ChosenSubscriptionId" id="5" value="5" @(subid == "5" ? "checked" : "")> Platinum</td>
+*@
         </tr>
     </table>
     <table style="margin-top:10px; margin-bottom:20px; margin-left:auto; margin-right:auto;">
