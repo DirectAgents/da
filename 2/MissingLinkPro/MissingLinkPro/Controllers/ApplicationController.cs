@@ -180,8 +180,8 @@ namespace MissingLinkPro.Controllers
                     ProcessHub model = new ProcessHub(Parameters);
                     model.ParsedResults = Parameters.ParsedResults;
                     model.SearchErrorEncountered = true;
-                    ViewBag.StatusMessage = "You have reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
-                    //model.SearchErrorMsg = "You have reached your maximum number of searches for the month. A higher-grade plan may be available to you. Please check your Subscriptions page for more details.";
+                    var url = Url.Action("Contact", "Home");
+                    ViewBag.StatusMessage = "You have reached your maximum number of searches for the month. Please <a href=\"" + url + "\">contact us</a> for pricing on premium accounts.";
                     return View(model);
                 }
                 if (Parameters.top > userPackage.MaxResults) Parameters.top = userPackage.MaxResults;   // User's requested Results/Search is limited to Package settings.

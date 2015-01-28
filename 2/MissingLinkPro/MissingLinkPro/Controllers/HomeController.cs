@@ -7,17 +7,15 @@ using System.Web.Mvc;
 
 namespace IdentitySample.Controllers
 {
-    // public class HomeController : Controller
-    [Authorize]
     public class HomeController : HttpsBaseController
     {
-        public ActionResult Index()
-        {
-            //ViewBag.Message = "DirectAgents";
-            ViewBag.Title = "DirectLink | Linkless Mention Finder";
-            ViewBag.MetaDescription = "DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back. Try it free!";
-            return View();
-        }
+        //public ActionResult Index()
+        //{
+        //    //ViewBag.Message = "DirectAgents";
+        //    ViewBag.Title = "DirectLink | Linkless Mention Finder";
+        //    ViewBag.MetaDescription = "DirectLink is the first enterprise level tool that finds out who’s talking about your brand without linking back. Try it free!";
+        //    return View();
+        //}
 
         public ActionResult DirectAgents()
         {
@@ -55,12 +53,14 @@ namespace IdentitySample.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Help()
         {
             //ViewBag.Message = "User Manual";
             return View();
         }
 
+        [Authorize]
         public ActionResult FAQ()
         {
             //ViewBag.Mesage = "Frequently Asked Questions";

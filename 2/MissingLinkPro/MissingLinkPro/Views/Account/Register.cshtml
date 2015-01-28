@@ -103,10 +103,8 @@ div.terms strong {color:#000;}
 <div class="container">
 <section>
     <h2 class="topic">Create Your Account</h2>
-    <p class="small" style="max-width:400px;">Fill out the fields below to get started.
-        A free account allows you to perform 25 searches per month.
-        Please @Html.ActionLink("contact us", "Contact", "Home") for pricing on premium accounts.
-@*        If you are registering for a paid subscription, please have a credit card ready.*@
+    <p class="small" style="max-width:475px;">Fill out the fields below to get started with your free trial.
+        Please contact us at <a href="mailto:directlink@directagents.com"><b style="color:black;">directlink(at)directagents.com</b></a> for pricing on premium accounts.
     </p>
     <div class="form-box" style="max-width:750px; padding-top:15px;">
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", @id = "payment-form", role = "form" }))
