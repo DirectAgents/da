@@ -160,6 +160,8 @@ namespace IdentitySample.Controllers
             
             if (ModelState.IsValid)
             {
+                if (!model.TOS) { return View(model); }
+
                 Package AssignThis = db.Packages.Find(model.ChosenSubscriptionId);                    // We assume that "1" corresponds to the Freemium plan stored in database.
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = AssignThis.Id };
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -172,7 +174,9 @@ namespace IdentitySample.Controllers
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
 
-                    string msg = "<p>Thank you for registering a search account with Direct Agents.<br>Please click on the following <a href=\"" + callbackUrl + "\">link</a> to complete your registration.</p><p>You are receiving this message because your email address was recently used to register with DirectLink at http://www.directagents.com/directlink</p>";
+                    string msg = "<p style=\"font-family:arial;\">Thank you for registering a DirectLink search account with Direct Agents.<br>Please click on the following <a href=\""
+                        + callbackUrl + "\">link</a> to complete your registration and begin searching for linkless mentions of your website.</p><p style=\"font-family:arial;\">You are receiving this message because your email address was recently used to register with Direct Agent's search tool DirectLink at http://www.directagents.com/directlink</p>"
+                        + "<br><p style=\"font-family:arial;\">Direct Agents<br>740 Broadway, Suite 701<br>New York, NY 10003<br>1 (212) 256-9536</p>";
 
                     await UserManager.SendEmailAsync(user.Id, ConfigurationManager.AppSettings["Emailer_Subject"], msg);
                     ViewBag.Link = callbackUrl;

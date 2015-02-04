@@ -126,6 +126,7 @@ namespace MissingLinkPro.Models
         public bool ExcludeEnabled { get; set; }
         public List<SearchResult> ParsedResults { get; set; }
         public int OmitCount { get; set; }
+        public string RegexString { get; set; }
         // Bing-related
         private string AccountKey = ConfigurationManager.AppSettings["BingAPIKey"];
         // Multi-threading vars
@@ -158,22 +159,34 @@ namespace MissingLinkPro.Models
                 }
                 else
                 {
+
+                    RegexString = @"\b(href=)("|')((http|https)(://))?([0-9]*[a-zA-z]*|[a-zA-z]*[0-9]*\.)?";
+
                     if ((websites[i].Substring(0, 5)).Equals("http:")) // remove procotol prefix http
                         websites[i] = websites[i].Substring(7, websites[i].Length - 7);
                     else if ((websites[i].Substring(0, 6)).Equals("https:")) // remove protocol prefix https
                         websites[i] = websites[i].Substring(8, websites[i].Length - 8);
+
                     temp.Add("href=\"" + websites[i]);
                     temp.Add("href='" + websites[i]);
-                    if ((websites[i].Substring(0, 4)).Equals("www.")) // part link provided; must add protocol
+                   // if ((websites[i].Substring(0, 4)).Equals("www.")) // part link provided; must add protocol
+                    if (breakdown.Length == 3)  // prefix.domain.suffix
                     {
                         temp.Add("href=\"http://" + websites[i]);
                         temp.Add("href=\"https://" + websites[i]);
                         temp.Add("href='http://" + websites[i]);
                         temp.Add("href='https://" + websites[i]);
-                        temp.Add("href=\"http://" + websites[i].Substring(4, websites[i].Length - 4));
-                        temp.Add("href=\"https://" + websites[i].Substring(4, websites[i].Length - 4));
-                        temp.Add("href='http://" + websites[i].Substring(4, websites[i].Length - 4));
-                        temp.Add("href='https://" + websites[i].Substring(4, websites[i].Length - 4));
+
+                        string SuffixRemoved = breakdown[1] + "." + breakdown[2];
+                        temp.Add("href=\"http://" + SuffixRemoved);
+                        temp.Add("href=\"https://" + SuffixRemoved);
+                        temp.Add("href='http://" + SuffixRemoved);
+                        temp.Add("href='https://" + SuffixRemoved);
+
+                        temp.Add("href=\"http://www." + SuffixRemoved);
+                        temp.Add("href=\"https://www." + SuffixRemoved);
+                        temp.Add("href='http://www." + SuffixRemoved);
+                        temp.Add("href='https://www." + SuffixRemoved);
                     }
                     else
                     { // just sitename.com provided

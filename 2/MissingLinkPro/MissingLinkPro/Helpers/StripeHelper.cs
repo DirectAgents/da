@@ -47,7 +47,7 @@ namespace MissingLinkPro.Helpers
                     var customerService = new StripeCustomerService();
                     StripeCustomer stripeCustomer = customerService.Update(user.CustomerId, myCustomer);
 
-                    user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
+                    user.Anniversary = stripeSubscription.PeriodStart.Value;
                     user.SubscriptionId = stripeSubscription.Id;
                     user.PackageId = NewPlanId;
                 }
@@ -73,7 +73,7 @@ namespace MissingLinkPro.Helpers
                 StripeSubscriptionUpdateOptions NewPlan = new StripeSubscriptionUpdateOptions();
                 NewPlan.PlanId = NewPlanId.ToString();
                 StripeSubscription stripeSubscription = subscriptionService.Update(stripeCustomer.Id, user.SubscriptionId, NewPlan);
-                user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
+                user.Anniversary = stripeSubscription.PeriodStart.Value;
                 user.PackageId = NewPlanId;
                 user.IsActive = true;
 
@@ -95,7 +95,7 @@ namespace MissingLinkPro.Helpers
                 StripeSubscriptionUpdateOptions NewPlan = new StripeSubscriptionUpdateOptions();
                 NewPlan.PlanId = NewPlanId.ToString();
                 StripeSubscription stripeSubscription = subscriptionService.Update(stripeCustomer.Id, user.SubscriptionId, NewPlan);
-                user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
+                user.Anniversary = stripeSubscription.PeriodStart.Value;
                 user.PackageId = NewPlanId;
                 user.IsActive = true;
 
@@ -186,7 +186,7 @@ namespace MissingLinkPro.Helpers
         {
             var subscriptionService = new StripeSubscriptionService();
             StripeSubscription stripeSubscription = subscriptionService.Get(user.CustomerId, user.SubscriptionId);
-            user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
+            user.Anniversary = stripeSubscription.PeriodStart.Value;
             return user;
         } // UpdateAnniversary
 
@@ -197,7 +197,7 @@ namespace MissingLinkPro.Helpers
             ssuo.TokenId = stripeToken;
 
                 StripeSubscription stripeSubscription = subscriptionService.Update(user.CustomerId, user.SubscriptionId, ssuo);
-                user.Anniversary = stripeSubscription.PeriodStart.Value.Add(new TimeSpan(-5, 0, 0));
+                user.Anniversary = stripeSubscription.PeriodStart.Value;
                 user.IsActive = true;
 
             return user;

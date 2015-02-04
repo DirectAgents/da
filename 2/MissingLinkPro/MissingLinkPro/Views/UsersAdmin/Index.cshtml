@@ -6,7 +6,8 @@
 
 <section>
     <h2 class="topic">Users Admin</h2>
-    <p>Click on UserName, FirstName, LastName, or Package to alphabetically sort all listed users.</p>
+    <p>Click on UserName, FirstName, LastName, or Package to alphabetically sort all listed users.
+        You may also click on Searches/Mo and Lifetime to sort by the number of searches your users have performed.</p>
     <p>You may manually enable EmailConfirmed for any users that do not receive a confirmation email.
         You may also manually change their Package setting, even when there isn't a credit card present.
     </p>
@@ -17,7 +18,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table id="table" class="table" style="margin-left:auto; margin-right:auto; width: 950px;">
+<table id="table" class="table" style="margin-left:auto; margin-right:auto; width: 1450px;">
     <thead>
         <tr>
         <th data-sort="string" style="text-align:left;">@Html.DisplayNameFor(model => model.UserName)</th>
@@ -25,6 +26,8 @@
         <th data-sort="string" style="text-align:left;">@Html.DisplayNameFor(model => model.LastName)</th>
         <th data-sort="string" style="text-align:left;">@Html.DisplayNameFor(model => model.PackageId)</th>
         <th style="text-align:left;">@Html.DisplayNameFor(model => model.EmailConfirmed)</th>
+        <th data-sort="int" style="text-align:left;">Searches/Mo</th>
+        <th data-sort="int" style="text-align:left;">Lifetime</th>
         <th style="text-align:left;">Options</th>
         </tr>
     </thead>
@@ -37,6 +40,8 @@
             <td>@Html.DisplayFor(modelItem => item.LastName)</td>
             <td>@Html.DisplayFor(modelItem => item.Package.Name)</td>
             <td>@Html.DisplayFor(modelItem => item.EmailConfirmed)</td>
+            <td>@Html.DisplayFor(modelItem => item.QueriesPerformed)</td>
+            <td>@Html.DisplayFor(modelItem => item.TotalQueriesPerformed)</td>
             <td>@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })

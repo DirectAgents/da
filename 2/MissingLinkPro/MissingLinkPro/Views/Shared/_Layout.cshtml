@@ -49,8 +49,33 @@
             text-align:center;
         }
     </style>
+    <link rel="shortcut icon" type="image/x-icon" href=".//favicon.ico" />
+
+<script type='text/javascript'>//<![CDATA[ 
+    $(window).load(function () {
+
+        var menu = $('.menu');
+        var menuList = menu.find('ul:first');
+        var listItems = menu.find('li');
 
 
+        listItems.slideToggle('fast');
+        listItems.addClass('collapsed');
+
+
+        $("li.signup").hover(function () {
+            $('.collapsed').css({ 'display': 'block' });
+        });
+
+        $(".burger, .off").bind('click', function () {
+
+            listItems.slideToggle('fast');
+            listItems.addClass('collapsed');
+            $('.menu').css({ 'display': 'block' });
+        })
+    });//]]>  
+
+</script>
 
 </head>
 
@@ -107,21 +132,16 @@
 
          
             /*drop down*/
-    
-        <ul id="menu" class='clearfix'>
-            <li><p style="margin-bottom:20px;">My Account</p>
-                <ul id="menu">
+            
+			<li class='signup'> <a class="signup" href="#" target="_top">My Account</a>  
+			<ul class="submenu">
                     <li class=''>@Html.ActionLink("My Profile", "Index", "Manage")</li>
                     <li class=''>@Html.ActionLink("Billing Info", "History", "Manage")</li>
 @*                    <li class=''>@Html.ActionLink("Subscription", "Subscriptions", "Manage")</li>*@
                     <li class=''>@Html.ActionLink("Log Out", "LogoutCmd", "Account")</li>
-                </ul>
-            </li>
-        </ul>
- 
-        <script>
-            $("#menu").menu();
-        </script>
+			</ul>
+            </li> 
+   
     
             /*drop down*/
         }
