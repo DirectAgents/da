@@ -34,29 +34,6 @@ namespace MissingLinkPro.Models
                 return request;
             }
         }
-
-        public class TimeoutWebClient : WebClient
-        {
-            protected override WebRequest GetWebRequest(Uri address)
-            {
-                HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(address);
-                request.Proxy = null;
-                request.Timeout = 8000; // 8 sec timeout
-                return request;
-            }
-        }
-        /**
-        * Class established specifically to allow overriding of HTML request timeout duration.
-        **/
-        private class MyWebClient : WebClient
-        {
-            protected override WebRequest GetWebRequest(Uri uri)
-            {
-                WebRequest w = base.GetWebRequest(uri);
-                w.Timeout = 8000;
-                return w;
-            }
-        } // class MyWebClient
         /**
         * The container class SearchResult is integrated into ProcessHub to minimize clutter.
         **/
@@ -136,8 +113,8 @@ namespace MissingLinkPro.Models
         public int PingTime { get; set; }
         public int LoadTime { get; set; }
         /**
-        * Formats website entries as provided by the user. Method automatically
-        * attaches protocols, prefixes, and suffixes where needed.
+        * Formats website entries as provided by the user.
+        * Forms a regex string based on the provided URL string.
         * @para string[] sites: array of strings representing URLs
         **/
         private List<string> FormatLinks(string[] websites)
@@ -145,64 +122,33 @@ namespace MissingLinkPro.Models
             List<string> temp = new List<string>();
             for (int i = 0; i < websites.Length; i++)
             {
+                if (websites[i].Length >= 4 && websites[i].Substring(0, 4).Equals("http"))
+                    websites[i] = websites[i].Substring(4, websites.Length - 1);
                 string[] breakdown = websites[i].Split('.');
-                if (breakdown.Length <= 1)
-                { // a single name was provided, nothing more; very vague; default to http[s]://www.[address].com
-                    temp.Add("href=\"http://" + websites[i] + ".com");
-                    temp.Add("href=\"https://" + websites[i] + ".com");
-                    temp.Add("href=\"http://www." + websites[i] + ".com");
-                    temp.Add("href=\"https://www." + websites[i] + ".com");
-                    temp.Add("href='http://" + websites[i] + ".com");
-                    temp.Add("href='https://" + websites[i] + ".com");
-                    temp.Add("href='http://www." + websites[i] + ".com");
-                    temp.Add("href='https://www." + websites[i] + ".com");
-                }
-                else
+                if (breakdown.Length <= 1)   // a single name was provided, nothing more; very vague.
                 {
-
-                    RegexString = @"\b(href=)("|')((http|https)(://))?([0-9]*[a-zA-z]*|[a-zA-z]*[0-9]*\.)?";
-
-                    if ((websites[i].Substring(0, 5)).Equals("http:")) // remove procotol prefix http
-                        websites[i] = websites[i].Substring(7, websites[i].Length - 7);
-                    else if ((websites[i].Substring(0, 6)).Equals("https:")) // remove protocol prefix https
-                        websites[i] = websites[i].Substring(8, websites[i].Length - 8);
-
-                    temp.Add("href=\"" + websites[i]);
-                    temp.Add("href='" + websites[i]);
-                   // if ((websites[i].Substring(0, 4)).Equals("www.")) // part link provided; must add protocol
-                    if (breakdown.Length == 3)  // prefix.domain.suffix
+                    RegexString = @"\b(href=)(""|')((http|https)(://))?([0-9]*[a-zA-Z]*|[a-zA-Z]*[0-9]*\.)?" + @breakdown[0] + @"\.[a-zA-Z]{2,4}";
+                    temp.Add(RegexString);
+                }
+                else if (breakdown.Length >= 3) // Example: "www.capcom.com" or "www.capcom.co.jp"
+                {
+                    RegexString = @"\b(href=)(""|')((http|https)(://))?([0-9]*[a-zA-Z]*|[a-zA-Z]*[0-9]*\.)?";
+                    RegexString += @"(";
+                    for (int j = 0; j < breakdown.Length; j++)
                     {
-                        temp.Add("href=\"http://" + websites[i]);
-                        temp.Add("href=\"https://" + websites[i]);
-                        temp.Add("href='http://" + websites[i]);
-                        temp.Add("href='https://" + websites[i]);
-
-                        string SuffixRemoved = breakdown[1] + "." + breakdown[2];
-                        temp.Add("href=\"http://" + SuffixRemoved);
-                        temp.Add("href=\"https://" + SuffixRemoved);
-                        temp.Add("href='http://" + SuffixRemoved);
-                        temp.Add("href='https://" + SuffixRemoved);
-
-                        temp.Add("href=\"http://www." + SuffixRemoved);
-                        temp.Add("href=\"https://www." + SuffixRemoved);
-                        temp.Add("href='http://www." + SuffixRemoved);
-                        temp.Add("href='https://www." + SuffixRemoved);
+                        if (breakdown[j].Equals("www") && (j == 0)) continue;      // We'll ignore "www" prefix in order to widen regex match range; remove this line for a more precise match.
+                        RegexString = RegexString + breakdown[j];
+                        if (j < breakdown.Length - 1) RegexString += @"\.";
                     }
-                    else
-                    { // just sitename.com provided
-                        temp.Add("href=\"http://" + websites[i]);
-                        temp.Add("href=\"https://" + websites[i]);
-                        temp.Add("href=\"http://www." + websites[i]);
-                        temp.Add("href=\"https://www." + websites[i]);
-                        temp.Add("href='http://" + websites[i]);
-                        temp.Add("href='https://" + websites[i]);
-                        temp.Add("href='http://www." + websites[i]);
-                        temp.Add("href='https://www." + websites[i]);
-                    }
+                    RegexString += @")";
+                    temp.Add(RegexString);
+                }
+                else // breakdown length is 2, which fits format "example.com"
+                {
+                    RegexString =  @"\b(href=)(""|')((http|https)(://))?([0-9]*[a-zA-Z]*|[a-zA-Z]*[0-9]*\.)?(" + @breakdown[0] + @"\." + @breakdown[1] + ")";
+                    temp.Add(RegexString);
                 }
             }
-            //for (int i = 0; i < temp.Count; i++)
-            // DebugHelper.displayln(temp[i]);
             return temp;
         } // FormatLink
         /**
@@ -339,15 +285,6 @@ namespace MissingLinkPro.Models
             TotalRunTime = (float)watch.ElapsedMilliseconds / 1000;
             //DiagnosticPrint(results);
         }
-
-        private Uri AttachUriParameter(Uri link, string parameter)
-        {
-            UriBuilder builder = new UriBuilder(link);
-            builder.Host += parameter;
-            Uri result = builder.Uri;
-            return result;
-        } // AttachUriParameter
-
         /**
          * Driver method designed specifically with Web Search parameters in mind.
          **/
@@ -386,7 +323,6 @@ namespace MissingLinkPro.Models
                 DebugHelper.displayln(e.Message);
             }
         } // processWeb
-
         /**
          * Driver method designed specifically with News Search in mind.
          **/
@@ -498,12 +434,7 @@ namespace MissingLinkPro.Models
                     {
                         bool Done = false;
                         CancellationTokenSource tokenSource = new CancellationTokenSource(LoadTime);       // Set your timeout for token here.
-
                         Task.Factory.StartNew(() => {LoadToStringAsync(ParsedResults[i].Url, ref pageData, i, ref Done, tokenSource); }, tokenSource.Token);
-
-                        //Task t = new Task(() => LoadToStringAsync(ParsedResults[i].Url, ref pageData, i, ref Done, tokenSource));
-                        //t.Start();
-
                         while (!tokenSource.IsCancellationRequested && !Done)       // while token is valid && not done scraping
                         {
                             Thread.Sleep(150);
@@ -523,25 +454,16 @@ namespace MissingLinkPro.Models
                         DebugHelper.displayln("[" + i + "] TimeOut Exception: " + ParsedResults[i].Url);
                         continue;
                     }
-                    //pageData = doc.DocumentNode.WriteTo();
-                    //using (var client = new MyWebClient()) // Reading Technique #1
-                    //{
-                    // pageData = client.DownloadString(ParsedResults[i].Url);
-                    //}
-                    //using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.Default)) // Reading Technique #2
-                    //{
-                    // pageData = reader.ReadToEnd();
-                    //}
-                    //pageData = new TimeoutWebClient() { Proxy = null }.DownloadString(ParsedResults[i].Url); // Reading Technique #3
                     status = (int)response.StatusCode;
                     if (!ParsedResults[i].ExceptionFound)
                     {
-                        pageData.Replace('"', '\"');
+                        //pageData.Replace('"', '\"');
+                        Regex regex;
                         foreach (string s in ClientWebsiteParsed)
                         {
-                            bool containsLink = pageData.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0;
-                            //if (pageData.Contains(s))
-                            if (containsLink)
+                            regex = new Regex(s);
+                            Match match = regex.Match(pageData);
+                            if (match.Success)
                             {
                                 ParsedResults[i].LinksToClientWebsite = true;
                                 if (ExcludeLinkbackResults)
@@ -584,7 +506,6 @@ namespace MissingLinkPro.Models
             DebugHelper.display("Index Range: [" + x + ", " + y + "], ");
             checkLock();
         } // ScrapeBatch
-
         public void LoadToStringAsync(string Url, ref string pageData, int i, ref bool Done, CancellationTokenSource tokenSource)
         {
             HtmlWeb web = new HtmlWeb();
@@ -635,7 +556,6 @@ namespace MissingLinkPro.Models
             Done = true;
             DebugHelper.displayln("Task complete.");
         }
-
         /**
         * A shortcut method for scraping a single index as opposed to batches.
         **/

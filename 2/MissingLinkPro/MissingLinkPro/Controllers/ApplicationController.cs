@@ -83,11 +83,12 @@ namespace MissingLinkPro.Controllers
                 return View(p);
             }
         }
-
+        /**
+         * 
+         **/
         public ActionResult EmailNotConfirmed(ApplicationUser a) {
             return View(a);
         }
-
         /**
          * Creates the ProcessHub that handles the Bing search and scraping. Method checks a non-admin user's account
          * for a valid subscription, and proceeds if one exists. A Freemium account is automatically assigned if a user
@@ -152,10 +153,6 @@ namespace MissingLinkPro.Controllers
                             ProcessHub model = new ProcessHub(Parameters);
                             model.ParsedResults = Parameters.ParsedResults;
                             model.SearchErrorEncountered = true;
-                            //if (status.Equals("past_due")) model.SearchErrorMsg = "Subscription payment status: past due.";
-                            //else if (status.Equals("unpaid")) model.SearchErrorMsg = "Subscription payment status: unpaid.";
-                            //else if (status.Equals("canceled")) model.SearchErrorMsg = "Subscription payment status: canceled.";
-                            //else model.SearchErrorMsg = "Subscription payment status: indeterminate.";
                             if (status.Equals("past_due")) ViewBag.StatusMessage = "Subscription payment status: past due.";
                             else if (status.Equals("unpaid")) ViewBag.StatusMessage = "Subscription payment status: unpaid.";
                             else if (status.Equals("canceled")) ViewBag.StatusMessage = "Subscription payment status: canceled.";
