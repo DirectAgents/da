@@ -1,4 +1,5 @@
-﻿using MissingLinkPro.Models;
+﻿using IdentitySample.Models;
+using MissingLinkPro.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace MissingLinkPro.Controllers
     [AllowAnonymous]
     public class DemoController : HttpsBaseController
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
             ParameterKeeper pk = new ParameterKeeper
@@ -23,7 +25,8 @@ namespace MissingLinkPro.Controllers
                 ExcludeLinkbackResults = true,
                 DisplayAllResults = true,
                 ResultType = "web",
-                MaxResultRange = 1000
+                MaxResultRange = 1000,
+                InitialSkip = 1
             };
             return View(pk);
         } // Index
@@ -39,6 +42,7 @@ namespace MissingLinkPro.Controllers
                 Parameters.top = 1000 - (Parameters.skip - 1);
                 if (Parameters.top <= 0) Parameters.top = 1;
             }
+            Parameters.InitialSkip = Parameters.skip;
             ProcessHub Engine = new ProcessHub(Parameters);
             Integer Limit;
             if ((Integer)Session["Limit"] != null)          // If fresh user, create a new session.
@@ -50,6 +54,18 @@ namespace MissingLinkPro.Controllers
             else
                 Limit = new Integer { Value = 3 };      // Set the number of allowed runs per session here.
 
+            Setting PingTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "PingTime");
+            Setting LoadTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "LoadTime");
+            if (PingTime == null || LoadTime == null)
+            {
+                Engine.PingTime = 8000;
+                Engine.LoadTime = 15000;
+            }
+            else
+            {
+                Engine.PingTime = Convert.ToInt32(PingTime.Value);
+                Engine.LoadTime = Convert.ToInt32(LoadTime.Value);
+            }
             Engine.run();
             Limit.Value = Limit.Value - 1;
             Session["Limit"] = Limit;

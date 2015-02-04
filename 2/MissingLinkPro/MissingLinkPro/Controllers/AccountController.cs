@@ -52,6 +52,7 @@ namespace IdentitySample.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated) return RedirectToAction("Index","Application");
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -146,6 +147,7 @@ namespace IdentitySample.Controllers
         [AllowAnonymous]
         public ActionResult Register(string subid)
         {
+            if (User.Identity.IsAuthenticated) return RedirectToAction("Index", "Application");
             ViewBag.SubId = subid;
             return View();
         }

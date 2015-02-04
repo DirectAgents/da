@@ -127,12 +127,14 @@ namespace MissingLinkPro.Models
                 string[] breakdown = websites[i].Split('.');
                 if (breakdown.Length <= 1)   // a single name was provided, nothing more; very vague.
                 {
-                    RegexString = @"\b(href=)(""|')((http|https)(://))?([0-9]*[a-zA-Z]*|[a-zA-Z]*[0-9]*\.)?" + @breakdown[0] + @"\.[a-zA-Z]{2,4}";
+                    
+                    // old string: "\b(href=)(""|')((http|https)(://))?((([0-9]*[a-zA-Z]*))*\.)?"
+                    RegexString = @"\b(href=)(""|')((http|https)(://))?(([a-zA-Z]|[0-9])*\.)?" + @breakdown[0] + @"\.[a-zA-Z]{2,4}";
                     temp.Add(RegexString);
                 }
                 else if (breakdown.Length >= 3) // Example: "www.capcom.com" or "www.capcom.co.jp"
                 {
-                    RegexString = @"\b(href=)(""|')((http|https)(://))?([0-9]*[a-zA-Z]*|[a-zA-Z]*[0-9]*\.)?";
+                    RegexString = @"\b(href=)(""|')((http|https)(://))?(([a-zA-Z]|[0-9])*\.)?";
                     RegexString += @"(";
                     for (int j = 0; j < breakdown.Length; j++)
                     {
@@ -145,7 +147,7 @@ namespace MissingLinkPro.Models
                 }
                 else // breakdown length is 2, which fits format "example.com"
                 {
-                    RegexString =  @"\b(href=)(""|')((http|https)(://))?([0-9]*[a-zA-Z]*|[a-zA-Z]*[0-9]*\.)?(" + @breakdown[0] + @"\." + @breakdown[1] + ")";
+                    RegexString = @"\b(href=)(""|')((http|https)(://))?(([a-zA-Z]|[0-9])*\.)?(" + @breakdown[0] + @"\." + @breakdown[1] + ")";
                     temp.Add(RegexString);
                 }
             }
@@ -450,7 +452,7 @@ namespace MissingLinkPro.Models
                     catch (TaskCanceledException e)
                     {
                         ParsedResults[i].ExceptionFound = true;
-                        ParsedResults[i].ErrorMsg = "TimeOut Exception: " + e.Message;
+                        ParsedResults[i].ErrorMsg = "TimeOut: page took an excessive amount of time to load.";
                         DebugHelper.displayln("[" + i + "] TimeOut Exception: " + ParsedResults[i].Url);
                         continue;
                     }
@@ -459,10 +461,11 @@ namespace MissingLinkPro.Models
                     {
                         //pageData.Replace('"', '\"');
                         Regex regex;
+                        Match match = null;
                         foreach (string s in ClientWebsiteParsed)
                         {
-                            regex = new Regex(s);
-                            Match match = regex.Match(pageData);
+                                regex = new Regex(s, RegexOptions.None, new TimeSpan(0, 0, 10));
+                                match = regex.Match(pageData);
                             if (match.Success)
                             {
                                 ParsedResults[i].LinksToClientWebsite = true;
@@ -479,6 +482,11 @@ namespace MissingLinkPro.Models
                             ParsedResults[i].ContainsSearchPhrase = true;
                         }
                     }
+                }
+                catch (RegexMatchTimeoutException)
+                {
+                    ParsedResults[i].ExceptionFound = true;
+                    ParsedResults[i].ErrorMsg = "Took too long to find a link on webpage.";
                 }
                 catch (TaskCanceledException e)
                 {
@@ -530,7 +538,7 @@ namespace MissingLinkPro.Models
             catch (NullReferenceException e) // This will happen as the result of program trying to load a non-HTML page
             {
                 ParsedResults[i].ExceptionFound = true;
-                ParsedResults[i].ErrorMsg = "NullRef Exception: " + e.Message;
+                ParsedResults[i].ErrorMsg = "NullRef Exception: Page doesn't appear to be in a valid format.";
                 DebugHelper.displayln("[" + i + "] NullRef Exception: " + ParsedResults[i].Url);
             }
             catch (System.IO.IOException e)
