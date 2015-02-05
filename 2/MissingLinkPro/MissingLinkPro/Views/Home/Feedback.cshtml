@@ -1,0 +1,53 @@
+﻿@model IdentitySample.Models.FeedbackViewModel
+
+@{
+    ViewBag.Title = "Feedback";
+}
+
+<section>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="column full">
+                <h3 class="topic">Feedback</h3>
+
+@if (!String.IsNullOrEmpty(ViewBag.StatusMessage)) {
+                <p style="text-align:center; color:red;">@ViewBag.StatusMessage</p>
+} else {
+                <p class="small">Thank you for trying out DirectLink Beta.<br />Please use the form below to submit your feedback.</p>
+
+                <div class="form-box" style="max-width:650px; padding:25px;">
+                    <table style="margin-left:auto; margin-right:auto;">
+                    <tr>
+                        <td style="padding-right:15px;"><b>First Name</b></td>
+                        <td>@Model.FirstName</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right:15px;"><b>Last Name</b></td>
+                        <td>@Model.LastName</td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right:15px;"><b>Email</b></td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    </table>
+                    <br />
+
+                @using (Html.BeginForm("Feedback", "Home", FormMethod.Post))
+                {
+                    <table style="margin-left:auto; margin-right:auto;">
+                        <tr>
+                            <td><textarea class="form-field" style="width:600px; height:250px" name="feedback" required></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><p class="small"><input type="submit" value="Submit"></p></td>
+                        </tr>
+                    </table>
+                }
+                </div>
+}
+            </div>
+        </div>
+        <div class="row clearfix"></div>
+    </div>
+
+</section>

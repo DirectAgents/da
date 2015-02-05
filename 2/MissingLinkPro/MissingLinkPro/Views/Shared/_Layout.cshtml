@@ -129,6 +129,10 @@
             { <li class='active'>@Html.ActionLink("Contact", "Contact", "Home")</li> }
             else
             { <li class=''>@Html.ActionLink("Contact", "Contact", "Home")</li> }
+            if (ViewBag.Title == "Feedback")
+            { <li class='active'>@Html.ActionLink("Feedback", "Feedback", "Home")</li> }
+            else
+            { <li class=''>@Html.ActionLink("Feedback", "Feedback", "Home")</li> }
 
          
             /*drop down*/

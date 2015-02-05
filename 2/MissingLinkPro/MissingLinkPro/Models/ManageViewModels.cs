@@ -35,6 +35,13 @@ namespace IdentitySample.Models
         public string CardSummary { get; set; }
     }
 
+    public class FeedbackViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
     public class PayUpdateCreditCardViewModel
     {
         public bool HasCreditCard { get; set; }
