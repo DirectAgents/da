@@ -172,6 +172,8 @@ namespace MissingLinkPro.Models
         **/
         public ProcessHub(ParameterKeeper incoming)
         {
+            PingTime = incoming.LoadTime;
+            LoadTime = incoming.PingTime;
             ClientWebsiteParsed = new List<string>(); // Parsing list of websites to target
             ClientWebsite = incoming.ClientWebsite;
             ParsedResults = new List<SearchResult>();

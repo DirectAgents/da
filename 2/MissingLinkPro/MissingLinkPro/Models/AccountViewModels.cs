@@ -68,6 +68,9 @@ namespace IdentitySample.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

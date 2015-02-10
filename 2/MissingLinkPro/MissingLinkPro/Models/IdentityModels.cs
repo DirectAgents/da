@@ -16,6 +16,8 @@ namespace IdentitySample.Models
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        [Display(Name = "Company")]
+        public string CompanyName { get; set; }
         [Display(Name = "Searches This Month")]
         public int QueriesPerformed { get; set; }
         [Display(Name = "Total Lifetime Queries")]
@@ -34,6 +36,9 @@ namespace IdentitySample.Models
         public string CustomerId { get; set; }
         [Display(Name = "Subscription ID")]
         public string SubscriptionId { get; set; }
+
+        [Display(Name = "Account Created")]
+        public DateTime DateCreated { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

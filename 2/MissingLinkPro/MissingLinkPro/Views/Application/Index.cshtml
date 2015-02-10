@@ -4,6 +4,8 @@
     ViewBag.Title = "Begin Your Search";
 }
 
+@{ Html.RenderAction("SearchPageScripts", "Application"); }
+
 <!-- <form id="form" action="@Url.Action("Process")" method="post" novalidate> -->
 
 <div style="margin:20px;">
@@ -108,113 +110,4 @@
     </div>
 <br />
 <br />
-
-
-@* @using (Html.BeginForm("Process", "Application", FormMethod.Post, new { id = "form" }))
-{
-    @Html.ValidationSummary()
-
-    <table>
-        <tr>
-            <td>Search Query</td>
-            <!-- <td>@Html.EditorFor(m => m.BingSearchQuery)</td> -->
-            <td><input type="text" size ="65" name="BingSearchQuery" required></td>
-        </tr>
-        <tr>
-            <td>Phrase Search</td>
-            <td><input type="text" size = "65" name="PhraseSearchString"></td>
-            <!-- <td>@Html.EditorFor(m => m.PhraseSearchString)</td> -->
-        </tr>
-        <tr>
-            <td>Exclude Terms</td>
-            <td><input type="text" size = "65" name="ExcludeString"></td>
-            <!-- <td>@Html.EditorFor(m => m.ExcludeString)</td> -->
-        </tr>
-        <tr>
-            <td>Target Site to Scan for<br></td>
-            <td><input type="text" size="65" name="ClientWebsite" required></td>
-        </tr>
-        <tr>
-            <td>Number of Results to Scan<br>(max 1000)</td>
-            <td><input type="number" id="top" name="top" value="@Model.top" min="1" max="1000" onchange="calcETA()"></td>
-        </tr>
-            <tr>
-            <td>Type of Results</td>
-            <td><input type="radio" name="ResultType" value = "web" checked="checked">Web <input type="radio" name="ResultType" value = "news">News
-            </td>
-        </tr>
-        <tr>
-            <td>Exclude Results With Links to Target</td>
-            <td><input type="radio" name="ExcludeLinkbackResults" value = "true" checked="checked">Yes <input type="radio" name="ExcludeLinkbackResults" value = "false">No</td>
-        </tr>
-        <tr>
-            <td>Display Search Results</td>
-            <td><input type="radio" name="DisplayAllResults" value = "true" checked="checked">Yes <input type="radio" name="DisplayAllResults" value = "false">No</td>
-        </tr>
-        <tr>
-            <td>Start At Rank ID#<br>(max 1001)</td>
-            <td><input type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
-        </tr>
-        <tr>
-            <td><input type="image" src="~/Images/btn_search.gif" value ="Perform Search"></td>
-        </tr>
-    </table>
-    <input type="hidden" name="NewSession" value="true">
-}*@
-
-@*<p>Note: Results limited to the top 1000.</p>*@
-
 <br /><br />
-
-@section Scripts {
-<script type="text/javascript" src="~/Scripts/spin.js"></script>
-<script>
-    $(function () {
-        calcETA();
-        //debugger;
-    });
-
-    function getBaseLog(x, y) {
-        return Math.log(y) / Math.log(x);
-    }
-
-    function calcETA() {
-        var t = 6.0;        // Average time to scrape a page, taking into consideration faulty hanging links
-        // var t = 2.5;
-        var bing_t = 2.5;   // Average time for a call to Bing to retrieve results
-        var x = document.getElementById("top-input").value;
-        x = +x;
-        if (x < 0) x = 0;
-        var BingPages = ~~(x / 50);
-        if (x % 50 > 0) BingPages++;
-        //var z = (BingPages * bing_t) + ((x / 10) * t);
-        var z = (BingPages * bing_t) + t * Math.log(x);
-        z = Math.round(z * 100) / 100;
-        if (z < 0) z = 0;
-        document.getElementById("eta").innerHTML = "Estimated Time to Completion: " + z + " sec.";
-    }
-
-    function go() {
-        var opts = {
-            lines: 13, // The number of lines to draw
-            length: 20, // The length of each line
-            width: 10, // The line thickness
-            radius: 30, // The radius of the inner circle
-            corners: 1, // Corner roundness (0..1)
-            rotate: 0, // The rotation offset
-            direction: 1, // 1: clockwise, -1: counterclockwise
-            color: '#000', // #rgb or #rrggbb or array of colors
-            speed: 1, // Rounds per second
-            trail: 60, // Afterglow percentage
-            shadow: false, // Whether to render a shadow
-            hwaccel: false, // Whether to use hardware acceleration
-            className: 'spinner', // The CSS class to assign to the spinner
-            zIndex: 2e9, // The z-index (defaults to 2000000000)
-            top: '50%', // Top position relative to parent
-            left: '50%' // Left position relative to parent
-        };
-        var target = document.getElementById('app-body');
-        var spinner = new Spinner(opts).spin(target);
-    }
-</script>
-}

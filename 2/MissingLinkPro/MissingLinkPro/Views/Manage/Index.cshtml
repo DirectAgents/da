@@ -15,6 +15,10 @@
                     <td><p class="small">@Model.FirstName @Model.LastName</p></td>
                 </tr>
                 <tr>
+                    <td><p class="small">Company Name</p></td>
+                    <td><p class="small">@Model.CompanyName</p></td>
+                </tr>
+                <tr>
                     <td><p class="small">Email</p></td>
                     <td><p class="small">@Model.Email</p></td>
                 </tr>
@@ -53,6 +57,10 @@
                 <tr>
                 <td><p class="small">Time of Last Run</p></td>
                 <td><p class="small">@Model.DateTimeStamp</p></td>
+                </tr>
+                <tr>
+                <td><p class="small">Account Created</p></td>
+                <td><p class="small">@Model.DateCreated.Month/@Model.DateCreated.Day/@Model.DateCreated.Year</p></td>
                 </tr>
                 </table>
 @*        <p>

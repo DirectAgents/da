@@ -5,6 +5,9 @@
 }
 
 <section>
+
+    <p class="small" style="color:red;">@ViewBag.StatusMessage</p>
+
 <h2 class="topic">Edit User Form</h2>
 
 @using (Html.BeginForm()) {
@@ -59,6 +62,14 @@
             <div class="col-md-10">
                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
                @Html.ValidationMessageFor(model => model.LastName)
+            </div>
+            <br />
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompanyName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })
+               @Html.ValidationMessageFor(model => model.CompanyName)
             </div>
             <br />
         </div>

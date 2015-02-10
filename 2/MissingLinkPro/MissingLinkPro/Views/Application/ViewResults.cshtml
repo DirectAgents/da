@@ -2,9 +2,8 @@
 @{
     ViewBag.Title = "View Previous Search Results";
 }
-
+@{ Html.RenderAction("SearchPageScripts", "Application"); }
 @model MissingLinkPro.Models.ParameterKeeper
-
 <br />
 <div style="padding-left: 30px;">
     <table style="float:left; margin-right: -190px;">
@@ -64,7 +63,7 @@
     </tr>*@
     <tr>
     <td class="results-a"><p class="small">Number of Results Found:</p></td>
-        <td class="results-b"<p class="small">@Model.ParsedResults.Count()</p></td>
+        <td class="results-b"><p class="small">@Model.ParsedResults.Count()</p></td>
     </tr>
     @*<tr>
         <td class="results-a"><p class="small">Results Omitted:</p></td>
@@ -84,35 +83,11 @@
             <tr>
         <td><a href="@Url.Action("Index", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_back.gif")"/></a></td>
         <td><a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
-        <td><a href="@Url.Action("Process", "Application")" style="padding:5px;" onclick="go();"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
+        <td><a href="@Url.Action("Process", "Application")" onclick="go()" style="padding:5px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
                 </tr>
             </table>
     </div>
-}
-else {
-        <br><br><br><br>
-    <div style="margin-left:auto; margin-right:auto; text-align:center;">
-    <p>You haven't performed any recent searches.</p>
-        </div>
-    <div class="process-buttons" style="padding-top:30px;">
-        <table style="margin-left:auto; margin-right:auto;">
-            <tr>
-        <td><a href="@Url.Action("Index", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_back.gif")"/></a></td>
-                </tr>
-            </table>
-    </div>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br>
-}
-
-    @* @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
-    @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Process") *@
-
-    <br>
-@*    @if (Model.SearchErrorEncountered) {
-    <p>ERROR: @Model.SearchErrorMsg</p>
-    <br><br>
-    }*@
-        <table class="results-table">
+            <table class="results-table" id='app-body'>
         @if (Model.DisplayAllResults)
         {
           <tr>
@@ -172,18 +147,38 @@ else {
           }
         }
         </table>
-
-@if (Model.DisplayAllResults)
-{
-<div class="process-buttons" style="padding-top:30px;">
-    <table style="margin-left:auto; margin-right:auto;">
-        <tr>
-    <td><a href="@Url.Action("Index", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_back.gif")"/></a></td>
-    <td><a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
-    <td><a href="@Url.Action("Process", "Application")" style="padding:5px;" onclick="go();"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
-            </tr>
-        </table>
-</div>
+    <div class="process-buttons" style="padding-top:30px;">
+        <table style="margin-left:auto; margin-right:auto;">
+            <tr>
+        <td><a href="@Url.Action("Index", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_back.gif")"/></a></td>
+        <td><a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
+        <td><a href="@Url.Action("Process", "Application")" onclick="go()" style="padding:5px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
+                </tr>
+            </table>
+    </div>
 }
+else {
+        <br><br><br><br>
+    <div style="margin-left:auto; margin-right:auto; text-align:center;">
+    <p>You haven't performed any recent searches.</p>
+        </div>
+    <div class="process-buttons" style="padding-top:30px;">
+        <table style="margin-left:auto; margin-right:auto;">
+            <tr>
+        <td><a href="@Url.Action("Index", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_back.gif")"/></a></td>
+                </tr>
+            </table>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+}
+
+    @* @Html.ActionLink("Export All Mined Results to CSV", "ExportResults")<br>
+    @Html.ActionLink("Next Set of Results (Will Add to Overall Collection)", "Process") *@
+
+    <br>
+@*    @if (Model.SearchErrorEncountered) {
+    <p>ERROR: @Model.SearchErrorMsg</p>
+    <br><br>
+    }*@
 
     <br><br><br><br>

@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Attach Credit Card";
+}
+@model IdentitySample.Models.AttachCreditCardViewModel
+@section Scripts
+{
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  // This identifies your website in the createToken call below
+    Stripe.setPublishableKey('pk_test_bqotCuVYyt6dLMoMD4doOL6V');
+
+    var stripeResponseHandler = function (status, response) {
+        var $form = $('#payment-form');
+
+        if (response.error) {
+            // Show the errors on the form
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('button').prop('disabled', false);
+        } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+            // and re-submit
+            $form.get(0).submit();
+        }
+    };
+
+    jQuery(function ($) {
+        $('#payment-form').submit(function (event) {
+            var $form = $(this);
+            // Disable the submit button to prevent repeated clicks
+            $form.find('button').prop('disabled', true);
+
+            Stripe.card.createToken($form, stripeResponseHandler);
+
+            // Prevent the form from submitting with the default action
+            return false;
+        });
+    });
+
+</script>
+}
+
+<section>
+<p class="small">You are managing a credit card for a user with the email address @Model.Email.</p>
+    <p class="small">Current Credit Card: @Model.CreditCardLastFour</p>
+
+    @if (Model.HasCard) { <p>@Html.ActionLink("Delete Card", "DeleteCreditCard", "UsersAdmin", new { id = Model.Id }, null )</p> }
+
+    <div id="main">
+
+    <header>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="column full" style="padding-bottom:30px;">
+                    <h2 class="topic">Update Credit Card Information</h2>
+                    <p class="payment-errors">@ViewBag.StatusMessage</p>
+                </div>
+            </div>
+                    <form action="" method="POST" id="payment-form">
+                                  <span style="margin-left:auto; margin-right:auto; text-align:center;" class="payment-errors"></span>
+
+
+            <table class="credit-card-form">
+                   <tr>
+                    <th class="credit-card-form">Card Number</th>
+                    <td class="credit-card-form"><input type="text" size="30" data-stripe="number"/></td>
+                </tr>
+                <tr>
+                    <th class="credit-card-form" style="padding-right:4px;">Expiration (MM/YYYY) </th>
+                    <td class="credit-card-form"><input type="text" size="2" data-stripe="exp-month"/> / <input type="text" size="4" data-stripe="exp-year"/></td>
+                </tr>
+            </table>
+                        @Html.Hidden("Email", Model.Email)
+                        @Html.Hidden("Id", Model.Id)
+          <div style="margin:40px;"><button type="submit">Register New Card</button></div>
+        </form>
+            </div>
+        </header>
+        </div>
+</section>
+<br /><br /><br />

@@ -13,6 +13,15 @@ namespace IdentitySample.Models
         public string Name { get; set; }
     }
 
+    public class AttachCreditCardViewModel
+    {
+        public string Id { get; set; }
+        public string stripeToken { get; set; }
+        public string Email { get; set; }
+        public string CreditCardLastFour { get; set; }
+        public bool HasCard { get; set; }
+    }
+
     public class EditUserViewModel
     {
         public string Id { get; set; }
@@ -27,6 +36,9 @@ namespace IdentitySample.Models
 
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
 
         [Display(Name = "Runs Performed Today")]
         [Range(0, Int32.MaxValue, ErrorMessage = "This field cannot be less than 0.")]

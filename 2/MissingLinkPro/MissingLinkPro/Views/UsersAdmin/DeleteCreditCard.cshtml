@@ -1,0 +1,62 @@
+﻿@model IdentitySample.Models.PayUpdateCreditCardViewModel
+@{
+    ViewBag.Title = "Delete Credit Card";
+}
+
+@if (Model.HasCreditCard) {
+    
+        <div id="main">
+
+    <header>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="column full" style="padding-bottom:30px;">
+                    <h2 class="topic">Confirm Credit Card Deletion</h2>
+                    <p class="text-success">@ViewBag.StatusMessage</p>
+                    <p class="small">You are about to remove your credit card from your account. Do you wish to proceed?
+                     </p>
+                </div>
+            </div>
+            @using (Html.BeginForm("DeleteCreditCard", "UsersAdmin", FormMethod.Post, new { id = "form" }))
+            {
+                @Html.Hidden("Id", Model.Id);
+            <table class="credit-card-form">
+                <tr>
+                    <td class="credit-card-form" style="padding-right:30px;"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="true" /> Yes</h4></td>
+                    <td class="credit-card-form"><h4><input class="radio-btn" type="radio" name="DeleteCard" value="false" checked="checked" /> No</h4></td>
+                </tr>
+                <tr><td><br /></td></tr>
+                <tr>
+                    <td></td>
+                </tr>
+            </table>
+                <button type="submit" value="Cancel">Delete Credit Card</button>
+            }
+            </div>
+        </header>
+            </div>
+    <br /><br /><br /><br /><br /><br /><br /><br />
+}
+
+else {
+        <div id="main">
+
+    <header>
+        <div class="container">
+            <div class="row clearfix">
+                <div class="column full" style="padding-bottom:30px;">
+                    <h2 class="topic">Credit Card Not Found</h2>
+                    <p class="text-success">@ViewBag.StatusMessage</p>
+                    <p class="small">According to our systems, you do not currently have a credit card registered to your account.</p>
+                     <p class="small">If you believe that this is an error, refreshing the page may retrieve your credit card.
+                         If you continue to encounter this page and believe that this is incorrect, please contact an administrator for further assistance.
+                     </p>
+                </div>
+            </div>
+            </div>
+        </header>
+            </div>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+}
+    <br /><br />
+<br />

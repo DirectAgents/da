@@ -8,7 +8,7 @@
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B79E17C4-0436-4345-8396-462FD3261E58}</ProjectGuid>
-    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MissingLinkPro</RootNamespace>
@@ -248,6 +248,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\jquery.price_format.2.0.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -341,6 +342,10 @@
     <Compile Include="Migrations\201411121746249_SubscriptionId.cs" />
     <Compile Include="Migrations\201411121746249_SubscriptionId.Designer.cs">
       <DependentUpon>201411121746249_SubscriptionId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502091635086_CompanyAndCreationDate.cs" />
+    <Compile Include="Migrations\201502091635086_CompanyAndCreationDate.Designer.cs">
+      <DependentUpon>201502091635086_CompanyAndCreationDate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -439,6 +444,10 @@
     <Content Include="Views\Test\Cards.cshtml" />
     <Content Include="Views\Application\ViewResults.cshtml" />
     <Content Include="Views\Home\Feedback.cshtml" />
+    <Content Include="Views\Application\SearchPageScripts.cshtml" />
+    <Content Include="Views\UsersAdmin\AttachCreditCard.cshtml" />
+    <Content Include="Views\UsersAdmin\DeleteCreditCard.cshtml" />
+    <Content Include="Views\UsersAdmin\History.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -495,6 +504,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201411121746249_SubscriptionId.resx">
       <DependentUpon>201411121746249_SubscriptionId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502091635086_CompanyAndCreationDate.resx">
+      <DependentUpon>201502091635086_CompanyAndCreationDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

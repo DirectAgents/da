@@ -419,6 +419,7 @@ namespace IdentitySample.Controllers
                 if (user != null) 
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
+                user.CompanyName = model.CompanyName;
                 user.PhoneNumber = model.Number;
                 var userSynced = await UserManager.UpdateAsync(user);
                 if (!userSynced.Succeeded) return View("Error");
@@ -460,6 +461,7 @@ namespace IdentitySample.Controllers
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                CompanyName = user.CompanyName,
                 Email = user.Email,
                 Package = user.Package,
                 PhoneNumber = user.PhoneNumber,

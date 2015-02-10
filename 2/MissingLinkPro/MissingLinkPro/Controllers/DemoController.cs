@@ -13,23 +13,15 @@ namespace MissingLinkPro.Controllers
      * without any of the authentication restrictions and account checks.
      **/
     [AllowAnonymous]
-    public class DemoController : HttpsBaseController
+    public class DemoController: BaseController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
         public ActionResult Index()
         {
-            ParameterKeeper pk = new ParameterKeeper
-            {
-                top = 15,
-                skip = 1,
-                ExcludeLinkbackResults = true,
-                DisplayAllResults = true,
-                ResultType = "web",
-                MaxResultRange = 1000,
-                InitialSkip = 1
-            };
+            ParameterKeeper pk = new ParameterKeeper();
             return View(pk);
-        } // Index
+        }
 
         [HttpPost]
         public ActionResult Index(ParameterKeeper Parameters)
@@ -53,19 +45,6 @@ namespace MissingLinkPro.Controllers
             }
             else
                 Limit = new Integer { Value = 3 };      // Set the number of allowed runs per session here.
-
-            Setting PingTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "PingTime");
-            Setting LoadTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "LoadTime");
-            if (PingTime == null || LoadTime == null)
-            {
-                Engine.PingTime = 8000;
-                Engine.LoadTime = 15000;
-            }
-            else
-            {
-                Engine.PingTime = Convert.ToInt32(PingTime.Value);
-                Engine.LoadTime = Convert.ToInt32(LoadTime.Value);
-            }
             Engine.run();
             Limit.Value = Limit.Value - 1;
             Session["Limit"] = Limit;

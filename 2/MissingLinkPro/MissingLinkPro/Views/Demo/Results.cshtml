@@ -4,7 +4,7 @@
 
 @model MissingLinkPro.Models.ProcessHub
 
-@*  *@
+@{ Html.RenderAction("SearchPageScripts", "Application"); }
 <br>
 
 <div style="padding-left: 30px;">
@@ -147,10 +147,10 @@
 
           }
         }
-        @for (int i = 0; i < 10; i++)
+        @for (int i = 16; i <= 25; i++)
         {
           <tr>
-                    <td style="vertical-align:top; width:75px;"><b class="result-heading">??</b></td>
+                    <td style="vertical-align:top; width:75px;"><b class="result-heading">@i</b></td>
                     <td style="width:800px; max-width:800px; padding-right:10px;">
                         <p class="small"><a href="https://directlink.directagents.com/Account/Register/?subid=1" title="Sign up for an account today to unlock more features!">[Sign up for an account to see this result.]</a><br>
                         [Sign up for an account to see this result.]

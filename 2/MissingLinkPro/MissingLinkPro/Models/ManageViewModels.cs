@@ -17,11 +17,12 @@ namespace IdentitySample.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string CompanyName { get; set; }
         public string Email { get; set; }
         public bool HasFirstName { get; set; }
         public bool HasLastName { get; set; }
         public DateTime Anniversary { get; set; }
-
+        public DateTime DateCreated { get; set; }
         public DateTime DateTimeStamp { get; set; }
         public int QueriesPerformed { get; set; }
         public int TotalQueriesPerformed { get; set; }
@@ -46,6 +47,7 @@ namespace IdentitySample.Models
     {
         public bool HasCreditCard { get; set; }
         public Stripe.StripeCard Card { get; set; }
+        public string Id { get; set; }
 
         public bool HasMessage { get; set; }
         public string Message { get; set; }
@@ -58,6 +60,9 @@ namespace IdentitySample.Models
 
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
 
         [Phone]
         [Display(Name = "Phone Number")]

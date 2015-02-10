@@ -62,6 +62,7 @@ namespace IdentitySample.Controllers
         // GET: /Users/
         public async Task<ActionResult> Index()
         {
+            if (TempData["Message"] != null) ViewBag.StatusMessage = (string)TempData["Message"];
             return View(await UserManager.Users.ToListAsync());
         }
 
@@ -81,6 +82,138 @@ namespace IdentitySample.Controllers
         }
 
         //
+        // GET: /Users/AttachCreditCard
+        public async Task<ActionResult> AttachCreditCard(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var user = await UserManager.FindByIdAsync(id);
+            AttachCreditCardViewModel model = new AttachCreditCardViewModel { Email = user.Email, Id = id, stripeToken = null, CreditCardLastFour = "", HasCard = false };
+            if (StripeHelper.UserHasCreditCard(user))
+            {
+                model.HasCard = true;
+                StripeCard card = StripeHelper.GetCreditCard(user);
+                model.CreditCardLastFour = card.Brand + " ************" + card.Last4 + ", EXP " + card.ExpirationMonth + "/" + card.ExpirationYear;
+            }
+            else
+                model.CreditCardLastFour = "[None]";
+            return View(model);
+        }
+
+        public async Task<ActionResult> DeleteCreditCard(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            bool cardFound = StripeHelper.UserHasCreditCard(user);
+            PayUpdateCreditCardViewModel model = new PayUpdateCreditCardViewModel { HasCreditCard = cardFound, Id = id };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult> DeleteCreditCard(bool DeleteCard, string Id)
+        {
+            var user = await UserManager.FindByIdAsync(Id);
+            if (DeleteCard == true)
+            {
+                try
+                {
+                    user = StripeHelper.RemoveCreditCard(user);
+                }
+                catch (StripeException)
+                {
+                    return View("Error");
+                }
+                await UserManager.UpdateAsync(user);
+                TempData["Message"] = (string)"Card successfully deleted for " + user.Id + ".";
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        //
+        // POST: /Users/AttachCreditCard
+        [HttpPost]
+        public async Task<ActionResult> AttachCreditCard([Bind(Include = "Id,Email,stripeToken")] AttachCreditCardViewModel model)
+        {
+            var user = await UserManager.FindByIdAsync(model.Id);
+            user = StripeHelper.UpdateCreditCard(user, model.stripeToken);
+            StripeCard card = StripeHelper.GetCreditCard(user);
+            model.CreditCardLastFour = card.Brand + " ************" + card.Last4 + ", EXP " + card.ExpirationMonth + "/" + card.ExpirationYear;
+            model.HasCard = true;
+            await UserManager.UpdateAsync(user);
+            ViewBag.StatusMessage = "Credit card successfully updated.";
+            return View(model);
+        }
+
+        public async Task<ActionResult> History(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            StripeInvoiceListOptions silo = new StripeInvoiceListOptions();
+            silo.CustomerId = user.CustomerId;
+            var invoiceService = new StripeInvoiceService();
+            IEnumerable<StripeInvoice> response = AdjustInvoiceItems(invoiceService.List(silo));
+
+            // IEnumerable<StripeInvoice> response = invoiceService.List(silo);
+
+            //foreach (stripeinvoice si in response)
+            //{
+            //    stripeinvoiceitem[] array = si.stripeinvoicelines.stripeinvoiceitems.toarray();
+            //    for (int i = 0; i < array.length; i++)
+            //    {
+            //        if (array[i].description == null) array[i].description = "empty";
+            //    }
+            //}
+
+            //foreach (StripeInvoice si in response)
+            //{
+            //    displayln("Customer ID: " + si.CustomerId);
+            //    displayln("Subscription ID:  " + si.SubscriptionId);
+            //    displayln("Invoice Date: " + si.Date);
+            //    displayln("Period: " + si.PeriodStart.ToString() + " " + si.PeriodEnd.ToString());
+            //    displayln("Receipt Number: " + si.ReceiptNumber);
+            //    displayln("Amount Due: " + si.AmountDue.ToString());
+            //}
+            return View(new List<StripeInvoice>(response));
+        } // History
+        private List<StripeInvoice> AdjustInvoiceItems(IEnumerable<StripeInvoice> list)
+        {
+            List<StripeInvoice> StripeInvoiceList = list.ToList();
+            foreach (StripeInvoice si in StripeInvoiceList)
+            {
+                StripeInvoiceItem[] ItemArray = si.StripeInvoiceLines.StripeInvoiceItems.ToArray();
+                for (int i = 0; i < ItemArray.Length; i++)
+                {
+                    if (ItemArray[i].Description == null)
+                    {
+                        int caseSwitch = ItemArray[i].Amount.Value;
+                        switch (caseSwitch)
+                        {
+                            case 0:
+                                ItemArray[i].Description = "Freemium Subscription";
+                                break;
+                            case 1999:
+                                ItemArray[i].Description = "Bronze Subscription";
+                                break;
+                            case 3999:
+                                ItemArray[i].Description = "Silver Subscription";
+                                break;
+                            case 5999:
+                                ItemArray[i].Description = "Gold Subscription";
+                                break;
+                            case 9999:
+                                ItemArray[i].Description = "Platinum Subscription";
+                                break;
+                            default:
+                                ItemArray[i].Description = "Other";
+                                break;
+                        }
+                    }
+                }
+            }
+            return StripeInvoiceList;
+        } // AdjustInvoiceItems
+
+        //
         // GET: /Users/Create
         public async Task<ActionResult> Create()
         {
@@ -97,7 +230,7 @@ namespace IdentitySample.Controllers
             if (ModelState.IsValid)
             {
                 Package freemium = db.Packages.Find(1);                    // We assume that "1" corresponds to the Freemium plan stored in database.
-                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email, EmailConfirmed = true, FirstName = userViewModel.FirstName, LastName = userViewModel.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = freemium.Id };
+                var user = new ApplicationUser { UserName = userViewModel.Email, Email = userViewModel.Email, EmailConfirmed = true, FirstName = userViewModel.FirstName, LastName = userViewModel.LastName, CompanyName = userViewModel.CompanyName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = freemium.Id, DateCreated = DateTime.Now };
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
                 //Add User to the selected Roles 
@@ -162,6 +295,7 @@ namespace IdentitySample.Controllers
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                CompanyName = user.CompanyName,
                 CustomerId = user.CustomerId,
                 SubscriptionId = user.SubscriptionId,
                 QueriesPerformed = user.QueriesPerformed,
@@ -182,27 +316,60 @@ namespace IdentitySample.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,QueriesPerformed,PackageId,EmailConfirmed,CustomerId,SubscriptionId")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,FirstName,LastName,CompanyName,QueriesPerformed,PackageId,EmailConfirmed,CustomerId,SubscriptionId")] EditUserViewModel editUser, params string[] selectedRole)
         {
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByIdAsync(editUser.Id);
+                var userRoles = await UserManager.GetRolesAsync(user.Id);
                 if (user == null)
                 {
                     return HttpNotFound();
                 }
-
                 user.UserName = editUser.Email;
                 user.Email = editUser.Email;
                 user.FirstName = editUser.FirstName;
                 user.LastName = editUser.LastName;
+                user.CompanyName = editUser.CompanyName;
                 user.CustomerId = editUser.CustomerId;
                 user.SubscriptionId = editUser.SubscriptionId;
                 user.QueriesPerformed = editUser.QueriesPerformed;
                 if (editUser.PackageId != null)
                 {
                     if (user.PackageId != editUser.PackageId)
-                        user = StripeHelper.AdminChangePackagePlan(user, editUser.PackageId.Value);
+                    {
+                        try
+                        {
+                            user = StripeHelper.AdminChangePackagePlan(user, editUser.PackageId.Value);
+
+                        }
+                        catch (StripeException)
+                        {
+                            ViewBag.StatusMessage = "Subscription change failed. Double check and see if there is a valid credit card attached to the account.";
+                            ViewBag.PackageId = new SelectList(db.Packages, "Id", "Name", user.PackageId);
+                            return View(new EditUserViewModel()
+                            {
+                                Id = user.Id,
+                                Email = user.Email,
+                                FirstName = user.FirstName,
+                                LastName = user.LastName,
+                                CompanyName = user.CompanyName,
+                                CustomerId = user.CustomerId,
+                                SubscriptionId = user.SubscriptionId,
+                                QueriesPerformed = user.QueriesPerformed,
+                                TotalQueriesPerformed = user.TotalQueriesPerformed,
+                                LastQueryTime = user.DateTimeStamp,
+                                PackageId = user.PackageId,
+                                EmailConfirmed = user.EmailConfirmed,
+                                RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
+                                {
+                                    Selected = userRoles.Contains(x.Name),
+                                    Text = x.Name,
+                                    Value = x.Name
+                                })
+                            });
+                        }
+                    }
                 }
 
                 if (editUser.EmailConfirmed && !user.EmailConfirmed)    // Should only occur if user's email failed to confirm.
@@ -212,9 +379,6 @@ namespace IdentitySample.Controllers
                 }
 
                 user.EmailConfirmed = editUser.EmailConfirmed;
-
-                var userRoles = await UserManager.GetRolesAsync(user.Id);
-
                 selectedRole = selectedRole ?? new string[] { };
 
                 var result = await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray<string>());

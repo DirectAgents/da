@@ -6,6 +6,7 @@
 
 <section>
     <h2 class="topic">Users Admin</h2>
+    <p class="small" style="color:red;">@ViewBag.StatusMessage</p>
     <p>Click on UserName, FirstName, LastName, or Package to alphabetically sort all listed users.
         You may also click on Searches/Mo and Lifetime to sort by the number of searches your users have performed.</p>
     <p>You may manually enable EmailConfirmed for any users that do not receive a confirmation email.
@@ -18,35 +19,57 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table id="table" class="table" style="margin-left:auto; margin-right:auto; width: 1450px;">
+    <style>
+        a.sort {
+            text-decoration: none;
+        }
+        th {
+            padding-right:5px;
+            vertical-align:bottom;
+
+        }
+        td {
+            padding-right:5px;
+        }
+    </style>
+<table id="table" class="table" style="margin-left:auto; margin-right:auto; width: auto;">
     <thead>
         <tr>
-        <th data-sort="string" style="text-align:left;">@Html.DisplayNameFor(model => model.UserName)</th>
-        <th data-sort="string" style="text-align:left;">@Html.DisplayNameFor(model => model.FirstName)</th>
-        <th data-sort="string" style="text-align:left;">@Html.DisplayNameFor(model => model.LastName)</th>
-        <th data-sort="string" style="text-align:left;">@Html.DisplayNameFor(model => model.PackageId)</th>
-        <th style="text-align:left;">@Html.DisplayNameFor(model => model.EmailConfirmed)</th>
-        <th data-sort="int" style="text-align:left;">Searches/Mo</th>
-        <th data-sort="int" style="text-align:left;">Lifetime</th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.UserName)</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.FirstName)</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.LastName)</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.CompanyName)</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.PackageId)</a></th>
+        <th style="text-align:left;">Email<br />Confirmed</th>
+        @*<th style="text-align:left;">@Html.DisplayNameFor(model => model.EmailConfirmed)</th>*@
+        <th data-sort="int" style="text-align:left;"><a class="sort">Searches</a></th>
+        <th data-sort="int" style="text-align:left;"><a class="sort">Lifetime</a></th>
+        <th style="text-align:left;">Date Created</th>
         <th style="text-align:left;">Options</th>
         </tr>
     </thead>
     <tbody>
+    @{ int i = 0; }
     @foreach (var item in Model)
     {
         <tr>
-            <td>@Html.DisplayFor(modelItem => item.UserName)</td>
-            <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
-            <td>@Html.DisplayFor(modelItem => item.LastName)</td>
-            <td>@Html.DisplayFor(modelItem => item.Package.Name)</td>
-            <td>@Html.DisplayFor(modelItem => item.EmailConfirmed)</td>
-            <td>@Html.DisplayFor(modelItem => item.QueriesPerformed)</td>
-            <td>@Html.DisplayFor(modelItem => item.TotalQueriesPerformed)</td>
-            <td>@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.UserName)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.FirstName)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.LastName)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.Package.Name)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.EmailConfirmed)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.QueriesPerformed)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.TotalQueriesPerformed)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.DateCreated.Date.Month)/@Html.DisplayFor(modelItem => item.DateCreated.Date.Day)/@Html.DisplayFor(modelItem => item.DateCreated.Date.Year)</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                @Html.ActionLink("Card", "AttachCreditCard", new { id = item.Id }) |
+                @Html.ActionLink("Billing", "History", new { id = item.Id })
             </td>
         </tr>
+        { i+=1; }
     }
     </tbody>
 </table>

@@ -56,20 +56,7 @@ namespace MissingLinkPro.Controllers
 
             if (!user.EmailConfirmed)               // Email not confirmed
                 return View("EmailNotConfirmed", new ApplicationUser { Email = user.Email });
-
-            //if ((ParameterKeeper)Session["Params"] != null)  // If user is accessing Index page, any previous Session should be flushed.
-            //    Session["Params"] = null;
-
-            ParameterKeeper pk = new ParameterKeeper
-            {
-                top = 50,
-                skip = 1,
-                ExcludeLinkbackResults = true,
-                DisplayAllResults = true,
-                ResultType = "web",
-                MaxResultRange = 1000,
-                InitialSkip = 1
-            };
+            ParameterKeeper pk = new ParameterKeeper();
             return View(pk);
         }
 
@@ -205,18 +192,7 @@ namespace MissingLinkPro.Controllers
             }
             else
                 return View("Index", Parameters);
-            Setting PingTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "PingTime");
-            Setting LoadTime = db.Settings.SingleOrDefault(setting => setting.SettingName == "LoadTime");
-            if (PingTime == null || LoadTime == null)
-            {
-                Engine.PingTime = 8000;
-                Engine.LoadTime = 15000;
-            }
-            else
-            {
-                Engine.PingTime = Convert.ToInt32(PingTime.Value);
-                Engine.LoadTime = Convert.ToInt32(LoadTime.Value);
-            }
+
             Engine.run();
             updateResults(Engine, Parameters);      // Update results, save to session on next line.
             Session["Params"] = Parameters;
@@ -248,6 +224,12 @@ namespace MissingLinkPro.Controllers
                 Parameters.SearchErrorMsg = Engine.SearchErrorMsg;
             }
         } // updateResults
+
+        [AllowAnonymous]
+        public PartialViewResult SearchPageScripts()
+        {
+            return PartialView("SearchPageScripts");
+        }
 
         /**
          * Allows CSV Export of search results; called from webpage.

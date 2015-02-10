@@ -1,10 +1,8 @@
 ﻿@{
     ViewBag.Title = "Search Results";
 }
-
+@{ Html.RenderAction("SearchPageScripts", "Application"); }
 @model MissingLinkPro.Models.ProcessHub
-
-@*  *@
 <br>
 @*<p><h2>Results For This Run:</h2><br></p>
 <br>
@@ -97,12 +95,14 @@
 
 <p style="color:red;">@Html.Raw(ViewBag.StatusMessage)</p>
 
+
+
 <div class="process-buttons" style="padding-top:30px;">
     <table style="margin-left:auto; margin-right:auto;">
         <tr>
     <td><a href="@Url.Action("Index", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_back.gif")"/></a></td>
     <td><a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
-    <td><a href="@Url.Action("Process", "Application")" style="padding:5px;" onclick="go();"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
+    <td><a href="@Url.Action("Process", "Application")" onclick="go()" style="padding:5px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
             </tr>
         </table>
 </div>
@@ -115,7 +115,7 @@
     <p>ERROR: @Model.SearchErrorMsg</p>
     <br><br>
     }*@
-        <table class="results-table">
+        <table class="results-table" id='app-body'>
         @if (Model.DisplayAllResults)
         {
           <tr>
@@ -184,38 +184,9 @@
         <tr>
     <td><a href="@Url.Action("Index", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_back.gif")"/></a></td>
     <td><a href="@Url.Action("ExportResults", "Application")" style="padding:5px;"><img src="@Url.Content("~/Images/btn_export.gif")"/></a></td>
-    <td><a href="@Url.Action("Process", "Application")" style="padding:5px;" onclick="go();"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
+    <td><a href="@Url.Action("Process", "Application")" onclick="go()" style="padding:5px;"><img src="@Url.Content("~/Images/btn_next.gif")"/></a></td>
             </tr>
         </table>
 </div>
 }
     <br><br><br><br>
-
-@section Scripts {
-<script type="text/javascript" src="~/Scripts/spin.js"></script>
-<script>
-    function go() {
-        debugger;
-            var opts = {
-                lines: 13, // The number of lines to draw
-                length: 20, // The length of each line
-                width: 10, // The line thickness
-                radius: 30, // The radius of the inner circle
-                corners: 1, // Corner roundness (0..1)
-                rotate: 0, // The rotation offset
-                direction: 1, // 1: clockwise, -1: counterclockwise
-                color: '#000', // #rgb or #rrggbb or array of colors
-                speed: 1, // Rounds per second
-                trail: 60, // Afterglow percentage
-                shadow: false, // Whether to render a shadow
-                hwaccel: false, // Whether to use hardware acceleration
-                className: 'spinner', // The CSS class to assign to the spinner
-                zIndex: 2e9, // The z-index (defaults to 2000000000)
-                top: '50%', // Top position relative to parent
-                left: '50%' // Left position relative to parent
-            };
-            var target = document.getElementById('stats-table');
-            var spinner = new Spinner(opts).spin(target);
-        }
-</script>
-}
