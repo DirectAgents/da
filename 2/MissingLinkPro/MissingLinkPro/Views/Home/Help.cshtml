@@ -1,7 +1,15 @@
 ﻿@{
     ViewBag.Title = "Help";
 }
-
+<style type="text/css">
+#lists1, #lists2{border-top:1px solid #cfcfcf; padding-left:0px; list-style:none; margin-bottom:30px; margin-top:30px}
+#list-item{border-bottom:1px solid #cfcfcf; background: url('../images/arrow-bullet.jpg') no-repeat 0px 28px; padding-top:10px; padding-bottom:10px; margin-left:0px; padding-left:55px;}
+#list-item2{border-bottom:1px solid #cfcfcf; background: url('../images/arrow-bullet.jpg') no-repeat 0px 28px; padding-top:25px; padding-bottom:25px; margin-left:0px; padding-left:55px;}
+.ipad1{max-width:650px; margin-bottom:-9px;}
+.ipad2{max-width:650px; margin-bottom:-9px; margin-left:-70px;}
+.results{margin-top:-30px; max-width:650px;}
+.nike{max-width:650px; margin-top:10px;}
+</style>
 <section>
     <div class='container'>
         <div class='row clearfix'>
@@ -20,139 +28,111 @@
     </div>
 </section>
 
-<section>
-    <div class='container'>
-        <div class='row clearfix'>
-            <div class='column full'>
+        <section class="featureG" style="padding-bottom:4.5rem !important;">
+          <div class='container'>
+            <div class='row clearfix'>
+              <div class='column full' style="text-align:center;">
                 <h3>Why do we care about link building in the first place?</h3>
-                <p style='max-width: none'>
-                    Naturally obtaining popular and relevant sites to link to yours is one of the best ways to acquire a high ranking in online search
-                    results. According to the leading SEO blog MOZ, "link building is among the top tasks required for search ranking and traffic success."
-                    Gaining people who are writing about you to link to your site is extremely efficient and effective in building up your link profile.
-                </p>
-                <p style='max-width: none'>
-                    Basically, the more links you get to your site, the higher it shows up in search results. On top of that, your referral traffic will
-                    likely increase from people clicking through on the links!
-                </p>
+                <div class='column half'>
+                <ul id="lists1">
+                	<li id="list-item">Link building is simple: when another website links to yours, you've built a link.</li>
+                    <li id="list-item">The more links you have, the higher your website ranks on search engines such as Google.</li>
+                    <li id="list-item">The higher your website shows up in search results, the quicker people can find your website.</li>
+                </ul>
+                </div>
+                <div class='column half'>
+                <ul id="lists2">
+                	<li id="list-item">The quicker people find your site, the more traffic and revenue you will generate.</li>
+                    <li id="list-item2">Links also drive referral traffic to your site!</li>
+                    <li id="list-item">Link building is among the top tasks required for search ranking and traffic success.<sup>1</sup></li>
+                </ul>
+                </div>
+                <div style="font-size:14px; margin-top:20px"><sup>1</sup> According to the leading SEO blog, MOZ</div>
+              </div>
             </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </section>
 
-<section class='feature'>
-    <div class='container'>
-        <div class='row clearfix'>
-            <div class='column half'>
+         <section class='featureW'>
+          <div class='container'>
+            <div class='row clearfix'>
+              <div class='column half'>
                 <h3>Using DirectLink</h3>
-                <p>
-                    Enter your company or brand name under "Search Query" and your website under “Target Site to Scan for,” then click "Perform Search" to
-                    find your linkless mentions. For example, if you're looking for linkless mentions of "Nike," you would enter "Nike" into the "search
-                    query" field and nike.com into the "Target Site to Scan for" field like so:
-                </p>
-                <p>
-                    Now let's say that you want to make sure you don't get any results about the goddess Nike of Greek mythology. You can enter terms that are
-                    closely associated with the goddess Nike, such as "mythology" or "godess," in the "exclude terms" field to filter out those results.
-                </p>
+                <p>Enter your company or brand name under "Search Query" and your website under "Target Site to Scan for," then click "Perform Search" to find your linkless mentions. For example, if you're looking for linkless mentions of "Nike," you would enter "Nike" into the "search query" field and nike.com into the "Target Site to Scan for" field like so</p>
+              </div>
+              <div class='column half'>
+                <img alt='' src="~/Images/ipad1.jpg" class="ipad1">
+              </div>
             </div>
-            <div class='column half'>
-                <h3>&nbsp;</h3>
-                <img alt='' src='http://www.directagents.com/directlink/images/how-it-works1.jpg' style="max-width: 650px;">
-            </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </section>
 
-<section class='feature'>
-    <div class='container'>
-        <div class='row clearfix'>
-            <div class='column half'>
+         <section class='featureG'>
+          <div class='container'>
+            <div class='row clearfix'>
+           
+              <div class='column half' style="float:right; z-index:1; position:relative;">
                 <h3>Search Operators</h3>
                 <p>You can narrow down your search results even further by adding symbols and words in the "search query" field called search operators.</p>
-                <p>
-                    Search operators that can be useful here include:
-                    <ul>
-                        <li><b>intitle:</b> Returns webpages that contain the specified term in the metadata title of the site.</li>
-                        <li><b>site:</b> Returns webpages that belong to the specified site.</li>
-                    </ul>
-                </p>
-                <p>For example, using the following query:</p>
+                <p>For example, using the following query</p>
+              </div>
+               <div class='column half' style="float:left; z-index:-1;">
+                <img alt='' src="~/Images/ipad2.jpg" class="ipad2">
+              </div>
+              
             </div>
-            <div class='column half'>
-                <h3>&nbsp;</h3>
-                <img alt='' src='http://www.directagents.com/directlink/images/how-it-works2.jpg' style="max-width: 650px;">
-            </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </section>
 
-<section class='feature'>
-    <div class='container'>
-        <div class='row clearfix'>
-            <div class='column half'>
-                <p>...will search for webpages that mention "nike," are on a .edu domain, and have the word "sneakers" in the title, like these:</p>
+         <section class='featureW' style="padding-bottom:3.5rem !important;">
+          <div class='container'>
+            <div class='row clearfix'>
+              <div class='column half'>
+              <h3>&nbsp;</h3>
+                <p>...will search for webpages that mention "nike," are on a .edu domain, and have the word "sneakers" in the title, like these</p>
+              </div>
+              <div class='column half'>
+                <img alt='' src="~/Images/how-it-works3.jpg" class="results">
+              </div>
             </div>
-            <div class='column half'>
-                <img alt='' src='http://www.directagents.com/directlink/images/how-it-works3.jpg' style="max-width: 650px;">
-            </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </section>
 
-<section class='feature'>
-    <div class='container'>
-        <div class='row clearfix'>
+         <section class='featureG' style="padding-bottom:4.5rem !important;">
+          <div class='container'>
+            <div class='row clearfix'>
+            <center><h3>Outreach</h3></center>
             <div class='column half'>
-                <h3>Outreach</h3>
-                <p>
-                    After you've built your list of linkless mentions it's time to start reaching out to these websites to ask for links. One of the linkless
-                    mentions we found for Nike is from an article in the Daily News about
-                    <a href="http://www.nydailynews.com/news/national/nike-release-back-future-shoes-2015-article-1.2068815">Back to the Future brand power lace shoes</a>.
-                </p>
-                <p>If you scan the page or look in the source code, you'll see that there is indeed no link to nike.com.</p>
-                <p>
-                    Now comes the fun, creative, and challenging part &mdash; outreach. There are many approaches to this type of outreach, and there's no one correct
-                    way to do this, but the general idea is that you want to send an email to the author, editor, webmaster, or anyone else who would be able to
-                    add a link to the article for you.
-                </p>
+                <img alt='' src="~/Images/nike.jpg" class="nike">
+              </div>
+              <div class='column half'>
+                <p>After you've built your list of linkless mentions it's time to start reaching out to these websites to ask for links. One of the linkless mentions we found for Nike is from an article in the Daily News about <a href="http://www.nydailynews.com/news/national/nike-release-back-future-shoes-2015-article-1.2068815" target="_blank">Back to the Future brand power lace shoes</a>.
+<br><br>
+If you scan the page or look in the source code, you'll see that there is indeed no link to nike.com.
+<br><br>
+Now comes the fun, creative, and challenging part — outreach. There are many approaches to this type of outreach, and there's no one correct way to do this, but the general idea is that you want to send an email to the author, editor, webmaster, or anyone else who would be able to add a link to the article for you.</p>
+              </div>
+              
             </div>
-            <div class='column half'>
-                <h3>&nbsp;</h3>
-                <img alt='' src='http://www.directagents.com/directlink/images/how-it-works4.jpg' style="max-width: 650px;">
+          </div>
+        </section>
+<section class='featureW' style="padding-bottom:3.5rem !important;">
+          <div class='container'>
+            <div class='row clearfix'>
+              <div class='column half'>
+              <h3>Want us to do the work for you?</h3>
+                <p>At Direct Agents, high-level link building for modern SEO is our specialty. Contact us at <a href="mailto:info@directagents.com">info@directagents.com</a> or give us a call at <a href="tel://212 925 6558">212.925.6558</a> for more information on how Direct Agents can use link building to grow your business.</p>
+              </div>
+              <div class='column half' style="text-align:center; height:200px; background-image:url('../Images/symbol.jpg'); background-position:center; background-repeat:no-repeat;">
+                <div class='signup'>
+                  <a class='button' href='https://directlink.directagents.com/Demo' title='GET STARTED!' style="width:250px; margin-top:13%">
+                    GET STARTED!
+                  </a>
+                </div>
+              </div>
             </div>
-        </div>
-        <div class='row clearfix'>
-            <div class='column full'>
-                <p style='max-width: none'>
-                    Searching for "contact us" is usually the quickest way to find contact information, but websites can have contact information in many
-                    different places, and some don't have contact information at all. If this is the case, try to think outside of the box and find the contact
-                    information anyway. For example, some businesses or websites will have their contact information on their FaceBook page but not their website.
-                </p>
-                <p style='max-width: none'>Spend some time writing customized and thoughtful outreach letters to increase your response rate.</p>
-                <p style='max-width: none'>
-                    If you're going to be emailing a lot of websites, you might want to create a template to work from. Make sure you customize the template for
-                    each email &mdash; this will increase your response rate because your emails won't seem automated.
-                </p>
-                <p style='max-width: none'>Here's an example of a template:</p>
-                <p>
-                    Subject: Edit Request
-                    <br /><br />
-                    Hello [Name],
-                    <br /><br />
-                    My name is [Name2], and I'm a writer for [Company]. Thanks for writing about us on [URL]!
-                    <br /><br />
-                    If it's not too much trouble, would you mind adding a link to our site? [Your website URL]
-                    <br /><br />
-                    Thanks for your time!
-                    <br /><br />
-                    Warmly,<br />
-                    [Signature]
-                </p>
-                <p style='max-width: none'>If you can offer an incentive, for example, a shout out on one of your social networks, that will increase your response rate even more!</p>
-                <p style='max-width: none'>Lastly, try to be as cordial as possible and maintain relationships with your new contacts &mdash; you never know when you might need their help again.</p>
-            </div>
-        </div>
-    </div>
-</section>
+          </div>
+        </section>
 
 <section class="feature">
     <div class="container">

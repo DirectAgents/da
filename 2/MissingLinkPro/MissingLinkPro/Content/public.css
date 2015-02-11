@@ -125,6 +125,9 @@ fieldset {
 	margin:0 2px;
 	padding:0.35em 0.625em 0.75em
 }
+.featureG{ background-color:#f6f7fa; padding-bottom:0px !important;}
+.featureW{ background-color:#ffffff; padding-bottom:0px !important;}
+
 legend {
 	border:0;
 	padding:0
@@ -204,7 +207,7 @@ background-repeat:no-repeat;
 	color:#25a3da; 
 	line-height:18px;
 }
-.signup_container a.button {
+.signup_container a.button, .featureW a.button {
   	background: #feaf49;
   	background-image: -webkit-linear-gradient(top, #feaf49, #e39d41);
   	background-image: -moz-linear-gradient(top, #feaf49, #e39d41);
@@ -222,7 +225,7 @@ background-repeat:no-repeat;
   	text-decoration: none;
 }
 
-.signup_container a.button:hover {
+.signup_container a.button:hover, .featureW a.button:hover {
   background: #e39d41;
   background-image: -webkit-linear-gradient(top, #e39d41, #feaf49);
   background-image: -moz-linear-gradient(top, #e39d41, #feaf49);
@@ -1801,4 +1804,15 @@ section#announcement img {
 	background-image:url('/images/fancybox/fancybox_loading@2x.gif');
 	background-size:24px 24px
 }
+
+}
+
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) 
+and (orientation : portrait) {	
+
+.directlinkapp{font-size:28px !important;}
+
 }

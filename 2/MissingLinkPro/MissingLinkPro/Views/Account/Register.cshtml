@@ -11,7 +11,7 @@
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script type="text/javascript">
   // This identifies your website in the createToken call below
-    Stripe.setPublishableKey('pk_test_bqotCuVYyt6dLMoMD4doOL6V');
+    Stripe.setPublishableKey('pk_live_8cjIne0yMykXUdzIEBdC4dMz');
 
     var stripeResponseHandler = function (status, response) {
         var $form = $('#payment-form');
@@ -132,6 +132,10 @@ div.terms strong {color:#000;}
         <td>@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</td>
     </tr>
     <tr>
+        <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.CompanyName, new { @class = "col-md-2 control-label" })</p></td>
+        <td>@Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control" })</td>
+    </tr>
+    <tr>
         <td class ="register-left-col"><p class="small">@Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })</p></td>
         <td>@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })</td>
     </tr>
@@ -200,7 +204,7 @@ div.terms strong {color:#000;}
             <p>8.	You expressly agree not to attempt to reproduce, redistribute, duplicate, copy, sell, resell, or exploit any portion of the Service or the information obtained from it, use of the Service, or access to the Service without the express prior written permission of Direct Agents.</p>
             <p>9.	Direct Agents in no way warrants the following: (i) the Service will meet your specific or desired requirements, (ii) the Service will be uninterrupted, timely, secure, or error-free, (iii) the results that may be obtained from the use of the Service will be accurate or reliable, (iv) the quality of any products, services, information, or other material purchased or obtained by you through the Service will meet your expectations, and (v) any errors in the Service will be corrected.</p>
             <p>10.	DIRECT AGENTS SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES (EVEN IF DIRECT AGENTS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES), RESULTING FROM: (I) THE USE OR THE INABILITY TO USE THE SERVICE, (II) THE COST OF PROCUREMENT OF SUBSTITUTE GOODS AND SERVICES RESULTING FROM ANY GOODS, DATA, INFORMATION OR SERVICES PURCHASED OR OBTAINED OR MESSAGES RECEIVED OR TRANSACTIONS ENTERED INTO THROUGH OR FROM THE SERVICE, (III) UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR TRANSMISSIONS OR DATA, (IV) STATEMENTS OR CONDUCT OF ANY THIRD PARTY ON THE SERVICE, (V) OR ANY OTHER MATTER RELATING TO THE SERVICES CONTEMPLATED HEREIN.</p>
-            <p>11.	The look and feel of the Service is copyright © 2014 Direct Agents, Inc.  All rights reserved. You may not duplicate, copy, or reuse any portion of the CSS or visual design elements without express written permission from Direct Agents.</p>
+            <p>11.	The look and feel of the Service is copyright © 2015 Direct Agents, Inc.  All rights reserved. You may not duplicate, copy, or reuse any portion of the CSS or visual design elements without express written permission from Direct Agents.</p>
             <p>12.	The failure of Direct Agents to exercise or enforce any right or provision of the Terms of Service shall in no way constitute a waiver of such right or provision.  The Terms of Service constitutes the entire agreement between you and Direct Agents and govern use of the Service.  These Terms of Service supersede any prior agreements between you and Direct Agents (including, but not limited to, any prior versions of the Terms of Service).</p>
             <p>13.	Indemnification: You agree to defend, indemnify, and hold Direct Agents and any affiliates harmless from and against any and all claims, demands, actions, liabilities, costs, or damages arising out of your use of the Service or your violation of the Terms of Service.  You further agree to pay attorneys fees and costs arising from any actions or claims hereunder and those incurred in establishing the applicability of this section.</p>
         <br />

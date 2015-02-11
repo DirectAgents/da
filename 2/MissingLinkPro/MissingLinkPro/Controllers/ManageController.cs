@@ -468,6 +468,7 @@ namespace IdentitySample.Controllers
                 QueriesPerformed = user.QueriesPerformed,
                 DateTimeStamp = user.DateTimeStamp,
                 Anniversary = user.Anniversary,
+                DateCreated = user.DateCreated,
                 HasPassword = HasPassword(),
                 CustomerId = user.CustomerId,
                 SubscriptionId = user.SubscriptionId,

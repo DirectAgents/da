@@ -63,7 +63,18 @@ namespace IdentitySample.Controllers
         public async Task<ActionResult> Index()
         {
             if (TempData["Message"] != null) ViewBag.StatusMessage = (string)TempData["Message"];
-            return View(await UserManager.Users.ToListAsync());
+
+            UserAdminViewModel model = new UserAdminViewModel { Users = await UserManager.Users.ToListAsync() };
+            model.IsAdmin = new bool[model.Users.Count];
+            for (int i = 0; i < model.Users.Count; i++)
+            {
+                IList<string> roles = await UserManager.GetRolesAsync(model.Users[i].Id);
+                if (roles.Count > 0) model.IsAdmin[i] = true;
+                else model.IsAdmin[i] = false;
+            }
+            return View(model);
+
+            //return View(await UserManager.Users.ToListAsync());
         }
 
         //

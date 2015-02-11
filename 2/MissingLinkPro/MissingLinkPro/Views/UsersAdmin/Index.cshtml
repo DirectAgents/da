@@ -1,4 +1,5 @@
-﻿@model IEnumerable<IdentitySample.Models.ApplicationUser>
+﻿@*@model IEnumerable<IdentitySample.Models.ApplicationUser>*@
+@model IdentitySample.Models.UserAdminViewModel
 
 @{
     ViewBag.Title = "Users Admin";
@@ -7,13 +8,14 @@
 <section>
     <h2 class="topic">Users Admin</h2>
     <p class="small" style="color:red;">@ViewBag.StatusMessage</p>
-    <p>Click on UserName, FirstName, LastName, or Package to alphabetically sort all listed users.
-        You may also click on Searches/Mo and Lifetime to sort by the number of searches your users have performed.</p>
+    <p>Click on Admin, UserName, FirstName, LastName, or Package to alphabetically sort all listed users.
+        You may also click on Searches and Lifetime to sort by the number of searches your users have performed.</p>
     <p>You may manually enable EmailConfirmed for any users that do not receive a confirmation email.
-        You may also manually change their Package setting, even when there isn't a credit card present.
+        You may also manually change their Package settings. However, you cannot assign a user a paid subscription without a credit card attached to their account.
+        Click on Card to manage their card options.
     </p>
     <p>500 Internal Server Errors typically occur if a CustomerId or SubscriptionId doesn't match what it sees on Stripe's end.
-        You may manually edit your user's IDs if needed.
+        If you get this error, check their IDs on Stripe's end and manually edit your user's IDs if needed.
     </p>
 <div class="" style="padding:50px;">
 <p>
@@ -28,6 +30,9 @@
             vertical-align:bottom;
 
         }
+        td.center {
+            text-align:center;
+        }
         td {
             padding-right:5px;
         }
@@ -35,12 +40,13 @@
 <table id="table" class="table" style="margin-left:auto; margin-right:auto; width: auto;">
     <thead>
         <tr>
-        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.UserName)</a></th>
-        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.FirstName)</a></th>
-        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.LastName)</a></th>
-        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.CompanyName)</a></th>
-        <th data-sort="string" style="text-align:left;"><a class="sort">@Html.DisplayNameFor(model => model.PackageId)</a></th>
-        <th style="text-align:left;">Email<br />Confirmed</th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">Admin</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">User</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">FirstName</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">LastName</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">Company</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">Package</a></th>
+        <th data-sort="string" style="text-align:left;"><a class="sort">Email<br />Confirmed</a></th>
         @*<th style="text-align:left;">@Html.DisplayNameFor(model => model.EmailConfirmed)</th>*@
         <th data-sort="int" style="text-align:left;"><a class="sort">Searches</a></th>
         <th data-sort="int" style="text-align:left;"><a class="sort">Lifetime</a></th>
@@ -50,23 +56,30 @@
     </thead>
     <tbody>
     @{ int i = 0; }
-    @foreach (var item in Model)
+    @for (int j = 0; j < Model.Users.Count; j++)
     {
         <tr>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.UserName)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.FirstName)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.LastName)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.CompanyName)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.Package.Name)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.EmailConfirmed)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.QueriesPerformed)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.TotalQueriesPerformed)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.DisplayFor(modelItem => item.DateCreated.Date.Month)/@Html.DisplayFor(modelItem => item.DateCreated.Date.Day)/@Html.DisplayFor(modelItem => item.DateCreated.Date.Year)</td>
-            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
-                @Html.ActionLink("Card", "AttachCreditCard", new { id = item.Id }) |
-                @Html.ActionLink("Billing", "History", new { id = item.Id })
+            <td class="center" @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@if (Model.IsAdmin[j] == true) { <text>Y</text> } </td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].Email</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].FirstName</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].LastName</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].CompanyName</td>
+            <td @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].Package.Name</td>
+            <td class="center" @if (i%2 == 0) { <text>style="background-color:#ededed;"</text> }>@if (Model.Users[j].EmailConfirmed) { <text>Y</text> }
+                                                                                  else
+                                                                                  { <text>N</text> }</td>
+            <td @if (i % 2 == 0)
+                { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].QueriesPerformed</td>
+            <td @if (i % 2 == 0)
+                { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].TotalQueriesPerformed</td>
+            <td @if (i % 2 == 0)
+                { <text>style="background-color:#ededed;"</text> }>@Model.Users[j].DateCreated.Date.Month/@Model.Users[j].DateCreated.Date.Day/@Model.Users[j].DateCreated.Date.Year</td>
+            <td @if (i % 2 == 0)
+                { <text>style="background-color:#ededed;"</text> }>@Html.ActionLink("Edit", "Edit", new { id = Model.Users[j].Id }) |
+                @Html.ActionLink("Details", "Details", new { id = Model.Users[j].Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = Model.Users[j].Id }) |
+                @Html.ActionLink("Card", "AttachCreditCard", new { id = Model.Users[j].Id }) |
+                @Html.ActionLink("Billing", "History", new { id = Model.Users[j].Id })
             </td>
         </tr>
         { i+=1; }

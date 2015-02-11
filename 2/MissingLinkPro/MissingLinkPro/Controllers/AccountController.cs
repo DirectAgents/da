@@ -42,11 +42,13 @@ namespace IdentitySample.Controllers
             }
         }
 
+        /**
+         * Loads a "middle-man" page where an onload() script logs the user off.
+         **/
         [AllowAnonymous]
         public ActionResult LogoutCmd() {
             return View();
         }
-
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -151,7 +153,6 @@ namespace IdentitySample.Controllers
             ViewBag.SubId = subid;
             return View();
         }
-
         //
         // POST: /Account/Register
         [HttpPost]
@@ -165,7 +166,7 @@ namespace IdentitySample.Controllers
                 if (!model.TOS) { return View(model); }
 
                 Package AssignThis = db.Packages.Find(model.ChosenSubscriptionId);                    // We assume that "1" corresponds to the Freemium plan stored in database.
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = AssignThis.Id };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, CompanyName = model.CompanyName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = AssignThis.Id };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -237,7 +238,7 @@ namespace IdentitySample.Controllers
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 string msg = "We successfully received your Forgotten Password inquiry and you may now proceed to the next step. Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>";
 
-                await UserManager.SendEmailAsync(user.Id, "DirectLink | Password Reset Instructions", msg);
+                await UserManager.SendEmailAsync(user.Id, "Direct Agents: DirectLink | Password Reset Instructions", msg);
                 ViewBag.Link = callbackUrl;
                 return View("ForgotPasswordConfirmation");
             }

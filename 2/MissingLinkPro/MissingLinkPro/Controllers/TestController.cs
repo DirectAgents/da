@@ -55,49 +55,56 @@ namespace MissingLinkPro.Controllers
          * This is to be used once. After switching Stripe to Live Mode, run this method to use the local DB entries
          * to generate new customers in Stripe's database. Method will also update local DB with new CustomerId and
          * SubscriptionId entries.
+         * 
+         * NOTE: THIS METHOD WAS RAN ONCE AT 1:23PM, 02/10/2015.
          **/
-        [Authorize(Roles = "Admin")]
-        public ActionResult CreateLiveAccounts()
-        {
-            CreateFreemiumLive();                               // Create a Freemium plan if one does not exist.
-            List<ApplicationUser> Users = db.Users.ToList();    // This will retrieve a full list of email addresses for us.
+        //[Authorize(Roles = "Admin")]
+        //public ActionResult CreateLiveAccounts()
+        //{
+        //    //CreateFreemiumLive();                               // Create a Freemium plan if one does not exist.
+        //    List<ApplicationUser> Users = db.Users.ToList();    // This will retrieve a full list of email addresses for us.
 
-            foreach (ApplicationUser u in Users)
-            {
-                if (!u.EmailConfirmed) continue;  // Skip unconfirmed accounts.
+        //    foreach (ApplicationUser u in Users)
+        //    {
+        //        if (!u.EmailConfirmed) continue;  // Skip unconfirmed accounts.
 
-                ApplicationUser user = db.Users.SingleOrDefault(select => select.Email == u.Email);
-                var myCustomer = new StripeCustomerCreateOptions();
-                myCustomer.PlanId = "1";
-                myCustomer.Email = u.Email;
-                var customerService = new StripeCustomerService();
-                StripeCustomer stripeCustomer = customerService.Create(myCustomer);
-                user.CustomerId = stripeCustomer.Id;
+        //        ApplicationUser user = db.Users.SingleOrDefault(select => select.Email == u.Email);
+        //        var myCustomer = new StripeCustomerCreateOptions();
+        //        myCustomer.PlanId = "1";
+        //        myCustomer.Email = u.Email;
+        //        var customerService = new StripeCustomerService();
+        //        StripeCustomer stripeCustomer = customerService.Create(myCustomer);
+        //        user.CustomerId = stripeCustomer.Id;
 
-                var subscriptionService = new StripeSubscriptionService();      // Retrieve new subscription.
-                user.SubscriptionId = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).Id;    // Assign SubscriptionId to DB entry.
-                user.DateTimeStamp = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).PeriodStart.Value;
-                user.Anniversary = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).PeriodStart.Value;
-                user.QueriesPerformed = 0;
-                user.TotalQueriesPerformed = 0;
-                user.IsActive = true;
-                user.PackageId = 1;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-            return Content("OK");
-        }
+        //        var subscriptionService = new StripeSubscriptionService();      // Retrieve new subscription.
+        //        user.SubscriptionId = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).Id;    // Assign SubscriptionId to DB entry.
+        //        user.DateTimeStamp = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).PeriodStart.Value;
+        //        user.Anniversary = stripeCustomer.StripeSubscriptionList.StripeSubscriptions.ElementAt(0).PeriodStart.Value;
+        //        user.QueriesPerformed = 0;
+        //        user.TotalQueriesPerformed = 0;
+        //        user.IsActive = true;
+        //        user.PackageId = 1;
+        //        db.Entry(user).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //    }
+        //    return Content("OK");
+        //}
 
         [AllowAnonymous]
         public ActionResult IDKFA()
         {
             return Content("ALL WEAPONS, KEYS, AMMO UNLOCKED");
         }
-
         [AllowAnonymous]
-        public ActionResult Cards()
+        public ActionResult IDDQD()
         {
-            return View();
+            return Content("GOD MODE ACTIVATED");
         }
+
+        //[AllowAnonymous]
+        //public ActionResult Cards()
+        //{
+        //    return View();
+        //}
 	}
 }

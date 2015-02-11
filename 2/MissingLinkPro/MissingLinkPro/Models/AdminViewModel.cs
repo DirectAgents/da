@@ -22,6 +22,12 @@ namespace IdentitySample.Models
         public bool HasCard { get; set; }
     }
 
+    public class UserAdminViewModel
+    {
+        public List<IdentitySample.Models.ApplicationUser> Users { get; set; }
+        public bool[] IsAdmin { get; set; }
+    }
+
     public class EditUserViewModel
     {
         public string Id { get; set; }

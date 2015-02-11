@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace MissingLinkPro.Models
 {
     /**
-    * The model ProcessHub serves as the central point for all of the computing that takes place in the software.
+    * The model ProcessHub serves as the central engine for all of the computing that takes place in the software.
     **/
     public class ProcessHub
     {
@@ -122,8 +122,10 @@ namespace MissingLinkPro.Models
             List<string> temp = new List<string>();
             for (int i = 0; i < websites.Length; i++)
             {
-                if (websites[i].Length >= 4 && websites[i].Substring(0, 4).Equals("http"))
-                    websites[i] = websites[i].Substring(4, websites.Length - 1);
+                if (websites[i].Length >= 7 && websites[i].Substring(0, 7).Equals("http://"))
+                    websites[i] = websites[i].Substring(7, websites[i].Length - 7);
+                else if (websites[i].Length >= 8 && websites[i].Substring(0, 8).Equals("https://"))
+                    websites[i] = websites[i].Substring(8, websites[i].Length - 8);
                 string[] breakdown = websites[i].Split('.');
                 if (breakdown.Length <= 1)   // a single name was provided, nothing more; very vague.
                 {
@@ -451,7 +453,7 @@ namespace MissingLinkPro.Models
                             }
                         }
                     }
-                    catch (TaskCanceledException e)
+                    catch (TaskCanceledException)
                     {
                         ParsedResults[i].ExceptionFound = true;
                         ParsedResults[i].ErrorMsg = "TimeOut: page took an excessive amount of time to load.";
@@ -510,7 +512,6 @@ namespace MissingLinkPro.Models
                 {
                     DebugHelper.displayln("[" + i + "] Invalid Operation Exception: " + ParsedResults[i].Url + " >> " + e.Message);
                 }
-
                 ParsedResults[i].Scraped = true;
             }
             DebugHelper.display("Index Range: [" + x + ", " + y + "], ");
@@ -565,7 +566,7 @@ namespace MissingLinkPro.Models
             }
             Done = true;
             DebugHelper.displayln("Task complete.");
-        }
+        } // LoadToStringAsync
         /**
         * A shortcut method for scraping a single index as opposed to batches.
         **/
