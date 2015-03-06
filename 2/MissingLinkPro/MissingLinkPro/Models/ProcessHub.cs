@@ -468,8 +468,8 @@ namespace MissingLinkPro.Models
                         Match match = null;
                         foreach (string s in ClientWebsiteParsed)
                         {
-                                regex = new Regex(s, RegexOptions.None, new TimeSpan(0, 0, 10));
-                                match = regex.Match(pageData);
+                            regex = new Regex(s, RegexOptions.IgnoreCase, new TimeSpan(0, 0, 10));
+                            match = regex.Match(pageData);
                             if (match.Success)
                             {
                                 ParsedResults[i].LinksToClientWebsite = true;

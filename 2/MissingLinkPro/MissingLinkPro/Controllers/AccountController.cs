@@ -166,7 +166,7 @@ namespace IdentitySample.Controllers
                 if (!model.TOS) { return View(model); }
 
                 Package AssignThis = db.Packages.Find(model.ChosenSubscriptionId);                    // We assume that "1" corresponds to the Freemium plan stored in database.
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, CompanyName = model.CompanyName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = AssignThis.Id };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, CompanyName = model.CompanyName, TotalQueriesPerformed = 0, QueriesPerformed = 0, DateTimeStamp = DateTime.Now, Anniversary = DateTime.Now, PackageId = AssignThis.Id, DateCreated = DateTime.Now };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

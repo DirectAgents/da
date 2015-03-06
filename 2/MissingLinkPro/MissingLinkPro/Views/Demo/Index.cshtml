@@ -23,41 +23,41 @@
             <td class="app-column">Search Query
                 <span style="cursor:Pointer;" title="Type in whatever it is you are looking for when using a search engine.">
                     <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'"><img src="~/Images/question_blob.png" /></a>
-                    </span>
+                </span>
             </td>
             <td class="app-column">Target Site to Scan for <span style="cursor:Pointer;" title="Type in the website that you are scanning your results for linkbacks to. Please include subdomain prefix if one exists."><img src="~/Images/question_blob.png" /></span></td>
-            @*<td>Phrase Search</td>*@
         </tr>
         <tr class="app-row">
-            <td class="app-column"><input class="form-field" type="text" size ="45" name="BingSearchQuery" placeholder="e.g. &quot;16 Handles&quot;" required></td>
-            @*<td><input class="form-field" type="text" size = "65" name="PhraseSearchString"></td>*@
+            <td class="app-column"><input class="form-field" type="text" size="45" name="BingSearchQuery" placeholder="e.g. &quot;16 Handles&quot;" required></td>
             <td class="app-column"><input class="form-field" type="text" size="45" name="ClientWebsite" placeholder="e.g. 16handles.com" required></td>
         </tr>
+
         <tr class="app-row">
             <td class="app-column">Exclude Terms <span style="cursor:Pointer;" title="Type in whatever terms you wish for the search engine to exclude from your search."><img src="~/Images/question_blob.png" /></span></td>
-            @*<td>Target Site To Scan For</td>*@
         </tr>
         <tr class="app-row">
-            <td class="app-column"><input class="form-field" type="text" size = "45" name="ExcludeString"></td>
-            @*<td><input class="form-field" type="text" size="65" name="ClientWebsite" required></td>*@
+            <td class="app-column"><input class="form-field" type="text" size="45" name="ExcludeString"></td>
         </tr>
+
         <tr>
             <td style="line-height:20px; padding-top:10px;">Start At Search Rank#<br><p style="font-size:small; padding-bottom:12px;"><b>(Max: Rank 1001)</b></p></td>
-        </tr>
-            <tr>
-            <td class="app-column"><input type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
-
+            <td class="app-column">Type of Results</td>
         </tr>
         <tr>
-             <td class="app-column">Type of Results</td>
-             <td>
-                 <table>
-                     <tr>
-                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "news"checked="checked"> News</td>
-                         <td class="app-radio-btn"><input class="radio-btn" type="radio" name="ResultType" value = "web"> Web</td>
-                     </tr>
-                 </table>
-             </td>
+            <td class="app-column"><input type="number" value="@Model.skip" min="1" max="1001" name="skip"></td>
+            <td class="app-column">
+                <input class="radio-btn" type="radio" name="ResultType" value = "news"checked="checked"> News
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="radio-btn" type="radio" name="ResultType" value = "web"> Web
+            </td>
+        </tr>
+
+        <tr class="app-row">
+            <td class="app-column"><br />Please provide your email address</td>
+        </tr>
+        <tr class="app-row">
+            <td class="app-column"><input class="form-field" type="text" size="45" name="Email" required></td>
+        </tr>
     </table>
     
     <div class="big-orange-btn-location">
